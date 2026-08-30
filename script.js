@@ -2474,6 +2474,53 @@ function applyBackground() {
   if (!app) {
     return;
   }
+   if (
+  bg.value === "night" ||
+  bg.value === "moon" ||
+  bg.value === "battle" ||
+  bg.value === "stars"
+) {
+  document.documentElement.style.setProperty(
+    "--text",
+    "#f8fafc"
+  );
+
+  document.documentElement.style.setProperty(
+    "--muted",
+    "#cbd5e1"
+  );
+
+  document.documentElement.style.setProperty(
+    "--card",
+    "#1e293b"
+  );
+
+  document.documentElement.style.setProperty(
+    "--border",
+    "#334155"
+  );
+
+} else {
+  document.documentElement.style.setProperty(
+    "--text",
+    "#1f2937"
+  );
+
+  document.documentElement.style.setProperty(
+    "--muted",
+    "#6b7280"
+  );
+
+  document.documentElement.style.setProperty(
+    "--card",
+    "#ffffff"
+  );
+
+  document.documentElement.style.setProperty(
+    "--border",
+    "#e5e7eb"
+  );
+}
 
 
   app.style.background =
