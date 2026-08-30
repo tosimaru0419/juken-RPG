@@ -835,8 +835,10 @@ header {
 
 .quest-card {
   background: white;
-
-  border:
+  
+   color: #1f2937;
+ 
+   border:
     1px solid var(--border);
 
   border-radius: 13px;
