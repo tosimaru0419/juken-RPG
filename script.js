@@ -3101,6 +3101,87 @@ function formatRank() {
 
   return `${rank.icon} ${rank.name}`;
 }
+function updateRankProgress() {
+
+  const currentIndex =
+    RANKS.findIndex(
+      rank =>
+        rank.name === getCurrentRank().name
+    );
+
+  const currentRank =
+    RANKS[currentIndex];
+
+  const nextRank =
+    RANKS[currentIndex + 1];
+
+
+  const progressText =
+    document.getElementById(
+      "rank-progress-text"
+    );
+
+  const nextText =
+    document.getElementById(
+      "rank-next-text"
+    );
+
+  const fill =
+    document.getElementById(
+      "rank-progress-fill"
+    );
+
+
+  if (!progressText || !nextText || !fill) {
+    return;
+  }
+
+
+  /* LEGEND到達済み */
+
+  if (!nextRank) {
+
+    progressText.textContent =
+      `${formatMinutes(data.monthMinutes)} / MAX`;
+
+    nextText.textContent =
+      "🌌 LEGEND";
+
+    fill.style.width =
+      "100%";
+
+    return;
+  }
+
+
+  const currentMinutes =
+    data.monthMinutes -
+    currentRank.min;
+
+  const requiredMinutes =
+    nextRank.min -
+    currentRank.min;
+
+
+  const percentage =
+    Math.min(
+      100,
+      Math.max(
+        0,
+        (currentMinutes / requiredMinutes) * 100
+      )
+    );
+
+
+  progressText.textContent =
+    `${formatMinutes(currentMinutes)} / ${formatMinutes(requiredMinutes)}`;
+
+  nextText.textContent =
+    `次：${nextRank.icon} ${nextRank.name}`;
+
+  fill.style.width =
+    `${percentage}%`;
+}
 
 
 /* ========================================
