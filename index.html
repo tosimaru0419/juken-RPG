@@ -1,0 +1,605 @@
+<div id="app">
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+  <header>
+    <div class="header-title">⚔️ 受験RPG</div>
+    <div class="header-season">
+      シーズン終了まで <strong id="season-days">--</strong>日
+    </div>
+  </header>
+
+
+  <!-- =========================
+       登録画面
+  ========================== -->
+  <section id="register-screen">
+    <div class="register-card">
+      <div class="big-logo">⚔️</div>
+
+      <h1>受験RPG</h1>
+      <p>君だけの受験冒険を始めよう。</p>
+
+      <input
+        id="player-name"
+        type="text"
+        maxlength="20"
+        placeholder="プレイヤー名"
+      >
+
+      <select id="player-track">
+        <option value="理系">理系</option>
+        <option value="文系">文系</option>
+      </select>
+
+      <input
+        id="player-subject"
+        type="text"
+        maxlength="20"
+        placeholder="選択科目（例：物理）"
+      >
+
+      <button id="register-button" class="primary-button">
+        冒険を始める！
+      </button>
+    </div>
+  </section>
+
+
+  <!-- =========================
+       メインアプリ
+  ========================== -->
+  <section id="main-screen" class="hidden">
+
+    <main id="content">
+
+      <!-- =====================
+           HOME
+      ====================== -->
+      <div id="page-home" class="page active">
+
+        <div class="welcome">
+          <div>
+            <div class="small-label">WELCOME BACK</div>
+            <h2 id="home-name">冒険者</h2>
+          </div>
+
+          <div id="home-avatar" class="mini-avatar">⚔️</div>
+        </div>
+
+
+        <!-- プレイヤーステータス -->
+        <div class="status-card">
+
+          <div class="level-top">
+            <div class="level-number">
+              Lv.<strong id="home-level">1</strong>
+            </div>
+
+            <div class="rank-badge" id="home-rank">
+              🥉 BRONZE
+            </div>
+          </div>
+
+          <div class="xp-label">
+            <span>XP</span>
+            <span id="home-xp-text">0 / 100</span>
+          </div>
+
+          <div class="xp-bar">
+            <div id="home-xp-fill"></div>
+          </div>
+
+          <div class="status-bottom">
+            <div>
+              <span>🪙</span>
+              <strong id="home-coins">0</strong>
+            </div>
+
+            <div>
+              <span>📚</span>
+              <strong id="home-month-hours">0h 0m</strong>
+              <small>今月</small>
+            </div>
+
+            <div>
+              <span>🔥</span>
+              <strong id="home-today-minutes">0m</strong>
+              <small>今日</small>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- バフ -->
+        <div id="home-buff" class="buff-card hidden">
+          <div>
+            <strong id="buff-name">🧃 集中の雫</strong>
+            <span id="buff-description">XP ×1.2</span>
+          </div>
+          <div id="buff-timer">30:00</div>
+        </div>
+
+
+        <!-- 今日のクエスト -->
+        <div class="section-title">
+          <h3>⚔️ 今日のクエスト</h3>
+          <button data-page="quest" class="text-button">すべて見る</button>
+        </div>
+
+        <div id="home-quests" class="home-quest-list"></div>
+
+
+        <!-- 勉強開始 -->
+        <button
+          class="big-start-button"
+          data-page="study"
+        >
+          📚 勉強を始める
+        </button>
+
+      </div>
+
+
+      <!-- =====================
+           STUDY
+      ====================== -->
+      <div id="page-study" class="page">
+
+        <div class="page-heading">
+          <h2>📚 勉強</h2>
+          <p>今日の冒険を進めよう。</p>
+        </div>
+
+
+        <div class="study-card">
+
+          <div class="current-subject-label">
+            CURRENT SUBJECT
+          </div>
+
+          <div id="current-subject">
+            未選択
+          </div>
+
+          <div id="timer-display">
+            00:00:00
+          </div>
+
+          <div class="timer-status" id="timer-status">
+            待機中
+          </div>
+
+          <div class="timer-buttons">
+            <button id="timer-start" class="primary-button">
+              ▶ スタート
+            </button>
+
+            <button id="timer-stop" class="danger-button">
+              ■ 終了
+            </button>
+          </div>
+
+          <div class="timer-note">
+            1分 = 1 XP
+          </div>
+        </div>
+
+
+        <div class="card">
+          <div class="card-title">
+            教科を選択
+          </div>
+
+          <div class="subject-grid">
+            <button class="subject-button" data-subject="数学">数学</button>
+            <button class="subject-button" data-subject="英語">英語</button>
+            <button class="subject-button" data-subject="物理">物理</button>
+            <button class="subject-button" data-subject="化学">化学</button>
+            <button class="subject-button" data-subject="国語">国語</button>
+            <button class="subject-button" data-subject="地理">地理</button>
+          </div>
+        </div>
+
+
+        <!-- 事後報告 -->
+        <button id="manual-report-button" class="secondary-button">
+          📝 事後報告で記録する
+        </button>
+
+      </div>
+
+
+      <!-- =====================
+           QUEST
+      ====================== -->
+      <div id="page-quest" class="page">
+
+        <div class="page-heading">
+          <h2>⚔️ クエスト</h2>
+          <p>今日の使命を達成しよう。</p>
+        </div>
+
+        <div class="quest-goal-card">
+          <div>
+            <span>今日の勉強時間</span>
+            <strong id="quest-today-time">0分</strong>
+          </div>
+
+          <div>
+            <span>今日の目標</span>
+            <strong id="quest-goal-time">60分</strong>
+          </div>
+        </div>
+
+        <button id="change-goal-button" class="secondary-button">
+          🎯 今日の目標を変更
+        </button>
+
+        <div id="quest-list"></div>
+
+      </div>
+
+
+      <!-- =====================
+           SHOP
+      ====================== -->
+      <div id="page-shop" class="page">
+
+        <div class="page-heading shop-heading">
+          <div>
+            <h2>🛒 ショップ</h2>
+            <p>コインで冒険を彩ろう。</p>
+          </div>
+
+          <div class="shop-coins">
+            🪙 <strong id="shop-coins">0</strong>
+          </div>
+        </div>
+
+
+        <div class="shop-tabs">
+          <button class="shop-tab active" data-shop-tab="titles">
+            🏷️ 称号
+          </button>
+
+          <button class="shop-tab" data-shop-tab="items">
+            🎁 アイテム
+          </button>
+
+          <button class="shop-tab" data-shop-tab="custom">
+            🎨 カスタム
+          </button>
+        </div>
+
+
+        <!-- 称号 -->
+        <div id="shop-titles" class="shop-panel active">
+          <div id="title-shop-grid" class="shop-grid"></div>
+        </div>
+
+
+        <!-- アイテム -->
+        <div id="shop-items" class="shop-panel">
+          <div id="item-shop-grid" class="shop-grid"></div>
+        </div>
+
+
+        <!-- カスタム -->
+        <div id="shop-custom" class="shop-panel">
+
+          <div class="custom-section-title">
+            🎨 メインカラー
+          </div>
+
+          <div id="theme-shop-grid" class="shop-grid"></div>
+
+          <div class="custom-section-title">
+            🌌 背景
+          </div>
+
+          <div id="background-shop-grid" class="shop-grid"></div>
+
+          <div class="custom-section-title">
+            👤 アバター
+          </div>
+
+          <div id="avatar-shop-grid" class="shop-grid"></div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================
+           PROFILE
+      ====================== -->
+      <div id="page-profile" class="page">
+
+        <div class="profile-header">
+          <div id="profile-avatar" class="profile-avatar">
+            ⚔️
+          </div>
+
+          <h2 id="profile-name">冒険者</h2>
+
+          <div id="profile-title">
+            新米冒険者
+          </div>
+        </div>
+
+
+        <div class="profile-level-card">
+
+          <div class="profile-level">
+            Lv.<strong id="profile-level">1</strong>
+          </div>
+
+          <div class="profile-rank" id="profile-rank">
+            🥉 BRONZE
+          </div>
+
+        </div>
+
+
+        <div class="profile-stats">
+
+          <div>
+            <span>累計XP</span>
+            <strong id="profile-total-xp">0</strong>
+          </div>
+
+          <div>
+            <span>総勉強時間</span>
+            <strong id="profile-total-time">0h</strong>
+          </div>
+
+          <div>
+            <span>今月</span>
+            <strong id="profile-month-time">0h</strong>
+          </div>
+
+          <div>
+            <span>コイン</span>
+            <strong id="profile-coins">0</strong>
+          </div>
+
+        </div>
+
+
+        <!-- バフ -->
+        <div class="card">
+          <div class="card-title">⚡ 現在のバフ</div>
+          <div id="profile-buff">
+            現在バフなし
+          </div>
+        </div>
+
+
+        <!-- 実績 -->
+        <div class="card">
+          <div class="card-title">🏆 実績</div>
+          <div id="achievement-list"></div>
+        </div>
+
+      </div>
+
+    </main>
+
+
+    <!-- =========================
+         BOTTOM NAV
+    ========================== -->
+    <nav id="bottom-nav">
+
+      <button class="nav-button active" data-page="home">
+        <span>🏠</span>
+        <small>ホーム</small>
+      </button>
+
+      <button class="nav-button" data-page="study">
+        <span>📚</span>
+        <small>勉強</small>
+      </button>
+
+      <button class="nav-button" data-page="quest">
+        <span>⚔️</span>
+        <small>クエスト</small>
+      </button>
+
+      <button class="nav-button" data-page="shop">
+        <span>🛒</span>
+        <small>ショップ</small>
+      </button>
+
+      <button class="nav-button" data-page="profile">
+        <span>👤</span>
+        <small>プロフィール</small>
+      </button>
+
+    </nav>
+
+  </section>
+
+
+  <!-- =========================
+       LEVEL UP MODAL
+  ========================== -->
+  <div id="levelup-modal" class="modal hidden">
+
+    <div class="modal-box levelup-box">
+
+      <div class="modal-big-icon">⬆️</div>
+
+      <div class="modal-small-title">
+        LEVEL UP
+      </div>
+
+      <h2>
+        Lv.<span id="levelup-number">2</span>
+      </h2>
+
+      <p>
+        新たな力を手に入れた！
+      </p>
+
+      <button id="levelup-close" class="primary-button">
+        冒険を続ける
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       MANUAL REPORT MODAL
+  ========================== -->
+  <div id="report-modal" class="modal hidden">
+
+    <div class="modal-box">
+
+      <h2>📝 事後報告</h2>
+
+      <p class="modal-description">
+        後から勉強時間を記録できます。
+      </p>
+
+      <label>教科</label>
+
+      <select id="report-subject">
+        <option>数学</option>
+        <option>英語</option>
+        <option>物理</option>
+        <option>化学</option>
+        <option>国語</option>
+        <option>地理</option>
+        <option>その他</option>
+      </select>
+
+      <label>時間</label>
+
+      <div class="time-inputs">
+
+        <input
+          id="report-hours"
+          type="number"
+          min="0"
+          max="24"
+          value="0"
+        >
+
+        <span>時間</span>
+
+        <input
+          id="report-minutes"
+          type="number"
+          min="0"
+          max="59"
+          value="30"
+        >
+
+        <span>分</span>
+
+      </div>
+
+      <div class="modal-buttons">
+
+        <button
+          id="report-cancel"
+          class="secondary-button"
+        >
+          キャンセル
+        </button>
+
+        <button
+          id="report-submit"
+          class="primary-button"
+        >
+          記録する
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       GOAL MODAL
+  ========================== -->
+  <div id="goal-modal" class="modal hidden">
+
+    <div class="modal-box">
+
+      <h2>🎯 今日の目標</h2>
+
+      <p class="modal-description">
+        今日どれくらい勉強する？
+      </p>
+
+      <div class="goal-input">
+        <input
+          id="goal-input"
+          type="number"
+          min="1"
+          max="1440"
+          value="60"
+        >
+        <span>分</span>
+      </div>
+
+      <div class="modal-buttons">
+
+        <button
+          id="goal-cancel"
+          class="secondary-button"
+        >
+          キャンセル
+        </button>
+
+        <button
+          id="goal-submit"
+          class="primary-button"
+        >
+          決定
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       MESSAGE MODAL
+  ========================== -->
+  <div id="message-modal" class="modal hidden">
+
+    <div class="modal-box message-box">
+
+      <div id="message-icon" class="modal-big-icon">
+        🎉
+      </div>
+
+      <h2 id="message-title">
+        完了！
+      </h2>
+
+      <p id="message-text"></p>
+
+      <button
+        id="message-close"
+        class="primary-button"
+      >
+        OK
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
