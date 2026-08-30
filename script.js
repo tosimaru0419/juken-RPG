@@ -3471,7 +3471,7 @@ function updateAll() {
 
 
   updateHome();
-
+  updateRankProgress();
   updateStudy();
 
   updateQuestHeader();
