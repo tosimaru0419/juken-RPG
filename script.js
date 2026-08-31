@@ -3,8 +3,9 @@
    ========================================================= */
 
 // ↓↓↓ ご自身のSupabase環境に置き換えてください ↓↓↓
-const SUPABASE_URL = "YOUR_SUPABASE_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const SUPABASE_URL = "Sb_publishable_0cb06S_AzQXMA1RCPMC7Kg_l2Z-7dvZ
+";
+const SUPABASE_ANON_KEY = "sb_publishable_0cb06S_AzQXMA1RCPMC7Kg_l2Z-7dvZ";
 
 let db = null;
 let currentUser = null;
