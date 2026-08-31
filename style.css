@@ -567,3 +567,42 @@ input:focus, select:focus {
   width: 100%;
   max-width: 400px;
 }
+/* --------------------------------------------------------------------------
+   8. SCREEN & PAGE CONTROL (画面切り替えの修正)
+   -------------------------------------------------------------------------- */
+
+/* 非表示にする要素 */
+.hidden {
+  display: none !important;
+}
+
+/* 画面（ログイン画面・メイン画面）の制御 */
+.screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ページの切り替え（非アクティブなページは隠す） */
+.page {
+  display: none;
+  width: 100%;
+}
+
+/* アクティブなページだけを表示 */
+.page.active {
+  display: block;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+/* 画面切り替え時のフワッとしたアニメーション */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
