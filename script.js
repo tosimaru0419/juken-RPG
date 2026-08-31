@@ -1,8 +1,9 @@
 alert("JS TEST");
+
 // ============================================================
 // 受験RPG - Supabase 接続
 // ============================================================
-alert("script.js 読み込まれた！");
+
 const SUPABASE_URL =
   "https://iuvahxijknuisndqcfmp.supabase.co";
 
@@ -23,7 +24,6 @@ const supabase = createClient(
 
 const $ = (id) => document.getElementById(id);
 
-
 // Auth
 const authScreen = $("auth-screen");
 const loginScreen = $("login-screen");
@@ -39,7 +39,6 @@ const subjectError = $("subject-error");
 const showRegisterButton = $("show-register-button");
 const showLoginButton = $("show-login-button");
 
-
 // Main
 const mainApp = $("main-app");
 const logoutButton = $("logout-button");
@@ -51,10 +50,8 @@ const logoutButton = $("logout-button");
 
 function showError(element, message) {
   if (!element) return;
-
   element.textContent = message;
 }
-
 
 function clearErrors() {
   showError(loginError, "");
@@ -62,13 +59,11 @@ function clearErrors() {
   showError(subjectError, "");
 }
 
-
 function showLoginScreen() {
   loginScreen.classList.remove("hidden");
   registerScreen.classList.add("hidden");
   clearErrors();
 }
-
 
 function showRegisterScreen() {
   loginScreen.classList.add("hidden");
@@ -76,12 +71,10 @@ function showRegisterScreen() {
   clearErrors();
 }
 
-
 function showMainApp() {
   authScreen.classList.add("hidden");
   mainApp.classList.remove("hidden");
 }
-
 
 function showAuthScreen() {
   mainApp.classList.add("hidden");
@@ -92,18 +85,6 @@ function showAuthScreen() {
 
 // ============================================================
 // ユーザーID → 内部メールアドレス
-// ============================================================
-//
-// Supabase Authは通常 email + password を使用するため、
-// ユーザーにはユーザーIDだけ入力してもらい、
-// 内部的に専用のメール形式へ変換する。
-//
-// 例:
-// taro
-// ↓
-// taro@jukensrpg.local
-//
-// このメールアドレスはログイン用の内部値。
 // ============================================================
 
 function userIdToEmail(userId) {
@@ -116,7 +97,6 @@ function userIdToEmail(userId) {
 // ============================================================
 
 function validateUserId(userId) {
-
   if (!userId) {
     return "ユーザーIDを入力してください。";
   }
@@ -129,7 +109,6 @@ function validateUserId(userId) {
     return "ユーザーIDは30文字以内にしてください。";
   }
 
-  // 英数字・_・-のみ
   if (!/^[a-zA-Z0-9_-]+$/.test(userId)) {
     return "ユーザーIDは英数字・_・-のみ使用できます。";
   }
@@ -137,9 +116,7 @@ function validateUserId(userId) {
   return null;
 }
 
-
 function validatePassword(password) {
-
   if (!password) {
     return "パスワードを入力してください。";
   }
@@ -151,9 +128,7 @@ function validatePassword(password) {
   return null;
 }
 
-
 function validateDisplayName(displayName) {
-
   if (!displayName) {
     return "表示名を入力してください。";
   }
@@ -171,7 +146,6 @@ function validateDisplayName(displayName) {
 // ============================================================
 
 function getSelectedSubjects() {
-
   return Array.from(
     document.querySelectorAll(
       '#subject-selection input[name="subjects"]:checked'
@@ -214,9 +188,7 @@ registerForm.addEventListener("submit", async (event) => {
     getSelectedSubjects();
 
 
-  // ------------------------------
   // Validation
-  // ------------------------------
 
   const userIdError =
     validateUserId(userId);
@@ -226,7 +198,6 @@ registerForm.addEventListener("submit", async (event) => {
     return;
   }
 
-
   const passwordError =
     validatePassword(password);
 
@@ -234,7 +205,6 @@ registerForm.addEventListener("submit", async (event) => {
     showError(registerError, passwordError);
     return;
   }
-
 
   if (password !== passwordConfirm) {
     showError(
@@ -244,7 +214,6 @@ registerForm.addEventListener("submit", async (event) => {
     return;
   }
 
-
   const displayNameError =
     validateDisplayName(displayName);
 
@@ -253,7 +222,6 @@ registerForm.addEventListener("submit", async (event) => {
     return;
   }
 
-
   if (!course) {
     showError(
       registerError,
@@ -261,7 +229,6 @@ registerForm.addEventListener("submit", async (event) => {
     );
     return;
   }
-
 
   if (subjects.length === 0) {
     showError(
@@ -272,9 +239,7 @@ registerForm.addEventListener("submit", async (event) => {
   }
 
 
-  // ------------------------------
   // Button
-  // ------------------------------
 
   const button =
     $("register-button");
@@ -289,9 +254,7 @@ registerForm.addEventListener("submit", async (event) => {
       userIdToEmail(userId);
 
 
-    // ----------------------------
     // Supabase Auth 登録
-    // ----------------------------
 
     const {
       data,
@@ -303,12 +266,10 @@ registerForm.addEventListener("submit", async (event) => {
       password,
 
       options: {
-
         data: {
           user_id: userId,
           display_name: displayName
         }
-
       }
 
     });
@@ -330,14 +291,7 @@ registerForm.addEventListener("submit", async (event) => {
       data.user.id;
 
 
-    // ----------------------------
     // Profile取得
-    // ----------------------------
-
-    //
-    // DB側のtriggerによって
-    // profilesが自動作成される。
-    //
 
     let profile = null;
 
@@ -371,25 +325,18 @@ registerForm.addEventListener("submit", async (event) => {
 
 
     if (!profile) {
-
       throw new Error(
         "プロフィールの作成を確認できませんでした。"
       );
-
     }
 
 
-    // ----------------------------
     // 受験教科保存
-    // ----------------------------
 
     const subjectRows =
       subjects.map((subject) => ({
-
         user_id: userUuid,
-
         subject: subject
-
       }));
 
 
@@ -405,9 +352,7 @@ registerForm.addEventListener("submit", async (event) => {
     }
 
 
-    // ----------------------------
     // 完了
-    // ----------------------------
 
     showError(
       registerError,
@@ -621,14 +566,472 @@ async function loadPlayer() {
     }
 
 
-    // ----------------------------
     // Header
-    // ----------------------------
 
     if ($("header-display-name")) {
-
       $("header-display-name")
         .textContent =
         profile.display_name;
+    }
 
-   
+    if ($("header-level")) {
+      $("header-level")
+        .textContent =
+        `Lv.${profile.level}`;
+    }
+
+    if ($("header-rank")) {
+      $("header-rank")
+        .textContent =
+        getRankName(profile);
+    }
+
+
+    // Home
+
+    if ($("home-level")) {
+      $("home-level")
+        .textContent =
+        profile.level;
+    }
+
+    if ($("home-xp")) {
+      $("home-xp")
+        .textContent =
+        `${profile.xp} XP`;
+    }
+
+    if ($("profile-display-name")) {
+      $("profile-display-name")
+        .textContent =
+        profile.display_name;
+    }
+
+    if ($("profile-user-id")) {
+      $("profile-user-id")
+        .textContent =
+        profile.user_id;
+    }
+
+    if ($("profile-course")) {
+      $("profile-course")
+        .textContent =
+        getCourseName(profile.course);
+    }
+
+    if ($("profile-level")) {
+      $("profile-level")
+        .textContent =
+        profile.level;
+    }
+
+    if ($("profile-stars")) {
+      $("profile-stars")
+        .textContent =
+        profile.stars;
+    }
+
+    if ($("profile-title")) {
+      $("profile-title")
+        .textContent =
+        profile.title;
+    }
+
+    if ($("profile-total-study-time")) {
+      $("profile-total-study-time")
+        .textContent =
+        formatStudyTime(
+          profile.total_study_minutes
+        );
+    }
+
+    if ($("profile-total-xp")) {
+      $("profile-total-xp")
+        .textContent =
+        `${profile.total_xp} XP`;
+    }
+
+    if ($("profile-bosses-defeated")) {
+      $("profile-bosses-defeated")
+        .textContent =
+        profile.bosses_defeated;
+    }
+
+    if ($("profile-quests-completed")) {
+      $("profile-quests-completed")
+        .textContent =
+        profile.quests_completed;
+    }
+
+
+    // Subjects
+
+    await loadSubjects(user.id);
+
+
+    // Main
+
+    showMainApp();
+
+
+  } catch (error) {
+
+    console.error(
+      "Load player error:",
+      error
+    );
+
+    showError(
+      loginError,
+      "プレイヤーデータの読み込みに失敗しました。"
+    );
+
+  }
+
+}
+
+
+// ============================================================
+// 教科読み込み
+// ============================================================
+
+async function loadSubjects(userId) {
+
+  const {
+    data,
+    error
+  } = await supabase
+    .from("player_subjects")
+    .select("subject")
+    .eq("user_id", userId)
+    .order("created_at");
+
+
+  if (error) {
+    throw error;
+  }
+
+
+  const subjectNames = {
+
+    japanese: "国語",
+    math: "数学",
+    english: "英語",
+    physics: "物理",
+    chemistry: "化学",
+    biology: "生物",
+    "earth-science": "地学",
+    geography: "地理",
+    "japanese-history": "日本史",
+    "world-history": "世界史",
+    civics: "公民"
+
+  };
+
+
+  // Study select
+
+  const select =
+    $("study-subject");
+
+
+  if (select) {
+
+    select.innerHTML = `
+      <option value="">
+        教科を選択
+      </option>
+    `;
+
+
+    data.forEach((row) => {
+
+      const option =
+        document.createElement("option");
+
+      option.value =
+        row.subject;
+
+      option.textContent =
+        subjectNames[row.subject] ||
+        row.subject;
+
+      select.appendChild(option);
+
+    });
+
+  }
+
+
+  // Profile
+
+  const profileList =
+    $("profile-subject-list");
+
+
+  if (profileList) {
+
+    profileList.innerHTML = "";
+
+
+    data.forEach((row) => {
+
+      const div =
+        document.createElement("div");
+
+      div.className =
+        "profile-subject";
+
+      div.textContent =
+        subjectNames[row.subject] ||
+        row.subject;
+
+      profileList.appendChild(div);
+
+    });
+
+  }
+
+
+  // Settings
+
+  const settingsList =
+    $("settings-subject-selection");
+
+
+  if (settingsList) {
+
+    settingsList.innerHTML = "";
+
+
+    data.forEach((row) => {
+
+      const label =
+        document.createElement("label");
+
+      label.innerHTML = `
+        <input
+          type="checkbox"
+          name="subjects"
+          value="${row.subject}"
+          checked
+        >
+        ${subjectNames[row.subject] || row.subject}
+      `;
+
+      settingsList.appendChild(label);
+
+    });
+
+  }
+
+}
+
+
+// ============================================================
+// 文理名
+// ============================================================
+
+function getCourseName(course) {
+
+  const names = {
+
+    science: "理系",
+    humanities: "文系",
+    undecided: "未定・その他"
+
+  };
+
+  return names[course] || course;
+
+}
+
+
+// ============================================================
+// ランク
+// ============================================================
+
+function getRankName(profile) {
+
+  const minutes =
+    Number(profile.total_study_minutes || 0);
+
+  if (minutes >= 300) {
+    return "Platinum";
+  }
+
+  if (minutes >= 200) {
+    return "Gold";
+  }
+
+  if (minutes >= 100) {
+    return "Silver";
+  }
+
+  return "Bronze";
+
+}
+
+
+// ============================================================
+// 勉強時間表示
+// ============================================================
+
+function formatStudyTime(minutes) {
+
+  const total =
+    Number(minutes || 0);
+
+  const hours =
+    Math.floor(total / 60);
+
+  const mins =
+    total % 60;
+
+
+  if (hours === 0) {
+    return `${mins}分`;
+  }
+
+  if (mins === 0) {
+    return `${hours}時間`;
+  }
+
+  return `${hours}時間${mins}分`;
+
+}
+
+
+// ============================================================
+// ログアウト
+// ============================================================
+
+logoutButton.addEventListener(
+  "click",
+  async () => {
+
+    try {
+
+      const {
+        error
+      } = await supabase.auth.signOut();
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      showAuthScreen();
+
+
+    } catch (error) {
+
+      console.error(
+        "Logout error:",
+        error
+      );
+
+      alert(
+        "ログアウトに失敗しました。"
+      );
+
+    }
+
+  }
+);
+
+
+// ============================================================
+// Login / Register 切り替え
+// ============================================================
+
+showRegisterButton.addEventListener(
+  "click",
+  () => {
+    showRegisterScreen();
+  }
+);
+
+
+showLoginButton.addEventListener(
+  "click",
+  () => {
+    showLoginScreen();
+  }
+);
+
+
+// ============================================================
+// Auth State
+// ============================================================
+
+supabase.auth.onAuthStateChange(
+  async (event, session) => {
+
+    console.log(
+      "Auth state:",
+      event
+    );
+
+
+    if (
+      session &&
+      session.user
+    ) {
+
+      await loadPlayer();
+
+    } else {
+
+      showAuthScreen();
+
+    }
+
+  }
+);
+
+
+// ============================================================
+// 初期化
+// ============================================================
+
+async function init() {
+
+  try {
+
+    const {
+      data: {
+        session
+      }
+    } = await supabase.auth.getSession();
+
+
+    if (
+      session &&
+      session.user
+    ) {
+
+      await loadPlayer();
+
+    } else {
+
+      showAuthScreen();
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "Initialization error:",
+      error
+    );
+
+    showAuthScreen();
+
+  }
+
+}
+
+
+init();
