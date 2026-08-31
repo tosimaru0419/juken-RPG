@@ -839,21 +839,20 @@ function setupSubjects() {
 
       button.addEventListener("click", () => {
 
-        document
-          .querySelectorAll(".subject-button")
-          .forEach(btn =>
-            btn.classList.remove("selected")
+        button.classList.toggle("selected");
+
+        const selected =
+          Array.from(
+            document.querySelectorAll(
+              ".subject-button.selected"
+            )
+          ).map(
+            btn => btn.dataset.subject
           );
 
-        button.classList.add("selected");
+        data.subjects = selected;
 
-        selectedSubject =
-          button.dataset.subject;
-
-        document
-          .getElementById("current-subject")
-          .textContent =
-          selectedSubject;
+        saveData();
 
       });
 
