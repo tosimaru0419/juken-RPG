@@ -1558,3 +1558,213 @@ header {
 
   transition: width 0.3s ease;
 }
+/* =========================
+   LOCKER / FRIEND / RANKING / BOSS
+========================= */
+
+.locker-grid,
+.friend-grid,
+.ranking-list,
+.boss-party {
+  display: grid;
+  gap: 12px;
+}
+
+.locker-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.locker-card,
+.friend-card,
+.ranking-card,
+.boss-card {
+  background: var(--card-bg, #ffffff);
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.locker-card {
+  text-align: center;
+}
+
+.locker-icon {
+  font-size: 42px;
+  margin-bottom: 8px;
+}
+
+.locker-name {
+  font-weight: bold;
+}
+
+.equipped {
+  border: 2px solid #f5b942;
+}
+
+.equipped-label {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #f5b942;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* フレンド */
+
+.friend-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.friend-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eee;
+  font-size: 24px;
+}
+
+.friend-info {
+  flex: 1;
+}
+
+.friend-name {
+  font-weight: bold;
+}
+
+.friend-rank {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* ランキング */
+
+.ranking-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ranking-position {
+  width: 36px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.ranking-avatar {
+  font-size: 28px;
+}
+
+.ranking-info {
+  flex: 1;
+}
+
+.ranking-name {
+  font-weight: bold;
+}
+
+.ranking-xp {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* ボス */
+
+.boss-card {
+  text-align: center;
+}
+
+.boss-icon {
+  font-size: 72px;
+  margin: 12px 0;
+}
+
+.boss-hp {
+  margin: 16px 0;
+}
+
+.boss-hp-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.boss-hp-bar {
+  height: 14px;
+  background: #eee;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.boss-hp-fill {
+  height: 100%;
+  width: 100%;
+  background: #e74c3c;
+  transition: width 0.3s ease;
+}
+
+.boss-party {
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 16px;
+}
+
+.party-member {
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.04);
+  text-align: center;
+}
+
+.party-avatar {
+  font-size: 30px;
+}
+
+.party-name {
+  font-weight: bold;
+  font-size: 13px;
+}
+
+/* タブ */
+
+.feature-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+
+.feature-tab {
+  flex: 1;
+  min-width: 100px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #eee;
+  font-weight: bold;
+}
+
+.feature-tab.active {
+  background: #333;
+  color: #fff;
+}
+
+/* スマホ対応 */
+
+@media (max-width: 480px) {
+  .locker-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .boss-party {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
