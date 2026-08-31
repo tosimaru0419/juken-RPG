@@ -2303,3 +2303,11 @@ async function init() {
 // ============================================================
 
 init();
+console.log("受験RPG JS 起動確認");
+
+if (showRegisterButton) {
+  showRegisterButton.addEventListener("click", () => {
+    alert("新規登録ボタンのJSは動いてる！");
+  });
+}
+
