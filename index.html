@@ -11,15 +11,14 @@
 
 <body>
 
-  <!-- =====================================================
-       AUTH SCREEN
-       ===================================================== -->
+  <!-- =========================
+       AUTH
+       ========================= -->
 
   <div id="auth-screen">
 
     <div class="auth-container">
 
-      <!-- ロゴ -->
       <header class="auth-header">
         <div class="logo-icon">⚔️</div>
         <h1>受験RPG</h1>
@@ -27,13 +26,12 @@
       </header>
 
 
-      <!-- =================================================
-           LOGIN
-           ================================================= -->
+      <!-- LOGIN -->
 
       <section id="login-screen" class="auth-card">
 
         <h2>ログイン</h2>
+
         <p class="auth-description">
           冒険を再開しよう。
         </p>
@@ -48,8 +46,6 @@
             <input
               type="text"
               id="login-user-id"
-              name="userId"
-              placeholder="ユーザーID"
               autocomplete="username"
               required
             >
@@ -64,8 +60,6 @@
             <input
               type="password"
               id="login-password"
-              name="password"
-              placeholder="パスワード"
               autocomplete="current-password"
               required
             >
@@ -75,7 +69,6 @@
           <p
             id="login-error"
             class="error-message"
-            aria-live="polite"
           ></p>
 
 
@@ -110,9 +103,7 @@
 
 
 
-      <!-- =================================================
-           REGISTER
-           ================================================= -->
+      <!-- REGISTER -->
 
       <section
         id="register-screen"
@@ -128,8 +119,6 @@
 
         <form id="register-form">
 
-          <!-- ユーザーID -->
-
           <div class="form-group">
 
             <label for="register-user-id">
@@ -139,21 +128,18 @@
             <input
               type="text"
               id="register-user-id"
-              name="userId"
-              placeholder="英数字・_・-"
-              autocomplete="username"
               maxlength="30"
+              autocomplete="username"
+              placeholder="3〜30文字"
               required
             >
 
             <small>
-              3〜30文字
+              英数字・_・-のみ
             </small>
 
           </div>
 
-
-          <!-- パスワード -->
 
           <div class="form-group">
 
@@ -164,16 +150,13 @@
             <input
               type="password"
               id="register-password"
-              name="password"
-              placeholder="6文字以上"
               autocomplete="new-password"
+              placeholder="6文字以上"
               required
             >
 
           </div>
 
-
-          <!-- パスワード確認 -->
 
           <div class="form-group">
 
@@ -184,16 +167,12 @@
             <input
               type="password"
               id="register-password-confirm"
-              name="passwordConfirm"
-              placeholder="もう一度入力"
               autocomplete="new-password"
               required
             >
 
           </div>
 
-
-          <!-- 表示名 -->
 
           <div class="form-group">
 
@@ -204,61 +183,45 @@
             <input
               type="text"
               id="register-display-name"
-              name="displayName"
-              placeholder="ゲーム内で表示される名前"
               maxlength="30"
+              placeholder="ゲーム内で表示される名前"
               required
             >
 
           </div>
 
 
-          <!-- 文理 -->
-
           <fieldset>
 
-            <legend>
-              文理
-            </legend>
+            <legend>文理</legend>
 
             <div class="choice-group">
 
               <label>
-
                 <input
                   type="radio"
                   name="course"
                   value="science"
                 >
-
-                <span>理系</span>
-
+                理系
               </label>
 
-
               <label>
-
                 <input
                   type="radio"
                   name="course"
                   value="humanities"
                 >
-
-                <span>文系</span>
-
+                文系
               </label>
 
-
               <label>
-
                 <input
                   type="radio"
                   name="course"
                   value="undecided"
                 >
-
-                <span>未定</span>
-
+                未定
               </label>
 
             </div>
@@ -266,153 +229,86 @@
           </fieldset>
 
 
-
-          <!-- 受験教科 -->
-
           <fieldset>
 
-            <legend>
-              受験教科
-            </legend>
+            <legend>受験教科</legend>
 
             <p class="field-description">
-              受験で使用する教科を選択してください。
+              使用する教科を選択してください。
             </p>
-
 
             <div id="subject-selection">
 
               <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="japanese"
-                >
-                <span>国語</span>
+                <input type="checkbox" name="subjects" value="japanese">
+                国語
               </label>
 
-
               <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="math"
-                >
-                <span>数学</span>
+                <input type="checkbox" name="subjects" value="math">
+                数学
               </label>
 
-
               <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="english"
-                >
-                <span>英語</span>
+                <input type="checkbox" name="subjects" value="english">
+                英語
               </label>
 
-
               <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="physics"
-                >
-                <span>物理</span>
+                <input type="checkbox" name="subjects" value="physics">
+                物理
               </label>
 
-
               <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="chemistry"
-                >
-                <span>化学</span>
+                <input type="checkbox" name="subjects" value="chemistry">
+                化学
               </label>
 
-
               <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="biology"
-                >
-                <span>生物</span>
+                <input type="checkbox" name="subjects" value="biology">
+                生物
               </label>
 
-
               <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="earth-science"
-                >
-                <span>地学</span>
+                <input type="checkbox" name="subjects" value="earth-science">
+                地学
               </label>
 
-
               <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="geography"
-                >
-                <span>地理</span>
+                <input type="checkbox" name="subjects" value="geography">
+                地理
               </label>
 
-
               <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="japanese-history"
-                >
-                <span>日本史</span>
+                <input type="checkbox" name="subjects" value="japanese-history">
+                日本史
               </label>
 
-
               <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="world-history"
-                >
-                <span>世界史</span>
+                <input type="checkbox" name="subjects" value="world-history">
+                世界史
               </label>
 
-
               <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="civics"
-                >
-                <span>公民</span>
+                <input type="checkbox" name="subjects" value="civics">
+                公民
               </label>
 
             </div>
 
-
             <p
               id="subject-error"
               class="error-message"
-              aria-live="polite"
             ></p>
 
           </fieldset>
 
 
-          <!-- 登録エラー -->
-
           <p
             id="register-error"
             class="error-message"
-            aria-live="polite"
           ></p>
 
-
-          <!-- 登録ボタン -->
 
           <button
             type="submit"
@@ -424,8 +320,6 @@
 
         </form>
 
-
-        <!-- ログインへ -->
 
         <div class="auth-switch">
 
@@ -451,17 +345,11 @@
 
 
 
-  <!-- =====================================================
+  <!-- =========================
        MAIN APP
-       ===================================================== -->
+       ========================= -->
 
-  <div
-    id="main-app"
-    class="hidden"
-  >
-
-
-    <!-- HEADER -->
+  <div id="main-app" class="hidden">
 
     <header id="app-header">
 
@@ -481,7 +369,6 @@
 
       </div>
 
-
       <button
         type="button"
         id="logout-button"
@@ -492,15 +379,9 @@
     </header>
 
 
-
-    <!-- MAIN -->
-
     <main id="main-content">
 
-
-      <!-- =================================================
-           HOME
-           ================================================= -->
+      <!-- HOME -->
 
       <section
         id="home-screen"
@@ -517,8 +398,6 @@
 
         </header>
 
-
-        <!-- プレイヤーステータス -->
 
         <section id="home-player-status">
 
@@ -541,12 +420,7 @@
           <div id="level-progress-container">
 
             <div id="level-progress-bar">
-
-              <div
-                id="level-progress"
-                style="width: 0%"
-              ></div>
-
+              <div id="level-progress"></div>
             </div>
 
           </div>
@@ -572,93 +446,57 @@
         </section>
 
 
-
-        <!-- 今日の記録 -->
-
         <section id="today-summary">
 
           <h3>今日の記録</h3>
 
+          <div class="summary-grid">
 
-          <div class="summary-card">
+            <div class="summary-card">
+              <span>勉強時間</span>
+              <strong id="today-study-time">0分</strong>
+            </div>
 
-            <span>勉強時間</span>
+            <div class="summary-card">
+              <span>獲得XP</span>
+              <strong id="today-xp">0 XP</strong>
+            </div>
 
-            <strong id="today-study-time">
-              0分
-            </strong>
-
-          </div>
-
-
-          <div class="summary-card">
-
-            <span>獲得XP</span>
-
-            <strong id="today-xp">
-              0 XP
-            </strong>
-
-          </div>
-
-
-          <div class="summary-card">
-
-            <span>クエスト</span>
-
-            <strong id="today-quests">
-              0
-            </strong>
+            <div class="summary-card">
+              <span>クエスト</span>
+              <strong id="today-quests">0</strong>
+            </div>
 
           </div>
 
         </section>
 
-
-
-        <!-- クエスト概要 -->
 
         <section id="home-quests">
 
           <h3>⚔️ 今日のクエスト</h3>
 
           <div id="home-quest-list">
-
             <p class="empty-message">
               クエストを読み込み中...
             </p>
-
           </div>
 
         </section>
 
 
-
-        <!-- シーズン -->
-
         <section id="home-season">
 
           <h3>🏆 シーズン</h3>
 
-          <div>
-
+          <div class="info-row">
             <span>現在のランク</span>
-
-            <strong id="home-rank">
-              Bronze
-            </strong>
-
+            <strong id="home-rank">Bronze</strong>
           </div>
 
-
-          <div>
-
+          <div class="info-row">
             <span>シーズン終了</span>
-
-            <strong id="home-season-end">
-              -
-            </strong>
-
+            <strong id="home-season-end">-</strong>
           </div>
 
         </section>
@@ -667,9 +505,7 @@
 
 
 
-      <!-- =================================================
-           STUDY
-           ================================================= -->
+      <!-- STUDY -->
 
       <section
         id="study-screen"
@@ -697,7 +533,7 @@
                 教科
               </label>
 
-              <select id="study-subject">
+              <select id="study-subject" required>
                 <option value="">
                   教科を選択
                 </option>
@@ -717,7 +553,6 @@
                 id="study-minutes"
                 min="1"
                 max="1440"
-                placeholder="60"
                 required
               >
 
@@ -761,11 +596,7 @@
 
           <h3>教科別記録</h3>
 
-          <div id="subject-study-list">
-            <p class="empty-message">
-              データを読み込み中...
-            </p>
-          </div>
+          <div id="subject-study-list"></div>
 
         </section>
 
@@ -774,11 +605,7 @@
 
           <h3>勉強履歴</h3>
 
-          <div id="study-history-list">
-            <p class="empty-message">
-              履歴を読み込み中...
-            </p>
-          </div>
+          <div id="study-history-list"></div>
 
         </section>
 
@@ -786,9 +613,7 @@
 
 
 
-      <!-- =================================================
-           QUEST
-           ================================================= -->
+      <!-- QUEST -->
 
       <section
         id="quest-screen"
@@ -810,11 +635,7 @@
 
           <h3>📅 デイリークエスト</h3>
 
-          <div id="daily-quest-list">
-            <p class="empty-message">
-              読み込み中...
-            </p>
-          </div>
+          <div id="daily-quest-list"></div>
 
         </section>
 
@@ -823,11 +644,7 @@
 
           <h3>🗓️ ウィークリークエスト</h3>
 
-          <div id="weekly-quest-list">
-            <p class="empty-message">
-              読み込み中...
-            </p>
-          </div>
+          <div id="weekly-quest-list"></div>
 
         </section>
 
@@ -836,11 +653,7 @@
 
           <h3>📜 クエスト履歴</h3>
 
-          <div id="quest-history-list">
-            <p class="empty-message">
-              読み込み中...
-            </p>
-          </div>
+          <div id="quest-history-list"></div>
 
         </section>
 
@@ -848,9 +661,7 @@
 
 
 
-      <!-- =================================================
-           BOSS
-           ================================================= -->
+      <!-- BOSS -->
 
       <section
         id="boss-screen"
@@ -870,38 +681,21 @@
 
         <section id="boss-status">
 
-          <h3 id="boss-name">
-            BOSS
-          </h3>
+          <h3 id="boss-name">受験の魔王</h3>
 
-          <p id="boss-level">
-            Lv.1
-          </p>
-
+          <p id="boss-level">Lv.1</p>
 
           <div id="boss-hp-container">
 
             <div id="boss-hp-text">
-
               HP
-              <span id="boss-current-hp">
-                100
-              </span>
+              <span id="boss-current-hp">100</span>
               /
-              <span id="boss-max-hp">
-                100
-              </span>
-
+              <span id="boss-max-hp">100</span>
             </div>
 
-
             <div id="boss-hp-bar">
-
-              <div
-                id="boss-hp-progress"
-                style="width: 100%"
-              ></div>
-
+              <div id="boss-hp-progress"></div>
             </div>
 
           </div>
@@ -911,13 +705,9 @@
 
             <span>弱点</span>
 
-            <strong id="boss-weakness-subject">
-              -
-            </strong>
+            <strong id="boss-weakness-subject">-</strong>
 
-            <strong id="boss-weakness-multiplier">
-              ×1.0
-            </strong>
+            <strong id="boss-weakness-multiplier">×1.5</strong>
 
           </div>
 
@@ -928,15 +718,9 @@
 
           <h3>👥 集団戦メンバー</h3>
 
-          <div id="boss-party-member-list">
-            <p class="empty-message">
-              パーティーを読み込み中...
-            </p>
-          </div>
+          <div id="boss-party-member-list"></div>
 
-          <p id="boss-party-count">
-            0人
-          </p>
+          <p id="boss-party-count">0人</p>
 
         </section>
 
@@ -957,6 +741,7 @@
         <button
           type="button"
           id="boss-refresh-button"
+          class="secondary-button"
         >
           ボス情報を更新
         </button>
@@ -965,9 +750,7 @@
 
 
 
-      <!-- =================================================
-           PARTY
-           ================================================= -->
+      <!-- PARTY -->
 
       <section
         id="party-screen"
@@ -989,11 +772,7 @@
 
           <h3>現在のパーティー</h3>
 
-          <div id="party-member-list">
-            <p class="empty-message">
-              メンバーを読み込み中...
-            </p>
-          </div>
+          <div id="party-member-list"></div>
 
           <p id="party-member-count">
             0人
@@ -1016,6 +795,7 @@
               type="text"
               id="party-invite-user-id"
               placeholder="招待するユーザーID"
+              required
             >
 
             <p
@@ -1038,13 +818,9 @@
 
         <section id="party-week-info">
 
-          <span>
-            今週のパーティー
-          </span>
+          <span>今週のパーティー</span>
 
-          <strong id="party-week-range">
-            -
-          </strong>
+          <strong id="party-week-range">-</strong>
 
         </section>
 
@@ -1052,9 +828,7 @@
 
 
 
-      <!-- =================================================
-           RANK
-           ================================================= -->
+      <!-- RANK -->
 
       <section
         id="rank-screen"
@@ -1078,17 +852,9 @@
             Bronze
           </span>
 
-
           <div>
-
-            <span>
-              シーズン終了まで
-            </span>
-
-            <strong id="current-season-time">
-              -
-            </strong>
-
+            <span>シーズン終了まで</span>
+            <strong id="current-season-time">-</strong>
           </div>
 
         </section>
@@ -1101,21 +867,11 @@
           <table>
 
             <thead>
-
               <tr>
-
-                <th>
-                  ランク
-                </th>
-
-                <th>
-                  必要勉強時間
-                </th>
-
+                <th>ランク</th>
+                <th>必要勉強時間</th>
               </tr>
-
             </thead>
-
 
             <tbody>
 
@@ -1171,11 +927,9 @@
           <h3>シーズン履歴</h3>
 
           <div id="season-history-list">
-
             <p class="empty-message">
-              履歴を読み込み中...
+              まだ履歴がありません。
             </p>
-
           </div>
 
         </section>
@@ -1184,9 +938,7 @@
 
 
 
-      <!-- =================================================
-           ACHIEVEMENT
-           ================================================= -->
+      <!-- ACHIEVEMENT -->
 
       <section
         id="achievement-screen"
@@ -1195,38 +947,25 @@
 
         <header class="screen-header">
 
-          <div>
+          <h2>⭐ 実績</h2>
 
-            <h2>⭐ 実績</h2>
-
-            <p>
-              冒険の記録。
-            </p>
-
-          </div>
-
-          <strong id="achievement-count">
-            0 / 0
-          </strong>
+          <p>
+            冒険の記録。
+          </p>
 
         </header>
 
-
-        <div id="achievement-list">
-
-          <p class="empty-message">
-            実績を読み込み中...
-          </p>
-
+        <div id="achievement-count">
+          0 / 3
         </div>
+
+        <div id="achievement-list"></div>
 
       </section>
 
 
 
-      <!-- =================================================
-           PROFILE
-           ================================================= -->
+      <!-- PROFILE -->
 
       <section
         id="profile-screen"
@@ -1248,30 +987,22 @@
 
           <p>
             ID：
-            <span id="profile-user-id">
-              -
-            </span>
+            <span id="profile-user-id">-</span>
           </p>
 
           <p>
             文理：
-            <span id="profile-course">
-              -
-            </span>
+            <span id="profile-course">-</span>
           </p>
 
           <p>
             レベル：
-            <span id="profile-level">
-              1
-            </span>
+            <span id="profile-level">1</span>
           </p>
 
           <p>
             ⭐：
-            <span id="profile-stars">
-              0
-            </span>
+            <span id="profile-stars">0</span>
           </p>
 
           <p>
@@ -1288,11 +1019,7 @@
 
           <h3>受験教科</h3>
 
-          <div id="profile-subject-list">
-            <p class="empty-message">
-              -
-            </p>
-          </div>
+          <div id="profile-subject-list"></div>
 
         </section>
 
@@ -1335,9 +1062,7 @@
 
 
 
-      <!-- =================================================
-           SETTINGS
-           ================================================= -->
+      <!-- SETTINGS -->
 
       <section
         id="settings-screen"
@@ -1356,22 +1081,16 @@
           <h3>アカウント設定</h3>
 
 
-          <!-- 表示名 -->
-
           <form id="display-name-form">
 
             <h4>表示名変更</h4>
 
-            <div class="form-group">
-
-              <input
-                type="text"
-                id="settings-display-name"
-                placeholder="新しい表示名"
-                maxlength="30"
-              >
-
-            </div>
+            <input
+              type="text"
+              id="settings-display-name"
+              maxlength="30"
+              required
+            >
 
             <p
               id="display-name-error"
@@ -1385,19 +1104,11 @@
           </form>
 
 
-          <!-- 教科 -->
-
           <form id="subject-settings-form">
 
             <h4>受験教科</h4>
 
-            <div id="settings-subject-selection">
-
-              <p class="empty-message">
-                読み込み中...
-              </p>
-
-            </div>
+            <div id="settings-subject-selection"></div>
 
             <p
               id="settings-subject-error"
@@ -1411,21 +1122,16 @@
           </form>
 
 
-          <!-- パスワード -->
-
           <form id="password-form">
 
             <h4>パスワード変更</h4>
 
-            <div class="form-group">
-
-              <input
-                type="password"
-                id="settings-new-password"
-                placeholder="新しいパスワード"
-              >
-
-            </div>
+            <input
+              type="password"
+              id="settings-new-password"
+              minlength="6"
+              required
+            >
 
             <p
               id="password-error"
@@ -1439,13 +1145,9 @@
           </form>
 
 
-          <!-- アカウント削除 -->
-
           <div id="delete-account-section">
 
-            <h4>
-              アカウント
-            </h4>
+            <h4>アカウント</h4>
 
             <p>
               アカウント削除は取り消せません。
@@ -1468,99 +1170,44 @@
 
 
 
-    <!-- =================================================
-         BOTTOM NAVIGATION
-         ================================================= -->
+    <!-- NAV -->
 
     <nav id="main-navigation">
 
-      <button
-        type="button"
-        class="nav-button active"
-        data-screen="home-screen"
-      >
-        🏠<br>
-        ホーム
+      <button class="nav-button active" data-screen="home-screen">
+        🏠<br>ホーム
       </button>
 
-
-      <button
-        type="button"
-        class="nav-button"
-        data-screen="study-screen"
-      >
-        📚<br>
-        勉強
+      <button class="nav-button" data-screen="study-screen">
+        📚<br>勉強
       </button>
 
-
-      <button
-        type="button"
-        class="nav-button"
-        data-screen="quest-screen"
-      >
-        ⚔️<br>
-        クエスト
+      <button class="nav-button" data-screen="quest-screen">
+        ⚔️<br>クエスト
       </button>
 
-
-      <button
-        type="button"
-        class="nav-button"
-        data-screen="boss-screen"
-      >
-        👹<br>
-        ボス
+      <button class="nav-button" data-screen="boss-screen">
+        👹<br>ボス
       </button>
 
-
-      <button
-        type="button"
-        class="nav-button"
-        data-screen="party-screen"
-      >
-        👥<br>
-        パーティー
+      <button class="nav-button" data-screen="party-screen">
+        👥<br>パーティー
       </button>
 
-
-      <button
-        type="button"
-        class="nav-button"
-        data-screen="rank-screen"
-      >
-        🏆<br>
-        ランク
+      <button class="nav-button" data-screen="rank-screen">
+        🏆<br>ランク
       </button>
 
-
-      <button
-        type="button"
-        class="nav-button"
-        data-screen="achievement-screen"
-      >
-        ⭐<br>
-        実績
+      <button class="nav-button" data-screen="achievement-screen">
+        ⭐<br>実績
       </button>
 
-
-      <button
-        type="button"
-        class="nav-button"
-        data-screen="profile-screen"
-      >
-        👤<br>
-        プロフィール
+      <button class="nav-button" data-screen="profile-screen">
+        👤<br>プロフィール
       </button>
 
-
-      <button
-        type="button"
-        class="nav-button"
-        data-screen="settings-screen"
-      >
-        ⚙️<br>
-        設定
+      <button class="nav-button" data-screen="settings-screen">
+        ⚙️<br>設定
       </button>
 
     </nav>
@@ -1569,14 +1216,11 @@
 
 
 
-  <!-- =====================================================
+  <!-- =========================
        MODALS
-       ===================================================== -->
+       ========================= -->
 
-  <div
-    id="level-up-modal"
-    class="modal hidden"
-  >
+  <div id="level-up-modal" class="modal hidden">
 
     <div class="modal-content">
 
@@ -1584,13 +1228,9 @@
 
       <p>
         Lv.
-        <span id="level-up-old-level">
-          1
-        </span>
+        <span id="level-up-old-level">1</span>
         →
-        <strong id="level-up-new-level">
-          2
-        </strong>
+        <strong id="level-up-new-level">2</strong>
       </p>
 
       <button
@@ -1605,112 +1245,14 @@
   </div>
 
 
-
-  <div
-    id="star-modal"
-    class="modal hidden"
-  >
-
-    <div class="modal-content">
-
-      <h2>⭐ STAR GET!</h2>
-
-      <strong id="star-modal-count">
-        +1
-      </strong>
-
-      <button
-        type="button"
-        id="star-modal-close-button"
-      >
-        OK
-      </button>
-
-    </div>
-
-  </div>
-
-
-
-  <div
-    id="boss-result-modal"
-    class="modal hidden"
-  >
-
-    <div class="modal-content">
-
-      <h2 id="boss-result-title">
-        BOSS RESULT
-      </h2>
-
-      <p id="boss-result-message">
-        -
-      </p>
-
-      <button
-        type="button"
-        id="boss-result-close-button"
-      >
-        OK
-      </button>
-
-    </div>
-
-  </div>
-
-
-
-  <div
-    id="season-result-modal"
-    class="modal hidden"
-  >
-
-    <div class="modal-content">
-
-      <h2>
-        🏆 SEASON RESULT
-      </h2>
-
-      <p id="season-result-message">
-        -
-      </p>
-
-      <button
-        type="button"
-        id="season-result-close-button"
-      >
-        OK
-      </button>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- =====================================================
-       NOTIFICATION
-       ===================================================== -->
-
-  <div
-    id="notification"
-    class="hidden"
-    role="status"
-    aria-live="polite"
-  >
+  <div id="notification" class="hidden">
     -
   </div>
 
 
+  <!-- Firebase -->
 
-  <!-- =====================================================
-       SUPABASE
-       ===================================================== -->
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <!-- 自分のJS -->
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 
 </body>
 </html>
