@@ -1,4382 +1,535 @@
-/* ========================================
-⚔️ 受験RPG — JavaScript
-COMPLETE EDITION
-LocalStorage + Subject System + Boss Battle
-======================================== */
+// ==========================================
+// 受験RPG - アプリケーションメインロジック (完全修正版)
+// ==========================================
 
-const STORAGE_KEY = "juken_rpg_complete_v2";
-
-/* ========================================
-GAME DATA
-======================================== */
-
-const RANKS = [
-  { name: "BRONZE", icon: "🥉", min: 0 },
-  { name: "SILVER", icon: "🥈", min: 10 * 60 },
-  { name: "GOLD", icon: "🥇", min: 25 * 60 },
-  { name: "PLATINUM", icon: "💎", min: 50 * 60 },
-  { name: "DIAMOND", icon: "💠", min: 80 * 60 },
-  { name: "MASTER", icon: "👑", min: 110 * 60 },
-  { name: "GRANDMASTER", icon: "⚔️", min: 140 * 60 },
-  { name: "LEGEND", icon: "🌌", min: 170 * 60 }
-];
-
-const TITLES = [
-  { id: "title_novice", name: "駆け出しの冒険者", price: 0 },
-  { id: "title_night", name: "夜を越えし者", price: 50 },
-  { id: "title_silent", name: "静かなる研鑽者", price: 100 },
-  { id: "title_knowledge", name: "知識を喰らう者", price: 300 },
-  { id: "title_limit", name: "限界突破の片鱗", price: 500 },
-  { id: "title_sleep", name: "眠気殺し", price: 750 },
-  { id: "title_solo", name: "孤高の受験戦士", price: 1000 },
-  { id: "title_twilight", name: "黄昏の求道者", price: 1500 },
-  { id: "title_book", name: "禁断の参考書", price: 2000 },
-  { id: "title_truth", name: "万象を解き明かす者", price: 3000 },
-  { id: "title_outside", name: "理の外側に立つ者", price: 5000 },
-  { id: "title_last", name: "最後まで立っていた者", price: 7500 },
-  { id: "title_fate", name: "運命に抗う者", price: 10000 },
-  { id: "title_destiny", name: "天命を喰らう者", price: 15000 },
-  { id: "title_unexplored", name: "未踏の領域", price: 25000 },
-  { id: "title_battlefield", name: "受験という名の戦場", price: 50000 },
-  { id: "title_beyond", name: "合格の向こう側", price: 100000 }
-];
-
-const ITEMS = [
-  {
-    id: "item_drop",
-    name: "🧃 集中の雫",
-    description: "30分間 XP ×1.2",
-    price: 100,
-    type: "multiplier",
-    multiplier: 1.2,
-    duration: 30 * 60
-  },
-  {
-    id: "item_fire",
-    name: "🔥 闘志の火種",
-    description: "今日の目標達成で +50 XP",
-    price: 150,
-    type: "goal",
-    bonus: 50
-  },
-  {
-    id: "item_scroll",
-    name: "📜 研鑽の巻物",
-    description: "60分間 XP ×1.3",
-    price: 300,
-    type: "multiplier",
-    multiplier: 1.3,
-    duration: 60 * 60
-  },
-  {
-    id: "item_feather",
-    name: "⚡ 瞬刻の羽根",
-    description: "30分間 XP ×1.5",
-    price: 500,
-    type: "multiplier",
-    multiplier: 1.5,
-    duration: 30 * 60
-  },
-  {
-    id: "item_crystal",
-    name: "🔮 未来視の水晶",
-    description: "目標達成で +100 XP",
-    price: 750,
-    type: "goal",
-    bonus: 100
-  },
-  {
-    id: "item_experience",
-    name: "💎 経験の結晶",
-    description: "次のセッション終了時 +100 XP",
-    price: 1000,
-    type: "session",
-    bonus: 100
-  },
-  {
-    id: "item_crown",
-    name: "👑 王者の勲章",
-    description: "目標達成で +200 XP",
-    price: 3000,
-    type: "goal",
-    bonus: 200
-  }
-];
-
-const THEMES = [
-  {
-    id: "theme_blue",
-    name: "🔵 蒼天",
-    price: 0,
-    color: "#2563eb",
-    light: "#eff6ff",
-    dark: "#1d4ed8"
-  },
-  {
-    id: "theme_red",
-    name: "🔴 紅蓮",
-    price: 100,
-    color: "#dc2626",
-    light: "#fef2f2",
-    dark: "#b91c1c"
-  },
-  {
-    id: "theme_green",
-    name: "🟢 深森",
-    price: 100,
-    color: "#16a34a",
-    light: "#f0fdf4",
-    dark: "#15803d"
-  },
-  {
-    id: "theme_purple",
-    name: "🟣 夜紫",
-    price: 250,
-    color: "#7c3aed",
-    light: "#f5f3ff",
-    dark: "#6d28d9"
-  },
-  {
-    id: "theme_gold",
-    name: "🟡 黄金",
-    price: 500,
-    color: "#ca8a04",
-    light: "#fefce8",
-    dark: "#a16207"
-  },
-  {
-    id: "theme_black",
-    name: "⚫ 漆黒",
-    price: 1000,
-    color: "#111827",
-    light: "#f3f4f6",
-    dark: "#030712"
-  },
-  {
-    id: "theme_silver",
-    name: "⚪ 白銀",
-    price: 1500,
-    color: "#64748b",
-    light: "#f1f5f9",
-    dark: "#475569"
-  },
-  {
-    id: "theme_void",
-    name: "🌌 深淵",
-    price: 3000,
-    color: "#312e81",
-    light: "#eef2ff",
-    dark: "#1e1b4b"
-  }
-];
-
-const BACKGROUNDS = [
-  {
-    id: "bg_default",
-    name: "☁️ 白紙",
-    price: 0,
-    value: "default"
-  },
-  {
-    id: "bg_night",
-    name: "🌃 夜空",
-    price: 500,
-    value: "night"
-  },
-  {
-    id: "bg_library",
-    name: "📚 古書庫",
-    price: 1000,
-    value: "library"
-  },
-  {
-    id: "bg_magic",
-    name: "🏰 魔導書庫",
-    price: 2500,
-    value: "magic"
-  },
-  {
-    id: "bg_moon",
-    name: "🌙 月下の塔",
-    price: 5000,
-    value: "moon"
-  },
-  {
-    id: "bg_battle",
-    name: "⚔️ 最終決戦",
-    price: 10000,
-    value: "battle"
-  },
-  {
-    id: "bg_stars",
-    name: "🌌 星の彼方",
-    price: 25000,
-    value: "stars"
-  }
-];
-
-const AVATARS = [
-  {
-    id: "avatar_sword",
-    name: "⚔️ 剣士",
-    price: 0,
-    value: "⚔️"
-  },
-  {
-    id: "avatar_magic",
-    name: "🧙 魔術師",
-    price: 300,
-    value: "🧙"
-  },
-  {
-    id: "avatar_archer",
-    name: "🏹 狩人",
-    price: 300,
-    value: "🏹"
-  },
-  {
-    id: "avatar_knight",
-    name: "🛡️ 騎士",
-    price: 500,
-    value: "🛡️"
-  },
-  {
-    id: "avatar_sage",
-    name: "📖 賢者",
-    price: 1000,
-    value: "📖"
-  },
-  {
-    id: "avatar_king",
-    name: "👑 王者",
-    price: 3000,
-    value: "👑"
-  }
-];
-
-/* ========================================
-SUBJECT SYSTEM
-======================================== */
-
-const SUBJECTS = {
-  common: [
-    { id: "数学", name: "数学", icon: "📐" },
-    { id: "英語", name: "英語", icon: "🔤" },
-    { id: "国語", name: "国語", icon: "📖" }
-  ],
-
-  science: [
-    { id: "物理", name: "物理", icon: "⚡" },
-    { id: "化学", name: "化学", icon: "🧪" },
-    { id: "生物", name: "生物", icon: "🧬" }
-  ],
-
-  humanities: [
-    { id: "地理", name: "地理", icon: "🌍" },
-    { id: "日本史", name: "日本史", icon: "🏯" },
-    { id: "世界史", name: "世界史", icon: "🌐" },
-    { id: "政治経済", name: "政経", icon: "🏛️" }
-  ]
+// 初期ユーザーデータ（Storageにない場合の初期値）
+const DEFAULT_USER = {
+  user_id: "eita_001",
+  player_name: "えいた",
+  track: "science", // science, humanities, general
+  level: 1,
+  star_count: 0,   // ⭐の数（レベル100を超えて周回した回数）
+  xp: 0,
+  xp_to_next: 100,
+  coins: 200,      // 初期所持コイン
+  title: "新米受験生",
+  rank: "Bronze",
+  avatar: "🧙‍♂️",
+  total_minutes: 0,
+  streak_days: 1
 };
 
-function getAvailableSubjects() {
-  const subjects = [...SUBJECTS.common];
-
-  if (data.track === "理系") {
-    subjects.push(...SUBJECTS.science);
-  } else {
-    subjects.push(...SUBJECTS.humanities);
-  }
-
-  return subjects;
-}
-
-function getSubjectInfo(subject) {
-  return getAvailableSubjects().find(
-    s => s.id === subject
-  );
-}
-
-/*
-★ 重要
-
-ボス弱点候補もここを使う。
-
-理系
-→ 数学・英語・国語・物理・化学・生物
-
-文系
-→ 数学・英語・国語・地理・日本史・世界史・政治経済
-
-したがって他コースの固有科目は出ない。
-*/
-
-function getBossWeaknessPool() {
-  return getAvailableSubjects().map(
-    subject => subject.id
-  );
-}
-
-/* ========================================
-DAILY QUEST
-======================================== */
-
-const DAILY_QUESTS = [
-  {
-    id: "q10",
-    icon: "📖",
-    name: "新人冒険者の第一歩",
-    description: "10分勉強する",
-    minutes: 10,
-    xp: 10,
-    coins: 20
-  },
-  {
-    id: "q30",
-    icon: "🔥",
-    name: "集中の証",
-    description: "30分勉強する",
-    minutes: 30,
-    xp: 30,
-    coins: 40
-  },
-  {
-    id: "q60",
-    icon: "⚔️",
-    name: "今日も戦う者",
-    description: "60分勉強する",
-    minutes: 60,
-    xp: 60,
-    coins: 80
-  },
-  {
-    id: "q120",
-    icon: "🌙",
-    name: "夜を越える者",
-    description: "120分勉強する",
-    minutes: 120,
-    xp: 100,
-    coins: 150
-  }
-];
-
-/* ========================================
-ACHIEVEMENTS
-======================================== */
-
-const ACHIEVEMENTS = [
-  {
-    id: "first",
-    icon: "🌱",
-    name: "冒険の始まり",
-    description: "初めて勉強する",
-    check: d => d.totalMinutes >= 1
-  },
-  {
-    id: "ten",
-    icon: "📚",
-    name: "最初の10分",
-    description: "累計10分勉強する",
-    check: d => d.totalMinutes >= 10
-  },
-  {
-    id: "hour",
-    icon: "🔥",
-    name: "一時間の壁",
-    description: "累計1時間勉強する",
-    check: d => d.totalMinutes >= 60
-  },
-  {
-    id: "ten_hours",
-    icon: "⚔️",
-    name: "研鑽の道",
-    description: "累計10時間勉強する",
-    check: d => d.totalMinutes >= 600
-  },
-  {
-    id: "hundred_hours",
-    icon: "💎",
-    name: "百時間の領域",
-    description: "累計100時間勉強する",
-    check: d => d.totalMinutes >= 6000
-  },
-  {
-    id: "level10",
-    icon: "⬆️",
-    name: "成長の証",
-    description: "Lv.10に到達する",
-    check: d => d.level >= 10
-  },
-  {
-    id: "level50",
-    icon: "🌌",
-    name: "未踏への挑戦",
-    description: "Lv.50に到達する",
-    check: d => d.level >= 50
-  },
-  {
-    id: "boss_first",
-    icon: "👹",
-    name: "初めての討伐",
-    description: "ボスを1体撃破する",
-    check: d => d.bossesDefeated >= 1
-  },
-  {
-    id: "boss_5",
-    icon: "⚔️",
-    name: "歴戦の冒険者",
-    description: "ボスを5体撃破する",
-    check: d => d.bossesDefeated >= 5
-  },
-  {
-    id: "boss_10",
-    icon: "👑",
-    name: "受験戦争の覇者",
-    description: "ボスを10体撃破する",
-    check: d => d.bossesDefeated >= 10
-  }
-];
-
-/* ========================================
-DEFAULT DATA
-======================================== */
-
-function createDefaultData() {
-  return {
-    registered: false,
-    name: "",
-    track: "理系",
-    subject: "数学",
-
-    subjects: [
-      "数学",
-      "英語",
-      "国語"
-    ],
-
-    subjectMinutes: {},
-
-    level: 1,
-    xp: 0,
-    totalXP: 0,
-
-    stars: 0,
-    coins: 0,
-
-    totalMinutes: 0,
-    todayMinutes: 0,
-    monthMinutes: 0,
-
-    monthKey: getMonthKey(),
-    todayKey: getTodayKey(),
-
-    dailyGoal: 60,
-
-    claimedQuests: [],
-
-    ownedTitles: [
-      "title_novice"
-    ],
-
-    equippedTitle: "title_novice",
-
-    ownedItems: [],
-    activeBuff: null,
-
-    equippedTheme: "theme_blue",
-    ownedThemes: [
-      "theme_blue"
-    ],
-
-    equippedBackground: "bg_default",
-    ownedBackgrounds: [
-      "bg_default"
-    ],
-
-    equippedAvatar: "avatar_sword",
-    ownedAvatars: [
-      "avatar_sword"
-    ],
-
-    achievements: [],
-
-    /*
-    ==============================
-    BOSS SYSTEM
-    ==============================
-    */
-
-    boss: {
-      id: 0,
-      name: "未知なる受験の魔王",
-      icon: "👹",
-      description: "勉強で力を蓄え、仲間と共に挑め。",
-      weakness: "",
-      maxHP: 1000,
-      hp: 1000,
-      defeated: false
-    },
-
-    bossesDefeated: 0,
-    bossBattleReady: false
-  };
-}
-
-let data = createDefaultData();
-
-/* ========================================
-TIMER
-======================================== */
-
+// 状態管理
+let currentUser = null;
+let activeTab = 'page-home';
 let timerInterval = null;
-let timerStart = null;
+let timerSeconds = 25 * 60;
+let isTimerRunning = false;
+let selectedSubject = 'english';
 
-let selectedSubject = "";
+// デイリークエスト初期状態
+let dailyQuests = [
+  { id: 1, text: "いずれかの教科を30分勉強する", reward_coins: 50, reward_xp: 50, completed: false },
+  { id: 2, text: "ボスに合計1,000ダメージを与える", reward_coins: 80, reward_xp: 80, completed: false },
+  { id: 3, text: "手動またはタイマーで学習記録をつける", reward_coins: 30, reward_xp: 30, completed: false }
+];
 
-/* ========================================
-INITIALIZE
-======================================== */
+// 教科定義
+const SUBJECTS = {
+  english: { name: "英語", icon: "🔤" },
+  math: { name: "数学", icon: "📐" },
+  japanese: { name: "国語", icon: "📖" },
+  science: { name: "理科", icon: "🧪" },
+  social: { name: "社会", icon: "🗺️" }
+};
 
-document.addEventListener("DOMContentLoaded", () => {
-  loadData();
-
-  migrateData();
-
+// DOMロード時
+document.addEventListener('DOMContentLoaded', () => {
+  setupAuthEvents();
   setupNavigation();
-  setupRegistration();
-  setupTimer();
-  setupSubjects();
-  setupManualReport();
-  setupGoal();
-  setupShopTabs();
-  setupLevelUpModal();
-  setupMessageModal();
-  setupBattle();
-
-  checkDateReset();
-
-  applyTheme();
-  updateSeason();
-
-  if (data.registered) {
-    selectedSubject =
-      data.subject ||
-      getAvailableSubjects()[0].id;
-
-    showMain();
-  } else {
-    showRegister();
-  }
-
-  updateAll();
-
-  setInterval(() => {
-    checkDateReset();
-    updateBuff();
-    updateSeason();
-  }, 1000);
+  setupStudyEvents();
+  setupProfileModal();
 });
 
-/* ========================================
-MIGRATION
-======================================== */
-
-function migrateData() {
-  if (!data.subjectMinutes) {
-    data.subjectMinutes = {};
-  }
-
-  if (!data.subjects || !Array.isArray(data.subjects)) {
-    data.subjects = [];
-  }
-
-  if (typeof data.bossesDefeated !== "number") {
-    data.bossesDefeated = 0;
-  }
-
-  if (!data.boss) {
-    data.boss = createBoss();
-  }
-
-  if (typeof data.bossBattleReady !== "boolean") {
-    data.bossBattleReady = false;
-  }
-
-  if (!Array.isArray(data.achievements)) {
-    data.achievements = [];
-  }
-
-  if (!Array.isArray(data.ownedTitles)) {
-    data.ownedTitles = ["title_novice"];
-  }
-
-  if (!Array.isArray(data.ownedThemes)) {
-    data.ownedThemes = ["theme_blue"];
-  }
-
-  if (!Array.isArray(data.ownedBackgrounds)) {
-    data.ownedBackgrounds = ["bg_default"];
-  }
-
-  if (!Array.isArray(data.ownedAvatars)) {
-    data.ownedAvatars = ["avatar_sword"];
-  }
-
-  if (!Array.isArray(data.claimedQuests)) {
-    data.claimedQuests = [];
-  }
-
-  if (typeof data.totalXP !== "number") {
-    data.totalXP = 0;
-  }
-
-  if (typeof data.xp !== "number") {
-    data.xp = 0;
-  }
-
-  if (typeof data.level !== "number") {
-    data.level = 1;
-  }
-
-  if (typeof data.coins !== "number") {
-    data.coins = 0;
-  }
-
-  if (typeof data.totalMinutes !== "number") {
-    data.totalMinutes = 0;
-  }
-
-  if (typeof data.todayMinutes !== "number") {
-    data.todayMinutes = 0;
-  }
-
-  if (typeof data.monthMinutes !== "number") {
-    data.monthMinutes = 0;
-  }
-
-  if (typeof data.dailyGoal !== "number") {
-    data.dailyGoal = 60;
-  }
-
-  if (!data.track) {
-    data.track = "理系";
-  }
-
-  const available =
-    getAvailableSubjects();
-
-  available.forEach(subject => {
-    if (
-      typeof data.subjectMinutes[subject.id] !== "number"
-    ) {
-      data.subjectMinutes[subject.id] = 0;
-    }
-  });
-
-  /*
-  コース変更等で存在しなくなった科目を
-  subjectsから除外し、現在のコースに合わせる。
-  */
-
-  data.subjects =
-    available.map(subject => subject.id);
-
-  if (
-    !available.some(
-      subject => subject.id === data.subject
-    )
-  ) {
-    data.subject =
-      available[0]?.id || "数学";
-  }
-
-  if (!selectedSubject) {
-    selectedSubject = data.subject;
-  }
-
-  saveData();
-}
-
-/* ========================================
-STORAGE
-======================================== */
-
-function saveData() {
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(data)
-  );
-}
-
-function loadData() {
-  const saved =
-    localStorage.getItem(STORAGE_KEY);
-
-  if (!saved) {
-    return;
-  }
-
-  try {
-    data = {
-      ...createDefaultData(),
-      ...JSON.parse(saved)
-    };
-  } catch (error) {
-    console.error(
-      "セーブデータ読み込み失敗:",
-      error
-    );
-
-    data = createDefaultData();
-  }
-}
-
-/* ========================================
-DATE
-======================================== */
-
-function getTodayKey() {
-  const now = new Date();
-
-  return [
-    now.getFullYear(),
-    String(now.getMonth() + 1).padStart(2, "0"),
-    String(now.getDate()).padStart(2, "0")
-  ].join("-");
-}
-
-function getMonthKey() {
-  const now = new Date();
-
-  return [
-    now.getFullYear(),
-    String(now.getMonth() + 1).padStart(2, "0")
-  ].join("-");
-}
-
-function checkDateReset() {
-  const today = getTodayKey();
-  const month = getMonthKey();
-
-  if (data.todayKey !== today) {
-    data.todayKey = today;
-    data.todayMinutes = 0;
-    data.claimedQuests = [];
-
-    saveData();
-  }
-
-  if (data.monthKey !== month) {
-    data.monthKey = month;
-    data.monthMinutes = 0;
-
-    /*
-    月が変わったら新シーズンボスを生成
-    */
-
-    createNewBoss();
-
-    saveData();
-  }
-}
-
-/* ========================================
-SEASON
-======================================== */
-
-function updateSeason() {
-  const end =
-    new Date("2026-12-31T23:59:59");
-
-  const now = new Date();
-
-  const diff =
-    end.getTime() - now.getTime();
-
-  const days =
-    Math.max(
-      0,
-      Math.ceil(diff / 86400000)
-    );
-
-  const element =
-    document.getElementById(
-      "season-days"
-    );
-
-  if (element) {
-    element.textContent = days;
-  }
-}
-
-/* ========================================
-REGISTER
-======================================== */
-
-function setupRegistration() {
-  const button =
-    document.getElementById(
-      "register-button"
-    );
-
-  if (!button) {
-    return;
-  }
-
-  button.addEventListener("click", () => {
-    const name =
-      document
-        .getElementById("player-name")
-        .value
-        .trim();
-
-    const track =
-      document
-        .getElementById("player-track")
-        .value;
-
-    const mainSubject =
-      document
-        .getElementById("player-subject")
-        .value
-        .trim();
-
-    if (!name) {
-      showMessage(
-        "⚠️",
-        "名前が必要です",
-        "プレイヤー名を入力してください。"
-      );
-
-      return;
-    }
-
-    data.registered = true;
-    data.name = name;
-    data.track = track;
-
-    const available =
-      getAvailableSubjects();
-
-    /*
-    メイン科目が入力されていれば採用。
-    空欄なら数学を初期値にする。
-    */
-
-    const validMain =
-      available.some(
-        subject =>
-          subject.id === mainSubject
-      );
-
-    data.subject =
-      validMain
-        ? mainSubject
-        : available[0].id;
-
-    data.subjects =
-      available.map(
-        subject => subject.id
-      );
-
-    selectedSubject =
-      data.subject;
-
-    initializeSubjectMinutes();
-
-    /*
-    新規登録時はコースに合わせた
-    ボスを生成。
-    */
-
-    createNewBoss();
-
-    saveData();
-
-    showMain();
-    updateAll();
-
-    showMessage(
-      "⚔️",
-      "冒険開始！",
-      `${name}の受験RPGが始まった！\n\n` +
-      `${track}コースで冒険を開始！`
-    );
-  });
-}
-
-function initializeSubjectMinutes() {
-  const available =
-    getAvailableSubjects();
-
-  available.forEach(subject => {
-    if (
-      typeof data.subjectMinutes[subject.id] !== "number"
-    ) {
-      data.subjectMinutes[subject.id] = 0;
-    }
-  });
-}
-
-/* ========================================
-SCREEN
-======================================== */
-
-function showRegister() {
-  const registerScreen =
-    document.getElementById(
-      "register-screen"
-    );
-
-  const mainScreen =
-    document.getElementById(
-      "main-screen"
-    );
-
-  if (registerScreen) {
-    registerScreen.classList.remove("hidden");
-  }
-
-  if (mainScreen) {
-    mainScreen.classList.add("hidden");
-  }
-}
-
-function showMain() {
-  const registerScreen =
-    document.getElementById(
-      "register-screen"
-    );
-
-  const mainScreen =
-    document.getElementById(
-      "main-screen"
-    );
-
-  if (registerScreen) {
-    registerScreen.classList.add("hidden");
-  }
-
-  if (mainScreen) {
-    mainScreen.classList.remove("hidden");
-  }
-
-  showPage("home");
-}
-
-/* ========================================
-NAVIGATION
-======================================== */
-
-function setupNavigation() {
-  document
-    .querySelectorAll("[data-page]")
-    .forEach(button => {
-      button.addEventListener(
-        "click",
-        () => {
-          showPage(
-            button.dataset.page
-          );
-        }
-      );
+// ==========================================
+// 1. 新規登録 ＆ ログイン処理（完全修正）
+// ==========================================
+function setupAuthEvents() {
+  const tabLogin = document.getElementById('tab-login');
+  const tabSignup = document.getElementById('tab-signup');
+  const authPlayerName = document.getElementById('auth-player-name');
+  const authTrack = document.getElementById('auth-track');
+  const authSubmitBtn = document.getElementById('auth-submit-btn');
+  const authForm = document.getElementById('auth-form');
+
+  let isSignUpMode = false;
+
+  // ログインタブ切り替え
+  if (tabLogin) {
+    tabLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      isSignUpMode = false;
+      tabLogin.classList.add('active');
+      tabSignup.classList.remove('active');
+      authPlayerName.classList.add('hidden');
+      authTrack.classList.add('hidden');
+      authPlayerName.removeAttribute('required');
+      authSubmitBtn.textContent = 'ログインして開始';
     });
-}
+  }
 
-function showPage(page) {
-  document
-    .querySelectorAll(".page")
-    .forEach(element => {
-      element.classList.toggle(
-        "active",
-        element.id === `page-${page}`
-      );
+  // 新規登録タブ切り替え
+  if (tabSignup) {
+    tabSignup.addEventListener('click', (e) => {
+      e.preventDefault();
+      isSignUpMode = true;
+      tabSignup.classList.add('active');
+      tabLogin.classList.remove('active');
+      authPlayerName.classList.remove('hidden');
+      authTrack.classList.remove('hidden');
+      authPlayerName.setAttribute('required', 'true');
+      authSubmitBtn.textContent = 'アカウント作成（新規登録）';
     });
-
-  document
-    .querySelectorAll(".nav-button")
-    .forEach(button => {
-      button.classList.toggle(
-        "active",
-        button.dataset.page === page
-      );
-    });
-
-  if (page === "battle") {
-    renderBattle();
-  }
-
-  if (page === "study") {
-    renderSubjectButtons();
-  }
-
-  if (page === "shop") {
-    renderShop();
-  }
-
-  if (page === "quest") {
-    renderQuests();
-  }
-
-  if (page === "profile") {
-    updateProfile();
-    renderAchievements();
-  }
-}
-
-/* ========================================
-SUBJECT UI
-======================================== */
-
-function setupSubjects() {
-  renderSubjectButtons();
-}
-
-function renderSubjectButtons() {
-  const grid =
-    document.querySelector(
-      ".subject-grid"
-    );
-
-  if (!grid) {
-    return;
-  }
-
-  grid.innerHTML = "";
-
-  const available =
-    getAvailableSubjects();
-
-  available.forEach(subject => {
-    const button =
-      document.createElement("button");
-
-    button.className =
-      "subject-button";
-
-    if (
-      selectedSubject === subject.id
-    ) {
-      button.classList.add("selected");
-    }
-
-    button.dataset.subject =
-      subject.id;
-
-    button.innerHTML =
-      `<span>${subject.icon}</span>${subject.name}`;
-
-    button.addEventListener(
-      "click",
-      () => {
-        selectedSubject =
-          subject.id;
-
-        data.subject =
-          subject.id;
-
-        renderSubjectButtons();
-        updateStudy();
-        saveData();
-      }
-    );
-
-    grid.appendChild(button);
-  });
-
-  /*
-  選択科目情報を追加
-  */
-
-  renderSubjectStats();
-}
-
-function renderSubjectStats() {
-  let container =
-    document.getElementById(
-      "subject-stats"
-    );
-
-  if (!container) {
-    container =
-      document.createElement("div");
-
-    container.id =
-      "subject-stats";
-
-    container.className =
-      "card subject-stats-card";
-
-    const grid =
-      document.querySelector(
-        ".subject-grid"
-      );
-
-    if (grid) {
-      grid.parentNode.insertBefore(
-        container,
-        grid.nextSibling
-      );
-    }
-  }
-
-  if (!container) {
-    return;
-  }
-
-  const available =
-    getAvailableSubjects();
-
-  container.innerHTML = `
-    <div class="subject-stats-title">
-      SUBJECT POWER
-    </div>
-
-    <div class="subject-stats-subtitle">
-      科目別ステータス
-    </div>
-
-    <div class="subject-stat-list">
-      ${available.map(subject => {
-        const minutes =
-          data.subjectMinutes[
-            subject.id
-          ] || 0;
-
-        return `
-          <div class="subject-stat-row">
-            <span>
-              ${subject.icon}
-              ${subject.name}
-            </span>
-
-            <strong>
-              ${formatMinutes(minutes)}
-            </strong>
-          </div>
-        `;
-      }).join("")}
-    </div>
-  `;
-}
-
-/* ========================================
-TIMER
-======================================== */
-
-function setupTimer() {
-  const start =
-    document.getElementById(
-      "timer-start"
-    );
-
-  const stop =
-    document.getElementById(
-      "timer-stop"
-    );
-
-  if (start) {
-    start.addEventListener(
-      "click",
-      startTimer
-    );
-  }
-
-  if (stop) {
-    stop.addEventListener(
-      "click",
-      stopTimer
-    );
-  }
-}
-
-function startTimer() {
-  if (timerInterval) {
-    return;
-  }
-
-  if (!selectedSubject) {
-    selectedSubject =
-      data.subject ||
-      getAvailableSubjects()[0].id;
-  }
-
-  timerStart = Date.now();
-
-  timerInterval =
-    setInterval(
-      updateTimerDisplay,
-      1000
-    );
-
-  const status =
-    document.getElementById(
-      "timer-status"
-    );
-
-  const startButton =
-    document.getElementById(
-      "timer-start"
-    );
-
-  if (status) {
-    status.textContent =
-      "🔥 勉強中";
-  }
-
-  if (startButton) {
-    startButton.textContent =
-      "⏳ 勉強中";
-  }
-
-  updateTimerDisplay();
-}
-
-function stopTimer() {
-  if (
-    !timerInterval ||
-    !timerStart
-  ) {
-    return;
-  }
-
-  clearInterval(timerInterval);
-
-  timerInterval = null;
-
-  const seconds =
-    Math.floor(
-      (Date.now() - timerStart) / 1000
-    );
-
-  const minutes =
-    Math.floor(seconds / 60);
-
-  timerStart = null;
-
-  const status =
-    document.getElementById(
-      "timer-status"
-    );
-
-  const startButton =
-    document.getElementById(
-      "timer-start"
-    );
-
-  const display =
-    document.getElementById(
-      "timer-display"
-    );
-
-  if (status) {
-    status.textContent =
-      "記録完了";
-  }
-
-  if (startButton) {
-    startButton.textContent =
-      "▶ スタート";
-  }
-
-  if (display) {
-    display.textContent =
-      "00:00:00";
-  }
-
-  if (minutes <= 0) {
-    showMessage(
-      "⏱️",
-      "記録されませんでした",
-      "1分未満のセッションでした。"
-    );
-
-    return;
-  }
-
-  recordStudy(
-    minutes,
-    "timer",
-    selectedSubject
-  );
-}
-
-function updateTimerDisplay() {
-  if (!timerStart) {
-    return;
-  }
-
-  const seconds =
-    Math.floor(
-      (Date.now() - timerStart) / 1000
-    );
-
-  const hours =
-    Math.floor(
-      seconds / 3600
-    );
-
-  const minutes =
-    Math.floor(
-      (seconds % 3600) / 60
-    );
-
-  const secs =
-    seconds % 60;
-
-  const display =
-    document.getElementById(
-      "timer-display"
-    );
-
-  if (display) {
-    display.textContent =
-      `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
-  }
-}
-
-function pad(number) {
-  return String(number)
-    .padStart(2, "0");
-}
-
-/* ========================================
-MANUAL REPORT
-======================================== */
-
-function setupManualReport() {
-  const button =
-    document.getElementById(
-      "manual-report-button"
-    );
-
-  if (!button) {
-    return;
-  }
-
-  button.addEventListener(
-    "click",
-    () => {
-      const modal =
-        document.getElementById(
-          "report-modal"
-        );
-
-      if (modal) {
-        modal.classList.remove(
-          "hidden"
-        );
-      }
-
-      populateReportSubjects();
-    }
-  );
-
-  const cancel =
-    document.getElementById(
-      "report-cancel"
-    );
-
-  const submit =
-    document.getElementById(
-      "report-submit"
-    );
-
-  if (cancel) {
-    cancel.addEventListener(
-      "click",
-      closeReportModal
-    );
-  }
-
-  if (submit) {
-    submit.addEventListener(
-      "click",
-      submitManualReport
-    );
-  }
-}
-
-function populateReportSubjects() {
-  const select =
-    document.getElementById(
-      "report-subject"
-    );
-
-  if (!select) {
-    return;
-  }
-
-  select.innerHTML = "";
-
-  getAvailableSubjects()
-    .forEach(subject => {
-      const option =
-        document.createElement("option");
-
-      option.value =
-        subject.id;
-
-      option.textContent =
-        `${subject.icon} ${subject.name}`;
-
-      select.appendChild(option);
-    });
-
-  select.value =
-    selectedSubject ||
-    data.subject ||
-    getAvailableSubjects()[0].id;
-}
-
-function closeReportModal() {
-  const modal =
-    document.getElementById(
-      "report-modal"
-    );
-
-  if (modal) {
-    modal.classList.add("hidden");
-  }
-}
-
-function submitManualReport() {
-  const hours =
-    Number(
-      document.getElementById(
-        "report-hours"
-      ).value
-    );
-
-  const minutes =
-    Number(
-      document.getElementById(
-        "report-minutes"
-      ).value
-    );
-
-  if (
-    !Number.isFinite(hours) ||
-    !Number.isFinite(minutes) ||
-    hours < 0 ||
-    minutes < 0 ||
-    minutes > 59
-  ) {
-    showMessage(
-      "⚠️",
-      "入力エラー",
-      "時間と分を正しく入力してください。"
-    );
-
-    return;
-  }
-
-  const totalMinutes =
-    Math.floor(
-      hours * 60 + minutes
-    );
-
-  if (totalMinutes <= 0) {
-    showMessage(
-      "⚠️",
-      "記録できません",
-      "1分以上の勉強時間を入力してください。"
-    );
-
-    return;
-  }
-
-  selectedSubject =
-    document.getElementById(
-      "report-subject"
-    ).value;
-
-  closeReportModal();
-
-  recordStudy(
-    totalMinutes,
-    "manual",
-    selectedSubject
-  );
-}
-
-/* ========================================
-RECORD STUDY
-======================================== */
-
-function recordStudy(
-  minutes,
-  source,
-  subject
-) {
-  if (
-    !Number.isFinite(minutes) ||
-    minutes <= 0
-  ) {
-    return;
-  }
-
-  minutes =
-    Math.floor(minutes);
-
-  subject =
-    subject ||
-    selectedSubject ||
-    data.subject ||
-    getAvailableSubjects()[0].id;
-
-  if (
-    typeof data.subjectMinutes[subject] !== "number"
-  ) {
-    data.subjectMinutes[subject] = 0;
-  }
-
-  data.subjectMinutes[subject] +=
-    minutes;
-
-  data.totalMinutes += minutes;
-  data.todayMinutes += minutes;
-  data.monthMinutes += minutes;
-
-  /*
-  XP
-  */
-
-  const earnedXP =
-    calculateBuffedXP(minutes);
-
-  data.totalXP += earnedXP;
-  data.xp += earnedXP;
-
-  /*
-  Coins
-  */
-
-  data.coins += minutes;
-
-  /*
-  Session bonus
-  */
-
-  const sessionBonus =
-    checkSessionBonus();
-
-  if (sessionBonus > 0) {
-    data.totalXP += sessionBonus;
-    data.xp += sessionBonus;
-  }
-
-  /*
-  Goal bonus
-  */
-
-  const goalResult =
-    handleGoalBuff();
-
-  /*
-  Level
-  */
-
-  let levelUps =
-    processLevelUps();
-
-  levelUps +=
-    goalResult.levelUps;
-
-  /*
-  Achievements
-  */
-
-  const newAchievements =
-    checkAchievements();
-
-  /*
-  勉強後にボスステータス更新。
-
-  実際の攻撃は「ボス戦開始」で行う。
-  勉強 = パーティー強化。
-  */
-
-  saveData();
-
-  updateAll();
-
-  let message =
-    `${subject}を${minutes}分勉強！\n` +
-    `+${earnedXP} XP\n` +
-    `+${minutes} 🪙`;
-
-  if (sessionBonus > 0) {
-    message +=
-      `\n💎 経験の結晶発動！ +${sessionBonus} XP`;
-  }
-
-  if (goalResult.bonus > 0) {
-    message +=
-      `\n🔥 目標達成バフ！ +${goalResult.bonus} XP`;
-  }
-
-  if (newAchievements > 0) {
-    message +=
-      `\n🏆 実績解除！ +${newAchievements * 50} 🪙`;
-  }
-
-  if (source === "manual") {
-    message +=
-      "\n📝 事後報告として記録しました。";
-  }
-
-  if (levelUps > 0) {
-    message +=
-      `\n\n⬆️ Lv.${data.level}に到達！`;
-
-    showMessage(
-      "⬆️",
-      "LEVEL UP!",
-      message
-    );
-
-    setTimeout(
-      showLevelUp,
-      300
-    );
-
-    return;
-  }
-
-  showMessage(
-    "📚",
-    "勉強記録完了",
-    message
-  );
-}
-
-/* ========================================
-XP
-======================================== */
-
-function xpRequired() {
-  return (
-    100 +
-    Math.floor(data.level / 10) * 50
-  );
-}
-
-function processLevelUps() {
-  let levelUps = 0;
-
-  while (
-    data.xp >= xpRequired() &&
-    data.level < 100
-  ) {
-    data.xp -= xpRequired();
-    data.level++;
-    levelUps++;
-  }
-
-  if (data.level >= 100) {
-    data.level = 100;
-
-    data.xp =
-      Math.min(
-        data.xp,
-        xpRequired() - 1
-      );
-  }
-
-  return levelUps;
-}
-
-/* ========================================
-BUFF
-======================================== */
-
-function calculateBuffedXP(baseXP) {
-  const buff =
-    data.activeBuff;
-
-  if (!buff) {
-    return baseXP;
-  }
-
-  if (buff.type !== "multiplier") {
-    return baseXP;
-  }
-
-  if (
-    Date.now() >= buff.expiresAt
-  ) {
-    data.activeBuff = null;
-    return baseXP;
-  }
-
-  return Math.floor(
-    baseXP * buff.multiplier
-  );
-}
-
-function updateBuff() {
-  if (!data.activeBuff) {
-    updateBuffUI();
-    return;
-  }
-
-  if (
-    data.activeBuff.type ===
-      "multiplier" &&
-    Date.now() >=
-      data.activeBuff.expiresAt
-  ) {
-    data.activeBuff = null;
-
-    saveData();
-    updateAll();
-
-    return;
-  }
-
-  updateBuffUI();
-}
-
-function updateBuffUI() {
-  const homeBuff =
-    document.getElementById(
-      "home-buff"
-    );
-
-  const profileBuff =
-    document.getElementById(
-      "profile-buff"
-    );
-
-  if (!homeBuff || !profileBuff) {
-    return;
-  }
-
-  if (!data.activeBuff) {
-    homeBuff.classList.add(
-      "hidden"
-    );
-
-    profileBuff.textContent =
-      "現在バフなし";
-
-    return;
-  }
-
-  const buff =
-    data.activeBuff;
-
-  let remaining = 0;
-
-  if (
-    buff.type === "multiplier"
-  ) {
-    remaining =
-      Math.max(
-        0,
-        Math.ceil(
-          (
-            buff.expiresAt -
-            Date.now()
-          ) / 1000
-        )
-      );
-  }
-
-  const minutes =
-    Math.floor(
-      remaining / 60
-    );
-
-  const seconds =
-    remaining % 60;
-
-  const timeText =
-    `${pad(minutes)}:${pad(seconds)}`;
-
-  homeBuff.classList.remove(
-    "hidden"
-  );
-
-  const buffName =
-    document.getElementById(
-      "buff-name"
-    );
-
-  const buffDescription =
-    document.getElementById(
-      "buff-description"
-    );
-
-  const buffTimer =
-    document.getElementById(
-      "buff-timer"
-    );
-
-  if (buffName) {
-    buffName.textContent =
-      buff.name;
-  }
-
-  if (buffDescription) {
-    buffDescription.textContent =
-      buff.description;
-  }
-
-  if (
-    buff.type === "multiplier"
-  ) {
-    if (buffTimer) {
-      buffTimer.textContent =
-        timeText;
-    }
-
-    profileBuff.textContent =
-      `${buff.name} — ${buff.description} — 残り ${timeText}`;
-  } else {
-    if (buffTimer) {
-      buffTimer.textContent =
-        "READY";
-    }
-
-    profileBuff.textContent =
-      `${buff.name} — ${buff.description}`;
-  }
-}
-
-/* ========================================
-GOAL BUFF
-======================================== */
-
-function handleGoalBuff() {
-  const result = {
-    bonus: 0,
-    levelUps: 0
-  };
-
-  if (!data.activeBuff) {
-    return result;
-  }
-
-  if (
-    data.activeBuff.type !==
-    "goal"
-  ) {
-    return result;
-  }
-
-  if (
-    data.todayMinutes <
-    data.dailyGoal
-  ) {
-    return result;
-  }
-
-  const bonus =
-    data.activeBuff.bonus;
-
-  data.totalXP += bonus;
-  data.xp += bonus;
-
-  data.activeBuff = null;
-
-  result.bonus = bonus;
-
-  result.levelUps =
-    processLevelUps();
-
-  return result;
-}
-
-/* ========================================
-SESSION BONUS
-======================================== */
-
-function checkSessionBonus() {
-  if (!data.activeBuff) {
-    return 0;
-  }
-
-  if (
-    data.activeBuff.type !==
-    "session"
-  ) {
-    return 0;
-  }
-
-  const bonus =
-    data.activeBuff.bonus;
-
-  data.activeBuff = null;
-
-  return bonus;
-}
-
-/* ========================================
-BOSS SYSTEM
-======================================== */
-
-/*
-コース内からのみ弱点を選ぶ。
-*/
-
-function randomBossWeakness() {
-  const pool =
-    getBossWeaknessPool();
-
-  if (!pool.length) {
-    return "数学";
-  }
-
-  return pool[
-    Math.floor(
-      Math.random() *
-      pool.length
-    )
-  ];
-}
-
-function createBoss() {
-  const bossNumber =
-    data.bossesDefeated + 1;
-
-  /*
-  ボスが少しずつ強くなる。
-
-  初期1000HP
-  撃破数ごとに+250HP
-  */
-
-  const maxHP =
-    1000 +
-    Math.max(
-      0,
-      bossNumber - 1
-    ) * 250;
-
-  const bosses = [
-    {
-      name: "未知なる受験の魔王",
-      icon: "👹",
-      description:
-        "受験の闇から現れた最初の強敵。"
-    },
-    {
-      name: "深淵の模試王",
-      icon: "😈",
-      description:
-        "無数の問題を従える強敵。"
-    },
-    {
-      name: "絶望の共通テスト獣",
-      icon: "🐉",
-      description:
-        "総合力が試される巨大な敵。"
-    },
-    {
-      name: "最終試練の魔神",
-      icon: "👿",
-      description:
-        "すべての努力をぶつけろ。"
-    }
-  ];
-
-  const template =
-    bosses[
-      Math.min(
-        Math.floor(
-          (bossNumber - 1) / 3
-        ),
-        bosses.length - 1
-      )
-    ];
-
-  return {
-    id: Date.now(),
-
-    name:
-      template.name,
-
-    icon:
-      template.icon,
-
-    description:
-      template.description,
-
-    weakness:
-      randomBossWeakness(),
-
-    maxHP,
-    hp: maxHP,
-
-    defeated: false
-  };
-}
-
-function createNewBoss() {
-  data.boss =
-    createBoss();
-
-  data.bossBattleReady =
-    true;
-
-  saveData();
-
-  renderBattle();
-}
-
-/*
-★ 集団戦の攻撃力
-
-科目の勉強時間が多いほど強くなる。
-
-ただし、総勉強時間をそのまま攻撃力にはせず、
-sqrtで緩やかに成長させる。
-*/
-
-function calculateSubjectPower(subject) {
-  const minutes =
-    data.subjectMinutes[subject] || 0;
-
-  return Math.floor(
-    10 +
-    Math.sqrt(minutes) * 5
-  );
-}
-
-function calculatePartyPower() {
-  const available =
-    getAvailableSubjects();
-
-  return available.reduce(
-    (total, subject) =>
-      total +
-      calculateSubjectPower(
-        subject.id
-      ),
-    0
-  );
-}
-
-function renderBattle() {
-  const boss =
-    data.boss ||
-    createBoss();
-
-  /*
-  Boss
-  */
-
-  const icon =
-    document.getElementById(
-      "boss-icon"
-    );
-
-  const name =
-    document.getElementById(
-      "boss-name"
-    );
-
-  const description =
-    document.getElementById(
-      "boss-description"
-    );
-
-  const weakness =
-    document.getElementById(
-      "boss-weakness"
-    );
-
-  const hpText =
-    document.getElementById(
-      "boss-hp-text"
-    );
-
-  const hpFill =
-    document.getElementById(
-      "boss-hp-fill"
-    );
-
-  if (icon) {
-    icon.textContent =
-      boss.icon;
-  }
-
-  if (name) {
-    name.textContent =
-      boss.name;
-  }
-
-  if (description) {
-    description.textContent =
-      boss.description;
-  }
-
-  if (weakness) {
-    weakness.textContent =
-      boss.weakness || "?";
-  }
-
-  if (hpText) {
-    hpText.textContent =
-      `${boss.hp} / ${boss.maxHP}`;
-  }
-
-  if (hpFill) {
-    hpFill.style.width =
-      `${Math.max(
-        0,
-        Math.min(
-          100,
-          boss.hp /
-            boss.maxHP *
-            100
-        )
-      )}%`;
-  }
-
-  /*
-  Party
-  */
-
-  const party =
-    document.getElementById(
-      "party-list"
-    );
-
-  if (!party) {
-    return;
-  }
-
-  party.innerHTML = "";
-
-  getAvailableSubjects()
-    .forEach(subject => {
-      const power =
-        calculateSubjectPower(
-          subject.id
-        );
-
-      const minutes =
-        data.subjectMinutes[
-          subject.id
-        ] || 0;
-
-      const isWeak =
-        boss.weakness ===
-        subject.id;
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-      card.className =
-        "party-member";
-
-      card.innerHTML = `
-        <div class="party-member-icon">
-          ${subject.icon}
-        </div>
-
-        <div class="party-member-info">
-          <strong>
-            ${subject.name}
-            ${
-              isWeak
-                ? " ⚡ WEAKNESS"
-                : ""
-            }
-          </strong>
-
-          <span>
-            勉強時間：
-            ${formatMinutes(minutes)}
-          </span>
-
-          <span>
-            攻撃力：
-            ${power}
-          </span>
-        </div>
-      `;
-
-      party.appendChild(card);
-    });
-
-  /*
-  Battle button
-  */
-
-  const button =
-    document.getElementById(
-      "battle-start-button"
-    );
-
-  if (button) {
-    if (boss.defeated) {
-      button.textContent =
-        "✨ 新たなボスを召喚";
-    } else {
-      button.textContent =
-        "⚔️ ボス戦開始";
-    }
-  }
-
-  /*
-  Total power display
-  */
-
-  let powerDisplay =
-    document.getElementById(
-      "party-total-power"
-    );
-
-  if (!powerDisplay) {
-    powerDisplay =
-      document.createElement(
-        "div"
-      );
-
-    powerDisplay.id =
-      "party-total-power";
-
-    powerDisplay.className =
-      "card";
-
-    const partyList =
-      document.getElementById(
-        "party-list"
-      );
-
-    if (partyList) {
-      partyList.parentNode.insertBefore(
-        powerDisplay,
-        partyList
-      );
-    }
-  }
-
-  if (powerDisplay) {
-    powerDisplay.innerHTML = `
-      <strong>
-        ⚔️ パーティー総攻撃力
-      </strong>
-
-      <div
-        style="
-          font-size:1.6rem;
-          font-weight:800;
-          margin-top:6px
-        "
-      >
-        ${calculatePartyPower()}
-      </div>
-    `;
-  }
-}
-
-/* ========================================
-BATTLE ACTION
-======================================== */
-
-function setupBattle() {
-  const button =
-    document.getElementById(
-      "battle-start-button"
-    );
-
-  if (!button) {
-    return;
-  }
-
-  button.addEventListener(
-    "click",
-    startBossBattle
-  );
-}
-
-function startBossBattle() {
-  if (!data.boss) {
-    createNewBoss();
-  }
-
-  const boss =
-    data.boss;
-
-  /*
-  すでに倒している場合
-  */
-
-  if (boss.defeated) {
-    createNewBoss();
-
-    updateAll();
-
-    showMessage(
-      "👹",
-      "新たなボス出現！",
-      `${data.boss.name}が現れた！\n\n` +
-      `弱点：${data.boss.weakness}`
-    );
-
-    return;
-  }
-
-  const available =
-    getAvailableSubjects();
-
-  /*
-  パーティー総攻撃力
-  */
-
-  let totalDamage = 0;
-
-  const attackLog = [];
-
-  available.forEach(subject => {
-    const basePower =
-      calculateSubjectPower(
-        subject.id
-      );
-
-    const minutes =
-      data.subjectMinutes[
-        subject.id
-      ] || 0;
-
-    if (minutes <= 0) {
-      return;
-    }
-
-    /*
-    通常攻撃
-    勉強時間が多いほど強い。
-    */
-
-    let damage =
-      basePower;
-
-    /*
-    ★ 弱点なら1.5倍
-    */
-
-    if (
-      boss.weakness ===
-      subject.id
-    ) {
-      damage =
-        Math.floor(
-          damage * 1.5
-        );
-    }
-
-    totalDamage +=
-      damage;
-
-    attackLog.push(
-      `${subject.icon} ${subject.name}：${damage}ダメージ` +
-      (
-        boss.weakness ===
-        subject.id
-          ? " ⚡弱点"
-          : ""
-      )
-    );
-  });
-
-  /*
-  勉強ゼロの場合
-  */
-
-  if (totalDamage <= 0) {
-    showMessage(
-      "😵",
-      "攻撃できない！",
-      "まずは勉強してパーティーを強化しよう。"
-    );
-
-    return;
-  }
-
-  /*
-  HPを削る
-  */
-
-  boss.hp =
-    Math.max(
-      0,
-      boss.hp -
-        totalDamage
-    );
-
-  /*
-  撃破
-  */
-
-  if (boss.hp <= 0) {
-    boss.hp = 0;
-
-    boss.defeated =
-      true;
-
-    data.bossesDefeated++;
-
-    /*
-    撃破報酬
-    ボス番号が増えるほど少し増える。
-    */
-
-    const xpReward =
-      200 +
-      data.bossesDefeated *
-        50;
-
-    const coinReward =
-      100 +
-      data.bossesDefeated *
-        25;
-
-    data.totalXP +=
-      xpReward;
-
-    data.xp +=
-      xpReward;
-
-    data.coins +=
-      coinReward;
-
-    const levelUps =
-      processLevelUps();
-
-    const achievements =
-      checkAchievements();
-
-    saveData();
-    updateAll();
-
-    let message =
-      `👹 ${boss.name}を撃破した！\n\n` +
-      `総ダメージ：${totalDamage}\n\n` +
-      `✨ +${xpReward} XP\n` +
-      `🪙 +${coinReward}`;
-
-    if (levelUps > 0) {
-      message +=
-        `\n\n⬆️ Lv.${data.level}に到達！`;
-    }
-
-    if (achievements > 0) {
-      message +=
-        `\n🏆 実績解除！`;
-    }
-
-    showMessage(
-      "🏆",
-      "BOSS DEFEATED!",
-      message
-    );
-
-    if (levelUps > 0) {
-      setTimeout(
-        showLevelUp,
-        300
-      );
-    }
-
-    return;
-  }
-
-  /*
-  撃破できなかった場合
-  */
-
-  saveData();
-  updateAll();
-
-  showMessage(
-    "⚔️",
-    "パーティー攻撃！",
-    `${boss.name}に${totalDamage}ダメージ！\n\n` +
-    attackLog.join("\n") +
-    `\n\n残りHP：${boss.hp} / ${boss.maxHP}`
-  );
-}
-
-/* ========================================
-SHOP TABS
-======================================== */
-
-function setupShopTabs() {
-  document
-    .querySelectorAll(".shop-tab")
-    .forEach(button => {
-      button.addEventListener(
-        "click",
-        () => {
-          const tab =
-            button.dataset.shopTab;
-
-          document
-            .querySelectorAll(
-              ".shop-tab"
-            )
-            .forEach(btn =>
-              btn.classList.remove(
-                "active"
-              )
-            );
-
-          document
-            .querySelectorAll(
-              ".shop-panel"
-            )
-            .forEach(panel =>
-              panel.classList.remove(
-                "active"
-              )
-            );
-
-          button.classList.add(
-            "active"
-          );
-
-          const panel =
-            document.getElementById(
-              `shop-${tab}`
-            );
-
-          if (panel) {
-            panel.classList.add(
-              "active"
-            );
-          }
-        }
-      );
-    });
-}
-
-/* ========================================
-SHOP RENDER
-======================================== */
-
-function renderShop() {
-  renderTitles();
-  renderItems();
-  renderThemes();
-  renderBackgrounds();
-  renderAvatars();
-
-  const shopCoins =
-    document.getElementById(
-      "shop-coins"
-    );
-
-  if (shopCoins) {
-    shopCoins.textContent =
-      data.coins.toLocaleString();
   }
-}
-
-/* ========================================
-TITLE SHOP
-======================================== */
-
-function renderTitles() {
-  const grid =
-    document.getElementById(
-      "title-shop-grid"
-    );
-
-  if (!grid) {
-    return;
-  }
-
-  grid.innerHTML = "";
-
-  TITLES.forEach(item => {
-    const owned =
-      data.ownedTitles.includes(
-        item.id
-      );
-
-    const equipped =
-      data.equippedTitle ===
-      item.id;
-
-    const button =
-      document.createElement(
-        "button"
-      );
-
-    button.className =
-      `shop-item-button ${
-        owned ? "owned" : ""
-      } ${
-        equipped ? "equipped" : ""
-      }`;
-
-    button.textContent =
-      equipped
-        ? "装備中"
-        : owned
-          ? "装備"
-          : `${item.price.toLocaleString()} 🪙`;
-
-    const element =
-      document.createElement(
-        "div"
-      );
-
-    element.className =
-      "shop-item";
-
-    element.innerHTML = `
-      <div>
-        <div class="shop-item-name">
-          ${item.name}
-        </div>
-
-        <div class="shop-item-description">
-          称号
-        </div>
-      </div>
-    `;
-
-    element.appendChild(
-      button
-    );
-
-    button.addEventListener(
-      "click",
-      () =>
-        buyOrEquipTitle(item)
-    );
-
-    grid.appendChild(
-      element
-    );
-  });
-}
-
-function buyOrEquipTitle(item) {
-  if (
-    data.ownedTitles.includes(
-      item.id
-    )
-  ) {
-    data.equippedTitle =
-      item.id;
-
-    saveData();
-    updateAll();
-
-    showMessage(
-      "🏷️",
-      "称号変更",
-      `「${item.name}」を装備した！`
-    );
-
-    return;
-  }
-
-  if (
-    data.coins <
-    item.price
-  ) {
-    showMessage(
-      "🪙",
-      "コイン不足",
-      `必要：${item.price.toLocaleString()}コイン`
-    );
-
-    return;
-  }
-
-  data.coins -=
-    item.price;
-
-  data.ownedTitles.push(
-    item.id
-  );
-
-  data.equippedTitle =
-    item.id;
-
-  saveData();
-  updateAll();
-
-  showMessage(
-    "🏷️",
-    "称号獲得！",
-    `「${item.name}」を手に入れた！`
-  );
-}
-
-/* ========================================
-ITEM SHOP
-======================================== */
-
-function renderItems() {
-  const grid =
-    document.getElementById(
-      "item-shop-grid"
-    );
-
-  if (!grid) {
-    return;
-  }
-
-  grid.innerHTML = "";
-
-  ITEMS.forEach(item => {
-    const element =
-      document.createElement(
-        "div"
-      );
-
-    element.className =
-      "shop-item";
-
-    element.innerHTML = `
-      <div>
-        <div class="shop-item-name">
-          ${item.name}
-        </div>
-
-        <div class="shop-item-description">
-          ${item.description}
-        </div>
-      </div>
-
-      <button class="shop-item-button">
-        ${item.price.toLocaleString()} 🪙
-      </button>
-    `;
-
-    const button =
-      element.querySelector(
-        "button"
-      );
-
-    if (button) {
-      button.addEventListener(
-        "click",
-        () => buyItem(item)
-      );
-    }
-
-    grid.appendChild(
-      element
-    );
-  });
-}
-
-function buyItem(item) {
-  if (
-    data.coins <
-    item.price
-  ) {
-    showMessage(
-      "🪙",
-      "コイン不足",
-      "コインが足りません。"
-    );
-
-    return;
-  }
-
-  if (
-    data.activeBuff &&
-    (
-      item.type ===
-        "multiplier" ||
-      item.type ===
-        "goal" ||
-      item.type ===
-        "session"
-    )
-  ) {
-    showMessage(
-      "⚡",
-      "バフは1つまで",
-      "現在のバフを使い切ってから使用してください。"
-    );
-
-    return;
-  }
-
-  data.coins -=
-    item.price;
-
-  activateItem(item);
-
-  saveData();
-  updateAll();
-
-  showMessage(
-    "🎁",
-    "アイテム使用！",
-    `${item.name}\n${item.description}`
-  );
-}
-
-function activateItem(item) {
-  if (
-    item.type ===
-    "multiplier"
-  ) {
-    data.activeBuff = {
-      type: "multiplier",
-      name: item.name,
-      description:
-        `XP ×${item.multiplier}`,
-      multiplier:
-        item.multiplier,
-      expiresAt:
-        Date.now() +
-        item.duration * 1000
-    };
-
-    return;
-  }
-
-  data.activeBuff = {
-    type: item.type,
-
-    name:
-      item.name,
-
-    description:
-      item.type === "goal"
-        ? `目標達成で +${item.bonus} XP`
-        : `次のセッション終了時 +${item.bonus} XP`,
-
-    bonus:
-      item.bonus
-  };
-}
-
-/* ========================================
-CUSTOMIZATION
-======================================== */
-
-function renderThemes() {
-  renderSimpleShop(
-    "theme-shop-grid",
-    THEMES,
-    data.ownedThemes,
-    data.equippedTheme,
-    "使用中",
-    buyOrEquipTheme
-  );
-}
-
-function renderBackgrounds() {
-  renderSimpleShop(
-    "background-shop-grid",
-    BACKGROUNDS,
-    data.ownedBackgrounds,
-    data.equippedBackground,
-    "使用中",
-    buyOrEquipBackground
-  );
-}
-
-function renderAvatars() {
-  renderSimpleShop(
-    "avatar-shop-grid",
-    AVATARS,
-    data.ownedAvatars,
-    data.equippedAvatar,
-    "使用中",
-    buyOrEquipAvatar
-  );
-}
-
-function renderSimpleShop(
-  gridId,
-  items,
-  ownedList,
-  equippedId,
-  equippedText,
-  handler
-) {
-  const grid =
-    document.getElementById(
-      gridId
-    );
-
-  if (!grid) {
-    return;
-  }
-
-  grid.innerHTML = "";
-
-  items.forEach(item => {
-    const owned =
-      ownedList.includes(
-        item.id
-      );
-
-    const equipped =
-      equippedId ===
-      item.id;
-
-    const element =
-      document.createElement(
-        "div"
-      );
-
-    element.className =
-      "shop-item";
-
-    element.innerHTML = `
-      <div>
-        <div class="shop-item-name">
-          ${item.name}
-        </div>
-
-        <div class="shop-item-description">
-          ${
-            gridId.includes("avatar")
-              ? "アバター"
-              : gridId.includes("background")
-                ? "背景テーマ"
-                : "メインカラー"
-          }
-        </div>
-      </div>
-
-      <button
-        class="shop-item-button
-        ${owned ? "owned" : ""}
-        ${equipped ? "equipped" : ""}"
-      >
-        ${
-          equipped
-            ? equippedText
-            : owned
-              ? "使用"
-              : `${item.price.toLocaleString()} 🪙`
-        }
-      </button>
-    `;
-
-    const button =
-      element.querySelector(
-        "button"
-      );
-
-    if (button) {
-      button.addEventListener(
-        "click",
-        () => handler(item)
-      );
-    }
-
-    grid.appendChild(
-      element
-    );
-  });
-}
-
-function buyOrEquipTheme(item) {
-  if (
-    data.ownedThemes.includes(
-      item.id
-    )
-  ) {
-    data.equippedTheme =
-      item.id;
-
-    applyTheme();
-
-    saveData();
-    updateAll();
-
-    showMessage(
-      "🎨",
-      "テーマ変更",
-      `${item.name}を使用した！`
-    );
-
-    return;
-  }
-
-  if (
-    data.coins <
-    item.price
-  ) {
-    showMessage(
-      "🪙",
-      "コイン不足",
-      "コインが足りません。"
-    );
-
-    return;
-  }
-
-  data.coins -=
-    item.price;
-
-  data.ownedThemes.push(
-    item.id
-  );
-
-  data.equippedTheme =
-    item.id;
-
-  applyTheme();
-
-  saveData();
-  updateAll();
-
-  showMessage(
-    "🎨",
-    "テーマ獲得！",
-    `${item.name}を手に入れた！`
-  );
-}
-
-function buyOrEquipBackground(item) {
-  if (
-    data.ownedBackgrounds.includes(
-      item.id
-    )
-  ) {
-    data.equippedBackground =
-      item.id;
-
-    applyBackground();
-
-    saveData();
-    updateAll();
-
-    showMessage(
-      "🖼️",
-      "背景変更",
-      `${item.name}を使用した！`
-    );
-
-    return;
-  }
-
-  if (
-    data.coins <
-    item.price
-  ) {
-    showMessage(
-      "🪙",
-      "コイン不足",
-      "コインが足りません。"
-    );
-
-    return;
-  }
-
-  data.coins -=
-    item.price;
-
-  data.ownedBackgrounds.push(
-    item.id
-  );
-
-  data.equippedBackground =
-    item.id;
-
-  applyBackground();
-
-  saveData();
-  updateAll();
-
-  showMessage(
-    "🖼️",
-    "背景獲得！",
-    `${item.name}を手に入れた！`
-  );
-}
-
-function buyOrEquipAvatar(item) {
-  if (
-    data.ownedAvatars.includes(
-      item.id
-    )
-  ) {
-    data.equippedAvatar =
-      item.id;
-
-    saveData();
-    updateAll();
-
-    showMessage(
-      "👤",
-      "アバター変更",
-      `${item.name}を装備した！`
-    );
-
-    return;
-  }
-
-  if (
-    data.coins <
-    item.price
-  ) {
-    showMessage(
-      "🪙",
-      "コイン不足",
-      `必要：${item.price.toLocaleString()}コイン`
-    );
-
-    return;
-  }
-
-  data.coins -=
-    item.price;
-
-  data.ownedAvatars.push(
-    item.id
-  );
-
-  data.equippedAvatar =
-    item.id;
-
-  saveData();
-  updateAll();
-
-  showMessage(
-    "👤",
-    "アバター獲得！",
-    `${item.name}を手に入れた！`
-  );
-}
-
-function getAvatar() {
-  const avatar =
-    AVATARS.find(
-      item =>
-        item.id ===
-        data.equippedAvatar
-    );
-
-  return avatar
-    ? avatar.value
-    : "⚔️";
-}
-
-/* ========================================
-THEME
-======================================== */
-
-function applyTheme() {
-  const theme =
-    THEMES.find(
-      item =>
-        item.id ===
-        data.equippedTheme
-    ) || THEMES[0];
-
-  document.documentElement.style.setProperty(
-    "--theme",
-    theme.color
-  );
-
-  document.documentElement.style.setProperty(
-    "--theme-light",
-    theme.light
-  );
-
-  document.documentElement.style.setProperty(
-    "--theme-dark",
-    theme.dark
-  );
-
-  applyBackground();
-}
-
-function applyBackground() {
-  const bg =
-    BACKGROUNDS.find(
-      item =>
-        item.id ===
-        data.equippedBackground
-    ) || BACKGROUNDS[0];
-
-  const app =
-    document.getElementById(
-      "app"
-    );
-
-  if (!app) {
-    return;
-  }
-
-  const dark = [
-    "night",
-    "moon",
-    "battle",
-    "stars"
-  ].includes(
-    bg.value
-  );
-
-  document.documentElement.style.setProperty(
-    "--text",
-    dark
-      ? "#f8fafc"
-      : "#1f2937"
-  );
-
-  document.documentElement.style.setProperty(
-    "--muted",
-    dark
-      ? "#cbd5e1"
-      : "#6b7280"
-  );
-
-  document.documentElement.style.setProperty(
-    "--card",
-    dark
-      ? "#1e293b"
-      : "#ffffff"
-  );
-
-  document.documentElement.style.setProperty(
-    "--border",
-    dark
-      ? "#334155"
-      : "#e5e7eb"
-  );
-
-  app.style.background =
-    getBackgroundCSS(
-      bg.value
-    );
-}
-
-function getBackgroundCSS(value) {
-  switch (value) {
-    case "night":
-      return `
-        radial-gradient(
-          circle at 20% 20%,
-          rgba(255,255,255,.2) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          180deg,
-          #111827,
-          #1e293b
-        )
-      `;
-
-    case "library":
-      return `
-        linear-gradient(
-          135deg,
-          #f5f1e8,
-          #e8dfcf
-        )
-      `;
-
-    case "magic":
-      return `
-        radial-gradient(
-          circle at 70% 20%,
-          rgba(139,92,246,.18),
-          transparent 35%
-        ),
-        linear-gradient(
-          135deg,
-          #f5f3ff,
-          #e0e7ff
-        )
-      `;
-
-    case "moon":
-      return `
-        radial-gradient(
-          circle at 75% 15%,
-          rgba(255,255,255,.7),
-          transparent 12%
-        ),
-        linear-gradient(
-          180deg,
-          #172554,
-          #312e81
-        )
-      `;
-
-    case "battle":
-      return `
-        linear-gradient(
-          135deg,
-          #450a0a,
-          #7f1d1d
-        )
-      `;
-
-    case "stars":
-      return `
-        radial-gradient(
-          circle at 20% 20%,
-          rgba(255,255,255,.25) 1px,
-          transparent 1px
-        ),
-        radial-gradient(
-          circle at 70% 60%,
-          rgba(255,255,255,.2) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          135deg,
-          #020617,
-          #312e81
-        )
-      `;
-
-    default:
-      return "var(--bg)";
-  }
-}
-
-/* ========================================
-QUEST
-======================================== */
-
-function renderQuests() {
-  const container =
-    document.getElementById(
-      "quest-list"
-    );
-
-  const homeContainer =
-    document.getElementById(
-      "home-quests"
-    );
-
-  if (
-    !container ||
-    !homeContainer
-  ) {
-    return;
-  }
-
-  container.innerHTML = "";
-  homeContainer.innerHTML = "";
-
-  DAILY_QUESTS.forEach(quest => {
-    const progress =
-      Math.min(
-        data.todayMinutes,
-        quest.minutes
-      );
-
-    const percentage =
-      Math.min(
-        100,
-        progress /
-          quest.minutes *
-          100
-      );
-
-    const claimed =
-      data.claimedQuests.includes(
-        quest.id
-      );
-
-    const completed =
-      progress >=
-      quest.minutes;
-
-    const card =
-      document.createElement(
-        "div"
-      );
-
-    card.className =
-      "quest-card" +
-      (
-        claimed
-          ? " completed"
-          : ""
-      );
-
-    let bottomHTML = "";
-
-    if (claimed) {
-      bottomHTML =
-        `<span class="quest-complete-label">✓ 完了</span>`;
-    } else if (completed) {
-      bottomHTML = `
-        <button
-          class="quest-claim-button"
-        >
-          報酬を受け取る
-        </button>
-      `;
-    } else {
-      bottomHTML =
-        `<span class="quest-reward">
-          ${quest.xp}XP + ${quest.coins}🪙
-        </span>`;
-    }
-
-    card.innerHTML = `
-      <div class="quest-card-icon">
-        ${quest.icon}
-      </div>
-
-      <h3>
-        ${quest.name}
-      </h3>
-
-      <p>
-        ${quest.description}
-      </p>
-
-      <div class="quest-progress">
-        <div
-          class="quest-progress-fill"
-          style="width:${percentage}%"
-        ></div>
-      </div>
-
-      <div class="quest-bottom">
-        <span class="quest-reward">
-          ${progress}/${quest.minutes}分
-        </span>
-
-        ${bottomHTML}
-      </div>
-    `;
-
-    const claim =
-      card.querySelector(
-        ".quest-claim-button"
-      );
-
-    if (claim) {
-      claim.addEventListener(
-        "click",
-        () => claimQuest(quest)
-      );
-    }
-
-    container.appendChild(
-      card
-    );
-
-    const home =
-      document.createElement(
-        "div"
-      );
-
-    home.className =
-      "home-quest";
-
-    home.innerHTML = `
-      <div class="home-quest-icon">
-        ${quest.icon}
-      </div>
-
-      <div class="home-quest-info">
-        <strong>
-          ${quest.name}
-        </strong>
-
-        <span>
-          ${progress}/${quest.minutes}分
-        </span>
-      </div>
-
-      <div class="home-quest-status">
-        ${
-          claimed
-            ? "✓ 完了"
-            : completed
-              ? "報酬GET!"
-              : `${progress}/${quest.minutes}分`
-        }
-      </div>
-    `;
-
-    homeContainer.appendChild(
-      home
-    );
-  });
-}
-
-function claimQuest(quest) {
-  if (
-    data.claimedQuests.includes(
-      quest.id
-    )
-  ) {
-    return;
-  }
-
-  if (
-    data.todayMinutes <
-    quest.minutes
-  ) {
-    return;
-  }
-
-  data.claimedQuests.push(
-    quest.id
-  );
-
-  data.totalXP +=
-    quest.xp;
-
-  data.xp +=
-    quest.xp;
-
-  data.coins +=
-    quest.coins;
-
-  const levelUps =
-    processLevelUps();
-
-  const achievements =
-    checkAchievements();
-
-  saveData();
-  updateAll();
-
-  let message =
-    `${quest.name}\n\n` +
-    `+${quest.xp} XP\n` +
-    `+${quest.coins} 🪙`;
-
-  if (achievements > 0) {
-    message +=
-      `\n🏆 実績解除！`;
-  }
-
-  if (levelUps > 0) {
-    message +=
-      `\n\n⬆️ Lv.${data.level}に到達！`;
-
-    showMessage(
-      "🎉",
-      "QUEST COMPLETE!",
-      message
-    );
-
-    setTimeout(
-      showLevelUp,
-      300
-    );
-
-    return;
-  }
-
-  showMessage(
-    "🎉",
-    "QUEST COMPLETE!",
-    message
-  );
-}
-
-/* ========================================
-GOAL
-======================================== */
-
-function setupGoal() {
-  const changeButton =
-    document.getElementById(
-      "change-goal-button"
-    );
-
-  const cancelButton =
-    document.getElementById(
-      "goal-cancel"
-    );
-
-  const submitButton =
-    document.getElementById(
-      "goal-submit"
-    );
-
-  if (changeButton) {
-    changeButton.addEventListener(
-      "click",
-      () => {
-        const input =
-          document.getElementById(
-            "goal-input"
-          );
-
-        const modal =
-          document.getElementById(
-            "goal-modal"
-          );
-
-        if (input) {
-          input.value =
-            data.dailyGoal;
-        }
-
-        if (modal) {
-          modal.classList.remove(
-            "hidden"
-          );
-        }
-      }
-    );
-  }
-
-  if (cancelButton) {
-    cancelButton.addEventListener(
-      "click",
-      () => {
-        const modal =
-          document.getElementById(
-            "goal-modal"
-          );
-
-        if (modal) {
-          modal.classList.add(
-            "hidden"
-          );
-        }
-      }
-    );
-  }
-
-  if (submitButton) {
-    submitButton.addEventListener(
-      "click",
-      () => {
-        const input =
-          document.getElementById(
-            "goal-input"
-          );
-
-        if (!input) {
-          return;
-        }
-
-        const goal =
-          Number(
-            input.value
-          );
-
-        if (
-          !Number.isFinite(goal) ||
-          goal <= 0
-        ) {
-          showMessage(
-            "⚠️",
-            "入力エラー",
-            "1分以上の目標を入力してください。"
-          );
-
-          return;
-        }
-
-        data.dailyGoal =
-          Math.min(
-            1440,
-            Math.floor(goal)
-          );
-
-        saveData();
-        updateAll();
-
-        const modal =
-          document.getElementById(
-            "goal-modal"
-          );
-
-        if (modal) {
-          modal.classList.add(
-            "hidden"
-          );
-        }
-      }
-    );
-  }
-}
-
-/* ========================================
-RANK
-======================================== */
-
-function getCurrentRank() {
-  let current =
-    RANKS[0];
-
-  RANKS.forEach(rank => {
-    if (
-      data.monthMinutes >=
-      rank.min
-    ) {
-      current = rank;
-    }
-  });
-
-  return current;
-}
-
-function formatRank() {
-  const rank =
-    getCurrentRank();
-
-  return `${rank.icon} ${rank.name}`;
-}
-
-function updateRankProgress() {
-  const currentIndex =
-    RANKS.findIndex(
-      rank =>
-        rank.name ===
-        getCurrentRank().name
-    );
-
-  const currentRank =
-    RANKS[currentIndex];
-
-  const nextRank =
-    RANKS[currentIndex + 1];
-
-  const progressText =
-    document.getElementById(
-      "rank-progress-text"
-    );
-
-  const nextText =
-    document.getElementById(
-      "rank-next-text"
-    );
-
-  const fill =
-    document.getElementById(
-      "rank-progress-fill"
-    );
-
-  const icon =
-    document.getElementById(
-      "rank-current-icon"
-    );
-
-  const name =
-    document.getElementById(
-      "rank-current-name"
-    );
-
-  if (icon) {
-    icon.textContent =
-      currentRank.icon;
-  }
-
-  if (name) {
-    name.textContent =
-      currentRank.name;
-  }
-
-  if (
-    !progressText ||
-    !nextText ||
-    !fill
-  ) {
-    return;
-  }
-
-  if (!nextRank) {
-    progressText.textContent =
-      `${formatMinutes(data.monthMinutes)} / MAX`;
-
-    nextText.textContent =
-      "🌌 LEGEND";
-
-    fill.style.width =
-      "100%";
-
-    return;
-  }
-
-  const currentMinutes =
-    data.monthMinutes -
-    currentRank.min;
-
-  const requiredMinutes =
-    nextRank.min -
-    currentRank.min;
-
-  const percentage =
-    Math.min(
-      100,
-      Math.max(
-        0,
-        currentMinutes /
-          requiredMinutes *
-          100
-      )
-    );
-
-  progressText.textContent =
-    `${formatMinutes(currentMinutes)} / ${formatMinutes(requiredMinutes)}`;
-
-  nextText.textContent =
-    `次：${nextRank.icon} ${nextRank.name}`;
-
-  fill.style.width =
-    `${percentage}%`;
-}
-
-/* ========================================
-TIME
-======================================== */
-
-function formatMinutes(minutes) {
-  const safeMinutes =
-    Math.max(
-      0,
-      Math.floor(
-        Number(minutes) || 0
-      )
-    );
-
-  const hours =
-    Math.floor(
-      safeMinutes / 60
-    );
-
-  const mins =
-    safeMinutes % 60;
-
-  if (hours === 0) {
-    return `${mins}分`;
-  }
-
-  return `${hours}h ${mins}m`;
-}
 
-/* ========================================
-ACHIEVEMENTS
-======================================== */
+  // フォーム送信
+  if (authForm) {
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
 
-function checkAchievements() {
-  let newAchievements = 0;
+      const userId = document.getElementById('auth-user-id').value.trim();
+      const password = document.getElementById('auth-password').value.trim();
+      const playerName = document.getElementById('auth-player-name').value.trim();
+      const track = document.getElementById('auth-track').value;
 
-  ACHIEVEMENTS.forEach(
-    achievement => {
-      if (
-        data.achievements.includes(
-          achievement.id
-        )
-      ) {
+      if (!userId || !password) {
+        alert("ユーザーIDとパスワードを入力してください！");
         return;
       }
 
-      if (
-        achievement.check(data)
-      ) {
-        data.achievements.push(
-          achievement.id
-        );
+      if (isSignUpMode) {
+        if (!playerName) {
+          alert("プレイヤー名を入力してください！");
+          return;
+        }
 
-        data.coins +=
-          50;
-
-        newAchievements++;
+        // 新規登録作成
+        currentUser = {
+          ...DEFAULT_USER,
+          user_id: userId,
+          player_name: playerName,
+          track: track
+        };
+        localStorage.setItem('user_session', JSON.stringify(currentUser));
+        alert(`アカウントを作成しました！ようこそ、${playerName}さん！`);
+      } else {
+        // ログイン（既存セッションの確認または新規ログイン）
+        const saved = localStorage.getItem('user_session');
+        if (saved) {
+          currentUser = JSON.parse(saved);
+        } else {
+          currentUser = {
+            ...DEFAULT_USER,
+            user_id: userId,
+            player_name: userId
+          };
+          localStorage.setItem('user_session', JSON.stringify(currentUser));
+        }
       }
-    }
-  );
 
-  return newAchievements;
-}
-
-function renderAchievements() {
-  const container =
-    document.getElementById(
-      "achievement-list"
-    );
-
-  if (!container) {
-    return;
-  }
-
-  container.innerHTML = "";
-
-  ACHIEVEMENTS.forEach(
-    item => {
-      const unlocked =
-        data.achievements.includes(
-          item.id
-        );
-
-      const element =
-        document.createElement(
-          "div"
-        );
-
-      element.className =
-        "achievement" +
-        (
-          unlocked
-            ? ""
-            : " locked"
-        );
-
-      element.innerHTML = `
-        <div class="achievement-icon">
-          ${unlocked ? item.icon : "🔒"}
-        </div>
-
-        <div class="achievement-info">
-          <strong>
-            ${item.name}
-          </strong>
-
-          <span>
-            ${item.description}
-          </span>
-        </div>
-      `;
-
-      container.appendChild(
-        element
-      );
-    }
-  );
-}
-
-/* ========================================
-LEVEL UP
-======================================== */
-
-function setupLevelUpModal() {
-  const close =
-    document.getElementById(
-      "levelup-close"
-    );
-
-  if (!close) {
-    return;
-  }
-
-  close.addEventListener(
-    "click",
-    () => {
-      const modal =
-        document.getElementById(
-          "levelup-modal"
-        );
-
-      if (modal) {
-        modal.classList.add(
-          "hidden"
-        );
-      }
-    }
-  );
-}
-
-function showLevelUp() {
-  const number =
-    document.getElementById(
-      "levelup-number"
-    );
-
-  const modal =
-    document.getElementById(
-      "levelup-modal"
-    );
-
-  if (
-    !number ||
-    !modal
-  ) {
-    return;
-  }
-
-  number.textContent =
-    data.level;
-
-  modal.classList.remove(
-    "hidden"
-  );
-}
-
-/* ========================================
-MESSAGE
-======================================== */
-
-function setupMessageModal() {
-  const close =
-    document.getElementById(
-      "message-close"
-    );
-
-  if (!close) {
-    return;
-  }
-
-  close.addEventListener(
-    "click",
-    () => {
-      const modal =
-        document.getElementById(
-          "message-modal"
-        );
-
-      if (modal) {
-        modal.classList.add(
-          "hidden"
-        );
-      }
-    }
-  );
-}
-
-function showMessage(
-  icon,
-  title,
-  text
-) {
-  const iconElement =
-    document.getElementById(
-      "message-icon"
-    );
-
-  const titleElement =
-    document.getElementById(
-      "message-title"
-    );
-
-  const textElement =
-    document.getElementById(
-      "message-text"
-    );
-
-  const modal =
-    document.getElementById(
-      "message-modal"
-    );
-
-  if (iconElement) {
-    iconElement.textContent =
-      icon;
-  }
-
-  if (titleElement) {
-    titleElement.textContent =
-      title;
-  }
-
-  if (textElement) {
-    textElement.textContent =
-      text;
-  }
-
-  if (modal) {
-    modal.classList.remove(
-      "hidden"
-    );
+      // 画面切り替え ＆ アプリ初期化
+      document.getElementById('screen-auth').classList.add('hidden');
+      document.getElementById('screen-main').classList.remove('hidden');
+      initApp();
+    });
   }
 }
 
-/* ========================================
-UPDATE ALL
-======================================== */
-
-function updateAll() {
-  checkDateReset();
-
-  checkAchievements();
-
-  updateHome();
-  updateRankProgress();
-  updateStudy();
-  updateQuestHeader();
-
+// アプリ初期化
+function initApp() {
+  if (!currentUser) {
+    const saved = localStorage.getItem('user_session');
+    currentUser = saved ? JSON.parse(saved) : { ...DEFAULT_USER };
+  }
+  updateUI();
+  renderSubjectSelector();
   renderQuests();
   renderShop();
-
-  updateProfile();
-  renderAchievements();
-
-  updateBuffUI();
-
-  applyTheme();
-
-  renderBattle();
-
-  saveData();
 }
 
-/* ========================================
-HOME
-======================================== */
+// ==========================================
+// 2. ⭐ スプラ風 レベル100周回（プレステージ）計算
+// ==========================================
+function addXP(amount) {
+  if (!currentUser) return;
 
-function updateHome() {
-  const name =
-    document.getElementById(
-      "home-name"
-    );
+  currentUser.xp += amount;
 
-  if (name) {
-    name.textContent =
-      data.name ||
-      "冒険者";
+  // XPが次のレベルに届いた時の昇級判定
+  while (currentUser.xp >= currentUser.xp_to_next) {
+    currentUser.xp -= currentUser.xp_to_next;
+    currentUser.level += 1;
+
+    // ★★★ スプラ方式: レベル100を超えたら⭐をつけてレベル1に戻る！ ★★★
+    if (currentUser.level > 100) {
+      currentUser.level = 1;
+      currentUser.star_count = (currentUser.star_count || 0) + 1;
+      alert(`🎉 限界突破！！⭐マークがつきました！（星${currentUser.star_count}つ Lv.1）`);
+    }
+
+    // 次レベルに必要なXP増加（ベース100 + レベルに応じた補正）
+    currentUser.xp_to_next = 100 + (currentUser.level * 10);
   }
 
-  const level =
-    document.getElementById(
-      "home-level"
-    );
-
-  if (level) {
-    level.textContent =
-      data.level;
-  }
-
-  const xpText =
-    document.getElementById(
-      "home-xp-text"
-    );
-
-  if (xpText) {
-    xpText.textContent =
-      `${data.xp} / ${xpRequired()}`;
-  }
-
-  const percentage =
-    Math.min(
-      100,
-      data.xp /
-        xpRequired() *
-        100
-    );
-
-  const fill =
-    document.getElementById(
-      "home-xp-fill"
-    );
-
-  if (fill) {
-    fill.style.width =
-      `${percentage}%`;
-  }
-
-  const coins =
-    document.getElementById(
-      "home-coins"
-    );
-
-  if (coins) {
-    coins.textContent =
-      data.coins.toLocaleString();
-  }
-
-  const month =
-    document.getElementById(
-      "home-month-hours"
-    );
-
-  if (month) {
-    month.textContent =
-      formatMinutes(
-        data.monthMinutes
-      );
-  }
-
-  const today =
-    document.getElementById(
-      "home-today-minutes"
-    );
-
-  if (today) {
-    today.textContent =
-      formatMinutes(
-        data.todayMinutes
-      );
-  }
-
-  const rank =
-    document.getElementById(
-      "home-rank"
-    );
-
-  if (rank) {
-    rank.textContent =
-      formatRank();
-  }
-
-  const avatar =
-    document.getElementById(
-      "home-avatar"
-    );
-
-  if (avatar) {
-    avatar.textContent =
-      getAvatar();
-  }
+  // データ保存 ＆ UI更新
+  localStorage.setItem('user_session', JSON.stringify(currentUser));
+  updateUI();
 }
 
-/* ========================================
-STUDY
-======================================== */
-
-function updateStudy() {
-  const current =
-    document.getElementById(
-      "current-subject"
-    );
-
-  if (!current) {
-    return;
-  }
-
-  current.textContent =
-    selectedSubject ||
-    data.subject ||
-    "未選択";
-
-  renderSubjectButtons();
+// コイン獲得関数
+function addCoins(amount) {
+  if (!currentUser) return;
+  currentUser.coins = (currentUser.coins || 0) + amount;
+  localStorage.setItem('user_session', JSON.stringify(currentUser));
+  updateUI();
 }
 
-/* ========================================
-QUEST HEADER
-======================================== */
+// ==========================================
+// 3. 全画面の表示更新（星表示 ＆ UI反映）
+// ==========================================
+function updateUI() {
+  if (!currentUser) return;
 
-function updateQuestHeader() {
-  const today =
-    document.getElementById(
-      "quest-today-time"
-    );
+  // 1. レベル表記の整形（⭐がついている場合は ⭐1 Lv.50 のように表示）
+  let starPrefix = currentUser.star_count > 0 ? `⭐${currentUser.star_count > 1 ? currentUser.star_count : ''} ` : '';
+  let levelStr = `${starPrefix}Lv.${currentUser.level}`;
 
-  const goal =
-    document.getElementById(
-      "quest-goal-time"
-    );
+  // ヘッダー情報
+  document.getElementById('header-player-name').textContent = currentUser.player_name;
+  document.getElementById('header-level').textContent = levelStr;
+  document.getElementById('header-coins').textContent = `🪙 ${currentUser.coins}`;
+  document.getElementById('header-rank').textContent = currentUser.rank;
 
-  if (today) {
-    today.textContent =
-      formatMinutes(
-        data.todayMinutes
-      );
+  // ⭐バッジの表示制御
+  const headerStar = document.getElementById('header-star');
+  if (currentUser.star_count > 0) {
+    headerStar.classList.remove('hidden');
+    headerStar.textContent = `⭐${currentUser.star_count > 1 ? currentUser.star_count : ''}`;
+  } else {
+    headerStar.classList.add('hidden');
   }
 
-  if (goal) {
-    goal.textContent =
-      formatMinutes(
-        data.dailyGoal
-      );
-  }
+  // ホームヒーローカード情報（冒険者ではなく自分の名前とIDを表示）
+  document.getElementById('hero-player-name').textContent = currentUser.player_name;
+  document.getElementById('hero-user-id').textContent = `ID: @${currentUser.user_id}`;
+  document.getElementById('hero-title').textContent = currentUser.title;
+  document.getElementById('hero-rank-display').textContent = `RANK: ${currentUser.rank}`;
+  document.getElementById('hero-level-label').textContent = `総合レベル (${levelStr})`;
+  document.getElementById('hero-xp-text').textContent = `${currentUser.xp} / ${currentUser.xp_to_next} XP`;
+  
+  // ゲージパーセント
+  const xpPct = Math.min(100, Math.floor((currentUser.xp / currentUser.xp_to_next) * 100));
+  document.getElementById('hero-xp-bar').style.width = `${xpPct}%`;
+
+  // スタッツ
+  document.getElementById('stat-total-time').textContent = `${currentUser.total_minutes}分`;
+  document.getElementById('stat-streak').textContent = `${currentUser.streak_days}日`;
 }
 
-/* ========================================
-PROFILE
-======================================== */
+// ==========================================
+// 4. ナビゲーション（タブ切替）
+// ==========================================
+function setupNavigation() {
+  const navButtons = document.querySelectorAll('.nav-button');
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-target');
+      if (!target) return;
 
-function updateProfile() {
-  const name =
-    document.getElementById(
-      "profile-name"
-    );
+      navButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
 
-  if (name) {
-    name.textContent =
-      data.name ||
-      "冒険者";
-  }
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(target).classList.add('active');
+    });
+  });
 
-  const level =
-    document.getElementById(
-      "profile-level"
-    );
+  // クイックアクション
+  document.getElementById('btn-quick-study')?.addEventListener('click', () => {
+    switchToPage('page-study');
+  });
+  document.getElementById('btn-quick-manual')?.addEventListener('click', () => {
+    switchToPage('page-study');
+    document.getElementById('tab-manual-mode')?.click();
+  });
+}
 
-  if (level) {
-    level.textContent =
-      data.level;
-  }
+function switchToPage(pageId) {
+  document.querySelectorAll('.nav-button').forEach(b => {
+    if (b.getAttribute('data-target') === pageId) b.classList.add('active');
+    else b.classList.remove('active');
+  });
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+}
 
-  const xp =
-    document.getElementById(
-      "profile-total-xp"
-    );
+// ==========================================
+// 5. 勉強タイマー ＆ 手動記録
+// ==========================================
+function setupStudyEvents() {
+  // モード切り替え
+  const tabTimer = document.getElementById('tab-timer-mode');
+  const tabManual = document.getElementById('tab-manual-mode');
+  const timerContainer = document.getElementById('mode-timer-container');
+  const manualContainer = document.getElementById('mode-manual-container');
 
-  if (xp) {
-    xp.textContent =
-      data.totalXP.toLocaleString();
-  }
+  tabTimer?.addEventListener('click', () => {
+    tabTimer.classList.add('active');
+    tabManual.classList.remove('active');
+    timerContainer.classList.remove('hidden');
+    manualContainer.classList.add('hidden');
+  });
 
-  const total =
-    document.getElementById(
-      "profile-total-time"
-    );
+  tabManual?.addEventListener('click', () => {
+    tabManual.classList.add('active');
+    tabTimer.classList.remove('active');
+    manualContainer.classList.remove('hidden');
+    timerContainer.classList.add('hidden');
+  });
 
-  if (total) {
-    total.textContent =
-      formatMinutes(
-        data.totalMinutes
-      );
-  }
+  // タイマーコントロール
+  const btnToggle = document.getElementById('btn-timer-toggle');
+  const btnReset = document.getElementById('btn-timer-reset');
 
-  const month =
-    document.getElementById(
-      "profile-month-time"
-    );
+  btnToggle?.addEventListener('click', () => {
+    if (isTimerRunning) {
+      // 一時停止
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      btnToggle.textContent = 'スタート';
+    } else {
+      // スタート
+      isTimerRunning = true;
+      btnToggle.textContent = '一時停止';
+      timerInterval = setInterval(() => {
+        if (timerSeconds > 0) {
+          timerSeconds--;
+          renderTimerDisplay();
+        } else {
+          // タイマー完了
+          clearInterval(timerInterval);
+          isTimerRunning = false;
+          btnToggle.textContent = 'スタート';
+          alert('⏰ 25分セッション完了！XP +50 ＆ 50コイン獲得！');
+          addXP(50);
+          addCoins(50);
+          currentUser.total_minutes += 25;
+          localStorage.setItem('user_session', JSON.stringify(currentUser));
+          updateUI();
+        }
+      }, 1000);
+    }
+  });
 
-  if (month) {
-    month.textContent =
-      formatMinutes(
-        data.monthMinutes
-      );
-  }
+  btnReset?.addEventListener('click', () => {
+    clearInterval(timerInterval);
+    isTimerRunning = false;
+    timerSeconds = 25 * 60;
+    renderTimerDisplay();
+    btnToggle.textContent = 'スタート';
+  });
 
-  const coins =
-    document.getElementById(
-      "profile-coins"
-    );
+  // 手動記録フォーム
+  const manualForm = document.getElementById('manual-study-form');
+  manualForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const minutes = parseInt(document.getElementById('manual-minutes').value) || 0;
+    if (minutes <= 0) return;
 
-  if (coins) {
-    coins.textContent =
-      data.coins.toLocaleString();
-  }
+    const gainedXP = minutes * 2;
+    const gainedCoins = Math.floor(minutes / 2);
 
-  const rank =
-    document.getElementById(
-      "profile-rank"
-    );
+    addXP(gainedXP);
+    addCoins(gainedCoins);
+    currentUser.total_minutes += minutes;
+    localStorage.setItem('user_session', JSON.stringify(currentUser));
+    updateUI();
 
-  if (rank) {
-    rank.textContent =
-      formatRank();
-  }
+    alert(`📝 学習完了！ XP +${gainedXP} / コイン +${gainedCoins} を獲得しました！`);
+    document.getElementById('manual-minutes').value = '';
+    document.getElementById('manual-memo').value = '';
+  });
+}
 
-  const title =
-    TITLES.find(
-      item =>
-        item.id ===
-        data.equippedTitle
-    );
+function renderTimerDisplay() {
+  const m = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+  const s = String(timerSeconds % 60).padStart(2, '0');
+  const display = document.getElementById('timer-display');
+  if (display) display.textContent = `${m}:${s}`;
+}
 
-  const profileTitle =
-    document.getElementById(
-      "profile-title"
-    );
+function renderSubjectSelector() {
+  const selector = document.getElementById('subject-selector');
+  const manualSelect = document.getElementById('manual-subject-select');
+  if (!selector) return;
 
-  if (profileTitle) {
-    profileTitle.textContent =
-      title
-        ? title.name
-        : "新米冒険者";
-  }
+  selector.innerHTML = '';
+  if (manualSelect) manualSelect.innerHTML = '';
 
-  const avatar =
-    document.getElementById(
-      "profile-avatar"
-    );
+  Object.keys(SUBJECTS).forEach(key => {
+    const sub = SUBJECTS[key];
+    
+    // タイマー用ボタン
+    const btn = document.createElement('button');
+    btn.className = `subject-card ${key === selectedSubject ? 'selected' : ''}`;
+    btn.innerHTML = `<span style="font-size:1.5rem;">${sub.icon}</span><span style="font-size:0.8rem; font-weight:bold;">${sub.name}</span>`;
+    btn.onclick = () => {
+      selectedSubject = key;
+      renderSubjectSelector();
+      const label = document.getElementById('current-subject-label');
+      if (label) label.textContent = `選択中: ${sub.name}`;
+    };
+    selector.appendChild(btn);
 
-  if (avatar) {
-    avatar.textContent =
-      getAvatar();
-  }
+    // 手動セレクト
+    if (manualSelect) {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = `${sub.icon} ${sub.name}`;
+      manualSelect.appendChild(opt);
+    }
+  });
+}
+
+// ==========================================
+// 6. クエスト ＆ 大満足クリアポップアップ
+// ==========================================
+function renderQuests() {
+  const questList = document.getElementById('quest-list');
+  if (!questList) return;
+
+  questList.innerHTML = '';
+  dailyQuests.forEach(q => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.display = 'flex';
+    card.style.justifyContent = 'space-between';
+    card.style.alignItems = 'center';
+
+    card.innerHTML = `
+      <div>
+        <div style="font-weight: bold; font-size: 0.95rem;">${q.text}</div>
+        <div style="font-size: 0.75rem; color: var(--primary-color); margin-top: 4px;">報酬: 🪙 ${q.reward_coins} / ⚡ ${q.reward_xp} XP</div>
+      </div>
+      <button class="primary-button small-button ${q.completed ? 'disabled' : ''}" ${q.completed ? 'disabled' : ''}>
+        ${q.completed ? '達成済み' : 'クリア'}
+      </button>
+    `;
+
+    const btn = card.querySelector('button');
+    btn.onclick = () => {
+      if (q.completed) return;
+      q.completed = true;
+      addCoins(q.reward_coins);
+      addXP(q.reward_xp);
+      showQuestCompleteModal(q);
+      renderQuests();
+    };
+
+    questList.appendChild(card);
+  });
+}
+
+function showQuestCompleteModal(quest) {
+  const modal = document.getElementById('modal-quest-complete');
+  const rewardsContainer = document.getElementById('quest-complete-rewards');
+  if (!modal) return;
+
+  rewardsContainer.innerHTML = `
+    <div class="reward-item">🪙 +${quest.reward_coins} コイン</div>
+    <div class="reward-item">⚡ +${quest.reward_xp} XP</div>
+  `;
+
+  modal.classList.remove('hidden');
+
+  document.getElementById('btn-close-quest-complete').onclick = () => {
+    modal.classList.add('hidden');
+  };
+}
+
+// ==========================================
+// 7. ショップ機能
+// ==========================================
+const SHOP_ITEMS = [
+  { id: 'av1', name: '大魔導士アバター', icon: '🧙‍♀️', cost: 100 },
+  { id: 'av2', name: '騎士アバター', icon: '⚔️', cost: 200 },
+  { id: 'av3', name: '学者アバター', icon: '🎓', cost: 300 },
+  { id: 'title1', name: '称号: 努力の天才', titleText: '努力の天才', cost: 150 }
+];
+
+function renderShop() {
+  const container = document.getElementById('shop-items-container');
+  if (!container) return;
+
+  container.innerHTML = '';
+  SHOP_ITEMS.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.textAlign = 'center';
+    card.innerHTML = `
+      <div style="font-size: 2.5rem;">${item.icon || '📜'}</div>
+      <div style="font-weight: bold; font-size: 0.9rem; margin-top: 6px;">${item.name}</div>
+      <div style="font-size: 0.8rem; color: var(--primary-color); margin: 6px 0;">🪙 ${item.cost}</div>
+      <button class="primary-button small-button" style="width: 100%;">購入する</button>
+    `;
+
+    card.querySelector('button').onclick = () => {
+      if (currentUser.coins < item.cost) {
+        alert('コインが不足しています！');
+        return;
+      }
+      currentUser.coins -= item.cost;
+      if (item.icon) currentUser.avatar = item.icon;
+      if (item.titleText) currentUser.title = item.titleText;
+
+      localStorage.setItem('user_session', JSON.stringify(currentUser));
+      updateUI();
+      alert(`「${item.name}」を購入・装備しました！`);
+    };
+
+    container.appendChild(card);
+  });
+}
+
+// ==========================================
+// 8. プロフィールモーダル
+// ==========================================
+function setupProfileModal() {
+  const btnOpen = document.getElementById('btn-open-profile');
+  const btnClose = document.getElementById('btn-close-profile');
+  const modal = document.getElementById('modal-profile');
+
+  btnOpen?.addEventListener('click', () => {
+    if (!currentUser) return;
+    
+    let starPrefix = currentUser.star_count > 0 ? `⭐${currentUser.star_count > 1 ? currentUser.star_count : ''} ` : '';
+    document.getElementById('prof-avatar').textContent = currentUser.avatar || '🧙‍♂️';
+    document.getElementById('prof-player-name').textContent = currentUser.player_name;
+    document.getElementById('prof-user-id').textContent = `ID: @${currentUser.user_id}`;
+    document.getElementById('prof-title').textContent = currentUser.title;
+
+    const starBadge = document.getElementById('prof-star-badge');
+    if (currentUser.star_count > 0) {
+      starBadge.classList.remove('hidden');
+      starBadge.textContent = `${starPrefix}プレステージ完了`;
+    } else {
+      starBadge.classList.add('hidden');
+    }
+
+    modal.classList.remove('hidden');
+  });
+
+  btnClose?.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
 }
