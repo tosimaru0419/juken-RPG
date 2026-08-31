@@ -469,7 +469,7 @@ function createDefaultData() {
     level: 1,
     xp: 0,
     totalXP: 0,
-
+    stars: 0,
     coins: 0,
 
     totalMinutes: 0,
