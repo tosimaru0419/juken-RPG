@@ -17,13 +17,14 @@
           <h2>受験RPG</h2>
           <p style="margin-bottom: 20px;">勉強を冒険に変えよう</p>
           
+          <!-- タブ切替 -->
           <div class="auth-tabs">
-            <button class="auth-tab active" id="tab-login">ログイン</button>
-            <button class="auth-tab" id="tab-signup">新規登録</button>
+            <button class="auth-tab active" id="tab-login" type="button">ログイン</button>
+            <button class="auth-tab" id="tab-signup" type="button">新規登録</button>
           </div>
 
           <form id="auth-form" class="register-form">
-            <!-- ユーザーID（重複不可・ログイン＆フレンド用） -->
+            <!-- ユーザーID（必須） -->
             <input type="text" id="auth-user-id" placeholder="ユーザーID (例: eita_001)" required />
             
             <!-- 新規登録時のみ表示するフィールド -->
@@ -36,6 +37,7 @@
               <option value="general">🎓 標準・共通（全教科バランス型）</option>
             </select>
             
+            <!-- パスワード（必須） -->
             <input type="password" id="auth-password" placeholder="パスワード" required />
             <button type="submit" class="primary-button large-button" id="auth-submit-btn">ログインして開始</button>
           </form>
@@ -45,7 +47,7 @@
 
     <!-- 2. メインアプリ画面 -->
     <div id="screen-main" class="screen hidden">
-      <!-- 共通ヘッダー（右上被り解消 ＆ シーズン残り日数表示） -->
+      <!-- 共通ヘッダー（シーズン表記：SEASON 1） -->
       <header class="top-header">
         <div class="header-left" id="btn-open-profile" style="cursor: pointer;">
           <div class="header-avatar" id="header-avatar">🧙‍♂️</div>
@@ -59,7 +61,7 @@
         </div>
 
         <div class="header-right">
-          <div class="season-badge-mini" id="header-season-info">今月度 残り12日</div>
+          <div class="season-badge-mini" id="header-season-info">SEASON 1 (残り12日)</div>
           <div class="header-currency">
             <span class="rank-badge-mini" id="header-rank">Bronze</span>
             <span class="coin-display" id="header-coins">🪙 0</span>
@@ -70,11 +72,10 @@
       <!-- 【ページ1】ホーム（ダッシュボード） -->
       <div id="page-home" class="page active">
         <div class="page-container">
-          <!-- ヒーローカード（名前を最優先表示 ＆ 自分のID表示） -->
+          <!-- ヒーローカード（プレイヤー名が一番大きく表示される） -->
           <div class="hero-card">
             <div class="hero-top">
               <div>
-                <!-- 冒険者ではなく「自分の名前」を一番大きく表示 -->
                 <h1 class="player-display-name" id="hero-player-name">---</h1>
                 <div class="user-id-badge" id="hero-user-id">ID: @---</div>
                 <div style="display: flex; gap: 6px; align-items: center; margin-top: 6px;">
@@ -195,7 +196,7 @@
         </div>
       </div>
 
-      <!-- 【ページ3】クエスト（集約 ＆ 豪華クリア演出） -->
+      <!-- 【ページ3】クエスト（デイリー3枠構成） -->
       <div id="page-quest" class="page">
         <div class="page-container">
           <span class="section-eyebrow">DAILY MISSION</span>
@@ -245,7 +246,7 @@
         </div>
       </div>
 
-      <!-- 【ページ5】ショップ（復活！） -->
+      <!-- 【ページ5】ショップ（コインでアイテム交換） -->
       <div id="page-shop" class="page">
         <div class="page-container">
           <span class="section-eyebrow">ITEM SHOP</span>
@@ -266,7 +267,7 @@
           <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">※毎月1日にシーズン確定 ＆ ランクリセット！</p>
           
           <div class="ranking-tabs">
-            <button class="ranking-tab active" id="tab-rank-season">今月度ランク</button>
+            <button class="ranking-tab active" id="tab-rank-season">SEASON 1 ランク</button>
             <button class="ranking-tab" id="tab-rank-weekly">週間XP</button>
             <button class="ranking-tab" id="tab-rank-total">総合レベル</button>
           </div>
@@ -331,7 +332,7 @@
         </div>
       </div>
 
-      <!-- 👑 クエストクリア / DAILY COMPLETE 専用の大迫力ポップアップモーダル -->
+      <!-- 👑 クエストクリア / DAILY COMPLETE 専用ポップアップモーダル -->
       <div id="modal-quest-complete" class="modal hidden">
         <div class="modal-content quest-complete-box">
           <div class="complete-icon-large">🏆</div>
