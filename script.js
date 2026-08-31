@@ -855,20 +855,9 @@ function setupSubjects() {
         saveData();
 
       });
-  document
-    .querySelectorAll(".subject-button")
-    .forEach(button => {
-
-      if (
-        data.subjects.includes(
-          button.dataset.subject
-        )
-      ) {
-        button.classList.add("selected");
-      }
 
     });
-    });
+
 }
 
 
