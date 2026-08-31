@@ -465,7 +465,7 @@ function createDefaultData() {
     name: "",
     track: "理系",
     subject: "",
-
+    subjects: [],
     level: 1,
     xp: 0,
     totalXP: 0,
