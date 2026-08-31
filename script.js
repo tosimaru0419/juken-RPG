@@ -1,12 +1,12 @@
 // ============================================================
-// 受験RPG - script.js
-// STEP 1
-// 画面切り替え + Supabase Auth
+// 受験RPG
+// script.js
+// 完全作り直し版
 // ============================================================
 
 
 // ============================================================
-// Supabase
+// SUPABASE
 // ============================================================
 
 const SUPABASE_URL =
@@ -24,503 +24,356 @@ const supabase = createClient(
 
 
 // ============================================================
-// DOM
+// GLOBAL
 // ============================================================
 
-const $ = (id) => document.getElementById(id);
+let currentUser = null;
+let currentProfile = null;
 
-const authScreen = $("auth-screen");
-
-const loginScreen = $("login-screen");
-const registerScreen = $("register-screen");
-
-const loginForm = $("login-form");
-const registerForm = $("register-form");
-
-const loginError = $("login-error");
-const registerError = $("register-error");
-const subjectError = $("subject-error");
-
-const showRegisterButton =
-  $("show-register-button");
-
-const showLoginButton =
-  $("show-login-button");
-
-const mainApp =
-  $("main-app");
-
-const logoutButton =
-  $("logout-button");
+let timerInterval = null;
+let timerSeconds = 0;
+let timerRunning = false;
 
 
 // ============================================================
-// 初期化
+// DOM SHORTCUT
 // ============================================================
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
+function $(id) {
+  return document.getElementById(id);
+}
 
-    console.log("受験RPG JS 起動");
 
-    setupScreenSwitching();
+// ============================================================
+// INITIALIZE
+// ============================================================
 
-    setupAuth();
+document.addEventListener("DOMContentLoaded", async () => {
 
-    checkSession();
+  console.log("================================");
+  console.log("受験RPG JavaScript 起動");
+  console.log("================================");
+
+  setupNavigation();
+  setupRegister();
+  setupStudyTimer();
+  setupManualReport();
+
+  await checkSession();
+
+});
+
+
+// ============================================================
+// SCREEN
+// ============================================================
+
+function showRegisterScreen() {
+
+  const screen = $("register-screen");
+
+  if (screen) {
+    screen.classList.remove("hidden");
+  }
+
+  const app = $("app");
+
+  if (app) {
+    app.classList.add("hidden");
+  }
+
+}
+
+
+function showMainScreen() {
+
+  const registerScreen = $("register-screen");
+
+  if (registerScreen) {
+    registerScreen.classList.add("hidden");
+  }
+
+  const app = $("app");
+
+  if (app) {
+    app.classList.remove("hidden");
+  }
+
+  const mainScreen = $("main-screen");
+
+  if (mainScreen) {
+    mainScreen.classList.remove("hidden");
+  }
+
+}
+
+
+function hideAllPages() {
+
+  document
+    .querySelectorAll("[id^='page-']")
+    .forEach(page => {
+
+      page.classList.add("hidden");
+
+    });
+
+}
+
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+
+function setupNavigation() {
+
+  const navButtons =
+    document.querySelectorAll(
+      "#bottom-nav [data-page], #bottom-nav button"
+    );
+
+  navButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      const pageId =
+        button.dataset.page ||
+        button.dataset.target;
+
+      if (!pageId) {
+        return;
+      }
+
+      showPage(pageId);
+
+    });
+
+  });
+
+}
+
+
+function showPage(pageId) {
+
+  hideAllPages();
+
+  let target = $(pageId);
+
+  if (!target) {
+    target = $("page-" + pageId);
+  }
+
+  if (!target) {
+
+    console.warn(
+      "ページが見つかりません:",
+      pageId
+    );
+
+    return;
+
+  }
+
+  target.classList.remove("hidden");
+
+  document
+    .querySelectorAll(
+      "#bottom-nav button"
+    )
+    .forEach(button => {
+
+      button.classList.remove("active");
+
+    });
+
+  const activeButton =
+    document.querySelector(
+      `#bottom-nav [data-page="${pageId}"]`
+    ) ||
+    document.querySelector(
+      `#bottom-nav [data-target="${pageId}"]`
+    );
+
+  if (activeButton) {
+    activeButton.classList.add("active");
+  }
+
+}
+
+
+// ============================================================
+// SESSION
+// ============================================================
+
+async function checkSession() {
+
+  try {
+
+    console.log("セッション確認中...");
+
+    const {
+      data,
+      error
+    } =
+      await supabase.auth.getSession();
+
+    if (error) {
+      throw error;
+    }
+
+    if (
+      data.session &&
+      data.session.user
+    ) {
+
+      console.log(
+        "既存セッションあり"
+      );
+
+      currentUser =
+        data.session.user;
+
+      await loadPlayer();
+
+    } else {
+
+      console.log(
+        "ログインセッションなし"
+      );
+
+      showRegisterScreen();
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "Session error:",
+      error
+    );
+
+    showRegisterScreen();
+
+  }
+
+}
+
+
+// ============================================================
+// AUTH STATE
+// ============================================================
+
+supabase.auth.onAuthStateChange(
+  async (event, session) => {
+
+    console.log(
+      "Auth:",
+      event
+    );
+
+    if (
+      session &&
+      session.user
+    ) {
+
+      currentUser =
+        session.user;
+
+      await loadPlayer();
+
+    } else {
+
+      currentUser = null;
+      currentProfile = null;
+
+      showRegisterScreen();
+
+    }
 
   }
 );
 
 
 // ============================================================
-// 画面切り替え
+// REGISTER
 // ============================================================
 
-function showLoginScreen() {
+function setupRegister() {
 
-  loginScreen.classList.remove("hidden");
+  const button =
+    $("register-button");
 
-  registerScreen.classList.add("hidden");
-
-  clearErrors();
-
-}
-
-
-function showRegisterScreen() {
-
-  loginScreen.classList.add("hidden");
-
-  registerScreen.classList.remove("hidden");
-
-  clearErrors();
-
-}
-
-
-function showMainApp() {
-
-  authScreen.classList.add("hidden");
-
-  mainApp.classList.remove("hidden");
-
-}
-
-
-function showAuthScreen() {
-
-  mainApp.classList.add("hidden");
-
-  authScreen.classList.remove("hidden");
-
-  showLoginScreen();
-
-}
-
-
-// ============================================================
-// Login / Register ボタン
-// ============================================================
-
-function setupScreenSwitching() {
-
-  if (showRegisterButton) {
-
-    showRegisterButton.addEventListener(
-      "click",
-      () => {
-
-        console.log(
-          "新規登録ボタンが押されました"
-        );
-
-        showRegisterScreen();
-
-      }
-    );
-
-  } else {
+  if (!button) {
 
     console.error(
-      "show-register-button が見つかりません"
+      "register-button がありません"
     );
+
+    return;
 
   }
 
-
-  if (showLoginButton) {
-
-    showLoginButton.addEventListener(
-      "click",
-      () => {
-
-        console.log(
-          "ログイン画面へ戻ります"
-        );
-
-        showLoginScreen();
-
-      }
-    );
-
-  } else {
-
-    console.error(
-      "show-login-button が見つかりません"
-    );
-
-  }
-
-}
-
-
-// ============================================================
-// エラー表示
-// ============================================================
-
-function showError(
-  element,
-  message
-) {
-
-  if (!element) return;
-
-  element.textContent =
-    message;
-
-}
-
-
-function clearErrors() {
-
-  showError(
-    loginError,
-    ""
-  );
-
-  showError(
-    registerError,
-    ""
-  );
-
-  showError(
-    subjectError,
-    ""
+  button.addEventListener(
+    "click",
+    registerUser
   );
 
 }
 
 
 // ============================================================
-// ユーザーID → 内部メールアドレス
+// REGISTER USER
 // ============================================================
 
-function userIdToEmail(
-  userId
-) {
-
-  return (
-    userId.toLowerCase() +
-    "@jukensrpg.local"
-  );
-
-}
-
-
-// ============================================================
-// 入力チェック
-// ============================================================
-
-function validateUserId(
-  userId
-) {
-
-  if (!userId) {
-
-    return "ユーザーIDを入力してください。";
-
-  }
-
-
-  if (userId.length < 3) {
-
-    return "ユーザーIDは3文字以上にしてください。";
-
-  }
-
-
-  if (userId.length > 30) {
-
-    return "ユーザーIDは30文字以内にしてください。";
-
-  }
-
-
-  if (
-    !/^[a-zA-Z0-9_-]+$/.test(userId)
-  ) {
-
-    return "ユーザーIDは英数字・_・-のみ使用できます。";
-
-  }
-
-
-  return null;
-
-}
-
-
-function validatePassword(
-  password
-) {
-
-  if (!password) {
-
-    return "パスワードを入力してください。";
-
-  }
-
-
-  if (password.length < 6) {
-
-    return "パスワードは6文字以上にしてください。";
-
-  }
-
-
-  return null;
-
-}
-
-
-function validateDisplayName(
-  displayName
-) {
-
-  if (!displayName) {
-
-    return "表示名を入力してください。";
-
-  }
-
-
-  if (displayName.length > 30) {
-
-    return "表示名は30文字以内にしてください。";
-
-  }
-
-
-  return null;
-
-}
-
-
-// ============================================================
-// 受験教科取得
-// ============================================================
-
-function getSelectedSubjects() {
-
-  return Array.from(
-
-    document.querySelectorAll(
-      '#subject-selection input[name="subjects"]:checked'
-    )
-
-  ).map(
-    (input) => input.value
-  );
-
-}
-
-
-// ============================================================
-// 認証処理
-// ============================================================
-
-function setupAuth() {
-
-  // ----------------------------------------------------------
-  // 新規登録
-  // ----------------------------------------------------------
-
-  if (registerForm) {
-
-    registerForm.addEventListener(
-      "submit",
-      registerUser
-    );
-
-  }
-
-
-  // ----------------------------------------------------------
-  // ログイン
-  // ----------------------------------------------------------
-
-  if (loginForm) {
-
-    loginForm.addEventListener(
-      "submit",
-      loginUser
-    );
-
-  }
-
-
-  // ----------------------------------------------------------
-  // ログアウト
-  // ----------------------------------------------------------
-
-  if (logoutButton) {
-
-    logoutButton.addEventListener(
-      "click",
-      logoutUser
-    );
-
-  }
-
-}
-
-
-// ============================================================
-// 新規登録
-// ============================================================
-
-async function registerUser(
-  event
-) {
+async function registerUser(event) {
 
   event.preventDefault();
 
-  clearErrors();
+  console.log(
+    "新規登録開始"
+  );
 
+  const nameInput =
+    $("player-name");
 
-  const userId =
-    $("register-user-id")
-      .value
-      .trim();
+  const trackInput =
+    $("player-track");
 
+  const subjectInput =
+    $("player-subject");
 
-  const password =
-    $("register-password")
-      .value;
+  if (!nameInput) {
 
-
-  const passwordConfirm =
-    $("register-password-confirm")
-      .value;
-
-
-  const displayName =
-    $("register-display-name")
-      .value
-      .trim();
-
-
-  const courseInput =
-    document.querySelector(
-      '#register-form input[name="course"]:checked'
+    console.error(
+      "player-name がありません"
     );
 
+    return;
 
-  const course =
-    courseInput
-      ? courseInput.value
+  }
+
+  const name =
+    nameInput.value.trim();
+
+  const track =
+    trackInput
+      ? trackInput.value
+      : "undecided";
+
+  const subject =
+    subjectInput
+      ? subjectInput.value
       : null;
-
-
-  const subjects =
-    getSelectedSubjects();
 
 
   // ----------------------------------------------------------
   // Validation
   // ----------------------------------------------------------
 
-  const userIdError =
-    validateUserId(userId);
+  if (!name) {
 
-
-  if (userIdError) {
-
-    showError(
-      registerError,
-      userIdError
-    );
-
-    return;
-
-  }
-
-
-  const passwordError =
-    validatePassword(password);
-
-
-  if (passwordError) {
-
-    showError(
-      registerError,
-      passwordError
-    );
-
-    return;
-
-  }
-
-
-  if (
-    password !== passwordConfirm
-  ) {
-
-    showError(
-      registerError,
-      "パスワードが一致していません。"
-    );
-
-    return;
-
-  }
-
-
-  const displayNameError =
-    validateDisplayName(displayName);
-
-
-  if (displayNameError) {
-
-    showError(
-      registerError,
-      displayNameError
-    );
-
-    return;
-
-  }
-
-
-  if (!course) {
-
-    showError(
-      registerError,
-      "文理を選択してください。"
-    );
-
-    return;
-
-  }
-
-
-  if (subjects.length === 0) {
-
-    showError(
-      subjectError,
-      "受験教科を1つ以上選択してください。"
+    alert(
+      "プレイヤー名を入力してください。"
     );
 
     return;
@@ -529,19 +382,38 @@ async function registerUser(
 
 
   // ----------------------------------------------------------
-  // ボタン
+  // 仮メールアドレス
   // ----------------------------------------------------------
+
+  const safeName =
+    name
+      .toLowerCase()
+      .replace(
+        /[^a-z0-9]/g,
+        ""
+      );
+
+  const random =
+    Math.floor(
+      Math.random() * 1000000
+    );
+
+  const email =
+    `${safeName}${random}@jukensrpg.local`;
+
+  const password =
+    crypto.randomUUID();
+
 
   const button =
     $("register-button");
-
 
   if (button) {
 
     button.disabled = true;
 
     button.textContent =
-      "登録中...";
+      "冒険者登録中...";
 
   }
 
@@ -549,13 +421,8 @@ async function registerUser(
   try {
 
     console.log(
-      "Supabase登録開始"
+      "Supabase Auth signUp..."
     );
-
-
-    const email =
-      userIdToEmail(userId);
-
 
     const {
       data,
@@ -563,19 +430,19 @@ async function registerUser(
     } =
       await supabase.auth.signUp({
 
-        email: email,
+        email,
 
-        password: password,
+        password,
 
         options: {
 
           data: {
 
-            user_id:
-              userId,
-
             display_name:
-              displayName
+              name,
+
+            course:
+              track
 
           }
 
@@ -585,9 +452,7 @@ async function registerUser(
 
 
     if (error) {
-
       throw error;
-
     }
 
 
@@ -600,122 +465,60 @@ async function registerUser(
     }
 
 
+    currentUser =
+      data.user;
+
+
     console.log(
-      "Supabase Auth 登録成功",
-      data.user.id
+      "Auth登録成功:",
+      currentUser.id
     );
 
 
     // --------------------------------------------------------
-    // プロフィール
+    // Profile
     // --------------------------------------------------------
 
-    const userUuid =
-      data.user.id;
+    await waitForProfile(
+      currentUser.id
+    );
 
 
-    let profile =
-      null;
+    // --------------------------------------------------------
+    // Subject
+    // --------------------------------------------------------
 
-
-    for (
-      let i = 0;
-      i < 10;
-      i++
-    ) {
+    if (subject) {
 
       const {
-        data: profileData,
-        error: profileError
+        error: subjectError
       } =
         await supabase
-          .from("profiles")
-          .select("*")
-          .eq(
-            "id",
-            userUuid
-          )
-          .maybeSingle();
+          .from("player_subjects")
+          .insert({
 
+            user_id:
+              currentUser.id,
 
-      if (profileError) {
+            subject:
+              subject
 
-        throw profileError;
+          });
 
-      }
+      if (subjectError) {
 
-
-      if (profileData) {
-
-        profile =
-          profileData;
-
-        break;
-
-      }
-
-
-      await new Promise(
-        resolve =>
-          setTimeout(
-            resolve,
-            300
-          )
-      );
-
-    }
-
-
-    if (!profile) {
-
-      throw new Error(
-        "プロフィールの作成を確認できませんでした。"
-      );
-
-    }
-
-
-    // --------------------------------------------------------
-    // 教科保存
-    // --------------------------------------------------------
-
-    const subjectRows =
-      subjects.map(
-        (subject) => ({
-
-          user_id:
-            userUuid,
-
-          subject:
-            subject
-
-        })
-      );
-
-
-    const {
-      error: subjectError
-    } =
-      await supabase
-        .from("player_subjects")
-        .insert(
-          subjectRows
+        console.warn(
+          "教科登録:",
+          subjectError
         );
 
-
-    if (subjectError) {
-
-      throw subjectError;
+      }
 
     }
 
 
-    // --------------------------------------------------------
-    // 完了
-    // --------------------------------------------------------
-
     alert(
-      "🎉 冒険者登録完了！\n\n受験RPGへようこそ！"
+      "🎉 冒険者登録完了！"
     );
 
 
@@ -725,15 +528,13 @@ async function registerUser(
   } catch (error) {
 
     console.error(
-      "Registration error:",
+      "REGISTER ERROR:",
       error
     );
 
-
-    showError(
-      registerError,
-      error.message ||
-        "登録中にエラーが発生しました。"
+    alert(
+      "登録に失敗しました。\n\n" +
+      error.message
     );
 
 
@@ -754,290 +555,97 @@ async function registerUser(
 
 
 // ============================================================
-// ログイン
+// PROFILE WAIT
 // ============================================================
 
-async function loginUser(
-  event
-) {
+async function waitForProfile(userId) {
 
-  event.preventDefault();
-
-  clearErrors();
-
-
-  const userId =
-    $("login-user-id")
-      .value
-      .trim();
-
-
-  const password =
-    $("login-password")
-      .value;
-
-
-  const userIdError =
-    validateUserId(userId);
-
-
-  if (userIdError) {
-
-    showError(
-      loginError,
-      userIdError
-    );
-
-    return;
-
-  }
-
-
-  const passwordError =
-    validatePassword(password);
-
-
-  if (passwordError) {
-
-    showError(
-      loginError,
-      passwordError
-    );
-
-    return;
-
-  }
-
-
-  const button =
-    $("login-button");
-
-
-  if (button) {
-
-    button.disabled = true;
-
-    button.textContent =
-      "ログイン中...";
-
-  }
-
-
-  try {
-
-    const email =
-      userIdToEmail(userId);
-
+  for (
+    let i = 0;
+    i < 20;
+    i++
+  ) {
 
     const {
       data,
       error
     } =
-      await supabase.auth
-        .signInWithPassword({
-
-          email:
-            email,
-
-          password:
-            password
-
-        });
+      await supabase
+        .from("profiles")
+        .select("*")
+        .eq(
+          "id",
+          userId
+        )
+        .maybeSingle();
 
 
     if (error) {
 
-      throw error;
-
-    }
-
-
-    if (!data.user) {
-
-      throw new Error(
-        "ログインに失敗しました。"
+      console.warn(
+        "Profile取得:",
+        error
       );
 
     }
 
 
-    await loadPlayer();
+    if (data) {
 
+      currentProfile =
+        data;
 
-  } catch (error) {
-
-    console.error(
-      "Login error:",
-      error
-    );
-
-
-    showError(
-      loginError,
-      "ユーザーIDまたはパスワードが間違っています。"
-    );
-
-
-  } finally {
-
-    if (button) {
-
-      button.disabled = false;
-
-      button.textContent =
-        "ログイン";
+      return data;
 
     }
 
+
+    await sleep(500);
+
   }
+
+
+  throw new Error(
+    "プロフィールを確認できませんでした。"
+  );
 
 }
 
 
 // ============================================================
-// ログアウト
-// ============================================================
-
-async function logoutUser() {
-
-  try {
-
-    const {
-      error
-    } =
-      await supabase.auth.signOut();
-
-
-    if (error) {
-
-      throw error;
-
-    }
-
-
-    showAuthScreen();
-
-
-  } catch (error) {
-
-    console.error(
-      "Logout error:",
-      error
-    );
-
-
-    alert(
-      "ログアウトに失敗しました。"
-    );
-
-  }
-
-}
-
-
-// ============================================================
-// セッション確認
-// ============================================================
-
-async function checkSession() {
-
-  try {
-
-    const {
-      data: {
-        session
-      }
-    } =
-      await supabase.auth
-        .getSession();
-
-
-    if (
-      session &&
-      session.user
-    ) {
-
-      await loadPlayer();
-
-    } else {
-
-      showAuthScreen();
-
-    }
-
-
-  } catch (error) {
-
-    console.error(
-      "Session check error:",
-      error
-    );
-
-
-    showAuthScreen();
-
-  }
-
-}
-
-
-// ============================================================
-// Auth State
-// ============================================================
-
-supabase.auth.onAuthStateChange(
-  async (
-    event,
-    session
-  ) => {
-
-    console.log(
-      "Auth state:",
-      event
-    );
-
-
-    if (
-      session &&
-      session.user
-    ) {
-
-      await loadPlayer();
-
-    } else {
-
-      showAuthScreen();
-
-    }
-
-  }
-);
-
-
-// ============================================================
-// プレイヤーデータ
+// LOAD PLAYER
 // ============================================================
 
 async function loadPlayer() {
 
   try {
 
-    const {
-      data: {
-        user
-      }
-    } =
-      await supabase.auth
-        .getUser();
+    if (!currentUser) {
+
+      const {
+        data
+      } =
+        await supabase.auth.getUser();
+
+      currentUser =
+        data.user;
+
+    }
 
 
-    if (!user) {
+    if (!currentUser) {
 
-      showAuthScreen();
+      showRegisterScreen();
 
       return;
 
     }
+
+
+    console.log(
+      "プレイヤー読み込み:",
+      currentUser.id
+    );
 
 
     const {
@@ -1049,221 +657,45 @@ async function loadPlayer() {
         .select("*")
         .eq(
           "id",
-          user.id
+          currentUser.id
         )
         .single();
 
 
     if (error) {
-
       throw error;
-
     }
 
 
+    currentProfile =
+      profile;
+
+
     console.log(
-      "プレイヤーデータ読み込み成功",
+      "プロフィール:",
       profile
     );
 
 
-    // --------------------------------------------------------
-    // Header
-    // --------------------------------------------------------
+    updateUI(profile);
 
-    if (
-      $("header-display-name")
-    ) {
 
-      $("header-display-name")
-        .textContent =
-        profile.display_name;
+    await loadSubjects();
 
-    }
 
+    showMainScreen();
 
-    if (
-      $("header-level")
-    ) {
-
-      $("header-level")
-        .textContent =
-        `Lv.${profile.level}`;
-
-    }
-
-
-    if (
-      $("header-rank")
-    ) {
-
-      $("header-rank")
-        .textContent =
-        getRankName(profile);
-
-    }
-
-
-    // --------------------------------------------------------
-    // Home
-    // --------------------------------------------------------
-
-    if (
-      $("home-level")
-    ) {
-
-      $("home-level")
-        .textContent =
-        profile.level;
-
-    }
-
-
-    if (
-      $("home-xp")
-    ) {
-
-      $("home-xp")
-        .textContent =
-        `${profile.xp} XP`;
-
-    }
-
-
-    // --------------------------------------------------------
-    // Profile
-    // --------------------------------------------------------
-
-    if (
-      $("profile-display-name")
-    ) {
-
-      $("profile-display-name")
-        .textContent =
-        profile.display_name;
-
-    }
-
-
-    if (
-      $("profile-user-id")
-    ) {
-
-      $("profile-user-id")
-        .textContent =
-        profile.user_id;
-
-    }
-
-
-    if (
-      $("profile-course")
-    ) {
-
-      $("profile-course")
-        .textContent =
-        getCourseName(
-          profile.course
-        );
-
-    }
-
-
-    if (
-      $("profile-level")
-    ) {
-
-      $("profile-level")
-        .textContent =
-        profile.level;
-
-    }
-
-
-    if (
-      $("profile-stars")
-    ) {
-
-      $("profile-stars")
-        .textContent =
-        profile.stars;
-
-    }
-
-
-    if (
-      $("profile-title")
-    ) {
-
-      $("profile-title")
-        .textContent =
-        profile.title;
-
-    }
-
-
-    if (
-      $("profile-total-study-time")
-    ) {
-
-      $("profile-total-study-time")
-        .textContent =
-        formatStudyTime(
-          profile.total_study_minutes
-        );
-
-    }
-
-
-    if (
-      $("profile-total-xp")
-    ) {
-
-      $("profile-total-xp")
-        .textContent =
-        `${profile.total_xp} XP`;
-
-    }
-
-
-    if (
-      $("profile-bosses-defeated")
-    ) {
-
-      $("profile-bosses-defeated")
-        .textContent =
-        profile.bosses_defeated;
-
-    }
-
-
-    if (
-      $("profile-quests-completed")
-    ) {
-
-      $("profile-quests-completed")
-        .textContent =
-        profile.quests_completed;
-
-    }
-
-
-    await loadSubjects(
-      user.id
-    );
-
-
-    showMainApp();
+    showPage("home");
 
 
   } catch (error) {
 
     console.error(
-      "Load player error:",
+      "LOAD PLAYER ERROR:",
       error
     );
 
-    showAuthScreen();
+    showRegisterScreen();
 
   }
 
@@ -1271,12 +703,214 @@ async function loadPlayer() {
 
 
 // ============================================================
-// 教科
+// UPDATE UI
 // ============================================================
 
-async function loadSubjects(
-  userId
+function updateUI(profile) {
+
+  const displayName =
+    profile.display_name ||
+    "冒険者";
+
+  const level =
+    Number(
+      profile.level || 1
+    );
+
+  const xp =
+    Number(
+      profile.xp || 0
+    );
+
+  const coins =
+    Number(
+      profile.coins || 0
+    );
+
+  const totalMinutes =
+    Number(
+      profile.total_study_minutes || 0
+    );
+
+
+  // ----------------------------------------------------------
+  // Name
+  // ----------------------------------------------------------
+
+  setText(
+    "home-name",
+    displayName
+  );
+
+
+  // ----------------------------------------------------------
+  // Level
+  // ----------------------------------------------------------
+
+  setText(
+    "home-level",
+    level
+  );
+
+
+  // ----------------------------------------------------------
+  // XP
+  // ----------------------------------------------------------
+
+  setText(
+    "home-xp-text",
+    `${xp} XP`
+  );
+
+
+  // ----------------------------------------------------------
+  // Coins
+  // ----------------------------------------------------------
+
+  setText(
+    "home-coins",
+    coins
+  );
+
+
+  // ----------------------------------------------------------
+  // Rank
+  // ----------------------------------------------------------
+
+  const rank =
+    getRank(
+      totalMinutes
+    );
+
+  setText(
+    "home-rank",
+    rank
+  );
+
+
+  // ----------------------------------------------------------
+  // Monthly hours
+  // ----------------------------------------------------------
+
+  const hours =
+    Math.floor(
+      totalMinutes / 60
+    );
+
+  const minutes =
+    totalMinutes % 60;
+
+  setText(
+    "home-month-hours",
+    `${hours}時間${minutes}分`
+  );
+
+
+  // ----------------------------------------------------------
+  // Today
+  // ----------------------------------------------------------
+
+  setText(
+    "home-today-minutes",
+    `${profile.today_study_minutes || 0}分`
+  );
+
+
+  // ----------------------------------------------------------
+  // XP bar
+  // ----------------------------------------------------------
+
+  const fill =
+    $("home-xp-fill");
+
+  if (fill) {
+
+    const required =
+      getRequiredXP(level);
+
+    const percent =
+      Math.min(
+        100,
+        (xp / required) * 100
+      );
+
+    fill.style.width =
+      `${percent}%`;
+
+  }
+
+}
+
+
+// ============================================================
+// TEXT
+// ============================================================
+
+function setText(
+  id,
+  value
 ) {
+
+  const element =
+    $(id);
+
+  if (element) {
+
+    element.textContent =
+      value;
+
+  }
+
+}
+
+
+// ============================================================
+// RANK
+// ============================================================
+
+function getRank(minutes) {
+
+  if (minutes >= 300) {
+    return "Platinum";
+  }
+
+  if (minutes >= 200) {
+    return "Gold";
+  }
+
+  if (minutes >= 100) {
+    return "Silver";
+  }
+
+  return "Bronze";
+
+}
+
+
+// ============================================================
+// XP
+// ============================================================
+
+function getRequiredXP(level) {
+
+  return (
+    100 +
+    (level - 1) * 50
+  );
+
+}
+
+
+// ============================================================
+// SUBJECTS
+// ============================================================
+
+async function loadSubjects() {
+
+  if (!currentUser) {
+    return;
+  }
+
 
   const {
     data,
@@ -1284,24 +918,92 @@ async function loadSubjects(
   } =
     await supabase
       .from("player_subjects")
-      .select("subject")
+      .select("*")
       .eq(
         "user_id",
-        userId
-      )
-      .order(
-        "created_at"
+        currentUser.id
       );
 
 
   if (error) {
 
-    throw error;
+    console.warn(
+      "教科読み込み:",
+      error
+    );
+
+    return;
 
   }
 
 
-  const subjectNames = {
+  const buttons =
+    document.querySelectorAll(
+      "[data-subject]"
+    );
+
+
+  buttons.forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const subject =
+          button.dataset.subject;
+
+        setText(
+          "current-subject",
+          getSubjectName(subject)
+        );
+
+      }
+    );
+
+  });
+
+
+  const select =
+    $("report-subject");
+
+  if (select) {
+
+    select.innerHTML =
+      `<option value="">教科を選択</option>`;
+
+    data.forEach(row => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        row.subject;
+
+      option.textContent =
+        getSubjectName(
+          row.subject
+        );
+
+      select.appendChild(
+        option
+      );
+
+    });
+
+  }
+
+}
+
+
+// ============================================================
+// SUBJECT NAME
+// ============================================================
+
+function getSubjectName(subject) {
+
+  const names = {
 
     japanese:
       "国語",
@@ -1321,9 +1023,6 @@ async function loadSubjects(
     biology:
       "生物",
 
-    "earth-science":
-      "地学",
-
     geography:
       "地理",
 
@@ -1334,331 +1033,514 @@ async function loadSubjects(
       "世界史",
 
     civics:
-      "公民"
+      "公民",
+
+    "earth-science":
+      "地学"
 
   };
-
-
-  const select =
-    $("study-subject");
-
-
-  if (select) {
-
-    select.innerHTML = `
-      <option value="">
-        教科を選択
-      </option>
-    `;
-
-
-    data.forEach(
-      (row) => {
-
-        const option =
-          document.createElement(
-            "option"
-          );
-
-
-        option.value =
-          row.subject;
-
-
-        option.textContent =
-          subjectNames[
-            row.subject
-          ] ||
-          row.subject;
-
-
-        select.appendChild(
-          option
-        );
-
-      }
-    );
-
-  }
-
-
-  const profileList =
-    $("profile-subject-list");
-
-
-  if (profileList) {
-
-    profileList.innerHTML =
-      "";
-
-
-    data.forEach(
-      (row) => {
-
-        const div =
-          document.createElement(
-            "div"
-          );
-
-
-        div.textContent =
-          subjectNames[
-            row.subject
-          ] ||
-          row.subject;
-
-
-        profileList.appendChild(
-          div
-        );
-
-      }
-    );
-
-  }
-
-
-  const settingsList =
-    $("settings-subject-selection");
-
-
-  if (settingsList) {
-
-    settingsList.innerHTML =
-      "";
-
-
-    data.forEach(
-      (row) => {
-
-        const label =
-          document.createElement(
-            "label"
-          );
-
-
-        label.innerHTML = `
-          <input
-            type="checkbox"
-            name="subjects"
-            value="${row.subject}"
-            checked
-          >
-          ${
-            subjectNames[
-              row.subject
-            ] ||
-            row.subject
-          }
-        `;
-
-
-        settingsList.appendChild(
-          label
-        );
-
-      }
-    );
-
-  }
-
-}
-
-
-// ============================================================
-// 文理
-// ============================================================
-
-function getCourseName(
-  course
-) {
-
-  const names = {
-
-    science:
-      "理系",
-
-    humanities:
-      "文系",
-
-    undecided:
-      "未定・その他"
-
-  };
-
 
   return (
-    names[course] ||
-    course ||
-    "未設定"
+    names[subject] ||
+    subject ||
+    "未選択"
   );
 
 }
 
 
 // ============================================================
-// ランク
+// STUDY TIMER
 // ============================================================
 
-function getRankName(
-  profile
-) {
+function setupStudyTimer() {
 
-  const minutes =
-    Number(
-      profile.total_study_minutes ||
-      0
+  const start =
+    $("timer-start");
+
+  const stop =
+    $("timer-stop");
+
+
+  if (start) {
+
+    start.addEventListener(
+      "click",
+      startTimer
     );
 
+  }
 
-  if (minutes >= 300) {
 
-    return "Platinum";
+  if (stop) {
+
+    stop.addEventListener(
+      "click",
+      stopTimer
+    );
 
   }
 
 
-  if (minutes >= 200) {
-
-    return "Gold";
-
-  }
-
-
-  if (minutes >= 100) {
-
-    return "Silver";
-
-  }
-
-
-  return "Bronze";
+  updateTimerDisplay();
 
 }
 
 
 // ============================================================
-// 勉強時間表示
+// START TIMER
 // ============================================================
 
-function formatStudyTime(
-  minutes
-) {
+function startTimer() {
 
-  const total =
-    Number(
-      minutes || 0
+  if (timerRunning) {
+    return;
+  }
+
+
+  timerRunning =
+    true;
+
+
+  setText(
+    "timer-status",
+    "勉強中"
+  );
+
+
+  timerInterval =
+    setInterval(() => {
+
+      timerSeconds++;
+
+      updateTimerDisplay();
+
+    }, 1000);
+
+
+  console.log(
+    "タイマースタート"
+  );
+
+}
+
+
+// ============================================================
+// STOP TIMER
+// ============================================================
+
+async function stopTimer() {
+
+  if (!timerRunning) {
+    return;
+  }
+
+
+  timerRunning =
+    false;
+
+
+  clearInterval(
+    timerInterval
+  );
+
+
+  timerInterval =
+    null;
+
+
+  setText(
+    "timer-status",
+    "停止中"
+  );
+
+
+  const minutes =
+    Math.floor(
+      timerSeconds / 60
     );
 
+
+  if (minutes > 0) {
+
+    await saveStudyTime(
+      minutes
+    );
+
+  }
+
+
+  timerSeconds =
+    0;
+
+
+  updateTimerDisplay();
+
+}
+
+
+// ============================================================
+// TIMER DISPLAY
+// ============================================================
+
+function updateTimerDisplay() {
 
   const hours =
     Math.floor(
-      total / 60
+      timerSeconds / 3600
+    );
+
+  const minutes =
+    Math.floor(
+      (timerSeconds % 3600) / 60
+    );
+
+  const seconds =
+    timerSeconds % 60;
+
+
+  setText(
+    "timer-display",
+    `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
+  );
+
+}
+
+
+function pad(number) {
+
+  return String(
+    number
+  ).padStart(
+    2,
+    "0"
+  );
+
+}
+
+
+// ============================================================
+// MANUAL REPORT
+// ============================================================
+
+function setupManualReport() {
+
+  const button =
+    $("report-submit");
+
+  if (!button) {
+    return;
+  }
+
+  button.addEventListener(
+    "click",
+    reportStudyTime
+  );
+
+}
+
+
+// ============================================================
+// REPORT STUDY
+// ============================================================
+
+async function reportStudyTime(event) {
+
+  event.preventDefault();
+
+
+  if (!currentUser) {
+
+    alert(
+      "ログインしてください。"
+    );
+
+    return;
+
+  }
+
+
+  const subject =
+    $("report-subject")
+      ?.value;
+
+
+  const hours =
+    Number(
+      $("report-hours")
+        ?.value || 0
     );
 
 
-  const mins =
-    total % 60;
+  const minutes =
+    Number(
+      $("report-minutes")
+        ?.value || 0
+    );
 
 
-  if (hours === 0) {
+  if (!subject) {
 
-    return `${mins}分`;
+    alert(
+      "教科を選択してください。"
+    );
+
+    return;
 
   }
 
 
-  if (mins === 0) {
+  const totalMinutes =
+    hours * 60 +
+    minutes;
 
-    return `${hours}時間`;
+
+  if (
+    totalMinutes <= 0
+  ) {
+
+    alert(
+      "勉強時間を入力してください。"
+    );
+
+    return;
 
   }
 
 
-  return `${hours}時間${mins}分`;
+  await saveStudyTime(
+    totalMinutes,
+    subject
+  );
 
 }
 
 
 // ============================================================
-// ナビゲーション
+// SAVE STUDY TIME
 // ============================================================
 
-document
-  .querySelectorAll(
-    ".nav-button"
-  )
-  .forEach(
-    (button) => {
+async function saveStudyTime(
+  minutes,
+  subject = null
+) {
 
-      button.addEventListener(
+  if (!currentUser) {
+    return;
+  }
+
+
+  console.log(
+    "勉強時間保存:",
+    minutes,
+    subject
+  );
+
+
+  try {
+
+    const {
+      data: profile,
+      error: profileError
+    } =
+      await supabase
+        .from("profiles")
+        .select("*")
+        .eq(
+          "id",
+          currentUser.id
+        )
+        .single();
+
+
+    if (profileError) {
+      throw profileError;
+    }
+
+
+    const oldMinutes =
+      Number(
+        profile.total_study_minutes || 0
+      );
+
+
+    const newMinutes =
+      oldMinutes +
+      minutes;
+
+
+    const xpGain =
+      minutes;
+
+
+    const oldXP =
+      Number(
+        profile.xp || 0
+      );
+
+
+    const newXP =
+      oldXP +
+      xpGain;
+
+
+    const {
+      error
+    } =
+      await supabase
+        .from("profiles")
+        .update({
+
+          total_study_minutes:
+            newMinutes,
+
+          xp:
+            newXP,
+
+          total_xp:
+            Number(
+              profile.total_xp || 0
+            ) +
+            xpGain
+
+        })
+        .eq(
+          "id",
+          currentUser.id
+        );
+
+
+    if (error) {
+      throw error;
+    }
+
+
+    currentProfile =
+      await supabase
+        .from("profiles")
+        .select("*")
+        .eq(
+          "id",
+          currentUser.id
+        )
+        .single()
+        .then(
+          result =>
+            result.data
+        );
+
+
+    updateUI(
+      currentProfile
+    );
+
+
+    alert(
+      `📚 ${minutes}分の勉強を記録！\n` +
+      `⭐ +${xpGain} XP`
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "SAVE STUDY ERROR:",
+      error
+    );
+
+    alert(
+      "勉強時間の保存に失敗しました。\n\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+// ============================================================
+// LOGOUT
+// ============================================================
+
+async function logout() {
+
+  try {
+
+    const {
+      error
+    } =
+      await supabase.auth.signOut();
+
+    if (error) {
+      throw error;
+    }
+
+    currentUser = null;
+    currentProfile = null;
+
+    showRegisterScreen();
+
+  } catch (error) {
+
+    console.error(
+      "Logout error:",
+      error
+    );
+
+    alert(
+      "ログアウトに失敗しました。"
+    );
+
+  }
+
+}
+
+
+// ============================================================
+// LOGOUT BUTTON AUTO SETUP
+// ============================================================
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const logoutButton =
+      $("logout-button");
+
+    if (logoutButton) {
+
+      logoutButton.addEventListener(
         "click",
-        () => {
-
-          const targetId =
-            button.dataset.screen;
-
-
-          document
-            .querySelectorAll(
-              ".app-screen"
-            )
-            .forEach(
-              (screen) => {
-
-                screen.classList.add(
-                  "hidden"
-                );
-
-              }
-            );
-
-
-          const target =
-            $(targetId);
-
-
-          if (target) {
-
-            target.classList.remove(
-              "hidden"
-            );
-
-          }
-
-
-          document
-            .querySelectorAll(
-              ".nav-button"
-            )
-            .forEach(
-              (btn) => {
-
-                btn.classList.remove(
-                  "active"
-                );
-
-              }
-            );
-
-
-          button.classList.add(
-            "active"
-          );
-
-        }
+        logout
       );
 
     }
+
+  }
+);
+
+
+// ============================================================
+// UTILITY
+// ============================================================
+
+function sleep(ms) {
+
+  return new Promise(
+    resolve =>
+      setTimeout(
+        resolve,
+        ms
+      )
   );
-console.log("===== TEST START =====");
 
-const testButton = document.getElementById("show-register-button");
-
-console.log("ボタン:", testButton);
-
-if (testButton) {
-  testButton.addEventListener("click", function () {
-    alert("クリックイベントは動いてる！！");
-  });
 }
+
+
+// ============================================================
+// DEBUG
+// ============================================================
+
+console.log(
+  "受験RPG script.js 読み込み完了"
+);
