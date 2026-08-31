@@ -1289,11 +1289,7 @@ function recordStudy(minutes, source) {
 
 function xpRequired() {
 
-  /*
-    1レベル100XP
-  */
-
-  return 100;
+  return 100 + Math.floor(data.level / 10) * 50;
 }
 
 
