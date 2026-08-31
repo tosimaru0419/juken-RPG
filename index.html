@@ -8,8 +8,6 @@
 </head>
 <body>
   <div id="app">
-    <!-- シーズンインジケーター -->
-    <div id="season-indicator" class="season-indicator">SEASON 8 (8月期)</div>
 
     <!-- 1. ログイン / 新規登録画面 -->
     <div id="screen-auth" class="screen">
@@ -26,7 +24,7 @@
 
           <form id="auth-form" class="register-form">
             <!-- ユーザーID（重複不可・ログイン＆フレンド用） -->
-            <input type="text" id="auth-user-id" placeholder="ユーザーID (例: EITA_001)" required />
+            <input type="text" id="auth-user-id" placeholder="ユーザーID (例: eita_001)" required />
             
             <!-- 新規登録時のみ表示するフィールド -->
             <input type="text" id="auth-player-name" placeholder="プレイヤー名 (例: えいた)" class="hidden" />
@@ -47,39 +45,49 @@
 
     <!-- 2. メインアプリ画面 -->
     <div id="screen-main" class="screen hidden">
-      <!-- 共通ヘッダー -->
+      <!-- 共通ヘッダー（右上被り解消 ＆ シーズン残り日数表示） -->
       <header class="top-header">
-        <div class="header-player" id="btn-open-profile">
+        <div class="header-left" id="btn-open-profile" style="cursor: pointer;">
           <div class="header-avatar" id="header-avatar">🧙‍♂️</div>
-          <div>
-            <div class="header-name" id="header-player-name">---</div>
+          <div class="header-user-info">
+            <div class="header-name-row">
+              <span class="header-name" id="header-player-name">---</span>
+              <span class="star-badge hidden" id="header-star">⭐</span>
+            </div>
             <div class="header-level" id="header-level">Lv.1</div>
           </div>
         </div>
-        <div class="header-info">
-          <span class="rank-badge-mini" id="header-rank">Bronze</span>
-          <div class="header-currency" id="header-coins">🪙 0</div>
+
+        <div class="header-right">
+          <div class="season-badge-mini" id="header-season-info">今月度 残り12日</div>
+          <div class="header-currency">
+            <span class="rank-badge-mini" id="header-rank">Bronze</span>
+            <span class="coin-display" id="header-coins">🪙 0</span>
+          </div>
         </div>
       </header>
 
       <!-- 【ページ1】ホーム（ダッシュボード） -->
       <div id="page-home" class="page active">
         <div class="page-container">
-          <!-- ヒーローカード -->
+          <!-- ヒーローカード（名前を最優先表示 ＆ 自分のID表示） -->
           <div class="hero-card">
             <div class="hero-top">
               <div>
-                <span class="section-eyebrow" id="hero-title">新米受験生</span>
-                <h2 id="hero-player-name">---</h2>
-                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;" id="hero-user-id">ID: ---</div>
-                <div class="rank-badge" id="hero-rank-display">RANK: Bronze</div>
+                <!-- 冒険者ではなく「自分の名前」を一番大きく表示 -->
+                <h1 class="player-display-name" id="hero-player-name">---</h1>
+                <div class="user-id-badge" id="hero-user-id">ID: @---</div>
+                <div style="display: flex; gap: 6px; align-items: center; margin-top: 6px;">
+                  <span class="rank-badge" id="hero-rank-display">RANK: Bronze</span>
+                  <span class="title-sub-badge" id="hero-title">新米受験生</span>
+                </div>
               </div>
               <div class="hero-avatar" id="hero-avatar">🧙‍♂️</div>
             </div>
             
             <!-- 総合レベルXPゲージ -->
-            <div class="level-display">
-              <span>総合 Next Level</span>
+            <div class="level-display" style="margin-top: 16px;">
+              <span id="hero-level-label">総合レベル (Lv.1)</span>
               <strong id="hero-xp-text">0 / 100 XP</strong>
             </div>
             <div class="xp-bar">
@@ -142,7 +150,6 @@
           <span class="section-eyebrow">STUDY SESSION</span>
           <h2>勉強の記録</h2>
 
-          <!-- タブ切り替え（タイマー / 手動入力） -->
           <div class="ranking-tabs" style="margin-top: 12px;">
             <button class="ranking-tab active" id="tab-timer-mode">タイマー計測</button>
             <button class="ranking-tab" id="tab-manual-mode">手動で記録</button>
@@ -152,7 +159,6 @@
           <div id="mode-timer-container">
             <div class="card" style="margin-top: 14px;">
               <span class="section-eyebrow">SELECT SUBJECT</span>
-              <!-- 文理コースに応じた全教科ボタンがJSで動的挿入される -->
               <div class="subject-grid" id="subject-selector"></div>
             </div>
 
@@ -174,7 +180,6 @@
               
               <form id="manual-study-form" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
                 <label style="font-size: 0.8rem; color: var(--text-muted);">教科</label>
-                <!-- JSで文理コースに応じた教科選択肢が挿入される -->
                 <select id="manual-subject-select" class="input-field"></select>
 
                 <label style="font-size: 0.8rem; color: var(--text-muted);">勉強時間（分）</label>
@@ -190,22 +195,15 @@
         </div>
       </div>
 
-      <!-- 【ページ3】クエスト（3枠構成 ＋ デイリーコンプリート） -->
+      <!-- 【ページ3】クエスト（集約 ＆ 豪華クリア演出） -->
       <div id="page-quest" class="page">
         <div class="page-container">
           <span class="section-eyebrow">DAILY MISSION</span>
           <h2>本日のデイリークエスト</h2>
-          <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">全達成で DAILY COMPLETE 報酬獲得！</p>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">全達成で DAILY COMPLETE 報酬 ＆ コイン大量獲得！</p>
           
           <div id="quest-list" style="display: flex; flex-direction: column; gap: 12px;">
-            <!-- JSで3枠（①必須 ②弱点補正 ③自由）を動的生成 -->
-          </div>
-
-          <div id="daily-complete-card" class="card hidden" style="margin-top: 16px; border: 2px solid gold; text-align: center;">
-            <div style="font-size: 2rem;">🏆</div>
-            <h3 style="color: gold;">DAILY COMPLETE!</h3>
-            <p style="font-size: 0.8rem; margin-top: 4px;">本日のデイリークエストを全て達成しました！</p>
-            <div style="font-size: 0.85rem; font-weight: bold; margin-top: 6px; color: var(--primary-color);">ボーナス: +200 総合XP / +100 ランクXP</div>
+            <!-- JSで動的生成 -->
           </div>
         </div>
       </div>
@@ -216,7 +214,6 @@
           <span class="section-eyebrow">WEEKLY RAID BOSS</span>
           <h2>週間ボス討伐戦</h2>
           
-          <!-- ボスステータス -->
           <div class="card boss-battle-card" style="text-align: center;">
             <div class="boss-avatar-large" style="font-size: 4rem;">🐲</div>
             <h3 id="boss-name" style="font-size: 1.4rem; font-weight: 800; margin-top: 8px;">魔導竜ゼノヴァ</h3>
@@ -228,7 +225,6 @@
             <div style="font-size: 0.8rem; color: var(--text-muted); text-align: right; margin-top: 4px;" id="boss-hp-text">HP 7,500 / 10,000</div>
           </div>
 
-          <!-- パーティー情報 -->
           <div class="card" style="margin-top: 14px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
               <span class="section-eyebrow">PARTY (4/4)</span>
@@ -239,7 +235,6 @@
             </div>
           </div>
 
-          <!-- 貢献度ランキング -->
           <div class="card" style="margin-top: 14px;">
             <span class="section-eyebrow">CONTRIBUTION RANKING</span>
             <h3>ボス貢献度（ダメージ順）</h3>
@@ -250,7 +245,20 @@
         </div>
       </div>
 
-      <!-- 【ページ5】ランキング -->
+      <!-- 【ページ5】ショップ（復活！） -->
+      <div id="page-shop" class="page">
+        <div class="page-container">
+          <span class="section-eyebrow">ITEM SHOP</span>
+          <h2>ショップ</h2>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">勉強やクエストで貯めたコインでアバターや称号をゲットしよう！</p>
+          
+          <div class="shop-grid" id="shop-items-container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+            <!-- JSでショップアイテムを動的生成 -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 【ページ6】ランキング -->
       <div id="page-ranking" class="page">
         <div class="page-container">
           <span class="section-eyebrow">LEADERBOARD</span>
@@ -258,7 +266,7 @@
           <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">※毎月1日にシーズン確定 ＆ ランクリセット！</p>
           
           <div class="ranking-tabs">
-            <button class="ranking-tab active" id="tab-rank-season">シーズンランク</button>
+            <button class="ranking-tab active" id="tab-rank-season">今月度ランク</button>
             <button class="ranking-tab" id="tab-rank-weekly">週間XP</button>
             <button class="ranking-tab" id="tab-rank-total">総合レベル</button>
           </div>
@@ -269,15 +277,14 @@
         </div>
       </div>
 
-      <!-- 【ページ6】フレンド -->
+      <!-- 【ページ7】フレンド -->
       <div id="page-friends" class="page">
         <div class="page-container">
           <span class="section-eyebrow">SOCIAL</span>
           <h2>フレンド</h2>
           
-          <!-- ユーザーID検索 -->
           <div class="input-row">
-            <input type="text" id="friend-search-input" placeholder="ユーザーIDで検索 (例: EITA_001)...">
+            <input type="text" id="friend-search-input" placeholder="ユーザーIDで検索 (例: eita_001)...">
             <button class="primary-button small-button" id="btn-friend-search">検索</button>
           </div>
 
@@ -296,10 +303,13 @@
           </div>
 
           <div style="text-align: center; margin: 16px 0;">
-            <div style="font-size: 3rem;" id="prof-avatar">🧙‍♂️</div>
-            <h3 id="prof-player-name" style="margin-top: 4px;">---</h3>
-            <div style="font-size: 0.8rem; color: var(--text-muted);" id="prof-user-id">ID: ---</div>
-            <div class="rank-badge" id="prof-title" style="margin-top: 6px;">新米受験生</div>
+            <div style="font-size: 3.5rem;" id="prof-avatar">🧙‍♂️</div>
+            <h3 id="prof-player-name" style="margin-top: 4px; font-size: 1.4rem;">---</h3>
+            <div style="font-size: 0.85rem; color: var(--primary-color); font-weight: bold;" id="prof-user-id">ID: @---</div>
+            <div style="display: flex; justify-content: center; gap: 6px; margin-top: 6px;">
+              <span class="rank-badge" id="prof-title">新米受験生</span>
+              <span class="star-badge hidden" id="prof-star-badge">⭐ Lv.MAX</span>
+            </div>
           </div>
 
           <!-- 弱点分析サマリーカード -->
@@ -321,7 +331,26 @@
         </div>
       </div>
 
-      <!-- 下部ナビゲーションバー（全6タブ） -->
+      <!-- 👑 クエストクリア / DAILY COMPLETE 専用の大迫力ポップアップモーダル -->
+      <div id="modal-quest-complete" class="modal hidden">
+        <div class="modal-content quest-complete-box">
+          <div class="complete-icon-large">🏆</div>
+          <h2 class="complete-title" id="quest-complete-title">QUEST CLEAR!</h2>
+          <p id="quest-complete-desc" style="margin-top: 8px; font-size: 0.95rem; color: #ddd;">本日のデイリーミッションを達成しました！</p>
+          
+          <div class="reward-box" style="margin-top: 16px;">
+            <span class="section-eyebrow">GET REWARDS</span>
+            <div class="reward-items" id="quest-complete-rewards">
+              <div class="reward-item">🪙 +100 コイン</div>
+              <div class="reward-item">⚡ +150 総合XP</div>
+            </div>
+          </div>
+
+          <button class="primary-button large-button" id="btn-close-quest-complete" style="margin-top: 20px;">報酬を受け取る！</button>
+        </div>
+      </div>
+
+      <!-- 下部ナビゲーションバー（全7タブ） -->
       <nav class="bottom-nav">
         <button class="nav-button active" data-target="page-home">
           <span>🏠</span>
@@ -338,6 +367,10 @@
         <button class="nav-button" data-target="page-boss">
           <span>🐲</span>
           <small>ボス</small>
+        </button>
+        <button class="nav-button" data-target="page-shop">
+          <span>🛒</span>
+          <small>ショップ</small>
         </button>
         <button class="nav-button" data-target="page-ranking">
           <span>🏆</span>
