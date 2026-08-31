@@ -2704,3 +2704,4 @@ function getWeekRange() {
     `${sunday.toLocaleDateString("ja-JP")}`
   );
 }
+console.log("🔥 受験RPG JS 起動確認");
