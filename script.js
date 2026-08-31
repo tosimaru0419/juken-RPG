@@ -1651,3 +1651,14 @@ document
 
     }
   );
+console.log("===== TEST START =====");
+
+const testButton = document.getElementById("show-register-button");
+
+console.log("ボタン:", testButton);
+
+if (testButton) {
+  testButton.addEventListener("click", function () {
+    alert("クリックイベントは動いてる！！");
+  });
+}
