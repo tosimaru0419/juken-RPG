@@ -1,5 +1,5 @@
 /* ==========================================================================
-   受験RPG - Cyberpunk / Modern Gaming UI (High-End Edition)
+   受験RPG - Cyberpunk / Modern Gaming UI (Visual & Contrast Upgraded)
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -8,30 +8,32 @@
 :root {
   /* 背景カラー */
   --bg-main: #07090e;
-  --bg-card: rgba(18, 22, 33, 0.7);
-  --bg-card-hover: rgba(28, 34, 50, 0.85);
-  --bg-input: rgba(12, 15, 23, 0.9);
+  --bg-card: rgba(18, 22, 33, 0.85);
+  --bg-card-hover: rgba(30, 38, 56, 0.9);
+  --bg-input: rgba(15, 20, 31, 0.95);
   
-  /* テキスト */
+  /* テキスト（全体的に白寄りに大幅くっきり化） */
   --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-secondary: #e2e8f0; /* くっきり明るいシルバーホワイト */
+  --text-muted: #94a3b8;     /* 従来のサブテキストよりかなり明るめ */
   
-  /* ゲーミングアクセント（発光カラー） */
+  /* ゲーミングアクセント */
   --accent-cyan: #00f2fe;
+  --accent-blue: #3b82f6;
   --accent-purple: #7928ca;
-  --accent-pink: #ff0080;
   --accent-gold: #ffb703;
+  --accent-silver: #cbd5e1;
+  --accent-bronze: #d97706;
   --accent-green: #10b981;
   
-  /* ネオン発光用シャドウ */
-  --glow-cyan: 0 0 15px rgba(0, 242, 254, 0.35);
-  --glow-purple: 0 0 20px rgba(121, 40, 202, 0.4);
-  --shadow-card: 0 12px 32px 0 rgba(0, 0, 0, 0.5);
+  /* 発光・影 */
+  --glow-cyan: 0 0 16px rgba(0, 242, 254, 0.4);
+  --glow-purple: 0 0 20px rgba(121, 40, 202, 0.45);
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.6);
   
   /* ボーダー */
-  --border-glass: 1px solid rgba(255, 255, 255, 0.08);
-  --border-neon: 1px solid rgba(0, 242, 254, 0.4);
+  --border-glass: 1px solid rgba(255, 255, 255, 0.15);
+  --border-neon: 1px solid rgba(0, 242, 254, 0.5);
   
   --radius-sm: 10px;
   --radius-md: 16px;
@@ -49,8 +51,8 @@
 body {
   background-color: var(--bg-main);
   background-image: 
-    radial-gradient(at 0% 0%, rgba(121, 40, 202, 0.15) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(0, 242, 254, 0.1) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(121, 40, 202, 0.18) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(0, 242, 254, 0.12) 0px, transparent 50%);
   background-attachment: fixed;
   color: var(--text-primary);
   line-height: 1.5;
@@ -72,30 +74,33 @@ body {
    -------------------------------------------------------------------------- */
 h1, h2, h3 {
   font-weight: 800;
-  letter-spacing: -0.03em;
-  color: #fff;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+p, span, label, div {
+  color: var(--text-secondary); /* デフォルトの文章も白寄りに */
 }
 
 .section-eyebrow {
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 900;
   letter-spacing: 0.15em;
-  background: linear-gradient(90deg, var(--accent-cyan), #4facfe);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--accent-cyan);
   text-transform: uppercase;
   display: block;
   margin-bottom: 4px;
+  text-shadow: 0 0 8px rgba(0, 242, 254, 0.5);
 }
 
-/* ボタン（スタイリッシュネオンデザイン） */
+/* ボタンデザイン */
 button {
   border: none;
   outline: none;
   font-weight: 700;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -104,15 +109,10 @@ button {
 
 .primary-button {
   background: linear-gradient(135deg, var(--accent-cyan), #0072ff);
-  color: #000;
+  color: #000000;
   font-weight: 800;
   padding: 14px 24px;
   box-shadow: var(--glow-cyan);
-}
-
-.primary-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
 }
 
 .primary-button:active {
@@ -120,16 +120,25 @@ button {
 }
 
 .secondary-button {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
   border: var(--border-glass);
   backdrop-filter: blur(10px);
   padding: 12px 18px;
 }
 
 .secondary-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.small-button {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: var(--border-glass);
+  border-radius: 8px;
 }
 
 .large-button {
@@ -144,16 +153,17 @@ button {
   color: var(--accent-cyan);
   font-size: 0.85rem;
   padding: 4px;
+  font-weight: 700;
 }
 
 /* --------------------------------------------------------------------------
-   3. HEADER & BOTTOM NAV (GLASSMORPHISM)
+   3. HEADER & BOTTOM NAV
    -------------------------------------------------------------------------- */
 .top-header {
   position: sticky;
   top: 0;
   z-index: 90;
-  background: rgba(7, 9, 14, 0.75);
+  background: rgba(7, 9, 14, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: var(--border-glass);
@@ -171,7 +181,7 @@ button {
 
 .header-avatar {
   font-size: 1.3rem;
-  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+  background: rgba(255, 255, 255, 0.1);
   width: 42px;
   height: 42px;
   display: flex;
@@ -184,22 +194,24 @@ button {
 .header-name {
   font-weight: 700;
   font-size: 0.95rem;
+  color: #ffffff;
 }
 
 .header-level {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--accent-cyan);
   font-weight: 800;
 }
 
 .header-currency {
-  background: rgba(255, 183, 3, 0.08);
-  border: 1px solid rgba(255, 183, 3, 0.25);
+  background: rgba(255, 183, 3, 0.12);
+  border: 1px solid rgba(255, 183, 3, 0.4);
   color: var(--accent-gold);
   padding: 6px 14px;
   border-radius: 20px;
   font-weight: 800;
   font-size: 0.85rem;
+  text-shadow: 0 0 8px rgba(255, 183, 3, 0.4);
 }
 
 /* 下部ナビ */
@@ -211,7 +223,7 @@ button {
   width: 100%;
   max-width: 480px;
   height: 72px;
-  background: rgba(12, 15, 23, 0.85);
+  background: rgba(12, 15, 23, 0.9);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-top: var(--border-glass);
@@ -248,7 +260,7 @@ button {
 
 .nav-button.active span {
   transform: translateY(-3px) scale(1.1);
-  filter: drop-shadow(0 0 8px var(--accent-cyan));
+  filter: drop-shadow(0 0 10px var(--accent-cyan));
 }
 
 /* --------------------------------------------------------------------------
@@ -261,7 +273,6 @@ button {
 .card {
   background: var(--bg-card);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: var(--border-glass);
   border-radius: var(--radius-md);
   padding: 20px;
@@ -269,16 +280,14 @@ button {
   box-shadow: var(--shadow-card);
 }
 
-/* ヒーローカード（メインカード） */
 .hero-card {
-  background: linear-gradient(135deg, rgba(121, 40, 202, 0.25), rgba(0, 242, 254, 0.15));
+  background: linear-gradient(135deg, rgba(121, 40, 202, 0.35), rgba(0, 242, 254, 0.2));
   backdrop-filter: blur(16px);
   border: var(--border-neon);
   box-shadow: var(--glow-purple);
   border-radius: var(--radius-lg);
   padding: 24px;
   margin-bottom: 20px;
-  position: relative;
 }
 
 .hero-top {
@@ -290,7 +299,7 @@ button {
 
 .hero-avatar {
   font-size: 2.6rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.1);
   width: 68px;
   height: 68px;
   display: flex;
@@ -298,26 +307,24 @@ button {
   justify-content: center;
   border-radius: var(--radius-md);
   border: var(--border-glass);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
 }
 
 .rank-badge {
   display: inline-block;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 900;
-  letter-spacing: 0.05em;
   padding: 4px 12px;
   border-radius: 20px;
   margin-top: 8px;
-  background: rgba(205, 127, 50, 0.15);
-  color: #e28743;
-  border: 1px solid rgba(205, 127, 50, 0.3);
+  background: rgba(205, 127, 50, 0.2);
+  color: #f97316;
+  border: 1px solid rgba(249, 115, 22, 0.4);
 }
 
 .level-display {
   display: flex;
   justify-content: space-between;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
   margin-bottom: 8px;
   font-weight: 600;
@@ -325,12 +332,12 @@ button {
 
 .level-display strong {
   color: var(--accent-cyan);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
 }
 
 .xp-bar {
   height: 10px;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   border-radius: 6px;
   overflow: hidden;
   border: var(--border-glass);
@@ -341,182 +348,196 @@ button {
   background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
   border-radius: 6px;
   box-shadow: var(--glow-cyan);
-  transition: width 0.5s ease;
-}
-
-/* グリッドスタッツ */
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.stat-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  border: var(--border-glass);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.stat-icon { font-size: 1.3rem; }
-.stat-label { font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
-.stat-card strong { font-size: 1.3rem; color: #fff; font-weight: 800; }
-
-/* クイックアクション */
-.quick-actions {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-.quick-action {
-  background: var(--bg-card);
-  border: var(--border-glass);
-  padding: 18px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  color: #fff;
-  justify-content: flex-start;
-}
-
-.quick-action:hover {
-  border-color: rgba(0, 242, 254, 0.3);
-  background: var(--bg-card-hover);
-  transform: translateY(-2px);
 }
 
 /* --------------------------------------------------------------------------
-   5. STUDY & TIMER
+   5. RANKING (★リニューアル: 1〜3位の豪華装飾)
    -------------------------------------------------------------------------- */
-.subject-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-
-.subject-button {
-  background: rgba(255, 255, 255, 0.03);
-  border: var(--border-glass);
-  color: var(--text-secondary);
-  padding: 14px;
-  border-radius: var(--radius-sm);
-  justify-content: flex-start;
-  font-size: 0.9rem;
-}
-
-.subject-button.selected {
-  background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(121, 40, 202, 0.15));
-  border: var(--border-neon);
-  color: #fff;
-  font-weight: 800;
-  box-shadow: var(--glow-cyan);
-}
-
-.timer-card {
-  background: var(--bg-card);
-  border: var(--border-glass);
-  border-radius: var(--radius-lg);
-  padding: 32px 20px;
-  text-align: center;
-  margin: 20px 0;
-  box-shadow: var(--shadow-card);
-}
-
-.timer-display {
-  font-size: 3.6rem;
-  font-weight: 900;
-  letter-spacing: 3px;
-  background: linear-gradient(180deg, #ffffff, #a5b4fc);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-family: 'Courier New', Courier, monospace;
-  margin: 16px 0 28px 0;
-  filter: drop-shadow(0 0 12px rgba(165, 180, 252, 0.3));
-}
-
-.timer-actions {
-  display: flex;
-  gap: 12px;
-}
-
-/* --------------------------------------------------------------------------
-   6. AUTH / REGISTER SCREEN
-   -------------------------------------------------------------------------- */
-.screen {
-  min-height: 100vh;
-  padding: 30px 20px;
-}
-
-.register-card {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.register-logo {
-  font-size: 4rem;
-  margin-bottom: 8px;
-  filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.4));
-}
-
-.register-subtitle {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  margin-bottom: 28px;
-}
-
-.auth-tabs {
+.ranking-tabs {
   display: flex;
   background: rgba(0, 0, 0, 0.4);
   padding: 4px;
   border-radius: var(--radius-sm);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   border: var(--border-glass);
 }
 
-.auth-tab {
+.ranking-tab {
   flex: 1;
   background: none;
   color: var(--text-muted);
-  padding: 10px;
-  font-size: 0.85rem;
+  padding: 10px 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
-.auth-tab.active {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+.ranking-tab.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
   border-radius: 8px;
 }
 
-.register-form {
+.ranking-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  text-align: left;
+  gap: 10px;
 }
 
-.register-form label {
-  font-size: 0.78rem;
-  color: var(--text-secondary);
+/* ランキング1行の基本構造 */
+.ranking-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: var(--border-glass);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+}
+
+.rank-number {
+  font-size: 1.1rem;
+  font-weight: 900;
+  width: 28px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.rank-user-avatar {
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rank-user-info {
+  flex: 1;
+}
+
+.rank-user-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+.rank-user-detail {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.rank-score {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--accent-cyan);
+}
+
+/* 🥇 1位 Gold */
+.ranking-item.top-1 {
+  background: linear-gradient(135deg, rgba(255, 183, 3, 0.2), rgba(20, 20, 20, 0.6));
+  border: 1px solid rgba(255, 183, 3, 0.6);
+  box-shadow: 0 0 15px rgba(255, 183, 3, 0.25);
+}
+.ranking-item.top-1 .rank-number { color: var(--accent-gold); font-size: 1.3rem; }
+
+/* 🥈 2位 Silver */
+.ranking-item.top-2 {
+  background: linear-gradient(135deg, rgba(203, 213, 225, 0.15), rgba(20, 20, 20, 0.6));
+  border: 1px solid rgba(203, 213, 225, 0.5);
+}
+.ranking-item.top-2 .rank-number { color: var(--accent-silver); font-size: 1.2rem; }
+
+/* 🥉 3位 Bronze */
+.ranking-item.top-3 {
+  background: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(20, 20, 20, 0.6));
+  border: 1px solid rgba(217, 119, 6, 0.4);
+}
+.ranking-item.top-3 .rank-number { color: var(--accent-bronze); font-size: 1.15rem; }
+
+/* --------------------------------------------------------------------------
+   6. FRIENDS (★リニューアル: カード型ソーシャルデザイン)
+   -------------------------------------------------------------------------- */
+.input-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.input-row input {
+  flex: 1;
+}
+
+.friends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.friend-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.04);
+  border: var(--border-glass);
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+}
+
+.friend-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.friend-avatar {
+  font-size: 1.8rem;
+  width: 46px;
+  height: 46px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border-glass);
+}
+
+.friend-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.friend-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+.friend-status {
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
   font-weight: 600;
 }
 
+/* --------------------------------------------------------------------------
+   7. FORM & INPUTS & MODALS
+   -------------------------------------------------------------------------- */
 input, select {
   width: 100%;
   padding: 14px 16px;
   background: var(--bg-input);
   border: var(--border-glass);
   border-radius: var(--radius-sm);
-  color: #fff;
+  color: #ffffff; /* 入力欄も真っ白 */
   font-size: 0.95rem;
   outline: none;
-  transition: all 0.2s;
+}
+
+input::placeholder {
+  color: var(--text-muted);
 }
 
 input:focus, select:focus {
@@ -524,13 +545,10 @@ input:focus, select:focus {
   box-shadow: var(--glow-cyan);
 }
 
-/* --------------------------------------------------------------------------
-   7. MODALS & OTHERS
-   -------------------------------------------------------------------------- */
 .modal {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 200;
@@ -548,20 +566,4 @@ input:focus, select:focus {
   padding: 28px;
   width: 100%;
   max-width: 400px;
-}
-
-.season-indicator {
-  position: fixed;
-  top: 14px;
-  right: 20px;
-  font-size: 0.65rem;
-  font-weight: 800;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  border: var(--border-glass);
-  padding: 5px 12px;
-  border-radius: 20px;
-  color: var(--text-secondary);
-  pointer-events: none;
-  z-index: 95;
 }
