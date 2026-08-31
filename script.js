@@ -1,7 +1,7 @@
 // ============================================================
 // 受験RPG - Supabase 接続
 // ============================================================
-
+alert("script.js 読み込まれた！");
 const SUPABASE_URL =
   "https://iuvahxijknuisndqcfmp.supabase.co";
 
