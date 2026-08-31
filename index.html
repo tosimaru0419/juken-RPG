@@ -2,14 +2,12 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>⚔️ 受験RPG</title>
-
   <link rel="stylesheet" href="style.css">
+  
+  <!-- Supabase CDN (オンライン連携用) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-script@2"></script>
 </head>
 
 <body>
@@ -17,1220 +15,452 @@
 <div id="app">
 
   <!-- ========================================
-       REGISTER SCREEN
+       AUTH / REGISTER SCREEN (オンラインログイン & 新規登録)
   ======================================== -->
-
   <section id="register-screen" class="screen">
-
     <div class="register-card">
-
-      <div class="register-logo">
-        ⚔️
-      </div>
-
+      <div class="register-logo">⚔️</div>
       <h1>受験RPG</h1>
+      <p class="register-subtitle">君の受験を、冒険に変えろ。</p>
 
-      <p class="register-subtitle">
-        君の受験を、冒険に変えろ。
-      </p>
+      <!-- ログイン / 新規登録 切り替えタブ -->
+      <div class="auth-tabs">
+        <button id="tab-auth-login" class="auth-tab active">ログイン</button>
+        <button id="tab-auth-register" class="auth-tab">新規登録</button>
+      </div>
 
       <div class="register-form">
+        <!-- 認証用メール・パスワード -->
+        <label for="auth-email">メールアドレス</label>
+        <input id="auth-email" type="email" placeholder="example@email.com" required>
 
-        <label for="player-name">
-          冒険者名
-        </label>
+        <label for="auth-password">パスワード</label>
+        <input id="auth-password" type="password" placeholder="6文字以上" required>
 
-        <input
-          id="player-name"
-          type="text"
-          maxlength="20"
-          placeholder="プレイヤー名"
-        >
+        <!-- プロフィール登録用（新規登録時のみ使用） -->
+        <div id="profile-fields">
+          <label for="player-name">冒険者名</label>
+          <input id="player-name" type="text" maxlength="20" placeholder="プレイヤー名">
 
-        <label for="player-track">
-          コース
-        </label>
+          <label for="player-track">コース</label>
+          <select id="player-track">
+            <option value="理系">理系</option>
+            <option value="文系">文系</option>
+          </select>
 
-        <select id="player-track">
-          <option value="理系">理系</option>
-          <option value="文系">文系</option>
-        </select>
+          <label for="player-subject">メイン科目</label>
+          <input id="player-subject" type="text" maxlength="20" placeholder="例：数学">
+        </div>
 
-        <label for="player-subject">
-          メイン科目
-        </label>
-
-        <input
-          id="player-subject"
-          type="text"
-          maxlength="20"
-          placeholder="例：数学"
-        >
-
-        <button
-          id="register-button"
-          class="primary-button"
-        >
+        <button id="register-button" class="primary-button">
           ⚔️ 冒険を始める
         </button>
-
       </div>
-
     </div>
-
   </section>
 
 
   <!-- ========================================
        MAIN SCREEN
   ======================================== -->
-
-  <section
-    id="main-screen"
-    class="screen hidden"
-  >
+  <section id="main-screen" class="screen hidden">
 
     <!-- HEADER -->
-
     <header class="top-header">
-
       <div class="header-player">
-
-        <div
-          id="home-avatar"
-          class="header-avatar"
-        >
-          ⚔️
-        </div>
-
+        <div id="home-avatar" class="header-avatar">⚔️</div>
         <div>
-          <div
-            id="home-name"
-            class="header-name"
-          >
-            冒険者
-          </div>
-
-          <div class="header-level">
-            Lv.<span id="home-level">1</span>
-          </div>
+          <div id="home-name" class="header-name">冒険者</div>
+          <div class="header-level">Lv.<span id="home-level">1</span></div>
         </div>
-
       </div>
 
       <div class="header-currency">
-        🪙
-        <span id="home-coins">0</span>
+        🪙 <span id="home-coins">0</span>
       </div>
-
     </header>
 
 
     <!-- ======================================
          PAGE CONTAINER
     ====================================== -->
-
     <main class="page-container">
-
 
       <!-- ====================================
            HOME
       ==================================== -->
-
-      <section
-        id="page-home"
-        class="page active"
-      >
-
+      <section id="page-home" class="page active">
         <div class="hero-card">
-
           <div class="hero-top">
-
             <div>
-
-              <div class="small-label">
-                CURRENT ADVENTURER
-              </div>
-
-              <h2 id="home-name">
-                冒険者
-              </h2>
-
-              <div
-                id="home-rank"
-                class="rank-badge"
-              >
-                🥉 BRONZE
-              </div>
-
+              <div class="small-label">CURRENT ADVENTURER</div>
+              <h2 id="home-name">冒険者</h2>
+              <div id="home-rank" class="rank-badge">🥉 BRONZE</div>
             </div>
-
-            <div
-              id="home-avatar"
-              class="hero-avatar"
-            >
-              ⚔️
-            </div>
-
+            <div id="home-avatar" class="hero-avatar">⚔️</div>
           </div>
 
-
           <div class="level-display">
-
-            <span>
-              Lv.<strong id="home-level">1</strong>
-            </span>
-
-            <span id="home-xp-text">
-              0 / 100
-            </span>
-
+            <span>Lv.<strong id="home-level">1</strong></span>
+            <span id="home-xp-text">0 / 100 XP</span>
           </div>
 
           <div class="xp-bar">
-            <div
-              id="home-xp-fill"
-              class="xp-bar-fill"
-              style="width:0%"
-            ></div>
+            <div id="home-xp-fill" class="xp-bar-fill" style="width:0%"></div>
           </div>
-
         </div>
-
 
         <!-- STATS -->
-
         <div class="stat-grid">
-
           <div class="stat-card">
-
-            <span class="stat-icon">
-              📚
-            </span>
-
-            <span class="stat-label">
-              今日
-            </span>
-
-            <strong id="home-today-minutes">
-              0分
-            </strong>
-
+            <span class="stat-icon">📚</span>
+            <span class="stat-label">今日</span>
+            <strong id="home-today-minutes">0分</strong>
           </div>
-
-
           <div class="stat-card">
-
-            <span class="stat-icon">
-              📅
-            </span>
-
-            <span class="stat-label">
-              今月
-            </span>
-
-            <strong id="home-month-hours">
-              0分
-            </strong>
-
+            <span class="stat-icon">📅</span>
+            <span class="stat-label">今月</span>
+            <strong id="home-month-hours">0分</strong>
           </div>
-
-
           <div class="stat-card">
-
-            <span class="stat-icon">
-              🪙
-            </span>
-
-            <span class="stat-label">
-              コイン
-            </span>
-
-            <strong id="home-coins">
-              0
-            </strong>
-
+            <span class="stat-icon">🪙</span>
+            <span class="stat-label">コイン</span>
+            <strong id="home-coins">0</strong>
           </div>
-
-
           <div class="stat-card">
-
-            <span class="stat-icon">
-              🏆
-            </span>
-
-            <span class="stat-label">
-              ランク
-            </span>
-
-            <strong id="home-rank">
-              🥉 BRONZE
-            </strong>
-
+            <span class="stat-icon">🔥</span>
+            <span class="stat-label">Streak</span>
+            <strong id="home-streak">1日</strong>
           </div>
-
         </div>
-
 
         <!-- ACTIVE BUFF -->
-
-        <div
-          id="home-buff"
-          class="buff-card hidden"
-        >
-
-          <div class="buff-icon">
-            ⚡
-          </div>
-
+        <div id="home-buff" class="buff-card hidden">
+          <div class="buff-icon">⚡</div>
           <div class="buff-info">
-
-            <strong id="buff-name">
-              バフ
-            </strong>
-
-            <span id="buff-description">
-              -
-            </span>
-
+            <strong id="buff-name">バフ</strong>
+            <span id="buff-description">-</span>
           </div>
-
-          <div
-            id="buff-timer"
-            class="buff-timer"
-          >
-            00:00
-          </div>
-
+          <div id="buff-timer" class="buff-timer">00:00</div>
         </div>
-
 
         <!-- DAILY QUESTS -->
-
         <div class="section-heading">
-
           <div>
-            <span class="section-eyebrow">
-              DAILY QUEST
-            </span>
-
-            <h2>
-              今日のクエスト
-            </h2>
+            <span class="section-eyebrow">DAILY QUEST</span>
+            <h2>今日のクエスト</h2>
           </div>
-
-          <button
-            class="text-button"
-            data-page="quests"
-          >
-            すべて見る →
-          </button>
-
+          <button class="text-button" data-page="quests">すべて見る →</button>
         </div>
-
-
-        <div
-          id="home-quests"
-          class="home-quest-list"
-        ></div>
-
+        <div id="home-quests" class="home-quest-list"></div>
 
         <!-- QUICK ACTION -->
-
         <div class="quick-actions">
-
-          <button
-            class="quick-action"
-            data-page="study"
-          >
-            <span>📚</span>
-            <strong>勉強する</strong>
+          <button class="quick-action" data-page="study">
+            <span>📚</span><strong>勉強する</strong>
           </button>
-
-          <button
-            class="quick-action"
-            data-page="battle"
-          >
-            <span>⚔️</span>
-            <strong>ボス戦</strong>
+          <button class="quick-action" data-page="battle">
+            <span>⚔️</span><strong>ボス戦</strong>
           </button>
-
-          <button
-            class="quick-action"
-            data-page="shop"
-          >
-            <span>🛒</span>
-            <strong>ショップ</strong>
+          <button class="quick-action" data-page="ranking">
+            <span>🏆</span><strong>ランキング</strong>
           </button>
-
+          <button class="quick-action" data-page="friends">
+            <span>👥</span><strong>フレンド</strong>
+          </button>
         </div>
-
       </section>
 
 
       <!-- ====================================
            STUDY
       ==================================== -->
-
-      <section
-        id="page-study"
-        class="page"
-      >
-
+      <section id="page-study" class="page">
         <div class="page-title">
-
-          <span class="section-eyebrow">
-            STUDY
-          </span>
-
-          <h1>
-            📚 勉強する
-          </h1>
-
-          <p>
-            勉強した時間が、そのまま力になる。
-          </p>
-
+          <span class="section-eyebrow">STUDY</span>
+          <h1>📚 勉強する</h1>
+          <p>勉強した時間が、そのまま力になる。</p>
         </div>
-
-
-        <!-- SUBJECT SELECT -->
 
         <div class="card">
-
           <div class="card-header">
-
             <div>
-              <span class="section-eyebrow">
-                SUBJECT
-              </span>
-
-              <h2>
-                科目を選択
-              </h2>
+              <span class="section-eyebrow">SUBJECT</span>
+              <h2>科目を選択</h2>
             </div>
-
           </div>
-
-
           <div class="subject-grid">
-
-            <button
-              class="subject-button"
-              data-subject="数学"
-            >
-              <span>📐</span>
-              数学
-            </button>
-
-            <button
-              class="subject-button"
-              data-subject="英語"
-            >
-              <span>🔤</span>
-              英語
-            </button>
-
-            <button
-              class="subject-button"
-              data-subject="国語"
-            >
-              <span>📖</span>
-              国語
-            </button>
-
-            <button
-              class="subject-button"
-              data-subject="物理"
-            >
-              <span>⚡</span>
-              物理
-            </button>
-
-            <button
-              class="subject-button"
-              data-subject="化学"
-            >
-              <span>🧪</span>
-              化学
-            </button>
-
-            <button
-              class="subject-button"
-              data-subject="生物"
-            >
-              <span>🧬</span>
-              生物
-            </button>
-
-            <button
-              class="subject-button"
-              data-subject="地理"
-            >
-              <span>🌍</span>
-              地理
-            </button>
-
-            <button
-              class="subject-button"
-              data-subject="日本史"
-            >
-              <span>🏯</span>
-              日本史
-            </button>
-
-            <button
-              class="subject-button"
-              data-subject="世界史"
-            >
-              <span>🌐</span>
-              世界史
-            </button>
-
-            <button
-              class="subject-button"
-              data-subject="政治経済"
-            >
-              <span>🏛️</span>
-              政経
-            </button>
-
+            <button class="subject-button" data-subject="数学"><span>📐</span>数学</button>
+            <button class="subject-button" data-subject="英語"><span>🔤</span>英語</button>
+            <button class="subject-button" data-subject="国語"><span>📖</span>国語</button>
+            <button class="subject-button" data-subject="物理"><span>⚡</span>物理</button>
+            <button class="subject-button" data-subject="化学"><span>🧪</span>化学</button>
+            <button class="subject-button" data-subject="生物"><span>🧬</span>生物</button>
+            <button class="subject-button" data-subject="地理"><span>🌍</span>地理</button>
+            <button class="subject-button" data-subject="日本史"><span>🏯</span>日本史</button>
+            <button class="subject-button" data-subject="世界史"><span>🌐</span>世界史</button>
+            <button class="subject-button" data-subject="政治経済"><span>🏛️</span>政経</button>
           </div>
-
         </div>
-
 
         <!-- TIMER -->
-
         <div class="timer-card">
-
           <div class="timer-status">
-            <span
-              id="timer-status"
-              class="status-dot"
-            ></span>
-
-            <span id="current-subject">
-              未選択
-            </span>
+            <span id="timer-status" class="status-dot"></span>
+            <span id="current-subject">未選択</span>
           </div>
-
-
-          <div
-            id="timer-display"
-            class="timer-display"
-          >
-            00:00:00
-          </div>
-
-
+          <div id="timer-display" class="timer-display">00:00:00</div>
           <div class="timer-actions">
-
-            <button
-              id="timer-start"
-              class="primary-button large-button"
-            >
-              ▶ スタート
-            </button>
-
-            <button
-              id="timer-stop"
-              class="secondary-button large-button"
-            >
-              ⏹ 終了
-            </button>
-
+            <button id="timer-start" class="primary-button large-button">▶ スタート</button>
+            <button id="timer-stop" class="secondary-button large-button">⏹ 終了</button>
           </div>
-
         </div>
-
 
         <!-- MANUAL REPORT -->
-
         <div class="manual-report-card">
-
           <div>
-
-            <strong>
-              📝 事後報告
-            </strong>
-
-            <p>
-              タイマーを使わず勉強した時間も記録できます。
-            </p>
-
+            <strong>📝 事後報告</strong>
+            <p>タイマーを使わず勉強した時間も記録できます。</p>
           </div>
-
-          <button
-            id="manual-report-button"
-            class="secondary-button"
-          >
-            時間を記録
-          </button>
-
+          <button id="manual-report-button" class="secondary-button">時間を記録</button>
         </div>
-
       </section>
 
 
       <!-- ====================================
            QUEST
       ==================================== -->
-
-      <section
-        id="page-quests"
-        class="page"
-      >
-
+      <section id="page-quests" class="page">
         <div class="page-title">
-
-          <span class="section-eyebrow">
-            DAILY QUEST
-          </span>
-
-          <h1>
-            🎯 今日のクエスト
-          </h1>
-
-          <p>
-            毎日の挑戦を達成して報酬を獲得しよう。
-          </p>
-
+          <span class="section-eyebrow">DAILY QUEST</span>
+          <h1>🎯 今日のクエスト</h1>
+          <p>毎日の挑戦を達成して報酬を獲得しよう。</p>
         </div>
-
-
         <div class="goal-summary card">
-
           <div>
-
-            <span>
-              今日の勉強時間
-            </span>
-
-            <strong id="quest-today-time">
-              0分
-            </strong>
-
+            <span>今日の勉強時間</span>
+            <strong id="quest-today-time">0分</strong>
           </div>
-
-          <div class="goal-divider">
-            /
-          </div>
-
+          <div class="goal-divider">/</div>
           <div>
-
-            <span>
-              今日の目標
-            </span>
-
-            <strong id="quest-goal-time">
-              60分
-            </strong>
-
+            <span>今日の目標</span>
+            <strong id="quest-goal-time">60分</strong>
           </div>
-
-          <button
-            id="change-goal-button"
-            class="small-button"
-          >
-            目標変更
-          </button>
-
+          <button id="change-goal-button" class="small-button">目標変更</button>
         </div>
-
-
-        <div
-          id="quest-list"
-          class="quest-list"
-        ></div>
-
+        <div id="quest-list" class="quest-list"></div>
       </section>
 
 
       <!-- ====================================
            BATTLE
       ==================================== -->
-
-      <section
-        id="page-battle"
-        class="page"
-      >
-
+      <section id="page-battle" class="page">
         <div class="page-title">
-
-          <span class="section-eyebrow">
-            BATTLEFIELD
-          </span>
-
-          <h1>
-            ⚔️ 受験ボス戦
-          </h1>
-
-          <p>
-            勉強でパーティーを強化し、強敵を倒せ。
-          </p>
-
+          <span class="section-eyebrow">BATTLEFIELD</span>
+          <h1>⚔️ 受験ボス戦</h1>
+          <p>勉強でパーティーを強化し、強敵を倒せ。</p>
         </div>
-
-
-        <!-- BOSS -->
 
         <div class="boss-card">
-
-          <div class="boss-warning">
-            ⚠️ WARNING
-          </div>
-
-          <div
-            id="boss-icon"
-            class="boss-icon"
-          >
-            👹
-          </div>
-
-          <h2 id="boss-name">
-            未知なる受験の魔王
-          </h2>
-
-          <div
-            id="boss-description"
-            class="boss-description"
-          >
-            弱点を見抜き、仲間と共に挑め。
-          </div>
-
-
+          <div class="boss-warning">⚠️ WARNING</div>
+          <div id="boss-icon" class="boss-icon">👹</div>
+          <h2 id="boss-name">未知なる受験の魔王</h2>
+          <div id="boss-description" class="boss-description">弱点を見抜き、仲間と共に挑め。</div>
           <div class="boss-weakness">
-
-            <span>
-              弱点
-            </span>
-
-            <strong id="boss-weakness">
-              ?
-            </strong>
-
+            <span>弱点</span>
+            <strong id="boss-weakness">?</strong>
           </div>
-
-
           <div class="boss-hp">
-
             <div class="boss-hp-label">
-
-              <span>
-                HP
-              </span>
-
-              <span id="boss-hp-text">
-                1000 / 1000
-              </span>
-
+              <span>HP</span>
+              <span id="boss-hp-text">1000 / 1000</span>
             </div>
-
             <div class="boss-hp-bar">
-
-              <div
-                id="boss-hp-fill"
-                class="boss-hp-fill"
-                style="width:100%"
-              ></div>
-
+              <div id="boss-hp-fill" class="boss-hp-fill" style="width:100%"></div>
             </div>
-
           </div>
-
         </div>
-
-
-        <!-- PARTY -->
 
         <div class="section-heading">
-
           <div>
-
-            <span class="section-eyebrow">
-              PARTY
-            </span>
-
-            <h2>
-              集団戦
-            </h2>
-
+            <span class="section-eyebrow">PARTY</span>
+            <h2>集団戦</h2>
           </div>
-
         </div>
-
-
-        <div
-          id="party-list"
-          class="party-list"
-        ></div>
-
-
-        <!-- BATTLE ACTION -->
+        <div id="party-list" class="party-list"></div>
 
         <div class="battle-action-card">
+          <p>勉強してパーティーの攻撃力を上げよう。</p>
+          <button id="battle-start-button" class="primary-button large-button">⚔️ ボス戦開始</button>
+        </div>
+      </section>
 
-          <p>
-            勉強してパーティーの攻撃力を上げよう。
-          </p>
 
-          <button
-            id="battle-start-button"
-            class="primary-button large-button"
-          >
-            ⚔️ ボス戦開始
-          </button>
-
+      <!-- ====================================
+           RANKING (オンライン全国/フレンドランキング)
+      ==================================== -->
+      <section id="page-ranking" class="page">
+        <div class="page-title">
+          <span class="section-eyebrow">LEADERBOARD</span>
+          <h1>🏆 ランキング</h1>
+          <p>全国のライバルと勉強時間を競い合おう。</p>
         </div>
 
+        <div class="ranking-tabs">
+          <button class="ranking-tab active" data-rank-type="weekly">週間XP</button>
+          <button class="ranking-tab" data-rank-type="monthly">月間時間</button>
+          <button class="ranking-tab" data-rank-type="friends">フレンドのみ</button>
+        </div>
+
+        <div class="card">
+          <div id="ranking-list-container" class="ranking-list">
+            <!-- 動的にランキング項目が挿入されます -->
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ====================================
+           FRIENDS (オンラインフレンド機能)
+      ==================================== -->
+      <section id="page-friends" class="page">
+        <div class="page-title">
+          <span class="section-eyebrow">SOCIAL</span>
+          <h1>👥 フレンド</h1>
+          <p>仲間と共に受験を乗り越えよう。</p>
+        </div>
+
+        <!-- フレンド追加コード検索 -->
+        <div class="card">
+          <h2>🔍 フレンド検索・追加</h2>
+          <div class="input-row">
+            <input id="friend-search-id" type="text" placeholder="フレンドIDを入力">
+            <button id="friend-search-button" class="primary-button">申請</button>
+          </div>
+          <p class="small-text">あなたのフレンドID: <strong id="my-friend-id">----</strong></p>
+        </div>
+
+        <div class="card">
+          <h2>🤝 フレンド一覧</h2>
+          <div id="friends-list" class="friends-list">
+            <!-- 動的にフレンドカードが挿入されます -->
+          </div>
+        </div>
       </section>
 
 
       <!-- ====================================
            RANK
       ==================================== -->
-
-      <section
-        id="page-rank"
-        class="page"
-      >
-
+      <section id="page-rank" class="page">
         <div class="page-title">
-
-          <span class="section-eyebrow">
-            RANK
-          </span>
-
-          <h1>
-            🏆 ランク
-          </h1>
-
-          <p>
-            今月の勉強時間でランクアップ。
-          </p>
-
+          <span class="section-eyebrow">RANK</span>
+          <h1>🏆 ランク階級</h1>
+          <p>今月の勉強時間でランクアップ。</p>
         </div>
-
 
         <div class="rank-current-card">
-
-          <div
-            id="rank-current-icon"
-            class="rank-large-icon"
-          >
-            🥉
-          </div>
-
+          <div id="rank-current-icon" class="rank-large-icon">🥉</div>
           <div>
-
-            <span>
-              CURRENT RANK
-            </span>
-
-            <h2 id="rank-current-name">
-              BRONZE
-            </h2>
-
+            <span>CURRENT RANK</span>
+            <h2 id="rank-current-name">BRONZE</h2>
           </div>
-
         </div>
-
 
         <div class="rank-progress-card card">
-
           <div class="rank-progress-header">
-
-            <span id="rank-progress-text">
-              0分 / 10分
-            </span>
-
-            <span id="rank-next-text">
-              次：🥈 SILVER
-            </span>
-
+            <span id="rank-progress-text">0分 / 10分</span>
+            <span id="rank-next-text">次：🥈 SILVER</span>
           </div>
-
           <div class="rank-progress-bar">
-
-            <div
-              id="rank-progress-fill"
-              class="rank-progress-fill"
-              style="width:0%"
-            ></div>
-
+            <div id="rank-progress-fill" class="rank-progress-fill" style="width:0%"></div>
           </div>
-
         </div>
-
 
         <div class="rank-list">
-
-          <div class="rank-row">
-            <span>🥉</span>
-            <strong>BRONZE</strong>
-            <span>0分</span>
-          </div>
-
-          <div class="rank-row">
-            <span>🥈</span>
-            <strong>SILVER</strong>
-            <span>10分</span>
-          </div>
-
-          <div class="rank-row">
-            <span>🥇</span>
-            <strong>GOLD</strong>
-            <span>25分</span>
-          </div>
-
-          <div class="rank-row">
-            <span>💎</span>
-            <strong>PLATINUM</strong>
-            <span>50分</span>
-          </div>
-
-          <div class="rank-row">
-            <span>💠</span>
-            <strong>DIAMOND</strong>
-            <span>80分</span>
-          </div>
-
-          <div class="rank-row">
-            <span>👑</span>
-            <strong>MASTER</strong>
-            <span>110分</span>
-          </div>
-
-          <div class="rank-row">
-            <span>⚔️</span>
-            <strong>GRANDMASTER</strong>
-            <span>140分</span>
-          </div>
-
-          <div class="rank-row">
-            <span>🌌</span>
-            <strong>LEGEND</strong>
-            <span>170分</span>
-          </div>
-
+          <div class="rank-row"><span>🥉</span><strong>BRONZE</strong><span>0分</span></div>
+          <div class="rank-row"><span>🥈</span><strong>SILVER</strong><span>10分</span></div>
+          <div class="rank-row"><span>🥇</span><strong>GOLD</strong><span>25分</span></div>
+          <div class="rank-row"><span>💎</span><strong>PLATINUM</strong><span>50分</span></div>
+          <div class="rank-row"><span>💠</span><strong>DIAMOND</strong><span>80分</span></div>
+          <div class="rank-row"><span>👑</span><strong>MASTER</strong><span>110分</span></div>
+          <div class="rank-row"><span>⚔️</span><strong>GRANDMASTER</strong><span>140分</span></div>
+          <div class="rank-row"><span>🌌</span><strong>LEGEND</strong><span>170分</span></div>
         </div>
-
       </section>
 
 
       <!-- ====================================
            SHOP
       ==================================== -->
-
-      <section
-        id="page-shop"
-        class="page"
-      >
-
+      <section id="page-shop" class="page">
         <div class="page-title">
-
-          <span class="section-eyebrow">
-            SHOP
-          </span>
-
-          <h1>
-            🛒 ショップ
-          </h1>
-
-          <p>
-            コインを使って冒険者を強化しよう。
-          </p>
-
+          <span class="section-eyebrow">SHOP</span>
+          <h1>🛒 ショップ</h1>
+          <p>コインを使って冒険者を強化しよう。</p>
         </div>
-
-
-        <div class="shop-balance">
-
-          🪙
-          <strong id="shop-coins">
-            0
-          </strong>
-
-        </div>
-
-
+        <div class="shop-balance">🪙 <strong id="shop-coins">0</strong></div>
         <div class="shop-tabs">
-
-          <button
-            class="shop-tab active"
-            data-shop-tab="titles"
-          >
-            🏷️ 称号
-          </button>
-
-          <button
-            class="shop-tab"
-            data-shop-tab="items"
-          >
-            🎁 アイテム
-          </button>
-
-          <button
-            class="shop-tab"
-            data-shop-tab="themes"
-          >
-            🎨 テーマ
-          </button>
-
-          <button
-            class="shop-tab"
-            data-shop-tab="backgrounds"
-          >
-            🌌 背景
-          </button>
-
-          <button
-            class="shop-tab"
-            data-shop-tab="avatars"
-          >
-            👤 アバター
-          </button>
-
+          <button class="shop-tab active" data-shop-tab="titles">🏷️ 称号</button>
+          <button class="shop-tab" data-shop-tab="items">🎁 アイテム</button>
+          <button class="shop-tab" data-shop-tab="themes">🎨 テーマ</button>
+          <button class="shop-tab" data-shop-tab="backgrounds">🌌 背景</button>
+          <button class="shop-tab" data-shop-tab="avatars">👤 アバター</button>
         </div>
-
-
-        <div
-          id="shop-titles"
-          class="shop-panel active"
-        >
-
-          <div
-            id="title-shop-grid"
-            class="shop-grid"
-          ></div>
-
-        </div>
-
-
-        <div
-          id="shop-items"
-          class="shop-panel"
-        >
-
-          <div
-            id="item-shop-grid"
-            class="shop-grid"
-          ></div>
-
-        </div>
-
-
-        <div
-          id="shop-themes"
-          class="shop-panel"
-        >
-
-          <div
-            id="theme-shop-grid"
-            class="shop-grid"
-          ></div>
-
-        </div>
-
-
-        <div
-          id="shop-backgrounds"
-          class="shop-panel"
-        >
-
-          <div
-            id="background-shop-grid"
-            class="shop-grid"
-          ></div>
-
-        </div>
-
-
-        <div
-          id="shop-avatars"
-          class="shop-panel"
-        >
-
-          <div
-            id="avatar-shop-grid"
-            class="shop-grid"
-          ></div>
-
-        </div>
-
+        <div id="shop-titles" class="shop-panel active"><div id="title-shop-grid" class="shop-grid"></div></div>
+        <div id="shop-items" class="shop-panel"><div id="item-shop-grid" class="shop-grid"></div></div>
+        <div id="shop-themes" class="shop-panel"><div id="theme-shop-grid" class="shop-grid"></div></div>
+        <div id="shop-backgrounds" class="shop-panel"><div id="background-shop-grid" class="shop-grid"></div></div>
+        <div id="shop-avatars" class="shop-panel"><div id="avatar-shop-grid" class="shop-grid"></div></div>
       </section>
 
 
       <!-- ====================================
            ACHIEVEMENTS
       ==================================== -->
-
-      <section
-        id="page-achievements"
-        class="page"
-      >
-
+      <section id="page-achievements" class="page">
         <div class="page-title">
-
-          <span class="section-eyebrow">
-            ACHIEVEMENTS
-          </span>
-
-          <h1>
-            🏆 実績
-          </h1>
-
-          <p>
-            冒険の軌跡を記録しよう。
-          </p>
-
+          <span class="section-eyebrow">ACHIEVEMENTS</span>
+          <h1>🏆 実績</h1>
+          <p>冒険の軌跡を記録しよう。</p>
         </div>
-
-
-        <div
-          id="achievement-list"
-          class="achievement-list"
-        ></div>
-
+        <div id="achievement-list" class="achievement-list"></div>
       </section>
 
 
       <!-- ====================================
            PROFILE
       ==================================== -->
-
-      <section
-        id="page-profile"
-        class="page"
-      >
-
+      <section id="page-profile" class="page">
         <div class="page-title">
-
-          <span class="section-eyebrow">
-            PROFILE
-          </span>
-
-          <h1>
-            👤 プロフィール
-          </h1>
-
+          <span class="section-eyebrow">PROFILE</span>
+          <h1>👤 プロフィール</h1>
         </div>
-
-
         <div class="profile-card">
-
-          <div
-            id="profile-avatar"
-            class="profile-avatar"
-          >
-            ⚔️
-          </div>
-
-          <h2 id="profile-name">
-            冒険者
-          </h2>
-
-          <div
-            id="profile-title"
-            class="profile-title"
-          >
-            駆け出しの冒険者
-          </div>
-
-          <div
-            id="profile-rank"
-            class="rank-badge"
-          >
-            🥉 BRONZE
-          </div>
-
+          <div id="profile-avatar" class="profile-avatar">⚔️</div>
+          <h2 id="profile-name">冒険者</h2>
+          <div id="profile-title" class="profile-title">駆け出しの冒険者</div>
+          <div id="profile-rank" class="rank-badge">🥉 BRONZE</div>
         </div>
-
 
         <div class="profile-stats">
-
-          <div class="profile-stat">
-
-            <span>
-              レベル
-            </span>
-
-            <strong>
-              Lv.<span id="profile-level">1</span>
-            </strong>
-
-          </div>
-
-          <div class="profile-stat">
-
-            <span>
-              累計XP
-            </span>
-
-            <strong id="profile-total-xp">
-              0
-            </strong>
-
-          </div>
-
-          <div class="profile-stat">
-
-            <span>
-              累計勉強時間
-            </span>
-
-            <strong id="profile-total-time">
-              0分
-            </strong>
-
-          </div>
-
-          <div class="profile-stat">
-
-            <span>
-              今月
-            </span>
-
-            <strong id="profile-month-time">
-              0分
-            </strong>
-
-          </div>
-
-          <div class="profile-stat">
-
-            <span>
-              コイン
-            </span>
-
-            <strong id="profile-coins">
-              0
-            </strong>
-
-          </div>
-
+          <div class="profile-stat"><span>レベル</span><strong>Lv.<span id="profile-level">1</span></strong></div>
+          <div class="profile-stat"><span>累計XP</span><strong id="profile-total-xp">0</strong></div>
+          <div class="profile-stat"><span>累計勉強時間</span><strong id="profile-total-time">0分</strong></div>
+          <div class="profile-stat"><span>今月</span><strong id="profile-month-time">0分</strong></div>
+          <div class="profile-stat"><span>コイン</span><strong id="profile-coins">0</strong></div>
         </div>
-
 
         <div class="card">
-
-          <div class="card-header">
-
-            <h2>
-              ⚡ 現在のバフ
-            </h2>
-
-          </div>
-
-          <p id="profile-buff">
-            現在バフなし
-          </p>
-
+          <div class="card-header"><h2>⚡ 現在のバフ</h2></div>
+          <p id="profile-buff">現在バフなし</p>
         </div>
 
+        <button id="logout-button" class="secondary-button full-width" style="margin-top: 15px;">
+          ログアウト
+        </button>
       </section>
-
 
     </main>
 
@@ -1238,354 +468,111 @@
     <!-- ======================================
          BOTTOM NAVIGATION
     ====================================== -->
-
     <nav class="bottom-nav">
-
-      <button
-        class="nav-button active"
-        data-page="home"
-      >
-        <span>🏠</span>
-        <small>ホーム</small>
+      <button class="nav-button active" data-page="home">
+        <span>🏠</span><small>ホーム</small>
+      </button>
+      <button class="nav-button" data-page="study">
+        <span>📚</span><small>勉強</small>
+      </button>
+      <button class="nav-button" data-page="quests">
+        <span>🎯</span><small>クエスト</small>
       </button>
 
-      <button
-        class="nav-button"
-        data-page="study"
-      >
-        <span>📚</span>
-        <small>勉強</small>
+      <button class="nav-button" data-page="battle">
+        <span>⚔️</span><small>戦闘</small>
       </button>
-
-      <button
-        class="nav-button"
-        data-page="quests"
-      >
-        <span>🎯</span>
-        <small>クエスト</small>
+      <button class="nav-button" data-page="ranking">
+        <span>🏆</span><small>順位</small>
       </button>
-
-      <button
-        class="nav-button"
-        data-page="battle"
-      >
-        <span>⚔️</span>
-        <small>戦闘</small>
+      <button class="nav-button" data-page="friends">
+        <span>👥</span><small>フレンド</small>
       </button>
-
-      <button
-        class="nav-button"
-        data-page="rank"
-      >
-        <span>🏆</span>
-        <small>ランク</small>
+      <button class="nav-button" data-page="profile">
+        <span>👤</span><small>マイページ</small>
       </button>
-
-      <button
-        class="nav-button"
-        data-page="shop"
-      >
-        <span>🛒</span>
-        <small>ショップ</small>
-      </button>
-
-      <button
-        class="nav-button"
-        data-page="profile"
-      >
-        <span>👤</span>
-        <small>プロフィール</small>
-      </button>
-
     </nav>
 
   </section>
 
 
   <!-- ========================================
-       MANUAL REPORT MODAL
+       MODALS (各種モーダル)
   ======================================== -->
 
-  <div
-    id="report-modal"
-    class="modal hidden"
-  >
-
+  <!-- 手動記録 -->
+  <div id="report-modal" class="modal hidden">
     <div class="modal-card">
-
-      <div class="modal-icon">
-        📝
-      </div>
-
-      <h2>
-        勉強時間を記録
-      </h2>
-
+      <div class="modal-icon">📝</div>
+      <h2>勉強時間を記録</h2>
       <div class="manual-input-row">
-
-        <input
-          id="report-hours"
-          type="number"
-          min="0"
-          placeholder="0"
-        >
-
-        <span>
-          時間
-        </span>
-
-        <input
-          id="report-minutes"
-          type="number"
-          min="0"
-          max="59"
-          placeholder="0"
-        >
-
-        <span>
-          分
-        </span>
-
+        <input id="report-hours" type="number" min="0" placeholder="0"><span>時間</span>
+        <input id="report-minutes" type="number" min="0" max="59" placeholder="0"><span>分</span>
       </div>
-
-
-      <label for="report-subject">
-        科目
-      </label>
-
+      <label for="report-subject">科目</label>
       <select id="report-subject">
-
-        <option value="数学">
-          数学
-        </option>
-
-        <option value="英語">
-          英語
-        </option>
-
-        <option value="国語">
-          国語
-        </option>
-
-        <option value="物理">
-          物理
-        </option>
-
-        <option value="化学">
-          化学
-        </option>
-
-        <option value="生物">
-          生物
-        </option>
-
-        <option value="地理">
-          地理
-        </option>
-
-        <option value="日本史">
-          日本史
-        </option>
-
-        <option value="世界史">
-          世界史
-        </option>
-
-        <option value="政治経済">
-          政治経済
-        </option>
-
+        <option value="数学">数学</option>
+        <option value="英語">英語</option>
+        <option value="国語">国語</option>
+        <option value="物理">物理</option>
+        <option value="化学">化学</option>
+        <option value="生物">生物</option>
+        <option value="地理">地理</option>
+        <option value="日本史">日本史</option>
+        <option value="世界史">世界史</option>
+        <option value="政治経済">政治経済</option>
       </select>
-
-
       <div class="modal-actions">
-
-        <button
-          id="report-cancel"
-          class="secondary-button"
-        >
-          キャンセル
-        </button>
-
-        <button
-          id="report-submit"
-          class="primary-button"
-        >
-          記録する
-        </button>
-
+        <button id="report-cancel" class="secondary-button">キャンセル</button>
+        <button id="report-submit" class="primary-button">記録する</button>
       </div>
-
     </div>
-
   </div>
 
-
-  <!-- ========================================
-       GOAL MODAL
-  ======================================== -->
-
-  <div
-    id="goal-modal"
-    class="modal hidden"
-  >
-
+  <!-- 目標設定 -->
+  <div id="goal-modal" class="modal hidden">
     <div class="modal-card">
-
-      <div class="modal-icon">
-        🎯
-      </div>
-
-      <h2>
-        今日の目標
-      </h2>
-
-      <p>
-        1日の勉強目標を設定。
-      </p>
-
+      <div class="modal-icon">🎯</div>
+      <h2>今日の目標</h2>
+      <p>1日の勉強目標を設定。</p>
       <div class="goal-input-row">
-
-        <input
-          id="goal-input"
-          type="number"
-          min="1"
-          max="1440"
-        >
-
-        <span>
-          分
-        </span>
-
+        <input id="goal-input" type="number" min="1" max="1440"><span>分</span>
       </div>
-
-
       <div class="modal-actions">
-
-        <button
-          id="goal-cancel"
-          class="secondary-button"
-        >
-          キャンセル
-        </button>
-
-        <button
-          id="goal-submit"
-          class="primary-button"
-        >
-          設定する
-        </button>
-
+        <button id="goal-cancel" class="secondary-button">キャンセル</button>
+        <button id="goal-submit" class="primary-button">設定する</button>
       </div>
-
     </div>
-
   </div>
 
-
-  <!-- ========================================
-       MESSAGE MODAL
-  ======================================== -->
-
-  <div
-    id="message-modal"
-    class="modal hidden"
-  >
-
+  <!-- メッセージ表示 -->
+  <div id="message-modal" class="modal hidden">
     <div class="modal-card message-card">
-
-      <div
-        id="message-icon"
-        class="modal-icon"
-      >
-        ⚔️
-      </div>
-
-      <h2 id="message-title">
-        メッセージ
-      </h2>
-
-      <p
-        id="message-text"
-        class="message-text"
-      ></p>
-
-      <button
-        id="message-close"
-        class="primary-button"
-      >
-        OK
-      </button>
-
+      <div id="message-icon" class="modal-icon">⚔️</div>
+      <h2 id="message-title">メッセージ</h2>
+      <p id="message-text" class="message-text"></p>
+      <button id="message-close" class="primary-button">OK</button>
     </div>
-
   </div>
 
-
-  <!-- ========================================
-       LEVEL UP MODAL
-  ======================================== -->
-
-  <div
-    id="levelup-modal"
-    class="modal hidden"
-  >
-
+  <!-- レベルアップ演出 -->
+  <div id="levelup-modal" class="modal hidden">
     <div class="modal-card levelup-card">
-
-      <div class="levelup-effect">
-        ✨
-      </div>
-
-      <div class="levelup-title">
-        LEVEL UP!
-      </div>
-
-      <div
-        id="levelup-number"
-        class="levelup-number"
-      >
-        2
-      </div>
-
-      <p>
-        新たな力を手に入れた！
-      </p>
-
-      <button
-        id="levelup-close"
-        class="primary-button"
-      >
-        冒険を続ける
-      </button>
-
+      <div class="levelup-effect">✨</div>
+      <div class="levelup-title">LEVEL UP!</div>
+      <div id="levelup-number" class="levelup-number">2</div>
+      <p>新たな力を手に入れた！</p>
+      <button id="levelup-close" class="primary-button">冒険を続ける</button>
     </div>
-
   </div>
 
-
-  <!-- ========================================
-       SEASON
-  ======================================== -->
-
+  <!-- シーズン表示 -->
   <div class="season-indicator">
-
-    ⚔️ SEASON 2026
-
-    <span>
-      残り
-      <strong id="season-days">
-        0
-      </strong>
-      日
-    </span>
-
+    ⚔️ SEASON 2026 <span>残り <strong id="season-days">0</strong> 日</span>
   </div>
 
 </div>
 
-
 <script src="script.js"></script>
-
 </body>
 </html>
