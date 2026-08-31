@@ -1,9 +1,9 @@
 /* ==========================================================================
-   受験RPG - Cyberpunk / Modern Gaming UI (Visual & Contrast Upgraded)
+   受験RPG - Cyberpunk / Modern Gaming UI (Fixed Edition)
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. BASE & COLOR PALETTE
+   1. COLOR PALETTE & VARIABLES
    -------------------------------------------------------------------------- */
 :root {
   /* 背景カラー */
@@ -12,10 +12,10 @@
   --bg-card-hover: rgba(30, 38, 56, 0.9);
   --bg-input: rgba(15, 20, 31, 0.95);
   
-  /* テキスト（全体的に白寄りに大幅くっきり化） */
+  /* テキスト（白寄り・視認性最優先） */
   --text-primary: #ffffff;
-  --text-secondary: #e2e8f0; /* くっきり明るいシルバーホワイト */
-  --text-muted: #94a3b8;     /* 従来のサブテキストよりかなり明るめ */
+  --text-secondary: #e2e8f0;
+  --text-muted: #94a3b8;
   
   /* ゲーミングアクセント */
   --accent-cyan: #00f2fe;
@@ -40,6 +40,9 @@
   --radius-lg: 24px;
 }
 
+/* --------------------------------------------------------------------------
+   2. BASE RESET & DISPLAY CONTROL
+   -------------------------------------------------------------------------- */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -57,7 +60,6 @@ body {
   color: var(--text-primary);
   line-height: 1.5;
   min-height: 100vh;
-  padding-bottom: 100px;
 }
 
 #app {
@@ -67,10 +69,33 @@ body {
   min-height: 100vh;
 }
 
-.hidden { display: none !important; }
+/* 表示・非表示制御 */
+.hidden {
+  display: none !important;
+}
+
+.screen {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.page {
+  display: none;
+  width: 100%;
+}
+
+.page.active {
+  display: block;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 /* --------------------------------------------------------------------------
-   2. TYPOGRAPHY & BUTTONS
+   3. TYPOGRAPHY & BUTTONS
    -------------------------------------------------------------------------- */
 h1, h2, h3 {
   font-weight: 800;
@@ -79,7 +104,7 @@ h1, h2, h3 {
 }
 
 p, span, label, div {
-  color: var(--text-secondary); /* デフォルトの文章も白寄りに */
+  color: var(--text-secondary);
 }
 
 .section-eyebrow {
@@ -93,7 +118,6 @@ p, span, label, div {
   text-shadow: 0 0 8px rgba(0, 242, 254, 0.5);
 }
 
-/* ボタンデザイン */
 button {
   border: none;
   outline: none;
@@ -157,7 +181,7 @@ button {
 }
 
 /* --------------------------------------------------------------------------
-   3. HEADER & BOTTOM NAV
+   4. HEADER & BOTTOM NAV
    -------------------------------------------------------------------------- */
 .top-header {
   position: sticky;
@@ -214,7 +238,7 @@ button {
   text-shadow: 0 0 8px rgba(255, 183, 3, 0.4);
 }
 
-/* 下部ナビ */
+/* 下部固定ナビゲーション */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -264,10 +288,10 @@ button {
 }
 
 /* --------------------------------------------------------------------------
-   4. CARDS & HERO
+   5. CARDS & HERO
    -------------------------------------------------------------------------- */
 .page-container {
-  padding: 20px;
+  padding: 20px 20px 100px 20px; /* ナビバーにかぶらないよう下パディング設定 */
 }
 
 .card {
@@ -350,8 +374,100 @@ button {
   box-shadow: var(--glow-cyan);
 }
 
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-icon { font-size: 1.3rem; }
+.stat-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+.stat-card strong { font-size: 1.3rem; color: #fff; font-weight: 800; }
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.quick-action {
+  background: var(--bg-card);
+  border: var(--border-glass);
+  padding: 18px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #fff;
+  justify-content: flex-start;
+}
+
 /* --------------------------------------------------------------------------
-   5. RANKING (★リニューアル: 1〜3位の豪華装飾)
+   6. STUDY & TIMER
+   -------------------------------------------------------------------------- */
+.subject-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.subject-button {
+  background: rgba(255, 255, 255, 0.04);
+  border: var(--border-glass);
+  color: var(--text-secondary);
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  justify-content: flex-start;
+  font-size: 0.9rem;
+}
+
+.subject-button.selected {
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(121, 40, 202, 0.2));
+  border: var(--border-neon);
+  color: #fff;
+  font-weight: 800;
+  box-shadow: var(--glow-cyan);
+}
+
+.timer-card {
+  background: var(--bg-card);
+  border: var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 32px 20px;
+  text-align: center;
+  margin: 20px 0;
+  box-shadow: var(--shadow-card);
+}
+
+.timer-display {
+  font-size: 3.6rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: var(--text-primary);
+  font-family: 'Courier New', Courier, monospace;
+  margin: 16px 0 28px 0;
+  text-shadow: 0 0 16px rgba(0, 242, 254, 0.5);
+}
+
+.timer-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   7. RANKING
    -------------------------------------------------------------------------- */
 .ranking-tabs {
   display: flex;
@@ -383,7 +499,6 @@ button {
   gap: 10px;
 }
 
-/* ランキング1行の基本構造 */
 .ranking-item {
   display: flex;
   align-items: center;
@@ -413,28 +528,12 @@ button {
   justify-content: center;
 }
 
-.rank-user-info {
-  flex: 1;
-}
+.rank-user-info { flex: 1; }
+.rank-user-name { font-weight: 700; font-size: 0.95rem; color: #ffffff; }
+.rank-user-detail { font-size: 0.75rem; color: var(--text-muted); }
+.rank-score { font-weight: 800; font-size: 1rem; color: var(--accent-cyan); }
 
-.rank-user-name {
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: #ffffff;
-}
-
-.rank-user-detail {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-
-.rank-score {
-  font-weight: 800;
-  font-size: 1rem;
-  color: var(--accent-cyan);
-}
-
-/* 🥇 1位 Gold */
+/* TOP 3 装飾 */
 .ranking-item.top-1 {
   background: linear-gradient(135deg, rgba(255, 183, 3, 0.2), rgba(20, 20, 20, 0.6));
   border: 1px solid rgba(255, 183, 3, 0.6);
@@ -442,14 +541,12 @@ button {
 }
 .ranking-item.top-1 .rank-number { color: var(--accent-gold); font-size: 1.3rem; }
 
-/* 🥈 2位 Silver */
 .ranking-item.top-2 {
   background: linear-gradient(135deg, rgba(203, 213, 225, 0.15), rgba(20, 20, 20, 0.6));
   border: 1px solid rgba(203, 213, 225, 0.5);
 }
 .ranking-item.top-2 .rank-number { color: var(--accent-silver); font-size: 1.2rem; }
 
-/* 🥉 3位 Bronze */
 .ranking-item.top-3 {
   background: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(20, 20, 20, 0.6));
   border: 1px solid rgba(217, 119, 6, 0.4);
@@ -457,18 +554,15 @@ button {
 .ranking-item.top-3 .rank-number { color: var(--accent-bronze); font-size: 1.15rem; }
 
 /* --------------------------------------------------------------------------
-   6. FRIENDS (★リニューアル: カード型ソーシャルデザイン)
+   8. FRIENDS & AUTH & MODALS
    -------------------------------------------------------------------------- */
 .input-row {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
-.input-row input {
-  flex: 1;
-}
+.input-row input { flex: 1; }
 
 .friends-list {
   display: flex;
@@ -487,57 +581,56 @@ button {
   border-radius: var(--radius-sm);
 }
 
-.friend-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.register-card {
+  padding: 40px 20px;
+  text-align: center;
 }
 
-.friend-avatar {
-  font-size: 1.8rem;
-  width: 46px;
-  height: 46px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
+.register-logo {
+  font-size: 4rem;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.4));
+}
+
+.auth-tabs {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 20px;
   border: var(--border-glass);
 }
 
-.friend-details {
+.auth-tab {
+  flex: 1;
+  background: none;
+  color: var(--text-muted);
+  padding: 10px;
+  font-size: 0.85rem;
+}
+
+.auth-tab.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-radius: 8px;
+}
+
+.register-form {
   display: flex;
   flex-direction: column;
+  gap: 14px;
+  text-align: left;
 }
 
-.friend-name {
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: #ffffff;
-}
-
-.friend-status {
-  font-size: 0.75rem;
-  color: var(--accent-cyan);
-  font-weight: 600;
-}
-
-/* --------------------------------------------------------------------------
-   7. FORM & INPUTS & MODALS
-   -------------------------------------------------------------------------- */
 input, select {
   width: 100%;
   padding: 14px 16px;
   background: var(--bg-input);
   border: var(--border-glass);
   border-radius: var(--radius-sm);
-  color: #ffffff; /* 入力欄も真っ白 */
+  color: #ffffff;
   font-size: 0.95rem;
   outline: none;
-}
-
-input::placeholder {
-  color: var(--text-muted);
 }
 
 input:focus, select:focus {
@@ -567,42 +660,19 @@ input:focus, select:focus {
   width: 100%;
   max-width: 400px;
 }
-/* --------------------------------------------------------------------------
-   8. SCREEN & PAGE CONTROL (画面切り替えの修正)
-   -------------------------------------------------------------------------- */
 
-/* 非表示にする要素 */
-.hidden {
-  display: none !important;
-}
-
-/* 画面（ログイン画面・メイン画面）の制御 */
-.screen {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ページの切り替え（非アクティブなページは隠す） */
-.page {
-  display: none;
-  width: 100%;
-}
-
-/* アクティブなページだけを表示 */
-.page.active {
-  display: block;
-  animation: fadeIn 0.25s ease-in-out;
-}
-
-/* 画面切り替え時のフワッとしたアニメーション */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.season-indicator {
+  position: fixed;
+  top: 14px;
+  right: 20px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  border: var(--border-glass);
+  padding: 5px 12px;
+  border-radius: 20px;
+  color: var(--text-secondary);
+  pointer-events: none;
+  z-index: 95;
 }
