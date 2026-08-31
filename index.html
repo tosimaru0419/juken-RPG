@@ -6,20 +6,17 @@
 
   <title>受験RPG</title>
 
-  <!-- 後からCSSを追加 -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- ========================================
-       APP
-  ========================================= -->
   <div id="app">
 
-    <!-- ======================================
+    <!-- ========================================
          AUTH
-    ======================================= -->
+    ========================================= -->
+
     <section id="auth-screen">
 
       <!-- LOGIN -->
@@ -101,7 +98,6 @@
               >
             </div>
 
-
             <div class="form-group">
               <label for="register-password">
                 パスワード
@@ -115,7 +111,6 @@
                 required
               >
             </div>
-
 
             <div class="form-group">
               <label for="register-password-confirm">
@@ -340,11 +335,10 @@
     <!-- ========================================
          MAIN APPLICATION
     ========================================= -->
+
     <div id="main-app" class="hidden">
 
-      <!-- ======================================
-           HEADER
-      ======================================= -->
+      <!-- HEADER -->
       <header id="app-header">
 
         <div id="player-summary">
@@ -363,7 +357,6 @@
 
         </div>
 
-
         <button
           type="button"
           id="logout-button"
@@ -374,9 +367,7 @@
       </header>
 
 
-      <!-- ======================================
-           NAVIGATION
-      ======================================= -->
+      <!-- NAVIGATION -->
       <nav id="main-navigation">
 
         <button
@@ -446,15 +437,11 @@
       </nav>
 
 
-      <!-- ======================================
-           CONTENT
-      ======================================= -->
+      <!-- CONTENT -->
       <main id="main-content">
 
 
-        <!-- ====================================
-             HOME
-        ===================================== -->
+        <!-- HOME -->
         <section
           id="home-screen"
           class="app-screen"
@@ -464,8 +451,6 @@
             <h2>ホーム</h2>
           </header>
 
-
-          <!-- PLAYER STATUS -->
           <section id="home-player-status">
 
             <h3>冒険者ステータス</h3>
@@ -489,7 +474,6 @@
 
             </div>
 
-
             <div id="level-progress-container">
 
               <div id="level-progress-bar">
@@ -502,7 +486,6 @@
               </div>
 
             </div>
-
 
             <div id="star-status">
 
@@ -575,6 +558,7 @@
             <div>
 
               <span>シーズン</span>
+
               <strong id="home-season-number">
                 Season 1
               </strong>
@@ -584,6 +568,7 @@
             <div>
 
               <span>ランク</span>
+
               <strong id="home-season-rank">
                 Bronze
               </strong>
@@ -593,6 +578,7 @@
             <div>
 
               <span>今月の勉強時間</span>
+
               <strong id="home-season-study-time">
                 0時間
               </strong>
@@ -604,9 +590,7 @@
         </section>
 
 
-        <!-- ====================================
-             STUDY
-        ===================================== -->
+        <!-- STUDY -->
         <section
           id="study-screen"
           class="app-screen hidden"
@@ -615,7 +599,6 @@
           <header class="screen-header">
             <h2>勉強記録</h2>
           </header>
-
 
           <form id="study-form">
 
@@ -639,7 +622,6 @@
 
             </div>
 
-
             <div class="form-group">
 
               <label for="study-minutes">
@@ -656,7 +638,6 @@
 
             </div>
 
-
             <div class="form-group">
 
               <label for="study-note">
@@ -672,7 +653,6 @@
 
             </div>
 
-
             <button
               type="submit"
               id="record-study-button"
@@ -682,8 +662,6 @@
 
           </form>
 
-
-          <!-- SUBJECT STUDY TIME -->
           <section id="subject-study-summary">
 
             <h3>教科別勉強時間</h3>
@@ -692,8 +670,6 @@
 
           </section>
 
-
-          <!-- STUDY HISTORY -->
           <section id="study-history">
 
             <h3>勉強履歴</h3>
@@ -705,9 +681,7 @@
         </section>
 
 
-        <!-- ====================================
-             QUEST
-        ===================================== -->
+        <!-- QUEST -->
         <section
           id="quest-screen"
           class="app-screen hidden"
@@ -717,8 +691,6 @@
             <h2>クエスト</h2>
           </header>
 
-
-          <!-- DAILY -->
           <section id="daily-quest-section">
 
             <h3>Daily Quest</h3>
@@ -731,8 +703,6 @@
 
           </section>
 
-
-          <!-- WEEKLY -->
           <section id="weekly-quest-section">
 
             <h3>Weekly Quest</h3>
@@ -745,8 +715,6 @@
 
           </section>
 
-
-          <!-- QUEST HISTORY -->
           <section id="quest-history-section">
 
             <h3>クエスト履歴</h3>
@@ -758,9 +726,7 @@
         </section>
 
 
-        <!-- ====================================
-             BOSS
-        ===================================== -->
+        <!-- BOSS -->
         <section
           id="boss-screen"
           class="app-screen hidden"
@@ -770,8 +736,6 @@
             <h2>ボスバトル</h2>
           </header>
 
-
-          <!-- BOSS STATUS -->
           <section id="boss-status">
 
             <h3 id="boss-name">
@@ -782,10 +746,10 @@
               Lv.?
             </div>
 
-
             <div id="boss-hp-container">
 
               <div id="boss-hp-text">
+
                 <span id="boss-current-hp">
                   0
                 </span>
@@ -795,6 +759,7 @@
                 <span id="boss-max-hp">
                   0
                 </span>
+
               </div>
 
               <div id="boss-hp-bar">
@@ -807,7 +772,6 @@
               </div>
 
             </div>
-
 
             <div id="boss-weakness">
 
@@ -826,7 +790,6 @@
           </section>
 
 
-          <!-- PARTY BOSS MEMBERS -->
           <section id="boss-party">
 
             <h3>参加パーティー</h3>
@@ -840,7 +803,6 @@
           </section>
 
 
-          <!-- BOSS LOG -->
           <section id="boss-battle-log">
 
             <h3>バトルログ</h3>
@@ -848,7 +810,6 @@
             <div id="boss-log-list"></div>
 
           </section>
-
 
           <button
             type="button"
@@ -860,9 +821,7 @@
         </section>
 
 
-        <!-- ====================================
-             PARTY
-        ===================================== -->
+        <!-- PARTY -->
         <section
           id="party-screen"
           class="app-screen hidden"
@@ -871,7 +830,6 @@
           <header class="screen-header">
             <h2>パーティー</h2>
           </header>
-
 
           <section id="current-party">
 
@@ -889,7 +847,6 @@
 
             </div>
 
-
             <div id="party-member-list"></div>
 
             <p id="party-member-count">
@@ -899,7 +856,6 @@
           </section>
 
 
-          <!-- PARTY INVITE -->
           <section id="party-invite-section">
 
             <h3>メンバー追加</h3>
@@ -927,7 +883,6 @@
 
           </section>
 
-
           <p id="party-error" class="error-message"></p>
 
           <p>
@@ -938,9 +893,7 @@
         </section>
 
 
-        <!-- ====================================
-             RANK
-        ===================================== -->
+        <!-- RANK -->
         <section
           id="rank-screen"
           class="app-screen hidden"
@@ -957,7 +910,6 @@
           </header>
 
 
-          <!-- CURRENT RANK -->
           <section id="current-rank">
 
             <h3>現在のランク</h3>
@@ -981,7 +933,6 @@
           </section>
 
 
-          <!-- RANK TABLE -->
           <section id="rank-requirements">
 
             <h3>ランク基準</h3>
@@ -1004,7 +955,6 @@
           </section>
 
 
-          <!-- SEASON HISTORY -->
           <section id="season-history">
 
             <h3>シーズン履歴</h3>
@@ -1016,9 +966,7 @@
         </section>
 
 
-        <!-- ====================================
-             ACHIEVEMENT
-        ===================================== -->
+        <!-- ACHIEVEMENT -->
         <section
           id="achievement-screen"
           class="app-screen hidden"
@@ -1029,17 +977,20 @@
             <h2>実績</h2>
 
             <p>
+
               <span id="achievement-unlocked-count">
                 0
               </span>
+
               /
+
               <span id="achievement-total-count">
                 0
               </span>
+
             </p>
 
           </header>
-
 
           <div
             id="achievement-list"
@@ -1049,9 +1000,7 @@
         </section>
 
 
-        <!-- ====================================
-             PROFILE
-        ===================================== -->
+        <!-- PROFILE -->
         <section
           id="profile-screen"
           class="app-screen hidden"
@@ -1062,7 +1011,6 @@
           </header>
 
 
-          <!-- PLAYER PROFILE -->
           <section id="profile-card">
 
             <h3 id="profile-display-name">
@@ -1107,7 +1055,6 @@
           </section>
 
 
-          <!-- SELECTED SUBJECTS -->
           <section id="profile-subjects">
 
             <h3>受験教科</h3>
@@ -1117,7 +1064,6 @@
           </section>
 
 
-          <!-- TOTAL STATS -->
           <section id="profile-statistics">
 
             <h3>累計記録</h3>
@@ -1279,9 +1225,7 @@
       </main>
 
 
-      <!-- ======================================
-           GLOBAL NOTIFICATION
-      ======================================= -->
+      <!-- GLOBAL NOTIFICATION -->
       <div
         id="notification"
         class="notification hidden"
@@ -1290,9 +1234,7 @@
       ></div>
 
 
-      <!-- ======================================
-           LEVEL UP MODAL
-      ======================================= -->
+      <!-- LEVEL UP MODAL -->
       <div
         id="level-up-modal"
         class="modal hidden"
@@ -1305,6 +1247,7 @@
           <h2>LEVEL UP!</h2>
 
           <p>
+
             <span id="level-up-old-level">
               Lv.1
             </span>
@@ -1314,6 +1257,7 @@
             <span id="level-up-new-level">
               Lv.2
             </span>
+
           </p>
 
           <p id="level-up-message">
@@ -1332,9 +1276,7 @@
       </div>
 
 
-      <!-- ======================================
-           STAR / REBIRTH MODAL
-      ======================================= -->
+      <!-- STAR / REBIRTH MODAL -->
       <div
         id="star-modal"
         class="modal hidden"
@@ -1351,9 +1293,11 @@
           </p>
 
           <p>
+
             <span id="star-modal-count">
               ⭐ 1
             </span>
+
           </p>
 
           <p>
@@ -1380,9 +1324,7 @@
       </div>
 
 
-      <!-- ======================================
-           BOSS RESULT MODAL
-      ======================================= -->
+      <!-- BOSS RESULT MODAL -->
       <div
         id="boss-result-modal"
         class="modal hidden"
@@ -1417,9 +1359,7 @@
       </div>
 
 
-      <!-- ======================================
-           SEASON RESULT MODAL
-      ======================================= -->
+      <!-- SEASON RESULT MODAL -->
       <div
         id="season-result-modal"
         class="modal hidden"
@@ -1462,7 +1402,13 @@
   </div>
 
 
-  <!-- 後でJSを追加 -->
+  <!-- ========================================
+       SUPABASE
+       ======================================== -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- APPLICATION JS -->
   <script src="script.js"></script>
 
 </body>
