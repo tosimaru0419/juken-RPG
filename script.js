@@ -1,24 +1,29 @@
-// =====================================================
-// 受験RPG
-// script.js - COMPLETE VERSION
-// =====================================================
-
-import { auth, db } from "./config.js";
+// ============================================================
+// 受験RPG - script.js
+// Firebase + Firestore 完全版
+// ============================================================
 
 import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+  getAuth,
+  onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged,
   updatePassword,
   deleteUser
-} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
+  getFirestore,
   doc,
   getDoc,
   setDoc,
   updateDoc,
+  deleteDoc,
   addDoc,
   collection,
   query,
@@ -26,16 +31,36 @@ import {
   orderBy,
   limit,
   getDocs,
-  deleteDoc,
+  onSnapshot,
   serverTimestamp,
-  increment,
-  runTransaction
-} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+  increment
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-// =====================================================
-// CONSTANTS
-// =====================================================
+// ============================================================
+// FIREBASE
+// ============================================================
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCggQfYsVVlngak6EJLS74OB3ADV4vFjyo",
+  authDomain: "juken-rpg-b2840.firebaseapp.com",
+  projectId: "juken-rpg-b2840",
+  storageBucket: "juken-rpg-b2840.firebasestorage.app",
+  messagingSenderId: "332135698063",
+  appId: "1:332135698063:web:cea3c9be433f948bf1aafa",
+  measurementId: "G-KLH9WZFNMT"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+// ============================================================
+// 定数
+// ============================================================
+
+const APP_NAME = "受験RPG";
 
 const SUBJECTS = {
   japanese: "国語",
@@ -54,397 +79,133 @@ const SUBJECTS = {
   civics: "公共"
 };
 
+
+// ------------------------------------------------------------
+// ランク
+// ------------------------------------------------------------
+
 const RANKS = [
   {
-    key: "bronze",
+    id: "bronze",
     name: "Bronze",
     minHours: 0,
-    color: "#cd7f32",
+    color: "#a97142",
     textColor: "#fff"
   },
   {
-    key: "silver",
+    id: "silver",
     name: "Silver",
-    minHours: 8,
-    color: "#9ca3af",
+    minHours: 10,
+    color: "#9aa3ad",
     textColor: "#111"
   },
   {
-    key: "gold",
+    id: "gold",
     name: "Gold",
-    minHours: 18,
-    color: "#eab308",
+    minHours: 20,
+    color: "#d7a928",
     textColor: "#111"
   },
   {
-    key: "platinum",
+    id: "platinum",
     name: "Platinum",
-    minHours: 31,
-    color: "#67e8f9",
-    textColor: "#06202a"
+    minHours: 40,
+    color: "#6ec5d8",
+    textColor: "#071116"
   },
   {
-    key: "diamond",
+    id: "diamond",
     name: "Diamond",
-    minHours: 47,
-    color: "#60a5fa",
-    textColor: "#071426"
+    minHours: 70,
+    color: "#4e8cff",
+    textColor: "#fff"
   },
   {
-    key: "master",
+    id: "master",
     name: "Master",
-    minHours: 66,
-    color: "#a78bfa",
+    minHours: 100,
+    color: "#9b59ff",
     textColor: "#fff"
   },
   {
-    key: "grandmaster",
+    id: "grandmaster",
     name: "Grandmaster",
-    minHours: 90,
-    color: "#f472b6",
+    minHours: 125,
+    color: "#e34cff",
     textColor: "#fff"
   },
   {
-    key: "legend",
+    id: "legend",
     name: "Legend",
     minHours: 150,
-    color: "#f59e0b",
-    textColor: "#111"
+    color: "#ffb300",
+    textColor: "#171000"
   }
 ];
+
+
+// ------------------------------------------------------------
+// ランク終了報酬
+// ------------------------------------------------------------
 
 const RANK_REWARDS = {
   bronze: 50,
   silver: 100,
-  gold: 200,
-  platinum: 350,
-  diamond: 550,
-  master: 800,
-  grandmaster: 1100,
-  legend: 1500
+  gold: 175,
+  platinum: 275,
+  diamond: 400,
+  master: 550,
+  grandmaster: 725,
+  legend: 1000
 };
 
-const QUEST_XP = {
-  daily: 30,
-  subject: 40,
-  weekly: 100,
-  rare: 150
-};
 
-const QUEST_COINS = {
-  daily: 10,
-  subject: 15,
-  weekly: 40,
-  rare: 75
-};
+// ------------------------------------------------------------
+// XP
+// ------------------------------------------------------------
 
-const BOSS_BASE_HP = 1000;
-const BOSS_MEMBER_HP = 500;
+const LEVEL_MAX = 101;
 
-const WEAKNESS_MULTIPLIER = 1.5;
-
-const INTERNAL_EMAIL_DOMAIN = "@juken-rpg.local";
-
-
-// =====================================================
-// HIDDEN ACHIEVEMENTS
-// =====================================================
-
-const HIDDEN_ACHIEVEMENTS = [
-  {
-    id: "hidden_01",
-    name: "深夜の冒険者",
-    description: "日付が変わった後に勉強記録を残す。",
-    condition: "lateNight",
-    rewardXP: 100,
-    rewardCoins: 50
-  },
-  {
-    id: "hidden_02",
-    name: "静寂の支配者",
-    description: "1日に3時間以上勉強する。",
-    condition: "threeHoursDay",
-    rewardXP: 150,
-    rewardCoins: 75
-  },
-  {
-    id: "hidden_03",
-    name: "限界突破",
-    description: "1日に5時間以上勉強する。",
-    condition: "fiveHoursDay",
-    rewardXP: 300,
-    rewardCoins: 150
-  },
-  {
-    id: "hidden_04",
-    name: "連続撃破",
-    description: "7日連続で勉強記録を残す。",
-    condition: "sevenDayStreak",
-    rewardXP: 250,
-    rewardCoins: 100
-  },
-  {
-    id: "hidden_05",
-    name: "亡者の執念",
-    description: "同じ日に5回以上勉強記録を残す。",
-    condition: "fiveRecordsDay",
-    rewardXP: 150,
-    rewardCoins: 75
-  },
-  {
-    id: "hidden_06",
-    name: "ボスハンター",
-    description: "ボスを10体撃破する。",
-    condition: "boss10",
-    rewardXP: 300,
-    rewardCoins: 150
-  },
-  {
-    id: "hidden_07",
-    name: "全方位攻撃",
-    description: "1日に5教科以上を記録する。",
-    condition: "fiveSubjectsDay",
-    rewardXP: 200,
-    rewardCoins: 100
-  },
-  {
-    id: "hidden_08",
-    name: "あり得ない知能",
-    description: "全教科を選択した状態で、全選択教科を同日に自己申告する。",
-    condition: "allSubjectsReport",
-    rewardXP: 500,
-    rewardCoins: 250
-  },
-  {
-    id: "hidden_09",
-    name: "終わらない冒険",
-    description: "累計100時間の勉強を達成する。",
-    condition: "total100Hours",
-    rewardXP: 500,
-    rewardCoins: 250
-  },
-  {
-    id: "hidden_10",
-    name: "転生者",
-    description: "Lv.101に到達して転生する。",
-    condition: "rebirth",
-    rewardXP: 500,
-    rewardCoins: 300
+function xpRequiredForLevel(level) {
+  if (level >= 100) {
+    return 550;
   }
-];
 
+  return 100 + Math.floor((level - 1) / 10) * 50;
+}
 
-// =====================================================
-// NORMAL ACHIEVEMENTS
-// =====================================================
+function calculateLevel(totalXp) {
+  let level = 1;
+  let remaining = Math.max(0, totalXp);
 
-const ACHIEVEMENTS = [
-  {
-    id: "first_study",
-    name: "最初の一歩",
-    description: "初めて勉強を記録する。",
-    rewardXP: 50,
-    rewardCoins: 20
-  },
-  {
-    id: "study_10h",
-    name: "見習い冒険者",
-    description: "累計10時間勉強する。",
-    rewardXP: 100,
-    rewardCoins: 50
-  },
-  {
-    id: "study_50h",
-    name: "熟練冒険者",
-    description: "累計50時間勉強する。",
-    rewardXP: 300,
-    rewardCoins: 150
-  },
-  {
-    id: "study_100h",
-    name: "百時間の戦士",
-    description: "累計100時間勉強する。",
-    rewardXP: 500,
-    rewardCoins: 250
-  },
-  {
-    id: "level10",
-    name: "Lv.10到達",
-    description: "レベル10に到達する。",
-    rewardXP: 100,
-    rewardCoins: 50
-  },
-  {
-    id: "level50",
-    name: "Lv.50到達",
-    description: "レベル50に到達する。",
-    rewardXP: 500,
-    rewardCoins: 200
-  },
-  {
-    id: "level100",
-    name: "限界到達",
-    description: "Lv.100に到達する。",
-    rewardXP: 1000,
-    rewardCoins: 500
-  },
-  {
-    id: "silver_rank",
-    name: "Silver冒険者",
-    description: "Silverランクに到達する。",
-    rewardXP: 100,
-    rewardCoins: 50
-  },
-  {
-    id: "gold_rank",
-    name: "Gold冒険者",
-    description: "Goldランクに到達する。",
-    rewardXP: 200,
-    rewardCoins: 100
-  },
-  {
-    id: "legend_rank",
-    name: "伝説",
-    description: "Legendランクに到達する。",
-    rewardXP: 1000,
-    rewardCoins: 500
+  while (level < 101) {
+    const requirement = xpRequiredForLevel(level);
+
+    if (remaining < requirement) {
+      break;
+    }
+
+    remaining -= requirement;
+    level++;
   }
-];
 
-
-// =====================================================
-// SHOP DATA
-// =====================================================
-
-const SHOP_ITEMS = [
-  {
-    id: "xp_boost",
-    name: "経験値の書",
-    description: "使用すると100XP獲得。",
-    price: 100,
-    type: "xp"
-  },
-  {
-    id: "coin_box",
-    name: "コイン箱",
-    description: "使用すると100コイン獲得。",
-    price: 150,
-    type: "coins"
-  },
-  {
-    id: "boss_damage",
-    name: "勇者の一撃",
-    description: "次回ボス戦で追加ダメージ。",
-    price: 200,
-    type: "boss"
-  }
-];
-
-const SHOP_TITLES = [
-  {
-    id: "hard_worker",
-    name: "努力の戦士",
-    price: 300
-  },
-  {
-    id: "scholar",
-    name: "知識の探求者",
-    price: 500
-  },
-  {
-    id: "legendary",
-    name: "伝説の冒険者",
-    price: 1000
-  }
-];
-
-const SHOP_OUTFITS = [
-  {
-    id: "default",
-    name: "冒険者の服",
-    price: 0
-  },
-  {
-    id: "knight",
-    name: "騎士装備",
-    price: 500
-  },
-  {
-    id: "mage",
-    name: "魔導士装備",
-    price: 700
-  }
-];
-
-
-// =====================================================
-// STATE
-// =====================================================
-
-let currentUser = null;
-let currentProfile = null;
-
-let timerInterval = null;
-let timerSeconds = 0;
-let timerRunning = false;
-
-let selectedPurchase = null;
-
-let currentScreen = "home-screen";
-
-
-// =====================================================
-// DOM HELPERS
-// =====================================================
-
-const $ = id => document.getElementById(id);
-
-function show(id) {
-  const el = $(id);
-  if (el) el.classList.remove("hidden");
-}
-
-function hide(id) {
-  const el = $(id);
-  if (el) el.classList.add("hidden");
-}
-
-function text(id, value) {
-  const el = $(id);
-  if (el) el.textContent = value;
-}
-
-function html(id, value) {
-  const el = $(id);
-  if (el) el.innerHTML = value;
-}
-
-function notify(message) {
-  const el = $("notification");
-  if (!el) return;
-
-  el.textContent = message;
-  el.classList.remove("hidden");
-
-  setTimeout(() => {
-    el.classList.add("hidden");
-  }, 2500);
-}
-
-function setError(id, message) {
-  text(id, message || "");
+  return {
+    level,
+    currentXp: remaining,
+    requiredXp: level >= 101 ? 0 : xpRequiredForLevel(level)
+  };
 }
 
 
-// =====================================================
-// DATE UTILITIES
-// =====================================================
+// ============================================================
+// 日付
+// ============================================================
 
-function pad(n) {
-  return String(n).padStart(2, "0");
+function pad(num) {
+  return String(num).padStart(2, "0");
 }
 
-function localDateKey(date = new Date()) {
+function dateKey(date = new Date()) {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }
 
@@ -452,109 +213,73 @@ function monthKey(date = new Date()) {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}`;
 }
 
-function getSeasonStart(date = new Date()) {
-  return new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    1,
-    0,
-    0,
-    0,
-    0
-  );
-}
-
-function getSeasonEnd(date = new Date()) {
-  return new Date(
-    date.getFullYear(),
-    date.getMonth() + 1,
-    0,
-    23,
-    59,
-    59,
-    999
-  );
-}
-
-function getWeekStart(date = new Date()) {
+function weekKey(date = new Date()) {
   const d = new Date(date);
-  const day = d.getDay();
+  d.setHours(0, 0, 0, 0);
 
+  const day = d.getDay();
   const diff = day === 0 ? -6 : 1 - day;
 
   d.setDate(d.getDate() + diff);
-  d.setHours(0, 0, 0, 0);
 
-  return d;
+  return dateKey(d);
 }
 
-function getWeekEnd(date = new Date()) {
-  const d = getWeekStart(date);
-  d.setDate(d.getDate() + 6);
-  d.setHours(23, 59, 59, 999);
-  return d;
-}
-
-function formatDate(date) {
-  return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
-}
-
-function formatRange(start, end) {
-  return `${formatDate(start)} ～ ${formatDate(end)}`;
-}
-
-
-// =====================================================
-// LEVEL SYSTEM
-// =====================================================
-
-function xpPerLevel(level) {
-  if (level <= 9) return 100;
-  if (level <= 19) return 150;
-  if (level <= 29) return 200;
-  if (level <= 39) return 250;
-  if (level <= 49) return 300;
-  if (level <= 59) return 350;
-  if (level <= 69) return 400;
-  if (level <= 79) return 450;
-  if (level <= 89) return 500;
-  return 550;
-}
-
-function calculateLevel(totalXP) {
-  let level = 1;
-  let remainingXP = Math.max(0, totalXP);
-
-  while (level <= 100) {
-    const required = xpPerLevel(level);
-
-    if (remainingXP < required) {
-      return {
-        level,
-        currentXP: remainingXP,
-        requiredXP: required,
-        progress: required === 0
-          ? 100
-          : (remainingXP / required) * 100
-      };
-    }
-
-    remainingXP -= required;
-    level++;
-  }
+function getSeasonInfo(date = new Date()) {
+  const start = new Date(date.getFullYear(), date.getMonth(), 1);
+  const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
   return {
-    level: 101,
-    currentXP: 0,
-    requiredXP: 0,
-    progress: 100
+    id: monthKey(date),
+    start,
+    end
   };
 }
 
+function getWeekInfo(date = new Date()) {
+  const start = new Date(date);
+  start.setHours(0, 0, 0, 0);
 
-// =====================================================
-// RANK SYSTEM
-// =====================================================
+  const day = start.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+
+  start.setDate(start.getDate() + diff);
+
+  const end = new Date(start);
+  end.setDate(end.getDate() + 6);
+
+  return {
+    id: weekKey(date),
+    start,
+    end
+  };
+}
+
+function formatDate(date) {
+  if (!(date instanceof Date)) {
+    date = new Date(date);
+  }
+
+  return `${date.getFullYear()}/${pad(date.getMonth() + 1)}/${pad(date.getDate())}`;
+}
+
+function formatMinutes(minutes) {
+  minutes = Math.max(0, Number(minutes) || 0);
+
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+
+  if (h === 0) {
+    return `${m}分`;
+  }
+
+  return `${h}時間${m}分`;
+}
+
+
+// ============================================================
+// ランク計算
+// ============================================================
 
 function calculateRank(minutes) {
   const hours = minutes / 60;
@@ -570,1350 +295,1038 @@ function calculateRank(minutes) {
   return result;
 }
 
-function nextRank(minutes) {
-  const hours = minutes / 60;
+function getNextRank(rankId) {
+  const index = RANKS.findIndex(r => r.id === rankId);
 
-  for (const rank of RANKS) {
-    if (hours < rank.minHours) {
-      return rank;
-    }
+  if (index < 0 || index >= RANKS.length - 1) {
+    return null;
   }
 
-  return null;
-}
-
-function applyRankTheme(rank) {
-  const root = document.documentElement;
-
-  root.style.setProperty("--rank-color", rank.color);
-  root.style.setProperty("--rank-text-color", rank.textColor);
-
-  const rankElements = [
-    $("header-rank"),
-    $("home-rank"),
-    $("season-rank"),
-    $("profile-rank"),
-    $("current-rank-name")
-  ];
-
-  rankElements.forEach(el => {
-    if (!el) return;
-
-    el.dataset.rank = rank.key;
-    el.style.backgroundColor = rank.color;
-    el.style.color = rank.textColor;
-  });
+  return RANKS[index + 1];
 }
 
 
-// =====================================================
-// DEFAULT PROFILE
-// =====================================================
+// ============================================================
+// STATE
+// ============================================================
 
-function defaultSubjectLevels(subjects) {
-  const result = {};
+const state = {
+  user: null,
+  profile: null,
+  subjects: [],
+  studyRecords: [],
+  questCompletions: [],
+  party: null,
+  friends: [],
+  invitations: [],
+  boss: null,
+  seasonStats: null,
 
-  for (const subject of subjects) {
-    result[subject] = {
-      xp: 0,
-      level: 1
-    };
+  timer: {
+    running: false,
+    seconds: 0,
+    startedAt: null,
+    interval: null
+  },
+
+  selectedPurchase: null
+};
+
+
+// ============================================================
+// DOM
+// ============================================================
+
+const $ = id => document.getElementById(id);
+
+function show(id) {
+  const el = $(id);
+  if (el) el.classList.remove("hidden");
+}
+
+function hide(id) {
+  const el = $(id);
+  if (el) el.classList.add("hidden");
+}
+
+function text(id, value) {
+  const el = $(id);
+
+  if (el) {
+    el.textContent = value;
   }
-
-  return result;
 }
 
-function createDefaultProfile({
-  uid,
-  userId,
-  displayName,
-  course,
-  subjects
-}) {
-  return {
-    uid,
-    userId,
-    displayName,
-    course,
-    subjects,
+function html(id, value) {
+  const el = $(id);
 
-    totalXP: 0,
-    totalStudyMinutes: 0,
-
-    seasonStudyMinutes: 0,
-    seasonKey: monthKey(),
-
-    coins: 0,
-    stars: 0,
-
-    title: "無名の冒険者",
-
-    subjectLevels: defaultSubjectLevels(subjects),
-
-    achievements: [],
-    titles: ["無名の冒険者"],
-    items: [],
-
-    equippedOutfit: "default",
-
-    questsCompleted: 0,
-    bossesDefeated: 0,
-
-    currentPartyId: null,
-
-    createdAt: serverTimestamp(),
-    updatedAt: serverTimestamp()
-  };
+  if (el) {
+    el.innerHTML = value;
+  }
 }
 
-
-// =====================================================
-// AUTH EMAIL
-// =====================================================
-
-function internalEmail(userId) {
-  return `${userId.toLowerCase()}${INTERNAL_EMAIL_DOMAIN}`;
+function error(id, message) {
+  text(id, message || "");
 }
 
 
-// =====================================================
-// AUTH SCREEN
-// =====================================================
+// ============================================================
+// 通知
+// ============================================================
 
-function initAuthUI() {
+function notify(message) {
+  const el = $("notification");
 
-  $("show-register-button")?.addEventListener("click", () => {
-    hide("login-screen");
-    show("register-screen");
-  });
+  if (!el) return;
 
-  $("show-login-button")?.addEventListener("click", () => {
-    hide("register-screen");
-    show("login-screen");
-  });
+  el.textContent = message;
+  el.classList.remove("hidden");
 
-  $("login-form")?.addEventListener("submit", login);
+  clearTimeout(notify.timer);
 
-  $("register-form")?.addEventListener("submit", register);
-
-  $("logout-button")?.addEventListener("click", async () => {
-    await signOut(auth);
-  });
+  notify.timer = setTimeout(() => {
+    el.classList.add("hidden");
+  }, 3000);
 }
 
 
-// =====================================================
-// REGISTER
-// =====================================================
+// ============================================================
+// 画面切り替え
+// ============================================================
 
-async function register(event) {
-  event.preventDefault();
+function navigateTo(screenId) {
+  const screens = document.querySelectorAll(".app-screen");
 
-  setError("register-error", "");
-  setError("subject-error", "");
-
-  const userId = $("register-user-id").value.trim();
-  const password = $("register-password").value;
-  const passwordConfirm = $("register-password-confirm").value;
-  const displayName = $("register-display-name").value.trim();
-
-  const course =
-    document.querySelector('input[name="course"]:checked')?.value ||
-    "undecided";
-
-  const subjects = [
-    ...document.querySelectorAll('input[name="subjects"]:checked')
-  ].map(input => input.value);
-
-  if (!/^[A-Za-z0-9_-]{3,30}$/.test(userId)) {
-    setError(
-      "register-error",
-      "ユーザーIDは3〜30文字の英数字・_・-で入力してください。"
-    );
-    return;
-  }
-
-  if (password.length < 6) {
-    setError(
-      "register-error",
-      "パスワードは6文字以上にしてください。"
-    );
-    return;
-  }
-
-  if (password !== passwordConfirm) {
-    setError(
-      "register-error",
-      "パスワードが一致していません。"
-    );
-    return;
-  }
-
-  if (!displayName) {
-    setError(
-      "register-error",
-      "表示名を入力してください。"
-    );
-    return;
-  }
-
-  if (subjects.length === 0) {
-    setError(
-      "subject-error",
-      "最低1教科は選択してください。"
-    );
-    return;
-  }
-
-  const button = $("register-button");
-
-  if (button) button.disabled = true;
-
-  try {
-
-    const usernameRef = doc(
-      db,
-      "usernames",
-      userId.toLowerCase()
-    );
-
-    const usernameSnap = await getDoc(usernameRef);
-
-    if (usernameSnap.exists()) {
-      throw new Error("USERNAME_EXISTS");
-    }
-
-    const credential =
-      await createUserWithEmailAndPassword(
-        auth,
-        internalEmail(userId),
-        password
-      );
-
-    const uid = credential.user.uid;
-
-    const profile = createDefaultProfile({
-      uid,
-      userId,
-      displayName,
-      course,
-      subjects
-    });
-
-    await setDoc(
-      doc(db, "users", uid),
-      profile
-    );
-
-    await setDoc(
-      usernameRef,
-      {
-        uid,
-        userId,
-        createdAt: serverTimestamp()
-      }
-    );
-
-    await initializeUserCollections(uid, profile);
-
-    notify("冒険者登録完了！");
-
-  } catch (error) {
-
-    console.error(error);
-
-    if (error.message === "USERNAME_EXISTS") {
-      setError(
-        "register-error",
-        "そのユーザーIDはすでに使われています。"
-      );
-    } else if (error.code === "auth/email-already-in-use") {
-      setError(
-        "register-error",
-        "そのユーザーIDはすでに使われています。"
-      );
+  screens.forEach(screen => {
+    if (screen.id === screenId) {
+      screen.classList.remove("hidden");
+      screen.classList.remove("screen-enter");
+      void screen.offsetWidth;
+      screen.classList.add("screen-enter");
     } else {
-      setError(
-        "register-error",
-        "登録に失敗しました。"
-      );
+      screen.classList.add("hidden");
     }
+  });
 
-  } finally {
+  document.querySelectorAll(".nav-button").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.screen === screenId
+    );
+  });
 
-    if (button) button.disabled = false;
+  if (screenId === "home-screen") {
+    refreshHome();
+  }
 
+  if (screenId === "study-screen") {
+    refreshStudy();
+  }
+
+  if (screenId === "quest-screen") {
+    refreshQuest();
+  }
+
+  if (screenId === "party-screen") {
+    refreshParty();
+  }
+
+  if (screenId === "rank-screen") {
+    refreshRank();
+  }
+
+  if (screenId === "achievement-screen") {
+    refreshAchievements();
+  }
+
+  if (screenId === "shop-screen") {
+    refreshShop();
+  }
+
+  if (screenId === "profile-screen") {
+    refreshProfile();
+  }
+
+  if (screenId === "locker-screen") {
+    refreshLocker();
+  }
+
+  if (screenId === "settings-screen") {
+    refreshSettings();
   }
 }
 
 
-// =====================================================
-// LOGIN
-// =====================================================
+// ============================================================
+// USER PATH
+// ============================================================
 
-async function login(event) {
-  event.preventDefault();
-
-  setError("login-error", "");
-
-  const userId = $("login-user-id").value.trim();
-  const password = $("login-password").value;
-
-  if (!userId || !password) {
-    setError(
-      "login-error",
-      "ユーザーIDとパスワードを入力してください。"
-    );
-    return;
-  }
-
-  const button = $("login-button");
-
-  if (button) button.disabled = true;
-
-  try {
-
-    await signInWithEmailAndPassword(
-      auth,
-      internalEmail(userId),
-      password
-    );
-
-  } catch (error) {
-
-    console.error(error);
-
-    setError(
-      "login-error",
-      "ユーザーIDまたはパスワードが違います。"
-    );
-
-  } finally {
-
-    if (button) button.disabled = false;
-
-  }
+function userRef() {
+  return doc(db, "users", state.user.uid);
 }
 
-
-// =====================================================
-// INITIALIZE USER DATA
-// =====================================================
-
-async function initializeUserCollections(uid, profile) {
-
-  const now = new Date();
-
-  const seasonRef = doc(
+function subjectRef(subjectId) {
+  return doc(
     db,
     "users",
-    uid,
-    "seasons",
-    profile.seasonKey
+    state.user.uid,
+    "subjects",
+    subjectId
   );
+}
 
-  const seasonSnap = await getDoc(seasonRef);
-
-  if (!seasonSnap.exists()) {
-    await setDoc(seasonRef, {
-      seasonKey: profile.seasonKey,
-      studyMinutes: 0,
-      rank: "bronze",
-      rewardClaimed: false,
-      startedAt: serverTimestamp()
-    });
-  }
-
-  const bossKey = getBossWeekKey(now);
-
-  const bossRef = doc(
+function studyCollection() {
+  return collection(
     db,
     "users",
-    uid,
-    "bosses",
-    bossKey
+    state.user.uid,
+    "studyRecords"
   );
+}
 
-  const bossSnap = await getDoc(bossRef);
+function questCompletionCollection() {
+  return collection(
+    db,
+    "users",
+    state.user.uid,
+    "questCompletions"
+  );
+}
 
-  if (!bossSnap.exists()) {
-    await setDoc(
-      bossRef,
-      createBossData(profile)
-    );
-  }
+function seasonStatsRef(seasonId) {
+  return doc(
+    db,
+    "users",
+    state.user.uid,
+    "seasonStats",
+    seasonId
+  );
 }
 
 
-// =====================================================
-// PROFILE LOAD
-// =====================================================
+// ============================================================
+// PROFILE
+// ============================================================
 
 async function loadProfile() {
+  if (!state.user) return;
 
-  if (!currentUser) return;
+  const snap = await getDoc(userRef());
 
-  const ref = doc(
-    db,
-    "users",
-    currentUser.uid
-  );
-
-  const snap = await getDoc(ref);
-
-  if (!snap.exists()) {
-    console.error("Profile not found.");
-    return;
-  }
-
-  currentProfile = {
-    ...snap.data(),
-    uid: currentUser.uid
-  };
-
-  await ensureSeason();
-
-  await ensureWeeklyBoss();
-
-  await renderAll();
-}
-
-
-// =====================================================
-// SEASON
-// =====================================================
-
-async function ensureSeason() {
-
-  if (!currentProfile) return;
-
-  const currentSeason = monthKey();
-
-  if (currentProfile.seasonKey === currentSeason) {
-    return;
-  }
-
-  const previousRank =
-    calculateRank(currentProfile.seasonStudyMinutes || 0);
-
-  const previousSeasonKey =
-    currentProfile.seasonKey;
-
-  const reward =
-    RANK_REWARDS[previousRank.key] || 0;
-
-  if (previousSeasonKey) {
-
-    await setDoc(
-      doc(
-        db,
-        "users",
-        currentUser.uid,
-        "seasons",
-        previousSeasonKey
-      ),
-      {
-        seasonKey: previousSeasonKey,
-        studyMinutes:
-          currentProfile.seasonStudyMinutes || 0,
-        rank: previousRank.key,
-        rewardXP: reward,
-        endedAt: serverTimestamp()
-      },
-      { merge: true }
-    );
-
-  }
-
-  await updateDoc(
-    doc(db, "users", currentUser.uid),
-    {
-      seasonKey: currentSeason,
-      seasonStudyMinutes: 0,
-      totalXP: increment(reward),
-      updatedAt: serverTimestamp()
-    }
-  );
-
-  currentProfile.seasonKey = currentSeason;
-  currentProfile.seasonStudyMinutes = 0;
-  currentProfile.totalXP =
-    (currentProfile.totalXP || 0) + reward;
-
-  if (reward > 0) {
-    notify(
-      `${previousRank.name}シーズン報酬！ +${reward} XP`
-    );
+  if (snap.exists()) {
+    state.profile = snap.data();
   }
 }
 
 
-// =====================================================
-// STUDY RECORD
-// =====================================================
+// ============================================================
+// SUBJECTS
+// ============================================================
 
-async function recordStudy({
-  subject,
-  minutes,
-  note = ""
-}) {
+async function loadSubjects() {
+  if (!state.user) return;
 
-  if (!currentUser || !currentProfile) {
-    return;
-  }
-
-  minutes = Number(minutes);
-
-  if (!Number.isFinite(minutes) || minutes <= 0) {
-    throw new Error("INVALID_MINUTES");
-  }
-
-  const now = new Date();
-
-  const xp = minutes;
-
-  const profileRef = doc(
-    db,
-    "users",
-    currentUser.uid
-  );
-
-  const studyRef = doc(
+  const snap = await getDocs(
     collection(
       db,
       "users",
-      currentUser.uid,
-      "studyRecords"
+      state.user.uid,
+      "subjects"
     )
   );
 
-  const today = localDateKey(now);
+  state.subjects = snap.docs.map(docSnap => ({
+    id: docSnap.id,
+    ...docSnap.data()
+  }));
+}
 
-  await runTransaction(db, async transaction => {
+function getSelectedSubjects() {
+  return state.subjects.map(s => s.id);
+}
 
-    const profileSnap =
-      await transaction.get(profileRef);
+function subjectName(id) {
+  return SUBJECTS[id] || id;
+}
 
-    if (!profileSnap.exists()) {
-      throw new Error("PROFILE_NOT_FOUND");
-    }
+async function initializeSubjects(subjectIds) {
+  for (const id of subjectIds) {
+    const ref = subjectRef(id);
+    const snap = await getDoc(ref);
 
-    const profile = profileSnap.data();
-
-    const currentSubject =
-      profile.subjectLevels?.[subject] || {
+    if (!snap.exists()) {
+      await setDoc(ref, {
+        subjectId: id,
+        name: subjectName(id),
         xp: 0,
-        level: 1
-      };
-
-    const subjectXP =
-      (currentSubject.xp || 0) + xp;
-
-    const subjectLevel =
-      calculateSubjectLevel(subjectXP);
-
-    const totalXP =
-      (profile.totalXP || 0) + xp;
-
-    const totalStudyMinutes =
-      (profile.totalStudyMinutes || 0) + minutes;
-
-    const seasonStudyMinutes =
-      (profile.seasonStudyMinutes || 0) + minutes;
-
-    const newSubjectLevels =
-      profile.subjectLevels || {};
-
-    newSubjectLevels[subject] = {
-      xp: subjectXP,
-      level: subjectLevel.level
-    };
-
-    transaction.update(
-      profileRef,
-      {
-        totalXP,
-        totalStudyMinutes,
-        seasonStudyMinutes,
-        subjectLevels: newSubjectLevels,
-        updatedAt: serverTimestamp()
-      }
-    );
-
-    transaction.set(
-      studyRef,
-      {
-        subject,
-        minutes,
-        xp,
-        note,
-        dateKey: today,
+        level: 1,
+        totalMinutes: 0,
         createdAt: serverTimestamp()
-      }
+      });
+    }
+  }
+
+  await loadSubjects();
+}
+
+
+// ============================================================
+// STUDY RECORDS
+// ============================================================
+
+async function loadStudyRecords() {
+  if (!state.user) return;
+
+  const q = query(
+    studyCollection(),
+    orderBy("createdAt", "desc"),
+    limit(200)
+  );
+
+  const snap = await getDocs(q);
+
+  state.studyRecords = snap.docs.map(d => ({
+    id: d.id,
+    ...d.data()
+  }));
+}
+
+function getTodayStudyMinutes() {
+  const today = dateKey();
+
+  return state.studyRecords
+    .filter(record => record.date === today)
+    .reduce(
+      (sum, record) => sum + Number(record.minutes || 0),
+      0
     );
-  });
+}
 
-  await reloadAndCheckProgress();
+function getSeasonStudyMinutes() {
+  const season = getSeasonInfo();
 
-  await checkHiddenAchievements({
-    type: "study",
-    subject,
-    minutes
-  });
+  return state.studyRecords
+    .filter(record => {
+      const date = new Date(
+        `${record.date}T00:00:00`
+      );
 
-  notify(
-    `📚 ${minutes}分記録！ +${xp} XP`
+      return (
+        date >= season.start &&
+        date <= season.end
+      );
+    })
+    .reduce(
+      (sum, record) => sum + Number(record.minutes || 0),
+      0
+    );
+}
+
+function getTotalStudyMinutes() {
+  return state.studyRecords.reduce(
+    (sum, record) => sum + Number(record.minutes || 0),
+    0
   );
 }
 
 
-// =====================================================
-// SUBJECT LEVEL
-// =====================================================
+// ============================================================
+// LEVEL / XP
+// ============================================================
+
+async function awardXp(amount, reason = "") {
+  if (!state.user || amount <= 0) return;
+
+  const before = calculateLevel(
+    Number(state.profile.xp || 0)
+  );
+
+  let totalXp =
+    Number(state.profile.xp || 0) + amount;
+
+  let stars =
+    Number(state.profile.stars || 0);
+
+  let levelResult = calculateLevel(totalXp);
+
+  if (
+    before.level < 101 &&
+    levelResult.level >= 101
+  ) {
+    stars += 1;
+
+    totalXp = 0;
+    levelResult = calculateLevel(0);
+
+    await showLevelUp(
+      before.level,
+      101
+    );
+
+    notify("⭐ 星を獲得！Lv.1から再スタート！");
+  } else if (levelResult.level > before.level) {
+    await showLevelUp(
+      before.level,
+      levelResult.level
+    );
+  }
+
+  await updateDoc(userRef(), {
+    xp: totalXp,
+    level: levelResult.level,
+    stars,
+    updatedAt: serverTimestamp()
+  });
+
+  state.profile.xp = totalXp;
+  state.profile.level = levelResult.level;
+  state.profile.stars = stars;
+
+  await checkAchievements();
+}
+
+async function showLevelUp(oldLevel, newLevel) {
+  text("level-up-old-level", oldLevel);
+  text("level-up-new-level", newLevel);
+
+  show("level-up-modal");
+}
+
+function refreshLevelUI() {
+  if (!state.profile) return;
+
+  const result = calculateLevel(
+    Number(state.profile.xp || 0)
+  );
+
+  text("home-level", result.level);
+  text("header-level", `Lv.${result.level}`);
+
+  text(
+    "home-xp",
+    `${result.currentXp} XP`
+  );
+
+  if (result.level >= 101) {
+    text(
+      "home-xp-required",
+      "MAX"
+    );
+  } else {
+    text(
+      "home-xp-required",
+      `次のレベルまで ${result.requiredXp - result.currentXp} XP`
+    );
+  }
+
+  const progress =
+    result.requiredXp > 0
+      ? Math.min(
+          100,
+          result.currentXp /
+            result.requiredXp *
+            100
+        )
+      : 100;
+
+  const bar = $("level-progress");
+
+  if (bar) {
+    bar.style.width = `${progress}%`;
+  }
+
+  text(
+    "star-count",
+    `⭐ ${state.profile.stars || 0}`
+  );
+
+  text(
+    "home-coins",
+    state.profile.coins || 0
+  );
+
+  text(
+    "header-coins",
+    `🪙 ${state.profile.coins || 0} コイン`
+  );
+}
+
+
+// ============================================================
+// STUDY → XP
+// ============================================================
+
+async function recordStudy(
+  subjectId,
+  minutes,
+  note = "",
+  source = "manual"
+) {
+  minutes = Number(minutes);
+
+  if (!subjectId || !Number.isFinite(minutes)) {
+    throw new Error("教科または時間が不正です。");
+  }
+
+  if (minutes <= 0 || minutes > 1440) {
+    throw new Error("勉強時間は1〜1440分で入力してください。");
+  }
+
+  const record = {
+    userId: state.user.uid,
+    subjectId,
+    minutes,
+    note,
+    date: dateKey(),
+    source,
+    createdAt: serverTimestamp()
+  };
+
+  await addDoc(
+    studyCollection(),
+    record
+  );
+
+  const subject = await getDoc(
+    subjectRef(subjectId)
+  );
+
+  if (subject.exists()) {
+    const data = subject.data();
+
+    const newXp =
+      Number(data.xp || 0) + minutes;
+
+    const result =
+      calculateSubjectLevel(newXp);
+
+    await updateDoc(
+      subjectRef(subjectId),
+      {
+        xp: newXp,
+        level: result.level,
+        totalMinutes:
+          Number(data.totalMinutes || 0) +
+          minutes,
+        updatedAt: serverTimestamp()
+      }
+    );
+  }
+
+  await awardXp(
+    minutes,
+    `${subjectName(subjectId)} ${minutes}分`
+  );
+
+  await updateSeasonStats(minutes);
+
+  await loadStudyRecords();
+  await loadSubjects();
+
+  await checkAchievements();
+
+  notify(
+    `${minutes}分記録！ +${minutes} XP`
+  );
+
+  refreshAll();
+}
+
+
+// ============================================================
+// 教科別レベル
+// ============================================================
 
 function calculateSubjectLevel(xp) {
-
   let level = 1;
-  let remaining = xp;
+  let remaining = Number(xp || 0);
 
-  while (remaining >= 100 && level < 100) {
-    remaining -= 100;
+  while (level < 100) {
+    const requirement =
+      100 + Math.floor((level - 1) / 10) * 50;
+
+    if (remaining < requirement) {
+      break;
+    }
+
+    remaining -= requirement;
     level++;
   }
 
   return {
     level,
-    xp: xp
+    currentXp: remaining,
+    requiredXp:
+      100 + Math.floor((level - 1) / 10) * 50
   };
 }
 
+function renderSubjectLevels(containerId) {
+  const container = $(containerId);
 
-// =====================================================
-// STUDY FORM
-// =====================================================
+  if (!container) return;
 
-function initStudyForm() {
-
-  $("study-record-form")?.addEventListener(
-    "submit",
-    async event => {
-
-      event.preventDefault();
-
-      setError("study-error", "");
-
-      try {
-
-        const subject =
-          $("study-subject").value;
-
-        const minutes =
-          Number($("study-minutes").value);
-
-        const note =
-          $("study-note").value.trim();
-
-        if (!subject) {
-          throw new Error("SUBJECT_REQUIRED");
-        }
-
-        await recordStudy({
-          subject,
-          minutes,
-          note
-        });
-
-        $("study-record-form").reset();
-
-      } catch (error) {
-
-        console.error(error);
-
-        setError(
-          "study-error",
-          "勉強記録に失敗しました。"
-        );
-
-      }
-    }
-  );
-
-  $("timer-save-button")?.addEventListener(
-    "click",
-    saveTimer
-  );
-
-  $("study-timer-start")?.addEventListener(
-    "click",
-    startTimer
-  );
-
-  $("study-timer-pause")?.addEventListener(
-    "click",
-    pauseTimer
-  );
-
-  $("study-timer-reset")?.addEventListener(
-    "click",
-    resetTimer
-  );
-}
-
-
-// =====================================================
-// TIMER
-// =====================================================
-
-function updateTimerDisplay() {
-
-  const h =
-    Math.floor(timerSeconds / 3600);
-
-  const m =
-    Math.floor((timerSeconds % 3600) / 60);
-
-  const s =
-    timerSeconds % 60;
-
-  text(
-    "study-timer-display",
-    `${pad(h)}:${pad(m)}:${pad(s)}`
-  );
-}
-
-function startTimer() {
-
-  if (timerRunning) return;
-
-  timerRunning = true;
-
-  timerInterval = setInterval(() => {
-    timerSeconds++;
-    updateTimerDisplay();
-  }, 1000);
-}
-
-function pauseTimer() {
-
-  timerRunning = false;
-
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
-}
-
-function resetTimer() {
-
-  pauseTimer();
-
-  timerSeconds = 0;
-
-  updateTimerDisplay();
-}
-
-async function saveTimer() {
-
-  setError("timer-error", "");
-
-  const subject =
-    $("timer-study-subject").value;
-
-  const minutes =
-    Math.floor(timerSeconds / 60);
-
-  if (!subject) {
-    setError(
-      "timer-error",
-      "教科を選択してください。"
-    );
+  if (state.subjects.length === 0) {
+    container.innerHTML =
+      `<p class="empty-message">教科データがありません。</p>`;
     return;
   }
 
-  if (minutes < 1) {
-    setError(
-      "timer-error",
-      "1分以上勉強してから記録してください。"
+  container.innerHTML =
+    state.subjects
+      .map(subject => {
+        const result =
+          calculateSubjectLevel(
+            Number(subject.xp || 0)
+          );
+
+        const percent =
+          result.requiredXp > 0
+            ? result.currentXp /
+              result.requiredXp *
+              100
+            : 100;
+
+        return `
+          <div class="subject-level-card">
+            <div class="subject-level-header">
+              <strong>${escapeHtml(subject.name)}</strong>
+              <span>Lv.${result.level}</span>
+            </div>
+
+            <div class="subject-level-bar">
+              <div
+                class="subject-level-progress"
+                style="width:${Math.min(100, percent)}%"
+              ></div>
+            </div>
+
+            <small>
+              ${result.currentXp} /
+              ${result.requiredXp} XP
+            </small>
+          </div>
+        `;
+      })
+      .join("");
+}
+
+
+// ============================================================
+// SEASON
+// ============================================================
+
+async function loadSeasonStats() {
+  const season = getSeasonInfo();
+
+  const snap = await getDoc(
+    seasonStatsRef(season.id)
+  );
+
+  if (snap.exists()) {
+    state.seasonStats = {
+      id: snap.id,
+      ...snap.data()
+    };
+  } else {
+    const initial = {
+      seasonId: season.id,
+      studyMinutes: 0,
+      rank: "bronze",
+      rewardClaimed: false,
+      createdAt: serverTimestamp()
+    };
+
+    await setDoc(
+      seasonStatsRef(season.id),
+      initial
     );
+
+    state.seasonStats = {
+      id: season.id,
+      ...initial
+    };
+  }
+}
+
+async function updateSeasonStats(minutes) {
+  const season = getSeasonInfo();
+
+  if (!state.seasonStats) {
+    await loadSeasonStats();
+  }
+
+  const total =
+    getSeasonStudyMinutes();
+
+  const rank =
+    calculateRank(total);
+
+  await setDoc(
+    seasonStatsRef(season.id),
+    {
+      seasonId: season.id,
+      studyMinutes: total,
+      rank: rank.id,
+      updatedAt: serverTimestamp()
+    },
+    { merge: true }
+  );
+
+  state.seasonStats.studyMinutes = total;
+  state.seasonStats.rank = rank.id;
+}
+
+async function finalizePreviousSeasonIfNeeded() {
+  // クライアント側では現在シーズンのみ管理。
+  // 前シーズン履歴が存在する場合は履歴表示へ利用する。
+}
+
+
+// ============================================================
+// QUEST
+// ============================================================
+
+const DAILY_QUESTS = [
+  {
+    id: "daily-study-30",
+    title: "30分の冒険",
+    description: "30分勉強する",
+    type: "study",
+    target: 30,
+    rewardXp: 30,
+    rewardCoins: 15
+  },
+  {
+    id: "daily-study-60",
+    title: "一時間の鍛錬",
+    description: "合計60分勉強する",
+    type: "study",
+    target: 60,
+    rewardXp: 60,
+    rewardCoins: 30
+  },
+  {
+    id: "daily-subject",
+    title: "知識の一撃",
+    description: "1教科を30分勉強する",
+    type: "subject",
+    target: 30,
+    rewardXp: 45,
+    rewardCoins: 20
+  }
+];
+
+const WEEKLY_QUESTS = [
+  {
+    id: "weekly-300",
+    title: "週300分の修行",
+    description: "今週300分勉強する",
+    type: "weeklyStudy",
+    target: 300,
+    rewardXp: 200,
+    rewardCoins: 100
+  },
+  {
+    id: "weekly-600",
+    title: "週10時間の修行",
+    description: "今週600分勉強する",
+    type: "weeklyStudy",
+    target: 600,
+    rewardXp: 400,
+    rewardCoins: 200
+  }
+];
+
+function questIsCompleted(id, period) {
+  return state.questCompletions.some(
+    q =>
+      q.questId === id &&
+      q.period === period
+  );
+}
+
+async function loadQuestCompletions() {
+  if (!state.user) return;
+
+  const snap = await getDocs(
+    questCompletionCollection()
+  );
+
+  state.questCompletions =
+    snap.docs.map(d => ({
+      id: d.id,
+      ...d.data()
+    }));
+}
+
+function questProgress(quest) {
+  if (quest.type === "study") {
+    return Math.min(
+      quest.target,
+      getTodayStudyMinutes()
+    );
+  }
+
+  if (quest.type === "subject") {
+    const today = dateKey();
+
+    const grouped = {};
+
+    state.studyRecords
+      .filter(r => r.date === today)
+      .forEach(r => {
+        grouped[r.subjectId] =
+          (grouped[r.subjectId] || 0) +
+          Number(r.minutes || 0);
+      });
+
+    return Math.min(
+      quest.target,
+      Math.max(
+        0,
+        ...Object.values(grouped)
+      )
+    );
+  }
+
+  if (quest.type === "weeklyStudy") {
+    const info = getWeekInfo();
+    const start = info.start;
+    const end = info.end;
+
+    return Math.min(
+      quest.target,
+      state.studyRecords
+        .filter(record => {
+          const date = new Date(
+            `${record.date}T00:00:00`
+          );
+
+          return (
+            date >= start &&
+            date <= end
+          );
+        })
+        .reduce(
+          (sum, r) =>
+            sum + Number(r.minutes || 0),
+          0
+        )
+    );
+  }
+
+  return 0;
+}
+
+async function completeQuest(quest, period) {
+  if (
+    questIsCompleted(
+      quest.id,
+      period
+    )
+  ) {
     return;
   }
-
-  try {
-
-    await recordStudy({
-      subject,
-      minutes,
-      note: "タイマー記録"
-    });
-
-    resetTimer();
-
-  } catch (error) {
-
-    console.error(error);
-
-    setError(
-      "timer-error",
-      "タイマー記録に失敗しました。"
-    );
-
-  }
-}
-
-
-// =====================================================
-// SUBJECT SELECTS
-// =====================================================
-
-function populateSubjectSelects() {
-
-  const subjects =
-    currentProfile?.subjects || [];
-
-  const selects = [
-    $("study-subject"),
-    $("timer-study-subject")
-  ];
-
-  selects.forEach(select => {
-
-    if (!select) return;
-
-    select.innerHTML =
-      `<option value="">教科を選択</option>`;
-
-    subjects.forEach(subject => {
-
-      const option =
-        document.createElement("option");
-
-      option.value = subject;
-      option.textContent =
-        SUBJECTS[subject] || subject;
-
-      select.appendChild(option);
-
-    });
-  });
-}
-
-
-// =====================================================
-// RENDER ALL
-// =====================================================
-
-async function renderAll() {
-
-  if (!currentProfile) return;
-
-  populateSubjectSelects();
-
-  renderHeader();
-
-  renderHome();
-
-  renderRank();
-
-  renderProfile();
-
-  renderSubjectLevels();
-
-  renderSettings();
-
-  await renderStudyHistory();
-
-  await renderQuest();
-
-  await renderParty();
-
-  await renderAchievements();
-
-  renderShop();
-
-  renderLocker();
-}
-
-
-// =====================================================
-// HEADER
-// =====================================================
-
-function renderHeader() {
-
-  const level =
-    calculateLevel(currentProfile.totalXP || 0);
-
-  const rank =
-    calculateRank(
-      currentProfile.seasonStudyMinutes || 0
-    );
-
-  text(
-    "header-display-name",
-    currentProfile.displayName
-  );
-
-  text(
-    "header-level",
-    `Lv.${Math.min(level.level, 100)}`
-  );
-
-  text(
-    "header-rank",
-    rank.name
-  );
-
-  text(
-    "header-coins",
-    `🪙 ${currentProfile.coins || 0} コイン`
-  );
-
-  applyRankTheme(rank);
-}
-
-
-// =====================================================
-// HOME
-// =====================================================
-
-function renderHome() {
-
-  const level =
-    calculateLevel(currentProfile.totalXP || 0);
-
-  const rank =
-    calculateRank(
-      currentProfile.seasonStudyMinutes || 0
-    );
-
-  text(
-    "home-level",
-    Math.min(level.level, 100)
-  );
-
-  text(
-    "home-xp",
-    `${currentProfile.totalXP || 0} XP`
-  );
 
   const progress =
-    level.level >= 101
-      ? 100
-      : level.progress;
+    questProgress(quest);
 
-  const progressEl =
-    $("level-progress");
-
-  if (progressEl) {
-    progressEl.style.width =
-      `${progress}%`;
+  if (progress < quest.target) {
+    return;
   }
 
-  text(
-    "home-xp-required",
-    level.level >= 101
-      ? "転生可能！"
-      : `次のレベルまで ${level.requiredXP - level.currentXP} XP`
+  await addDoc(
+    questCompletionCollection(),
+    {
+      questId: quest.id,
+      period,
+      rewardXp: quest.rewardXp,
+      rewardCoins: quest.rewardCoins,
+      completedAt: serverTimestamp()
+    }
   );
 
-  text(
-    "star-count",
-    `⭐ ${currentProfile.stars || 0}`
+  await awardXp(
+    quest.rewardXp,
+    quest.title
   );
 
-  text(
-    "star-title",
-    currentProfile.title || "無名の冒険者"
+  await addCoins(
+    quest.rewardCoins
   );
 
-  text(
-    "home-coins",
-    currentProfile.coins || 0
-  );
+  await loadQuestCompletions();
 
-  text(
-    "today-study-time",
-    `${currentProfile._todayMinutes || 0}分`
-  );
-
-  text(
-    "today-xp",
-    `${currentProfile._todayXP || 0} XP`
-  );
-
-  text(
-    "today-quests",
-    currentProfile._todayQuestCount || 0
-  );
-
-  text(
-    "home-rank",
-    rank.name
-  );
-
-  text(
-    "home-season-range",
-    formatRange(
-      getSeasonStart(),
-      getSeasonEnd()
-    )
-  );
-
-  text(
-    "home-season-end",
-    formatDate(getSeasonEnd())
+  notify(
+    `クエスト達成！ ${quest.title}`
   );
 }
 
+async function autoCompleteQuests() {
+  const today = dateKey();
+  const week = weekKey();
 
-// =====================================================
-// RANK PAGE
-// =====================================================
-
-function renderRank() {
-
-  const minutes =
-    currentProfile.seasonStudyMinutes || 0;
-
-  const rank =
-    calculateRank(minutes);
-
-  const next =
-    nextRank(minutes);
-
-  text(
-    "current-rank-name",
-    rank.name
-  );
-
-  text(
-    "current-season-range",
-    formatRange(
-      getSeasonStart(),
-      getSeasonEnd()
-    )
-  );
-
-  text(
-    "season-study-time",
-    `${(minutes / 60).toFixed(1)}時間`
-  );
-
-  text(
-    "season-rank",
-    rank.name
-  );
-
-  if (next) {
-
-    const remaining =
-      next.minHours - minutes / 60;
-
-    text(
-      "next-rank-requirement",
-      `${remaining.toFixed(1)}時間`
+  for (const quest of DAILY_QUESTS) {
+    await completeQuest(
+      quest,
+      today
     );
-
-  } else {
-
-    text(
-      "next-rank-requirement",
-      "最高ランク到達！"
-    );
-
   }
 
-  const timeRemaining =
-    getRemainingTime(getSeasonEnd());
-
-  text(
-    "current-season-time",
-    timeRemaining
-  );
-
-  const currentRank =
-    $("current-rank");
-
-  if (currentRank) {
-    currentRank.dataset.rank =
-      rank.key;
-
-    currentRank.style.backgroundColor =
-      rank.color;
-
-    currentRank.style.color =
-      rank.textColor;
+  for (const quest of WEEKLY_QUESTS) {
+    await completeQuest(
+      quest,
+      week
+    );
   }
 }
 
-function getRemainingTime(endDate) {
+function renderQuests() {
+  renderQuestList(
+    "daily-quest-list",
+    DAILY_QUESTS,
+    dateKey()
+  );
 
-  const diff =
-    Math.max(0, endDate.getTime() - Date.now());
+  renderQuestList(
+    "weekly-quest-list",
+    WEEKLY_QUESTS,
+    weekKey()
+  );
 
-  const totalMinutes =
-    Math.floor(diff / 60000);
-
-  const days =
-    Math.floor(totalMinutes / 1440);
-
-  const hours =
-    Math.floor(
-      (totalMinutes % 1440) / 60
-    );
-
-  return `${days}日 ${hours}時間`;
+  renderSubjectQuests();
 }
 
+function renderQuestList(
+  containerId,
+  quests,
+  period
+) {
+  const container = $(containerId);
 
-// =====================================================
-// PROFILE
-// =====================================================
+  if (!container) return;
 
-function renderProfile() {
+  container.innerHTML =
+    quests.map(quest => {
+      const progress =
+        questProgress(quest);
 
-  const level =
-    calculateLevel(currentProfile.totalXP || 0);
+      const completed =
+        questIsCompleted(
+          quest.id,
+          period
+        );
 
-  const rank =
-    calculateRank(
-      currentProfile.seasonStudyMinutes || 0
-    );
-
-  text(
-    "profile-display-name",
-    currentProfile.displayName
-  );
-
-  text(
-    "profile-user-id",
-    currentProfile.userId
-  );
-
-  text(
-    "profile-course",
-    courseName(currentProfile.course)
-  );
-
-  text(
-    "profile-level",
-    Math.min(level.level, 100)
-  );
-
-  text(
-    "profile-stars",
-    currentProfile.stars || 0
-  );
-
-  text(
-    "profile-coins",
-    currentProfile.coins || 0
-  );
-
-  text(
-    "profile-title",
-    currentProfile.title || "無名の冒険者"
-  );
-
-  text(
-    "profile-rank",
-    rank.name
-  );
-
-  text(
-    "profile-total-study-time",
-    `${currentProfile.totalStudyMinutes || 0}分`
-  );
-
-  text(
-    "profile-total-xp",
-    `${currentProfile.totalXP || 0} XP`
-  );
-
-  text(
-    "profile-bosses-defeated",
-    currentProfile.bossesDefeated || 0
-  );
-
-  text(
-    "profile-quests-completed",
-    currentProfile.questsCompleted || 0
-  );
-
-  text(
-    "profile-achievements",
-    currentProfile.achievements?.length || 0
-  );
-
-  text(
-    "profile-item-count",
-    currentProfile.items?.length || 0
-  );
-}
-
-function courseName(course) {
-
-  return {
-    science: "理系",
-    humanities: "文系",
-    undecided: "未定"
-  }[course] || "未定";
-
-}
-
-
-// =====================================================
-// SUBJECT LEVELS
-// =====================================================
-
-function renderSubjectLevels() {
-
-  const list =
-    $("subject-level-list");
-
-  const profileList =
-    $("profile-subject-list");
-
-  if (!list) return;
-
-  const subjects =
-    currentProfile.subjects || [];
-
-  const content =
-    subjects.map(subject => {
-
-      const data =
-        currentProfile.subjectLevels?.[subject] || {
-          level: 1,
-          xp: 0
-        };
+      const percent =
+        Math.min(
+          100,
+          progress /
+            quest.target *
+            100
+        );
 
       return `
-        <div class="subject-level-card">
-          <strong>${escapeHTML(SUBJECTS[subject])}</strong>
-          <span>Lv.${data.level}</span>
-          <small>${data.xp} XP</small>
-        </div>
-      `;
+        <div class="quest-card ${completed ? "completed" : ""}">
+          <div>
+            <strong>${escapeHtml(quest.title)}</strong>
+            <p>${escapeHtml(quest.description)}</p>
+          </div>
 
-    }).join("");
+          <div class="quest-progress">
+            <div
+              class="quest-progress-bar"
+              style="width:${percent}%"
+            ></div>
+          </div>
 
-  list.innerHTML =
-    content ||
-    `<p class="empty-message">教科がありません。</p>`;
+          <div class="quest-footer">
+            <span>
+              ${progress} / ${quest.target}
+            </span>
+            <span>
+              +${quest.rewardXp} XP
+              🪙 +${quest.rewardCoins}
+            </span>
+          </div>
 
-  if (profileList) {
-    profileList.innerHTML = content;
-  }
-}
-
-
-// =====================================================
-// STUDY HISTORY
-// =====================================================
-
-async function renderStudyHistory() {
-
-  if (!currentUser) return;
-
-  const list =
-    $("study-history-list");
-
-  if (!list) return;
-
-  try {
-
-    const q = query(
-      collection(
-        db,
-        "users",
-        currentUser.uid,
-        "studyRecords"
-      ),
-      orderBy("createdAt", "desc"),
-      limit(50)
-    );
-
-    const snap =
-      await getDocs(q);
-
-    if (snap.empty) {
-      list.innerHTML =
-        `<p class="empty-message">まだ履歴がありません。</p>`;
-      return;
-    }
-
-    let todayMinutes = 0;
-    let todayXP = 0;
-
-    const today =
-      localDateKey();
-
-    const records = [];
-
-    snap.forEach(docSnap => {
-
-      const data = docSnap.data();
-
-      if (data.dateKey === today) {
-        todayMinutes += Number(data.minutes || 0);
-        todayXP += Number(data.xp || 0);
-      }
-
-      records.push(data);
-
-    });
-
-    currentProfile._todayMinutes =
-      todayMinutes;
-
-    currentProfile._todayXP =
-      todayXP;
-
-    list.innerHTML =
-      records.map(record => `
-        <div class="history-card">
-          <strong>
-            ${escapeHTML(
-              SUBJECTS[record.subject] ||
-              record.subject
-            )}
-          </strong>
-          <span>${record.minutes}分</span>
-          <small>+${record.xp} XP</small>
           ${
-            record.note
-              ? `<p>${escapeHTML(record.note)}</p>`
+            completed
+              ? `<strong>✅ 達成済み</strong>`
               : ""
           }
         </div>
-      `).join("");
+      `;
+    }).join("");
+}
 
-  } catch (error) {
+function renderSubjectQuests() {
+  const container =
+    $("subject-quest-list");
 
-    console.error(error);
+  if (!container) return;
 
-    list.innerHTML =
-      `<p class="empty-message">履歴を読み込めませんでした。</p>`;
-  }
+  container.innerHTML =
+    state.subjects.map(subject => `
+      <div class="quest-card">
+        <strong>
+          ${escapeHtml(subject.name)}の鍛錬
+        </strong>
+        <p>
+          ${escapeHtml(subject.name)}を30分勉強する
+        </p>
+        <span>
+          +45 XP / 🪙20
+        </span>
+      </div>
+    `).join("");
 }
 
 
-// =====================================================
-// QUEST SYSTEM
-// =====================================================
+// ============================================================
+// COINS
+// ============================================================
 
-function getDailyQuestSeed() {
+async function addCoins(amount) {
+  if (!amount) return;
 
-  const date =
-    localDateKey();
+  await updateDoc(
+    userRef(),
+    {
+      coins: increment(amount),
+      updatedAt: serverTimestamp()
+    }
+  );
 
+  state.profile.coins =
+    Number(state.profile.coins || 0) +
+    amount;
+
+  refreshLevelUI();
+}
+
+
+// ============================================================
+// BOSS
+// ============================================================
+
+const BOSS_NAMES = [
+  "受験の魔王",
+  "模試喰らい",
+  "時間喰らい",
+  "知識の暴君",
+  "忘却の王",
+  "参考書の巨人"
+];
+
+function seededNumber(seed) {
   let hash = 0;
 
-  for (let i = 0; i < date.length; i++) {
+  for (let i = 0; i < seed.length; i++) {
     hash =
-      ((hash << 5) - hash) +
-      date.charCodeAt(i);
+      (hash << 5) -
+      hash +
+      seed.charCodeAt(i);
 
     hash |= 0;
   }
@@ -1921,843 +1334,509 @@ function getDailyQuestSeed() {
   return Math.abs(hash);
 }
 
-function generateDailyQuests() {
+async function loadBoss() {
+  const info = getWeekInfo();
 
-  const seed =
-    getDailyQuestSeed();
-
-  const subjects =
-    currentProfile?.subjects || [];
-
-  const subject =
-    subjects.length
-      ? subjects[seed % subjects.length]
-      : "english";
-
-  return [
-    {
-      id: `daily_${localDateKey()}_1`,
-      type: "daily",
-      name: "今日の30分",
-      description: "30分以上勉強する。",
-      target: 30,
-      progressType: "minutes",
-      xp: QUEST_XP.daily,
-      coins: QUEST_COINS.daily
-    },
-    {
-      id: `daily_${localDateKey()}_2`,
-      type: "daily",
-      name: "知識を深める",
-      description: "15分以上暗記・復習する。",
-      target: 15,
-      progressType: "minutes",
-      xp: QUEST_XP.daily,
-      coins: QUEST_COINS.daily
-    },
-    {
-      id: `daily_${localDateKey()}_3`,
-      type: "daily",
-      name: `${SUBJECTS[subject] || subject}クエスト`,
-      description: `${SUBJECTS[subject] || subject}を30分以上勉強する。`,
-      target: 30,
-      progressType: "subjectMinutes",
-      subject,
-      xp: QUEST_XP.daily,
-      coins: QUEST_COINS.daily
-    }
-  ];
-}
-
-function generateSubjectQuests() {
-
-  return (currentProfile?.subjects || [])
-    .map(subject => ({
-      id: `subject_${localDateKey()}_${subject}`,
-      type: "subject",
-      subject,
-      name: `${SUBJECTS[subject]}の鍛錬`,
-      description: `${SUBJECTS[subject]}を30分勉強する。`,
-      target: 30,
-      xp: QUEST_XP.subject,
-      coins: QUEST_COINS.subject
-    }));
-}
-
-function generateWeeklyQuests() {
-
-  const week =
-    localDateKey(getWeekStart());
-
-  return [
-    {
-      id: `weekly_${week}_1`,
-      type: "weekly",
-      name: "週間30時間",
-      description: "今週30時間勉強する。",
-      target: 1800,
-      progressType: "weeklyMinutes",
-      xp: QUEST_XP.weekly,
-      coins: QUEST_COINS.weekly
-    },
-    {
-      id: `weekly_${week}_2`,
-      type: "weekly",
-      name: "週間5教科",
-      description: "今週5教科以上勉強する。",
-      target: 5,
-      progressType: "weeklySubjects",
-      xp: QUEST_XP.weekly,
-      coins: QUEST_COINS.weekly
-    }
-  ];
-}
-
-
-// =====================================================
-// QUEST RENDER
-// =====================================================
-
-async function renderQuest() {
-
-  const daily =
-    generateDailyQuests();
-
-  const subject =
-    generateSubjectQuests();
-
-  const weekly =
-    generateWeeklyQuests();
-
-  await renderQuestList(
-    "home-quest-list",
-    daily
+  const ref = doc(
+    db,
+    "bosses",
+    info.id
   );
 
-  await renderQuestList(
-    "daily-quest-list",
-    daily
-  );
+  const snap = await getDoc(ref);
 
-  await renderQuestList(
-    "subject-quest-list",
-    subject
-  );
+  if (!snap.exists()) {
+    const seed =
+      seededNumber(info.id);
 
-  await renderQuestList(
-    "weekly-quest-list",
-    weekly
-  );
+    const weaknessIds =
+      getSelectedSubjects();
 
-  await renderBoss();
+    const weakness =
+      weaknessIds.length > 0
+        ? weaknessIds[
+            seed % weaknessIds.length
+          ]
+        : "math";
 
-}
+    const baseHp = 500;
 
+    const boss = {
+      weekId: info.id,
+      name:
+        BOSS_NAMES[
+          seed % BOSS_NAMES.length
+        ],
+      level:
+        1 + (seed % 10),
+      baseHp,
+      maxHp: baseHp,
+      currentHp: baseHp,
+      weakness,
+      weaknessMultiplier: 1.5,
+      defeated: false,
+      createdAt: serverTimestamp()
+    };
 
-// =====================================================
-// QUEST PROGRESS
-// =====================================================
+    // 現行ルールでは signed-in user が
+    // 作成可能なので、最初のアクセス時に生成する。
+    await setDoc(
+      ref,
+      boss
+    );
 
-async function getTodayMinutes(subject = null) {
-
-  if (!currentUser) return 0;
-
-  const q = query(
-    collection(
-      db,
-      "users",
-      currentUser.uid,
-      "studyRecords"
-    ),
-    where(
-      "dateKey",
-      "==",
-      localDateKey()
-    )
-  );
-
-  const snap =
-    await getDocs(q);
-
-  let total = 0;
-
-  snap.forEach(docSnap => {
-
-    const data =
-      docSnap.data();
-
-    if (!subject || data.subject === subject) {
-      total += Number(data.minutes || 0);
-    }
-
-  });
-
-  return total;
-}
-
-async function getWeeklyStats() {
-
-  if (!currentUser) {
-    return {
-      minutes: 0,
-      subjects: new Set()
+    state.boss = {
+      id: info.id,
+      ...boss
+    };
+  } else {
+    state.boss = {
+      id: snap.id,
+      ...snap.data()
     };
   }
 
-  const start =
-    getWeekStart();
-
-  const q = query(
-    collection(
-      db,
-      "users",
-      currentUser.uid,
-      "studyRecords"
-    ),
-    where(
-      "createdAt",
-      ">=",
-      start
-    )
-  );
-
-  const snap =
-    await getDocs(q);
-
-  let minutes = 0;
-  const subjects = new Set();
-
-  snap.forEach(docSnap => {
-
-    const data =
-      docSnap.data();
-
-    minutes += Number(data.minutes || 0);
-
-    if (data.subject) {
-      subjects.add(data.subject);
-    }
-
-  });
-
-  return {
-    minutes,
-    subjects
-  };
+  renderBoss();
 }
 
-async function questProgress(quest) {
+async function refreshBossHpForParty() {
+  if (!state.boss) return;
 
-  if (quest.progressType === "minutes") {
-    return getTodayMinutes();
-  }
+  const memberCount =
+    state.party?.memberIds?.length || 1;
 
-  if (quest.progressType === "subjectMinutes") {
-    return getTodayMinutes(quest.subject);
-  }
+  const base =
+    Number(state.boss.baseHp || 500);
 
-  if (quest.progressType === "weeklyMinutes") {
+  const multiplier =
+    1 +
+    (memberCount - 1) * 0.75;
 
-    const stats =
-      await getWeeklyStats();
+  const newMax =
+    Math.round(base * multiplier);
 
-    return stats.minutes;
-  }
-
-  if (quest.progressType === "weeklySubjects") {
-
-    const stats =
-      await getWeeklyStats();
-
-    return stats.subjects.size;
-  }
-
-  return 0;
-}
-
-
-// =====================================================
-// QUEST COMPLETION
-// =====================================================
-
-async function isQuestCompleted(questId) {
-
-  if (!currentUser) return false;
-
-  const ref =
-    doc(
-      db,
-      "users",
-      currentUser.uid,
-      "completedQuests",
-      questId
-    );
-
-  const snap =
-    await getDoc(ref);
-
-  return snap.exists();
-}
-
-async function completeQuest(quest) {
-
-  if (!currentUser) return;
-
-  const completed =
-    await isQuestCompleted(quest.id);
-
-  if (completed) {
-    notify("このクエストは達成済み！");
-    return;
-  }
-
-  const progress =
-    await questProgress(quest);
-
-  if (progress < quest.target) {
-    notify(
-      `まだ ${quest.target - progress} 必要！`
-    );
-    return;
-  }
-
-  const profileRef =
-    doc(
-      db,
-      "users",
-      currentUser.uid
-    );
-
-  await runTransaction(
-    db,
-    async transaction => {
-
-      const snap =
-        await transaction.get(profileRef);
-
-      const profile =
-        snap.data();
-
-      transaction.update(
-        profileRef,
-        {
-          totalXP:
-            (profile.totalXP || 0) +
-            quest.xp,
-
-          coins:
-            (profile.coins || 0) +
-            quest.coins,
-
-          questsCompleted:
-            (profile.questsCompleted || 0) +
-            1,
-
-          updatedAt:
-            serverTimestamp()
-        }
-      );
-
-      transaction.set(
-        doc(
-          db,
-          "users",
-          currentUser.uid,
-          "completedQuests",
-          quest.id
-        ),
-        {
-          ...quest,
-          completedAt:
-            serverTimestamp()
-        }
-      );
-
-    }
-  );
-
-  await reloadAndCheckProgress();
-
-  notify(
-    `⚔️ クエスト達成！ +${quest.xp} XP / +${quest.coins}コイン`
-  );
-}
-
-
-// =====================================================
-// QUEST UI
-// =====================================================
-
-async function renderQuestList(
-  elementId,
-  quests
-) {
-
-  const list =
-    $(elementId);
-
-  if (!list) return;
-
-  const cards = [];
-
-  for (const quest of quests) {
-
-    const completed =
-      await isQuestCompleted(quest.id);
-
-    const progress =
-      Math.min(
-        quest.target,
-        await questProgress(quest)
-      );
-
-    cards.push(`
-      <div class="quest-card ${
-        completed ? "completed" : ""
-      }">
-
-        <h4>${escapeHTML(quest.name)}</h4>
-
-        <p>
-          ${escapeHTML(quest.description)}
-        </p>
-
-        <div class="quest-progress">
-          ${progress} / ${quest.target}
-        </div>
-
-        <div>
-          +${quest.xp} XP
-          &nbsp;
-          🪙 +${quest.coins}
-        </div>
-
-        ${
-          completed
-            ? `<strong>✅ 達成済み</strong>`
-            : `
-              <button
-                type="button"
-                class="quest-complete-button"
-                data-quest-id="${quest.id}"
-              >
-                達成判定
-              </button>
-            `
-        }
-
-      </div>
-    `);
-  }
-
-  list.innerHTML =
-    cards.join("");
-
-  list
-    .querySelectorAll(".quest-complete-button")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        async () => {
-
-          const quest =
-            [
-              ...generateDailyQuests(),
-              ...generateSubjectQuests(),
-              ...generateWeeklyQuests()
-            ]
-              .find(q =>
-                q.id === button.dataset.questId
-              );
-
-          if (quest) {
-            await completeQuest(quest);
-          }
-
-        }
-      );
-
-    });
-}
-
-
-// =====================================================
-// BOSS
-// =====================================================
-
-function getBossWeekKey(date = new Date()) {
-
-  const start =
-    getWeekStart(date);
-
-  return localDateKey(start);
-}
-
-function createBossData(profile) {
-
-  const subjects =
-    profile.subjects || [];
-
-  const weakness =
-    subjects.length
-      ? subjects[
-          Math.floor(
-            Math.random() *
-            subjects.length
-          )
-        ]
-      : "english";
-
-  return {
-    weekKey: getBossWeekKey(),
-    name: "受験の魔王",
-    level: 1,
-
-    weakness,
-
-    maxHP:
-      BOSS_BASE_HP +
+  if (
+    Number(state.boss.maxHp) !== newMax
+  ) {
+    const damageTaken =
       Math.max(
         0,
-        (profile.currentPartyMemberCount || 1) - 1
-      ) *
-      BOSS_MEMBER_HP,
+        Number(state.boss.maxHp || newMax) -
+        Number(state.boss.currentHp || newMax)
+      );
 
-    currentHP:
-      BOSS_BASE_HP,
-
-    defeated: false,
-
-    totalDamage: 0,
-
-    battleLog: [],
-
-    createdAt:
-      serverTimestamp()
-  };
-}
-
-async function ensureWeeklyBoss() {
-
-  if (!currentUser || !currentProfile) {
-    return;
-  }
-
-  const weekKey =
-    getBossWeekKey();
-
-  const ref =
-    doc(
-      db,
-      "users",
-      currentUser.uid,
-      "bosses",
-      weekKey
-    );
-
-  const snap =
-    await getDoc(ref);
-
-  if (snap.exists()) return;
-
-  const partyCount =
-    await getPartyMemberCount();
-
-  const boss =
-    createBossData({
-      ...currentProfile,
-      currentPartyMemberCount:
-        partyCount
-    });
-
-  await setDoc(ref, boss);
-}
-
-async function getCurrentBoss() {
-
-  const weekKey =
-    getBossWeekKey();
-
-  const ref =
-    doc(
-      db,
-      "users",
-      currentUser.uid,
-      "bosses",
-      weekKey
-    );
-
-  const snap =
-    await getDoc(ref);
-
-  if (!snap.exists()) {
-    await ensureWeeklyBoss();
-    return getCurrentBoss();
-  }
-
-  return {
-    ref,
-    data: snap.data()
-  };
-}
-
-async function renderBoss() {
-
-  const result =
-    await getCurrentBoss();
-
-  if (!result) return;
-
-  const boss =
-    result.data;
-
-  text(
-    "boss-name",
-    boss.name
-  );
-
-  text(
-    "boss-level",
-    `Lv.${boss.level || 1}`
-  );
-
-  text(
-    "boss-current-hp",
-    Math.max(0, boss.currentHP)
-  );
-
-  text(
-    "boss-max-hp",
-    boss.maxHP
-  );
-
-  const percentage =
-    boss.maxHP
-      ? Math.max(
-          0,
-          Math.min(
-            100,
-            boss.currentHP /
-            boss.maxHP *
-            100
-          )
-        )
-      : 0;
-
-  const hpBar =
-    $("boss-hp-progress");
-
-  if (hpBar) {
-    hpBar.style.width =
-      `${percentage}%`;
-  }
-
-  text(
-    "boss-weakness-subject",
-    SUBJECTS[boss.weakness] ||
-    boss.weakness
-  );
-
-  text(
-    "boss-weakness-multiplier",
-    `×${WEAKNESS_MULTIPLIER}`
-  );
-
-  const partyCount =
-    await getPartyMemberCount();
-
-  text(
-    "boss-party-count",
-    `${partyCount}人`
-  );
-
-  renderBossLog(
-    boss.battleLog || []
-  );
-}
-
-function renderBossLog(logs) {
-
-  const list =
-    $("boss-log-list");
-
-  if (!list) return;
-
-  if (!logs.length) {
-    list.innerHTML =
-      `<p class="empty-message">まだ戦闘記録はありません。</p>`;
-    return;
-  }
-
-  list.innerHTML =
-    logs
-      .slice()
-      .reverse()
-      .map(log => `
-        <div class="boss-log">
-          ${escapeHTML(log.message || "")}
-        </div>
-      `)
-      .join("");
-}
-
-
-// =====================================================
-// BOSS DAMAGE
-// =====================================================
-
-async function dealBossDamage(
-  minutes,
-  subject
-) {
-
-  const result =
-    await getCurrentBoss();
-
-  const boss =
-    result.data;
-
-  if (boss.defeated) {
-    notify("この週のボスは撃破済み！");
-    return;
-  }
-
-  let damage =
-    Number(minutes);
-
-  if (subject === boss.weakness) {
-    damage *= WEAKNESS_MULTIPLIER;
-  }
-
-  const newHP =
-    Math.max(
-      0,
-      boss.currentHP - damage
-    );
-
-  const defeated =
-    newHP <= 0;
-
-  const log = {
-    message:
-      `${currentProfile.displayName}が` +
-      `${SUBJECTS[subject] || subject}を${minutes}分勉強！ ` +
-      `${Math.floor(damage)}ダメージ！` +
-      (
-        subject === boss.weakness
-          ? " 弱点攻撃！"
-          : ""
-      ),
-    createdAt:
-      Date.now()
-  };
-
-  const updates = {
-    currentHP: newHP,
-    totalDamage:
-      (boss.totalDamage || 0) +
-      damage,
-    battleLog: [
-      ...(boss.battleLog || []),
-      log
-    ]
-  };
-
-  if (defeated) {
-    updates.defeated = true;
-  }
-
-  await updateDoc(
-    result.ref,
-    updates
-  );
-
-  if (defeated) {
+    const newCurrent =
+      Math.max(
+        0,
+        newMax - damageTaken
+      );
 
     await updateDoc(
       doc(
         db,
-        "users",
-        currentUser.uid
+        "bosses",
+        state.boss.id
       ),
       {
-        bossesDefeated:
-          (currentProfile.bossesDefeated || 0) +
-          1,
-
-        totalXP:
-          (currentProfile.totalXP || 0) +
-          300,
-
-        coins:
-          (currentProfile.coins || 0) +
-          150
+        maxHp: newMax,
+        currentHp: newCurrent
       }
     );
 
-    notify(
-      "👹 ボス撃破！！ +300 XP / +150コイン"
-    );
-
-    await reloadAndCheckProgress();
-
-    await checkHiddenAchievements({
-      type: "boss"
-    });
-
-  } else {
-
-    notify(
-      `⚔️ ${Math.floor(damage)}ダメージ！`
-    );
-
-    await renderBoss();
+    state.boss.maxHp = newMax;
+    state.boss.currentHp = newCurrent;
   }
 }
 
+function calculateBossDamage(minutes, subjectId) {
+  let damage = Number(minutes || 0);
 
-// =====================================================
-// PARTY
-// =====================================================
-
-async function getPartyMemberCount() {
-
-  if (!currentProfile?.currentPartyId) {
-    return 1;
+  if (
+    subjectId ===
+    state.boss?.weakness
+  ) {
+    damage =
+      Math.floor(
+        damage *
+        Number(
+          state.boss.weaknessMultiplier ||
+          1.5
+        )
+      );
   }
 
-  const ref =
-    doc(
-      db,
-      "parties",
-      currentProfile.currentPartyId
+  return damage;
+}
+
+async function applyStudyToBoss(
+  subjectId,
+  minutes
+) {
+  if (!state.boss) {
+    await loadBoss();
+  }
+
+  const damage =
+    calculateBossDamage(
+      minutes,
+      subjectId
     );
 
-  const snap =
-    await getDoc(ref);
+  const newHp =
+    Math.max(
+      0,
+      Number(state.boss.currentHp) -
+      damage
+    );
 
-  if (!snap.exists()) {
-    return 1;
+  const defeated =
+    newHp <= 0;
+
+  await updateDoc(
+    doc(
+      db,
+      "bosses",
+      state.boss.id
+    ),
+    {
+      currentHp: newHp,
+      defeated
+    }
+  );
+
+  await addDoc(
+    collection(
+      db,
+      "bosses",
+      state.boss.id,
+      "logs"
+    ),
+    {
+      userId: state.user.uid,
+      userName:
+        state.profile.displayName,
+      subjectId,
+      minutes,
+      damage,
+      createdAt: serverTimestamp()
+    }
+  );
+
+  state.boss.currentHp = newHp;
+  state.boss.defeated = defeated;
+
+  if (defeated) {
+    await updateDoc(
+      userRef(),
+      {
+        bossesDefeated:
+          increment(1)
+      }
+    );
+
+    state.profile.bossesDefeated =
+      Number(
+        state.profile.bossesDefeated || 0
+      ) + 1;
+
+    await awardXp(
+      300,
+      "ボス撃破"
+    );
+
+    await addCoins(150);
+
+    notify("👹 ボス撃破！");
   }
 
-  return Math.min(
-    4,
-    snap.data().memberIds?.length || 1
+  renderBoss();
+}
+
+function renderBoss() {
+  const boss = state.boss;
+
+  if (!boss) return;
+
+  text("boss-name", boss.name);
+  text(
+    "boss-level",
+    `Lv.${boss.level}`
+  );
+
+  text(
+    "boss-current-hp",
+    Math.max(
+      0,
+      Math.round(boss.currentHp)
+    )
+  );
+
+  text(
+    "boss-max-hp",
+    Math.round(boss.maxHp)
+  );
+
+  text(
+    "boss-weakness-subject",
+    subjectName(boss.weakness)
+  );
+
+  text(
+    "boss-weakness-multiplier",
+    `×${boss.weaknessMultiplier || 1.5}`
+  );
+
+  const percent =
+    boss.maxHp > 0
+      ? boss.currentHp /
+        boss.maxHp *
+        100
+      : 0;
+
+  const bar =
+    $("boss-hp-progress");
+
+  if (bar) {
+    bar.style.width =
+      `${Math.max(0, percent)}%`;
+  }
+
+  const memberCount =
+    state.party?.memberIds?.length || 1;
+
+  text(
+    "boss-party-count",
+    `${memberCount}人`
   );
 }
 
-async function renderParty() {
 
+// ============================================================
+// PARTY
+// ============================================================
+
+async function loadParty() {
+  if (!state.user) return;
+
+  const q = query(
+    collection(db, "parties"),
+    where(
+      "memberIds",
+      "array-contains",
+      state.user.uid
+    ),
+    limit(1)
+  );
+
+  const snap = await getDocs(q);
+
+  if (snap.empty) {
+    state.party = null;
+    return;
+  }
+
+  state.party = {
+    id: snap.docs[0].id,
+    ...snap.docs[0].data()
+  };
+}
+
+async function createParty() {
+  if (state.party) {
+    notify("すでにパーティーに所属しています。");
+    return;
+  }
+
+  const ref = await addDoc(
+    collection(db, "parties"),
+    {
+      leaderId: state.user.uid,
+      memberIds: [state.user.uid],
+      createdAt: serverTimestamp()
+    }
+  );
+
+  state.party = {
+    id: ref.id,
+    leaderId: state.user.uid,
+    memberIds: [state.user.uid]
+  };
+
+  await refreshBossHpForParty();
+
+  notify("パーティーを結成した！");
+  refreshParty();
+}
+
+async function inviteToParty(userId) {
+  if (!state.party) {
+    await createParty();
+  }
+
+  if (!state.party) return;
+
+  if (
+    state.party.memberIds.length >= 4
+  ) {
+    throw new Error(
+      "パーティーは最大4人です。"
+    );
+  }
+
+  if (
+    state.party.memberIds.includes(userId)
+  ) {
+    throw new Error(
+      "そのユーザーは既にメンバーです。"
+    );
+  }
+
+  const q = query(
+    collection(db, "users"),
+    where("userId", "==", userId),
+    limit(1)
+  );
+
+  const snap = await getDocs(q);
+
+  if (snap.empty) {
+    throw new Error(
+      "そのユーザーIDは見つかりません。"
+    );
+  }
+
+  const receiver =
+    snap.docs[0].data();
+
+  await addDoc(
+    collection(db, "partyInvites"),
+    {
+      partyId: state.party.id,
+      senderId: state.user.uid,
+      receiverId: snap.docs[0].id,
+      receiverUserId: userId,
+      status: "pending",
+      createdAt: serverTimestamp()
+    }
+  );
+
+  notify("招待を送信しました！");
+}
+
+async function loadInvitations() {
+  if (!state.user) return;
+
+  const q = query(
+    collection(db, "partyInvites"),
+    where(
+      "receiverId",
+      "==",
+      state.user.uid
+    ),
+    where(
+      "status",
+      "==",
+      "pending"
+    )
+  );
+
+  const snap = await getDocs(q);
+
+  state.invitations =
+    snap.docs.map(d => ({
+      id: d.id,
+      ...d.data()
+    }));
+}
+
+async function acceptPartyInvite(
+  invitation
+) {
+  const partyRef =
+    doc(
+      db,
+      "parties",
+      invitation.partyId
+    );
+
+  const snap =
+    await getDoc(partyRef);
+
+  if (!snap.exists()) {
+    throw new Error(
+      "パーティーが存在しません。"
+    );
+  }
+
+  const party = snap.data();
+
+  if (party.memberIds.length >= 4) {
+    throw new Error(
+      "パーティーが満員です。"
+    );
+  }
+
+  if (state.party) {
+    throw new Error(
+      "既に別のパーティーに所属しています。"
+    );
+  }
+
+  const newMembers = [
+    ...party.memberIds,
+    state.user.uid
+  ];
+
+  await updateDoc(
+    partyRef,
+    {
+      memberIds: newMembers
+    }
+  );
+
+  await updateDoc(
+    doc(
+      db,
+      "partyInvites",
+      invitation.id
+    ),
+    {
+      status: "accepted"
+    }
+  );
+
+  await loadParty();
+  await refreshBossHpForParty();
+
+  notify("パーティーに加入した！");
+  refreshParty();
+}
+
+function renderParty() {
   const list =
     $("party-member-list");
 
   if (!list) return;
 
-  if (!currentProfile.currentPartyId) {
+  if (!state.party) {
+    list.innerHTML = `
+      <p class="empty-message">
+        パーティーに所属していません。
+      </p>
+      <button
+        type="button"
+        class="primary-button"
+        id="create-party-button"
+      >
+        パーティーを作る
+      </button>
+    `;
 
-    list.innerHTML =
-      `<p class="empty-message">現在パーティーに所属していません。</p>`;
+    $("create-party-button")
+      ?.addEventListener(
+        "click",
+        createParty
+      );
 
     text(
       "party-member-count",
@@ -2767,494 +1846,379 @@ async function renderParty() {
     return;
   }
 
-  const ref =
-    doc(
-      db,
-      "parties",
-      currentProfile.currentPartyId
-    );
-
-  const snap =
-    await getDoc(ref);
-
-  if (!snap.exists()) {
-    return;
-  }
-
-  const party =
-    snap.data();
-
-  const members =
-    party.memberIds || [];
+  list.innerHTML =
+    state.party.memberIds
+      .map((uid, index) => `
+        <div class="party-member">
+          <strong>
+            ${
+              index === 0
+                ? "👑 "
+                : "⚔️ "
+            }
+            ${
+              uid === state.user.uid
+                ? escapeHtml(
+                    state.profile.displayName
+                  )
+                : "冒険者"
+            }
+          </strong>
+        </div>
+      `)
+      .join("");
 
   text(
     "party-member-count",
-    `${members.length} / 4人`
+    `${state.party.memberIds.length} / 4人`
   );
 
-  const cards = [];
+  const invites =
+    $("party-invitation-list");
 
-  for (const uid of members) {
+  if (invites) {
+    invites.innerHTML =
+      state.invitations.length
+        ? state.invitations.map(invite => `
+            <div class="invitation-card">
+              <p>
+                パーティーへの招待が届いています。
+              </p>
+              <button
+                class="primary-button accept-party-invite"
+                data-id="${invite.id}"
+              >
+                参加する
+              </button>
+            </div>
+          `).join("")
+        : `
+          <p class="empty-message">
+            招待はありません。
+          </p>
+        `;
 
-    const userSnap =
-      await getDoc(
-        doc(db, "users", uid)
-      );
+    invites
+      .querySelectorAll(
+        ".accept-party-invite"
+      )
+      .forEach(button => {
+        button.addEventListener(
+          "click",
+          async () => {
+            const invite =
+              state.invitations.find(
+                x =>
+                  x.id ===
+                  button.dataset.id
+              );
 
-    if (!userSnap.exists()) continue;
+            if (!invite) return;
 
-    const user =
-      userSnap.data();
-
-    cards.push(`
-      <div class="party-member-card">
-        <strong>
-          ${escapeHTML(user.displayName)}
-        </strong>
-        <span>
-          Lv.${calculateLevel(user.totalXP || 0).level}
-        </span>
-      </div>
-    `);
-  }
-
-  list.innerHTML =
-    cards.join("");
-}
-
-
-// =====================================================
-// PARTY INVITE
-// =====================================================
-
-async function inviteToParty(event) {
-
-  event.preventDefault();
-
-  setError("party-error", "");
-
-  const targetUserId =
-    $("party-invite-user-id").value.trim();
-
-  if (!targetUserId) return;
-
-  try {
-
-    const usernameSnap =
-      await getDoc(
-        doc(
-          db,
-          "usernames",
-          targetUserId.toLowerCase()
-        )
-      );
-
-    if (!usernameSnap.exists()) {
-      throw new Error("USER_NOT_FOUND");
-    }
-
-    const target =
-      usernameSnap.data();
-
-    if (target.uid === currentUser.uid) {
-      throw new Error("SELF");
-    }
-
-    let partyId =
-      currentProfile.currentPartyId;
-
-    if (!partyId) {
-
-      const partyRef =
-        await addDoc(
-          collection(db, "parties"),
-          {
-            leaderId:
-              currentUser.uid,
-
-            memberIds:
-              [currentUser.uid],
-
-            createdAt:
-              serverTimestamp()
+            try {
+              await acceptPartyInvite(
+                invite
+              );
+            } catch (e) {
+              notify(e.message);
+            }
           }
         );
-
-      partyId =
-        partyRef.id;
-
-      await updateDoc(
-        doc(
-          db,
-          "users",
-          currentUser.uid
-        ),
-        {
-          currentPartyId: partyId
-        }
-      );
-
-      currentProfile.currentPartyId =
-        partyId;
-    }
-
-    const partySnap =
-      await getDoc(
-        doc(db, "parties", partyId)
-      );
-
-    const party =
-      partySnap.data();
-
-    if ((party.memberIds || []).length >= 4) {
-      throw new Error("FULL");
-    }
-
-    await addDoc(
-      collection(
-        db,
-        "partyInvites"
-      ),
-      {
-        partyId,
-        fromUid:
-          currentUser.uid,
-        toUid:
-          target.uid,
-        status: "pending",
-        createdAt:
-          serverTimestamp()
-      }
-    );
-
-    $("party-invite-form").reset();
-
-    notify("パーティー招待を送信した！");
-
-  } catch (error) {
-
-    console.error(error);
-
-    const messages = {
-      USER_NOT_FOUND:
-        "そのユーザーIDは存在しません。",
-      SELF:
-        "自分自身は招待できません。",
-      FULL:
-        "パーティーは最大4人です。"
-    };
-
-    setError(
-      "party-error",
-      messages[error.message] ||
-      "招待に失敗しました。"
-    );
+      });
   }
 }
 
 
-// =====================================================
+// ============================================================
 // FRIENDS
-// =====================================================
+// ============================================================
 
-async function addFriend(event) {
+async function addFriend(userId) {
+  if (!userId) {
+    throw new Error("ユーザーIDを入力してください。");
+  }
 
-  event.preventDefault();
-
-  setError("friend-error", "");
-
-  const targetUserId =
-    $("friend-user-id").value.trim();
-
-  if (!targetUserId) return;
-
-  try {
-
-    const usernameSnap =
-      await getDoc(
-        doc(
-          db,
-          "usernames",
-          targetUserId.toLowerCase()
-        )
-      );
-
-    if (!usernameSnap.exists()) {
-      throw new Error("USER_NOT_FOUND");
-    }
-
-    const target =
-      usernameSnap.data();
-
-    if (target.uid === currentUser.uid) {
-      throw new Error("SELF");
-    }
-
-    const requestId =
-      `${currentUser.uid}_${target.uid}`;
-
-    await setDoc(
-      doc(
-        db,
-        "friendRequests",
-        requestId
-      ),
-      {
-        fromUid:
-          currentUser.uid,
-        toUid:
-          target.uid,
-        status: "pending",
-        createdAt:
-          serverTimestamp()
-      }
-    );
-
-    $("friend-add-form").reset();
-
-    notify("フレンド申請を送信した！");
-
-  } catch (error) {
-
-    console.error(error);
-
-    setError(
-      "friend-error",
-      error.message === "SELF"
-        ? "自分自身には申請できません。"
-        : "フレンド申請に失敗しました。"
+  if (
+    userId === state.profile.userId
+  ) {
+    throw new Error(
+      "自分自身は追加できません。"
     );
   }
+
+  const q = query(
+    collection(db, "users"),
+    where(
+      "userId",
+      "==",
+      userId
+    ),
+    limit(1)
+  );
+
+  const snap = await getDocs(q);
+
+  if (snap.empty) {
+    throw new Error(
+      "ユーザーが見つかりません。"
+    );
+  }
+
+  const targetUid =
+    snap.docs[0].id;
+
+  await addDoc(
+    collection(db, "friendRequests"),
+    {
+      senderId: state.user.uid,
+      receiverId: targetUid,
+      status: "pending",
+      createdAt: serverTimestamp()
+    }
+  );
+
+  notify("フレンド申請を送信しました！");
 }
 
+async function loadFriends() {
+  if (!state.user) return;
 
-// =====================================================
-// FRIEND LIST
-// =====================================================
+  const snap = await getDocs(
+    collection(
+      db,
+      "users",
+      state.user.uid,
+      "friends"
+    )
+  );
 
-async function renderFriends() {
+  state.friends =
+    snap.docs.map(d => ({
+      id: d.id,
+      ...d.data()
+    }));
+}
 
+function renderFriends() {
   const list =
     $("friend-list");
 
-  if (!list || !currentUser) return;
+  if (!list) return;
 
+  list.innerHTML =
+    state.friends.length
+      ? state.friends.map(friend => `
+          <div class="friend-card">
+            <strong>
+              ${escapeHtml(
+                friend.displayName ||
+                friend.userId ||
+                "冒険者"
+              )}
+            </strong>
+          </div>
+        `).join("")
+      : `
+        <p class="empty-message">
+          フレンドはいません。
+        </p>
+      `;
+}
+
+
+// ============================================================
+// ACHIEVEMENTS
+// ============================================================
+
+const ACHIEVEMENTS = [
+  {
+    id: "first-study",
+    name: "最初の一歩",
+    description: "初めて勉強を記録する",
+    rewardXp: 20,
+    rewardCoins: 10,
+    hidden: false
+  },
+  {
+    id: "study-100",
+    name: "100分の冒険",
+    description: "累計100分勉強する",
+    rewardXp: 50,
+    rewardCoins: 25,
+    hidden: false
+  },
+  {
+    id: "study-1000",
+    name: "千分の修行者",
+    description: "累計1000分勉強する",
+    rewardXp: 100,
+    rewardCoins: 50,
+    hidden: false
+  },
+  {
+    id: "level-10",
+    name: "駆け出しの英雄",
+    description: "Lv.10に到達する",
+    rewardXp: 100,
+    rewardCoins: 50,
+    hidden: false
+  },
+  {
+    id: "gold-rank",
+    name: "黄金の冒険者",
+    description: "Goldに到達する",
+    rewardXp: 150,
+    rewardCoins: 75,
+    hidden: false
+  },
+  {
+    id: "first-boss",
+    name: "魔王討伐",
+    description: "初めてボスを撃破する",
+    rewardXp: 200,
+    rewardCoins: 100,
+    hidden: false
+  },
+
+  // ----------------------------------------------------------
+  // 隠し実績 10個
+  // ----------------------------------------------------------
+
+  {
+    id: "hidden-midnight",
+    name: "深夜の冒険者",
+    description: "日付が変わる直前の時間帯に勉強を記録する",
+    rewardXp: 100,
+    rewardCoins: 50,
+    hidden: true
+  },
+  {
+    id: "hidden-speed",
+    name: "時の支配者",
+    description: "同日に複数回の勉強記録を残す",
+    rewardXp: 100,
+    rewardCoins: 50,
+    hidden: true
+  },
+  {
+    id: "hidden-one-subject",
+    name: "一途な探究者",
+    description: "1日に同じ教科を長時間鍛える",
+    rewardXp: 125,
+    rewardCoins: 60,
+    hidden: true
+  },
+  {
+    id: "hidden-many-subjects",
+    name: "全方位型",
+    description: "複数教科を1日に記録する",
+    rewardXp: 125,
+    rewardCoins: 60,
+    hidden: true
+  },
+  {
+    id: "hidden-streak",
+    name: "途切れぬ旅路",
+    description: "7日連続で勉強する",
+    rewardXp: 200,
+    rewardCoins: 100,
+    hidden: true
+  },
+  {
+    id: "hidden-300",
+    name: "一日の限界突破",
+    description: "1日に300分以上勉強する",
+    rewardXp: 200,
+    rewardCoins: 100,
+    hidden: true
+  },
+  {
+    id: "hidden-all-subjects",
+    name: "全知への道",
+    description: "登録している全教科を記録する",
+    rewardXp: 250,
+    rewardCoins: 125,
+    hidden: true
+  },
+  {
+    id: "hidden-boss-weakness",
+    name: "弱点看破",
+    description: "ボスの弱点教科で攻撃する",
+    rewardXp: 150,
+    rewardCoins: 75,
+    hidden: true
+  },
+  {
+    id: "hidden-party",
+    name: "仲間と共に",
+    description: "4人パーティーを完成させる",
+    rewardXp: 200,
+    rewardCoins: 100,
+    hidden: true
+  },
+  {
+    id: "hidden-all-report",
+    name: "あり得ない知能",
+    description: "自己申告で登録している全教科を一度に報告する",
+    rewardXp: 300,
+    rewardCoins: 150,
+    hidden: true
+  }
+];
+
+async function getUnlockedAchievements() {
   const snap =
     await getDocs(
       collection(
         db,
         "users",
-        currentUser.uid,
-        "friends"
+        state.user.uid,
+        "achievements"
       )
     );
 
-  if (snap.empty) {
-    list.innerHTML =
-      `<p class="empty-message">フレンドはいません。</p>`;
-    return;
-  }
-
-  const cards = [];
-
-  for (const friend of snap.docs) {
-
-    const uid =
-      friend.id;
-
-    const userSnap =
-      await getDoc(
-        doc(db, "users", uid)
-      );
-
-    if (!userSnap.exists()) continue;
-
-    const user =
-      userSnap.data();
-
-    cards.push(`
-      <div class="friend-card">
-        <strong>
-          ${escapeHTML(user.displayName)}
-        </strong>
-        <span>
-          Lv.${calculateLevel(user.totalXP || 0).level}
-        </span>
-      </div>
-    `);
-  }
-
-  list.innerHTML =
-    cards.join("");
+  return snap.docs.map(d => ({
+    id: d.id,
+    ...d.data()
+  }));
 }
 
-
-// =====================================================
-// ACHIEVEMENTS
-// =====================================================
-
-async function renderAchievements() {
-
-  const list =
-    $("achievement-list");
-
-  const titleList =
-    $("title-list");
-
-  if (!currentProfile) return;
-
-  const unlocked =
-    new Set(
-      currentProfile.achievements || []
-    );
-
-  if (list) {
-
-    const all =
-      ACHIEVEMENTS.map(a => ({
-        ...a,
-        hidden: false
-      }));
-
-    const hidden =
-      HIDDEN_ACHIEVEMENTS.map(a => ({
-        ...a,
-        hidden: true
-      }));
-
-    const achievements =
-      [...all, ...hidden];
-
-    list.innerHTML =
-      achievements.map(a => {
-
-        const isUnlocked =
-          unlocked.has(a.id);
-
-        const hidden =
-          a.hidden && !isUnlocked;
-
-        return `
-          <div class="achievement-card ${
-            isUnlocked ? "unlocked" : ""
-          }">
-
-            <strong>
-              ${
-                hidden
-                  ? "？？？"
-                  : escapeHTML(a.name)
-              }
-            </strong>
-
-            <p>
-              ${
-                hidden
-                  ? "隠された実績"
-                  : escapeHTML(a.description)
-              }
-            </p>
-
-            <small>
-              ${
-                isUnlocked
-                  ? "⭐ 達成済み"
-                  : "🔒 未達成"
-              }
-            </small>
-
-          </div>
-        `;
-
-      }).join("");
-
-    text(
-      "achievement-count",
-      `${unlocked.size} / ${
-        ACHIEVEMENTS.length +
-        HIDDEN_ACHIEVEMENTS.length
-      }`
-    );
-  }
-
-  if (titleList) {
-
-    titleList.innerHTML =
-      (currentProfile.titles || [])
-        .map(title => `
-          <div class="title-card">
-            <strong>${escapeHTML(title)}</strong>
-            ${
-              currentProfile.title === title
-                ? "<span>装備中</span>"
-                : ""
-            }
-          </div>
-        `)
-        .join("");
-
-  }
-}
-
-
-// =====================================================
-// ACHIEVEMENT CHECK
-// =====================================================
-
-async function unlockAchievement(achievement) {
-
-  if (
-    currentProfile.achievements?.includes(
-      achievement.id
-    )
-  ) {
-    return;
-  }
-
+async function unlockAchievement(
+  achievement
+) {
   const ref =
     doc(
       db,
       "users",
-      currentUser.uid
+      state.user.uid,
+      "achievements",
+      achievement.id
     );
 
-  const achievements =
-    [
-      ...(currentProfile.achievements || []),
-      achievement.id
-    ];
+  const snap =
+    await getDoc(ref);
 
-  const titles =
-    [
-      ...(currentProfile.titles || [])
-    ];
+  if (snap.exists()) {
+    return;
+  }
 
-  await updateDoc(
-    ref,
-    {
-      achievements,
-      titles,
-      totalXP:
-        (currentProfile.totalXP || 0) +
-        achievement.rewardXP,
+  await setDoc(ref, {
+    achievementId:
+      achievement.id,
+    name:
+      achievement.name,
+    unlockedAt:
+      serverTimestamp()
+  });
 
-      coins:
-        (currentProfile.coins || 0) +
-        achievement.rewardCoins,
-
-      updatedAt:
-        serverTimestamp()
-    }
+  await awardXp(
+    achievement.rewardXp,
+    achievement.name
   );
 
-  currentProfile.achievements =
-    achievements;
-
-  currentProfile.totalXP +=
-    achievement.rewardXP;
-
-  currentProfile.coins +=
-    achievement.rewardCoins;
+  await addCoins(
+    achievement.rewardCoins
+  );
 
   text(
     "achievement-unlock-name",
@@ -3263,1261 +2227,1843 @@ async function unlockAchievement(achievement) {
 
   text(
     "achievement-unlock-description",
-    `${achievement.description}\n+${achievement.rewardXP} XP / +${achievement.rewardCoins}コイン`
+    achievement.description
   );
 
-  show("achievement-unlock-modal");
-
-  await renderAchievements();
+  show(
+    "achievement-unlock-modal"
+  );
 }
 
-
-// =====================================================
-// HIDDEN ACHIEVEMENT CHECK
-// =====================================================
-
-async function checkHiddenAchievements(context) {
-
-  if (!currentProfile) return;
+async function checkAchievements() {
+  if (!state.user) return;
 
   const unlocked =
-    new Set(
-      currentProfile.achievements || []
-    );
+    await getUnlockedAchievements();
 
-  if (
-    context.type === "study"
-  ) {
-
-    const now =
-      new Date();
-
-    if (
-      now.getHours() >= 0 &&
-      now.getHours() < 5
-    ) {
-      await tryHidden("hidden_01");
-    }
-
-    const todayMinutes =
-      await getTodayMinutes();
-
-    if (todayMinutes >= 180) {
-      await tryHidden("hidden_02");
-    }
-
-    if (todayMinutes >= 300) {
-      await tryHidden("hidden_03");
-    }
-
-    const records =
-      await getTodayRecordCount();
-
-    if (records >= 5) {
-      await tryHidden("hidden_05");
-    }
-
-    const subjects =
-      await getTodaySubjects();
-
-    if (subjects.size >= 5) {
-      await tryHidden("hidden_07");
-    }
-
-    if (
-      subjects.size ===
-      (currentProfile.subjects || []).length &&
-      currentProfile.subjects.length > 0
-    ) {
-      await tryHidden("hidden_08");
-    }
-
-    if (
-      currentProfile.totalStudyMinutes >=
-      100 * 60
-    ) {
-      await tryHidden("hidden_09");
-    }
-  }
-
-  if (context.type === "boss") {
-
-    if (
-      (currentProfile.bossesDefeated || 0) >= 10
-    ) {
-      await tryHidden("hidden_06");
-    }
-  }
-
-  if (context.type === "rebirth") {
-    await tryHidden("hidden_10");
-  }
-}
-
-async function tryHidden(id) {
-
-  const achievement =
-    HIDDEN_ACHIEVEMENTS.find(
+  const has = id =>
+    unlocked.some(
       a => a.id === id
     );
 
-  if (!achievement) return;
+  const totalMinutes =
+    getTotalStudyMinutes();
 
   if (
-    currentProfile.achievements?.includes(id)
-  ) return;
+    totalMinutes > 0 &&
+    !has("first-study")
+  ) {
+    await unlockAchievement(
+      ACHIEVEMENTS.find(
+        a => a.id === "first-study"
+      )
+    );
+  }
 
-  await unlockAchievement(
-    achievement
+  if (
+    totalMinutes >= 100 &&
+    !has("study-100")
+  ) {
+    await unlockAchievement(
+      ACHIEVEMENTS.find(
+        a => a.id === "study-100"
+      )
+    );
+  }
+
+  if (
+    totalMinutes >= 1000 &&
+    !has("study-1000")
+  ) {
+    await unlockAchievement(
+      ACHIEVEMENTS.find(
+        a => a.id === "study-1000"
+      )
+    );
+  }
+
+  if (
+    Number(state.profile.level || 1) >= 10 &&
+    !has("level-10")
+  ) {
+    await unlockAchievement(
+      ACHIEVEMENTS.find(
+        a => a.id === "level-10"
+      )
+    );
+  }
+
+  const rank =
+    calculateRank(
+      getSeasonStudyMinutes()
+    );
+
+  if (
+    ["gold", "platinum", "diamond", "master", "grandmaster", "legend"]
+      .includes(rank.id) &&
+    !has("gold-rank")
+  ) {
+    await unlockAchievement(
+      ACHIEVEMENTS.find(
+        a => a.id === "gold-rank"
+      )
+    );
+  }
+
+  // 隠し 300分
+  if (
+    getTodayStudyMinutes() >= 300 &&
+    !has("hidden-300")
+  ) {
+    await unlockAchievement(
+      ACHIEVEMENTS.find(
+        a => a.id === "hidden-300"
+      )
+    );
+  }
+
+  // 複数教科
+  const today =
+    state.studyRecords
+      .filter(
+        r => r.date === dateKey()
+      )
+      .map(r => r.subjectId);
+
+  if (
+    new Set(today).size >= 2 &&
+    !has("hidden-many-subjects")
+  ) {
+    await unlockAchievement(
+      ACHIEVEMENTS.find(
+        a => a.id === "hidden-many-subjects"
+      )
+    );
+  }
+
+  // 全教科
+  if (
+    state.subjects.length > 0 &&
+    state.subjects.every(
+      s => today.includes(s.id)
+    ) &&
+    !has("hidden-all-subjects")
+  ) {
+    await unlockAchievement(
+      ACHIEVEMENTS.find(
+        a => a.id === "hidden-all-subjects"
+      )
+    );
+  }
+
+  // 深夜
+  const hour =
+    new Date().getHours();
+
+  if (
+    hour === 23 &&
+    !has("hidden-midnight")
+  ) {
+    await unlockAchievement(
+      ACHIEVEMENTS.find(
+        a => a.id === "hidden-midnight"
+      )
+    );
+  }
+}
+
+async function refreshAchievements() {
+  const unlocked =
+    await getUnlockedAchievements();
+
+  const list =
+    $("achievement-list");
+
+  if (list) {
+    list.innerHTML =
+      ACHIEVEMENTS
+        .filter(a => !a.hidden)
+        .map(a => {
+          const isUnlocked =
+            unlocked.some(
+              x => x.id === a.id
+            );
+
+          return `
+            <div class="achievement-card ${
+              isUnlocked
+                ? "unlocked"
+                : "locked"
+            }">
+              <strong>
+                ${
+                  isUnlocked
+                    ? "⭐"
+                    : "🔒"
+                }
+                ${escapeHtml(a.name)}
+              </strong>
+              <p>
+                ${escapeHtml(a.description)}
+              </p>
+            </div>
+          `;
+        })
+        .join("");
+  }
+
+  const titleList =
+    $("title-list");
+
+  if (titleList) {
+    titleList.innerHTML =
+      `<p class="empty-message">
+        獲得した称号をここで確認できます。
+      </p>`;
+  }
+
+  text(
+    "achievement-count",
+    `${unlocked.length} / ${ACHIEVEMENTS.length}`
   );
 }
 
-async function getTodayRecordCount() {
 
-  const q =
-    query(
-      collection(
-        db,
-        "users",
-        currentUser.uid,
-        "studyRecords"
-      ),
-      where(
-        "dateKey",
-        "==",
-        localDateKey()
-      )
-    );
+// ============================================================
+// TITLES
+// ============================================================
 
-  const snap =
-    await getDocs(q);
-
-  return snap.size;
-}
-
-async function getTodaySubjects() {
-
-  const q =
-    query(
-      collection(
-        db,
-        "users",
-        currentUser.uid,
-        "studyRecords"
-      ),
-      where(
-        "dateKey",
-        "==",
-        localDateKey()
-      )
-    );
-
-  const snap =
-    await getDocs(q);
-
-  const set =
-    new Set();
-
-  snap.forEach(docSnap => {
-    const data =
-      docSnap.data();
-
-    if (data.subject) {
-      set.add(data.subject);
-    }
-  });
-
-  return set;
-}
+const TITLES = [
+  {
+    id: "unknown-adventurer",
+    name: "無名の冒険者",
+    description: "最初から所持"
+  },
+  {
+    id: "study-adventurer",
+    name: "勉強冒険者",
+    description: "100分勉強"
+  },
+  {
+    id: "golden-adventurer",
+    name: "黄金の冒険者",
+    description: "Gold到達"
+  },
+  {
+    id: "boss-slayer",
+    name: "魔王討伐者",
+    description: "ボス撃破"
+  },
+  {
+    id: "impossible-intelligence",
+    name: "あり得ない知能",
+    description: "隠し実績「あり得ない知能」"
+  }
+];
 
 
-// =====================================================
-// REBIRTH
-// =====================================================
+// ============================================================
+// SHOP
+// ============================================================
 
-async function checkLevelAndRebirth() {
+const SHOP_ITEMS = [
+  {
+    id: "small-potion",
+    name: "集中ポーション",
+    description: "ゲーム内アイテム",
+    price: 100,
+    type: "item"
+  },
+  {
+    id: "boss-power",
+    name: "勇者の証",
+    description: "ボス戦で使用できるアイテム",
+    price: 250,
+    type: "item"
+  }
+];
 
-  const level =
-    calculateLevel(
-      currentProfile.totalXP || 0
-    );
+const SHOP_TITLES = [
+  {
+    id: "hard-worker",
+    name: "努力家",
+    price: 300,
+    type: "title"
+  },
+  {
+    id: "study-hero",
+    name: "勉強の勇者",
+    price: 750,
+    type: "title"
+  }
+];
 
-  if (level.level < 101) return;
+const SHOP_OUTFITS = [
+  {
+    id: "default-outfit",
+    name: "冒険者の服",
+    price: 100,
+    type: "outfit"
+  },
+  {
+    id: "knight-outfit",
+    name: "受験騎士装備",
+    price: 500,
+    type: "outfit"
+  }
+];
 
-  const newStars =
-    (currentProfile.stars || 0) + 1;
+async function purchaseItem(
+  item
+) {
+  const coins =
+    Number(state.profile.coins || 0);
 
-  await updateDoc(
+  if (coins < item.price) {
+    notify("コインが足りません。");
+    return;
+  }
+
+  const inventoryRef =
     doc(
       db,
       "users",
-      currentUser.uid
-    ),
+      state.user.uid,
+      "inventory",
+      item.id
+    );
+
+  const snap =
+    await getDoc(inventoryRef);
+
+  if (snap.exists()) {
+    notify("すでに所持しています。");
+    return;
+  }
+
+  await updateDoc(
+    userRef(),
     {
-      totalXP: 0,
-      stars: newStars,
-      updatedAt:
+      coins:
+        increment(-item.price)
+    }
+  );
+
+  await setDoc(
+    inventoryRef,
+    {
+      itemId: item.id,
+      name: item.name,
+      type: item.type,
+      purchasedAt:
         serverTimestamp()
     }
   );
 
-  currentProfile.totalXP = 0;
-  currentProfile.stars = newStars;
-
-  await checkHiddenAchievements({
-    type: "rebirth"
-  });
+  state.profile.coins -= item.price;
 
   notify(
-    `🌟 転生！ ⭐${newStars} に到達！`
-  );
-}
-
-
-// =====================================================
-// RELOAD / PROGRESS
-// =====================================================
-
-async function reloadAndCheckProgress() {
-
-  const oldLevel =
-    calculateLevel(
-      currentProfile.totalXP || 0
-    ).level;
-
-  const oldRank =
-    calculateRank(
-      currentProfile.seasonStudyMinutes || 0
-    );
-
-  await loadProfile();
-
-  const newLevel =
-    calculateLevel(
-      currentProfile.totalXP || 0
-    ).level;
-
-  if (
-    newLevel > oldLevel &&
-    newLevel <= 100
-  ) {
-
-    text(
-      "level-up-old-level",
-      oldLevel
-    );
-
-    text(
-      "level-up-new-level",
-      newLevel
-    );
-
-    show("level-up-modal");
-  }
-
-  await checkLevelAndRebirth();
-
-  const newRank =
-    calculateRank(
-      currentProfile.seasonStudyMinutes || 0
-    );
-
-  if (
-    newRank.key !== oldRank.key
-  ) {
-
-    notify(
-      `🏆 ランクアップ！ ${newRank.name}`
-    );
-  }
-}
-
-
-// =====================================================
-// SHOP
-// =====================================================
-
-function renderShop() {
-
-  renderShopList(
-    "shop-item-list",
-    SHOP_ITEMS,
-    "item"
+    `${item.name}を購入しました！`
   );
 
-  renderShopList(
-    "shop-title-list",
-    SHOP_TITLES,
-    "title"
-  );
-
-  renderShopList(
-    "shop-outfit-list",
-    SHOP_OUTFITS,
-    "outfit"
-  );
-
-  text(
-    "shop-coins",
-    `🪙 ${currentProfile?.coins || 0}`
-  );
+  refreshLevelUI();
+  refreshShop();
 }
 
 function renderShopList(
-  elementId,
-  items,
-  type
+  containerId,
+  items
 ) {
+  const container =
+    $(containerId);
 
-  const list =
-    $(elementId);
+  if (!container) return;
 
-  if (!list) return;
-
-  list.innerHTML =
+  container.innerHTML =
     items.map(item => `
-      <div class="shop-card">
-
-        <h4>
-          ${escapeHTML(item.name)}
-        </h4>
-
-        ${
-          item.description
-            ? `<p>${escapeHTML(item.description)}</p>`
-            : ""
-        }
-
+      <div class="shop-item-card">
         <strong>
-          🪙 ${item.price}
+          ${escapeHtml(item.name)}
         </strong>
-
+        <p>
+          ${escapeHtml(
+            item.description || ""
+          )}
+        </p>
+        <div>
+          🪙 ${item.price}
+        </div>
         <button
-          type="button"
-          class="shop-buy-button"
-          data-type="${type}"
-          data-id="${item.id}"
+          class="primary-button shop-buy-button"
+          data-item-id="${item.id}"
         >
           購入
         </button>
-
       </div>
     `).join("");
 
-  list
-    .querySelectorAll(".shop-buy-button")
+  container
+    .querySelectorAll(
+      ".shop-buy-button"
+    )
     .forEach(button => {
-
       button.addEventListener(
         "click",
         () => {
-
           const item =
-            items.find(
-              x =>
-                x.id ===
-                button.dataset.id
-            );
+            [...SHOP_ITEMS, ...SHOP_TITLES, ...SHOP_OUTFITS]
+              .find(
+                x =>
+                  x.id ===
+                  button.dataset.itemId
+              );
 
-          if (!item) return;
-
-          selectedPurchase = {
-            ...item,
-            type
-          };
-
-          text(
-            "purchase-item-name",
-            item.name
-          );
-
-          text(
-            "purchase-price",
-            item.price
-          );
-
-          show("purchase-modal");
+          if (item) {
+            purchaseItem(item);
+          }
         }
       );
     });
 }
 
-async function purchaseSelected() {
+async function refreshShop() {
+  text(
+    "shop-coins",
+    `🪙 ${state.profile.coins || 0}`
+  );
 
-  if (!selectedPurchase) return;
+  renderShopList(
+    "shop-item-list",
+    SHOP_ITEMS
+  );
 
-  const item =
-    selectedPurchase;
+  renderShopList(
+    "shop-title-list",
+    SHOP_TITLES
+  );
 
-  if (
-    (currentProfile.coins || 0) <
-    item.price
-  ) {
-    notify("コインが足りません。");
+  renderShopList(
+    "shop-outfit-list",
+    SHOP_OUTFITS
+  );
+}
+
+
+// ============================================================
+// LOCKER
+// ============================================================
+
+async function getInventory() {
+  const snap =
+    await getDocs(
+      collection(
+        db,
+        "users",
+        state.user.uid,
+        "inventory"
+      )
+    );
+
+  return snap.docs.map(d => ({
+    id: d.id,
+    ...d.data()
+  }));
+}
+
+async function refreshLocker() {
+  const inventory =
+    await getInventory();
+
+  const titles =
+    inventory.filter(
+      i => i.type === "title"
+    );
+
+  const items =
+    inventory.filter(
+      i => i.type === "item"
+    );
+
+  const outfits =
+    inventory.filter(
+      i => i.type === "outfit"
+    );
+
+  html(
+    "locker-title-list",
+    titles.length
+      ? titles.map(
+          x =>
+            `<div class="locker-item">
+              🏷️ ${escapeHtml(x.name)}
+            </div>`
+        ).join("")
+      : `<p class="empty-message">
+          所持称号はありません。
+        </p>`
+  );
+
+  html(
+    "locker-item-list",
+    items.length
+      ? items.map(
+          x =>
+            `<div class="locker-item">
+              🎁 ${escapeHtml(x.name)}
+            </div>`
+        ).join("")
+      : `<p class="empty-message">
+          所持アイテムはありません。
+        </p>`
+  );
+
+  html(
+    "locker-outfit-list",
+    outfits.length
+      ? outfits.map(
+          x =>
+            `<div class="locker-item">
+              👕 ${escapeHtml(x.name)}
+            </div>`
+        ).join("")
+      : `<p class="empty-message">
+          着せ替えはありません。
+        </p>`
+  );
+}
+
+
+// ============================================================
+// RANK UI
+// ============================================================
+
+function applyRankTheme(rank) {
+  document.documentElement.style.setProperty(
+    "--rank-color",
+    rank.color
+  );
+
+  document.documentElement.style.setProperty(
+    "--rank-text-color",
+    rank.textColor
+  );
+
+  [
+    "current-rank",
+    "home-rank",
+    "season-rank",
+    "profile-rank",
+    "header-rank"
+  ].forEach(id => {
+    const el = $(id);
+
+    if (!el) return;
+
+    el.dataset.rank =
+      rank.id;
+
+    el.style.setProperty(
+      "--current-rank-color",
+      rank.color
+    );
+
+    el.style.setProperty(
+      "--current-rank-text",
+      rank.textColor
+    );
+  });
+}
+
+function refreshRank() {
+  const minutes =
+    getSeasonStudyMinutes();
+
+  const rank =
+    calculateRank(minutes);
+
+  const next =
+    getNextRank(rank.id);
+
+  applyRankTheme(rank);
+
+  text(
+    "current-rank-name",
+    rank.name
+  );
+
+  text(
+    "season-rank",
+    rank.name
+  );
+
+  text(
+    "home-rank",
+    rank.name
+  );
+
+  text(
+    "header-rank",
+    rank.name
+  );
+
+  text(
+    "profile-rank",
+    rank.name
+  );
+
+  text(
+    "season-study-time",
+    formatMinutes(minutes)
+  );
+
+  if (next) {
+    const needed =
+      Math.max(
+        0,
+        next.minHours * 60 -
+        minutes
+      );
+
+    text(
+      "next-rank-requirement",
+      `${formatMinutes(needed)}`
+    );
+  } else {
+    text(
+      "next-rank-requirement",
+      "最高ランク"
+    );
+  }
+
+  const season =
+    getSeasonInfo();
+
+  text(
+    "current-season-range",
+    `${formatDate(season.start)} ～ ${formatDate(season.end)}`
+  );
+
+  text(
+    "home-season-range",
+    `${formatDate(season.start)} ～ ${formatDate(season.end)}`
+  );
+
+  text(
+    "home-season-end",
+    formatDate(season.end)
+  );
+
+  renderRankTable();
+}
+
+function renderRankTable() {
+  const tbody =
+    document.querySelector(
+      "#rank-requirements tbody"
+    );
+
+  if (!tbody) return;
+
+  tbody.innerHTML =
+    RANKS.map(rank => `
+      <tr data-rank="${rank.id}">
+        <td>${rank.name}</td>
+        <td>${rank.minHours}時間〜</td>
+      </tr>
+    `).join("");
+}
+
+
+// ============================================================
+// PROFILE
+// ============================================================
+
+function refreshProfile() {
+  if (!state.profile) return;
+
+  text(
+    "profile-display-name",
+    state.profile.displayName
+  );
+
+  text(
+    "profile-user-id",
+    state.profile.userId
+  );
+
+  text(
+    "profile-course",
+    courseName(
+      state.profile.course
+    )
+  );
+
+  text(
+    "profile-level",
+    state.profile.level || 1
+  );
+
+  text(
+    "profile-stars",
+    state.profile.stars || 0
+  );
+
+  text(
+    "profile-coins",
+    state.profile.coins || 0
+  );
+
+  text(
+    "profile-title",
+    state.profile.equippedTitle ||
+    "無名の冒険者"
+  );
+
+  text(
+    "profile-total-study-time",
+    formatMinutes(
+      getTotalStudyMinutes()
+    )
+  );
+
+  text(
+    "profile-total-xp",
+    `${state.profile.xp || 0} XP`
+  );
+
+  text(
+    "profile-bosses-defeated",
+    state.profile.bossesDefeated || 0
+  );
+
+  text(
+    "profile-quests-completed",
+    state.profile.questsCompleted || 0
+  );
+
+  renderSubjectLevels(
+    "profile-subject-list"
+  );
+}
+
+function courseName(course) {
+  const map = {
+    science: "理系",
+    humanities: "文系",
+    undecided: "未定"
+  };
+
+  return map[course] || "-";
+}
+
+
+// ============================================================
+// HOME
+// ============================================================
+
+function refreshHome() {
+  if (!state.profile) return;
+
+  refreshLevelUI();
+  refreshRank();
+
+  text(
+    "header-display-name",
+    state.profile.displayName
+  );
+
+  text(
+    "today-study-time",
+    formatMinutes(
+      getTodayStudyMinutes()
+    )
+  );
+
+  text(
+    "today-xp",
+    `${getTodayStudyMinutes()} XP`
+  );
+
+  const today =
+    dateKey();
+
+  const quests =
+    state.questCompletions
+      .filter(
+        q => q.period === today
+      ).length;
+
+  text(
+    "today-quests",
+    quests
+  );
+
+  renderQuests();
+}
+
+
+// ============================================================
+// STUDY
+// ============================================================
+
+function populateSubjectSelects() {
+  const ids = [
+    "study-subject",
+    "timer-study-subject"
+  ];
+
+  ids.forEach(id => {
+    const select = $(id);
+
+    if (!select) return;
+
+    select.innerHTML = `
+      <option value="">
+        教科を選択
+      </option>
+    `;
+
+    state.subjects.forEach(
+      subject => {
+        const option =
+          document.createElement(
+            "option"
+          );
+
+        option.value =
+          subject.id;
+
+        option.textContent =
+          subject.name;
+
+        select.appendChild(option);
+      }
+    );
+  });
+}
+
+function refreshStudy() {
+  populateSubjectSelects();
+
+  renderSubjectLevels(
+    "subject-level-list"
+  );
+
+  renderSubjectSummary();
+  renderStudyHistory();
+}
+
+function renderSubjectSummary() {
+  const container =
+    $("subject-study-list");
+
+  if (!container) return;
+
+  container.innerHTML =
+    state.subjects.map(subject => {
+      const minutes =
+        state.studyRecords
+          .filter(
+            r =>
+              r.subjectId ===
+              subject.id
+          )
+          .reduce(
+            (sum, r) =>
+              sum +
+              Number(
+                r.minutes || 0
+              ),
+            0
+          );
+
+      return `
+        <div class="summary-card">
+          <span>
+            ${escapeHtml(subject.name)}
+          </span>
+          <strong>
+            ${formatMinutes(minutes)}
+          </strong>
+        </div>
+      `;
+    }).join("");
+}
+
+function renderStudyHistory() {
+  const container =
+    $("study-history-list");
+
+  if (!container) return;
+
+  const records =
+    state.studyRecords
+      .slice(0, 50);
+
+  container.innerHTML =
+    records.length
+      ? records.map(record => `
+          <div class="study-history-card">
+            <strong>
+              ${escapeHtml(
+                subjectName(
+                  record.subjectId
+                )
+              )}
+            </strong>
+            <span>
+              ${record.minutes}分
+            </span>
+            <small>
+              ${escapeHtml(
+                record.date || ""
+              )}
+            </small>
+            ${
+              record.note
+                ? `<p>${escapeHtml(record.note)}</p>`
+                : ""
+            }
+          </div>
+        `).join("")
+      : `
+        <p class="empty-message">
+          まだ勉強記録がありません。
+        </p>
+      `;
+}
+
+
+// ============================================================
+// TIMER
+// ============================================================
+
+function updateTimerDisplay() {
+  const total =
+    state.timer.seconds;
+
+  const h =
+    Math.floor(
+      total / 3600
+    );
+
+  const m =
+    Math.floor(
+      (total % 3600) / 60
+    );
+
+  const s =
+    total % 60;
+
+  text(
+    "study-timer-display",
+    `${pad(h)}:${pad(m)}:${pad(s)}`
+  );
+}
+
+function startTimer() {
+  if (state.timer.running) return;
+
+  state.timer.running = true;
+  state.timer.startedAt =
+    Date.now();
+
+  state.timer.interval =
+    setInterval(() => {
+      state.timer.seconds++;
+      updateTimerDisplay();
+    }, 1000);
+}
+
+function pauseTimer() {
+  if (!state.timer.running) return;
+
+  state.timer.running = false;
+
+  clearInterval(
+    state.timer.interval
+  );
+
+  state.timer.interval = null;
+}
+
+function resetTimer() {
+  pauseTimer();
+
+  state.timer.seconds = 0;
+  state.timer.startedAt = null;
+
+  updateTimerDisplay();
+}
+
+async function saveTimer() {
+  const minutes =
+    Math.floor(
+      state.timer.seconds / 60
+    );
+
+  const subject =
+    $("timer-study-subject")
+      ?.value;
+
+  if (!subject) {
+    error(
+      "timer-error",
+      "教科を選択してください。"
+    );
     return;
   }
 
-  const ref =
-    doc(
-      db,
-      "users",
-      currentUser.uid
+  if (minutes <= 0) {
+    error(
+      "timer-error",
+      "1分以上勉強してください。"
     );
-
-  if (item.type === "title") {
-
-    const titles =
-      [
-        ...(currentProfile.titles || [])
-      ];
-
-    if (!titles.includes(item.name)) {
-      titles.push(item.name);
-    }
-
-    await updateDoc(
-      ref,
-      {
-        coins:
-          currentProfile.coins -
-          item.price,
-        titles
-      }
-    );
-
-    currentProfile.coins -=
-      item.price;
-
-    currentProfile.titles =
-      titles;
-
-  } else if (item.type === "outfit") {
-
-    const items =
-      [
-        ...(currentProfile.items || [])
-      ];
-
-    if (!items.includes(item.id)) {
-      items.push(item.id);
-    }
-
-    await updateDoc(
-      ref,
-      {
-        coins:
-          currentProfile.coins -
-          item.price,
-        items
-      }
-    );
-
-    currentProfile.coins -=
-      item.price;
-
-    currentProfile.items =
-      items;
-
-  } else {
-
-    const items =
-      [
-        ...(currentProfile.items || [])
-      ];
-
-    items.push(item.id);
-
-    await updateDoc(
-      ref,
-      {
-        coins:
-          currentProfile.coins -
-          item.price,
-        items
-      }
-    );
-
-    currentProfile.coins -=
-      item.price;
-
-    currentProfile.items =
-      items;
+    return;
   }
 
-  hide("purchase-modal");
+  try {
+    await recordStudy(
+      subject,
+      minutes,
+      "タイマー記録",
+      "timer"
+    );
 
-  selectedPurchase = null;
-
-  notify("購入しました！");
-
-  renderShop();
-  renderLocker();
-}
-
-
-// =====================================================
-// LOCKER
-// =====================================================
-
-function renderLocker() {
-
-  const titleList =
-    $("locker-title-list");
-
-  const itemList =
-    $("locker-item-list");
-
-  const outfitList =
-    $("locker-outfit-list");
-
-  if (titleList) {
-
-    titleList.innerHTML =
-      (currentProfile.titles || [])
-        .map(title => `
-          <div class="locker-card">
-            <strong>${escapeHTML(title)}</strong>
-            <button
-              type="button"
-              data-title="${escapeHTML(title)}"
-              class="equip-title-button"
-            >
-              ${
-                currentProfile.title === title
-                  ? "装備中"
-                  : "装備"
-              }
-            </button>
-          </div>
-        `)
-        .join("");
-
-    titleList
-      .querySelectorAll(
-        ".equip-title-button"
-      )
-      .forEach(button => {
-
-        button.addEventListener(
-          "click",
-          () =>
-            equipTitle(
-              button.dataset.title
-            )
-        );
-
-      });
-  }
-
-  if (itemList) {
-
-    const owned =
-      currentProfile.items || [];
-
-    itemList.innerHTML =
-      owned.length
-        ? owned.map(id => {
-
-            const item =
-              SHOP_ITEMS.find(
-                x => x.id === id
-              );
-
-            return `
-              <div class="locker-card">
-                <strong>
-                  ${escapeHTML(
-                    item?.name || id
-                  )}
-                </strong>
-              </div>
-            `;
-          }).join("")
-        : `<p class="empty-message">アイテムがありません。</p>`;
-  }
-
-  if (outfitList) {
-
-    const owned =
-      currentProfile.items || [];
-
-    const outfits =
-      SHOP_OUTFITS.filter(
-        outfit =>
-          outfit.price === 0 ||
-          owned.includes(outfit.id)
-      );
-
-    outfitList.innerHTML =
-      outfits.map(outfit => `
-        <div class="locker-card">
-          <strong>
-            ${escapeHTML(outfit.name)}
-          </strong>
-
-          <button
-            type="button"
-            class="equip-outfit-button"
-            data-outfit="${outfit.id}"
-          >
-            ${
-              currentProfile.equippedOutfit ===
-              outfit.id
-                ? "装備中"
-                : "装備"
-            }
-          </button>
-        </div>
-      `).join("");
-
-    outfitList
-      .querySelectorAll(
-        ".equip-outfit-button"
-      )
-      .forEach(button => {
-
-        button.addEventListener(
-          "click",
-          () =>
-            equipOutfit(
-              button.dataset.outfit
-            )
-        );
-
-      });
+    resetTimer();
+    error(
+      "timer-error",
+      ""
+    );
+  } catch (e) {
+    error(
+      "timer-error",
+      e.message
+    );
   }
 }
 
-async function equipTitle(title) {
 
-  await updateDoc(
-    doc(db, "users", currentUser.uid),
-    {
-      title
-    }
-  );
-
-  currentProfile.title =
-    title;
-
-  notify(
-    `称号「${title}」を装備！`
-  );
-
-  renderProfile();
-  renderHome();
-  renderLocker();
-}
-
-async function equipOutfit(outfit) {
-
-  await updateDoc(
-    doc(db, "users", currentUser.uid),
-    {
-      equippedOutfit: outfit
-    }
-  );
-
-  currentProfile.equippedOutfit =
-    outfit;
-
-  notify("着せ替えを変更しました！");
-
-  renderLocker();
-}
-
-
-// =====================================================
+// ============================================================
 // SETTINGS
-// =====================================================
+// ============================================================
 
-function renderSettings() {
+function refreshSettings() {
+  if (!state.profile) return;
 
-  const input =
+  const nameInput =
     $("settings-display-name");
 
-  if (input) {
-    input.value =
-      currentProfile.displayName || "";
+  if (nameInput) {
+    nameInput.value =
+      state.profile.displayName || "";
   }
 
+  renderSettingsSubjects();
+}
+
+function renderSettingsSubjects() {
   const container =
     $("settings-subject-selection");
 
   if (!container) return;
 
   container.innerHTML =
-    Object.entries(SUBJECTS)
-      .map(([key, name]) => `
+    Object.entries(
+      SUBJECTS
+    ).map(
+      ([id, name]) => `
         <label>
           <input
             type="checkbox"
-            name="settings-subject"
-            value="${key}"
+            name="settings-subjects"
+            value="${id}"
             ${
-              currentProfile.subjects?.includes(key)
+              state.subjects.some(
+                s => s.id === id
+              )
                 ? "checked"
                 : ""
             }
           >
           ${name}
         </label>
-      `)
-      .join("");
+      `
+    ).join("");
 }
 
-async function changeDisplayName(event) {
-
-  event.preventDefault();
-
-  setError(
-    "display-name-error",
-    ""
-  );
-
-  const name =
-    $("settings-display-name")
-      .value.trim();
+async function changeDisplayName(
+  name
+) {
+  name = name.trim();
 
   if (!name) {
-    setError(
-      "display-name-error",
+    throw new Error(
       "表示名を入力してください。"
     );
-    return;
   }
 
   await updateDoc(
-    doc(db, "users", currentUser.uid),
+    userRef(),
     {
-      displayName: name
+      displayName: name,
+      updatedAt: serverTimestamp()
     }
   );
 
-  currentProfile.displayName =
+  state.profile.displayName =
     name;
 
-  notify("表示名を変更しました。");
+  refreshAll();
 
-  renderHeader();
-  renderProfile();
+  notify("表示名を変更しました！");
 }
 
-async function changeSubjects(event) {
-
-  event.preventDefault();
-
-  setError(
-    "settings-subject-error",
-    ""
-  );
-
-  const subjects =
-    [
-      ...document.querySelectorAll(
-        'input[name="settings-subject"]:checked'
-      )
-    ].map(
-      input => input.value
-    );
-
+async function changeSubjects(
+  subjects
+) {
   if (!subjects.length) {
-    setError(
-      "settings-subject-error",
+    throw new Error(
       "最低1教科は選択してください。"
     );
-    return;
   }
 
-  await updateDoc(
-    doc(db, "users", currentUser.uid),
-    {
-      subjects
-    }
+  await initializeSubjects(
+    subjects
   );
 
-  currentProfile.subjects =
-    subjects;
+  const old =
+    state.subjects.map(
+      s => s.id
+    );
 
-  notify("受験教科を更新しました。");
+  for (const id of old) {
+    if (!subjects.includes(id)) {
+      await deleteDoc(
+        subjectRef(id)
+      );
+    }
+  }
+
+  await loadSubjects();
 
   populateSubjectSelects();
-  renderSubjectLevels();
+
+  notify("受験教科を更新しました！");
 }
 
-async function changePassword(event) {
 
-  event.preventDefault();
+// ============================================================
+// AUTH
+// ============================================================
 
-  setError(
-    "password-error",
-    ""
+function usernameEmail(userId) {
+  return `${userId.toLowerCase()}@jukenrpg.example.com`;
+}
+
+function validateUserId(userId) {
+  return /^[A-Za-z0-9_-]{3,30}$/.test(
+    userId
   );
+}
+
+async function register(formData) {
+  const userId =
+    formData.userId.trim();
 
   const password =
-    $("settings-new-password")
-      .value;
+    formData.password;
 
-  if (password.length < 6) {
-    setError(
-      "password-error",
-      "6文字以上にしてください。"
+  const passwordConfirm =
+    formData.passwordConfirm;
+
+  const displayName =
+    formData.displayName.trim();
+
+  const course =
+    formData.course;
+
+  const subjects =
+    formData.subjects;
+
+  if (!validateUserId(userId)) {
+    throw new Error(
+      "ユーザーIDは3〜30文字の英数字・_・-で入力してください。"
     );
-    return;
   }
 
-  try {
+  if (password.length < 6) {
+    throw new Error(
+      "パスワードは6文字以上にしてください。"
+    );
+  }
 
-    await updatePassword(
-      currentUser,
+  if (
+    password !==
+    passwordConfirm
+  ) {
+    throw new Error(
+      "パスワードが一致しません。"
+    );
+  }
+
+  if (!displayName) {
+    throw new Error(
+      "表示名を入力してください。"
+    );
+  }
+
+  if (!course) {
+    throw new Error(
+      "文理を選択してください。"
+    );
+  }
+
+  if (!subjects.length) {
+    throw new Error(
+      "受験教科を1つ以上選択してください。"
+    );
+  }
+
+  const email =
+    usernameEmail(userId);
+
+  const credential =
+    await createUserWithEmailAndPassword(
+      auth,
+      email,
       password
     );
 
-    $("password-form").reset();
+  const uid =
+    credential.user.uid;
 
-    notify("パスワードを変更しました。");
+  const profile = {
+    userId,
+    displayName,
+    course,
+    xp: 0,
+    level: 1,
+    stars: 0,
+    coins: 0,
+    equippedTitle:
+      "無名の冒険者",
+    bossesDefeated: 0,
+    questsCompleted: 0,
+    totalStudyMinutes: 0,
+    createdAt:
+      serverTimestamp(),
+    updatedAt:
+      serverTimestamp()
+  };
 
-  } catch (error) {
+  await setDoc(
+    doc(db, "users", uid),
+    profile
+  );
 
-    console.error(error);
+  await initializeSubjectsForUid(
+    uid,
+    subjects
+  );
 
-    setError(
-      "password-error",
-      "再ログイン後にもう一度お試しください。"
-    );
-  }
+  state.profile = {
+    ...profile,
+    xp: 0,
+    level: 1,
+    stars: 0,
+    coins: 0
+  };
 }
 
-
-// =====================================================
-// ACCOUNT DELETE
-// =====================================================
-
-async function deleteAccount() {
-
-  if (!currentUser) return;
-
-  const confirmed =
-    confirm(
-      "本当にアカウントを削除しますか？"
-    );
-
-  if (!confirmed) return;
-
-  try {
-
-    await deleteUser(
-      currentUser
-    );
-
-  } catch (error) {
-
-    console.error(error);
-
-    notify(
-      "削除には再ログインが必要な場合があります。"
-    );
-  }
-}
-
-
-// =====================================================
-// NAVIGATION
-// =====================================================
-
-function initNavigation() {
-
-  document
-    .querySelectorAll(".nav-button")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const screen =
-            button.dataset.screen;
-
-          switchScreen(screen);
-
-        }
-      );
-    });
-
-  document
-    .querySelectorAll(".menu-card")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const screen =
-            button.dataset.menuScreen;
-
-          switchScreen(screen);
-
-        }
-      );
-    });
-}
-
-function switchScreen(screenId) {
-
-  if (currentScreen === screenId) {
-    return;
-  }
-
-  const previous =
-    $(currentScreen);
-
-  const next =
-    $(screenId);
-
-  if (!next) return;
-
-  currentScreen =
-    screenId;
-
-  document
-    .querySelectorAll(".app-screen")
-    .forEach(screen => {
-      screen.classList.add("hidden");
-    });
-
-  next.classList.remove("hidden");
-
-  next.classList.remove(
-    "screen-enter"
-  );
-
-  void next.offsetWidth;
-
-  next.classList.add(
-    "screen-enter"
-  );
-
-  document
-    .querySelectorAll(".nav-button")
-    .forEach(button => {
-
-      button.classList.toggle(
-        "active",
-        button.dataset.screen ===
-        screenId
-      );
-
-    });
-
-  if (
-    screenId === "party-screen"
-  ) {
-    renderParty();
-    renderFriends();
-  }
-
-  if (
-    screenId === "quest-screen"
-  ) {
-    renderQuest();
-  }
-
-  if (
-    screenId === "rank-screen"
-  ) {
-    renderRank();
-  }
-
-  if (
-    screenId === "achievement-screen"
-  ) {
-    renderAchievements();
-  }
-}
-
-
-// =====================================================
-// TAB SYSTEM
-// =====================================================
-
-function initTabs() {
-
-  initGenericTabs(
-    ".party-tab",
-    ".party-tab-content",
-    "data-party-tab"
-  );
-
-  initGenericTabs(
-    ".rank-tab",
-    ".rank-tab-content",
-    "data-rank-tab"
-  );
-
-  initGenericTabs(
-    ".achievement-tab",
-    ".achievement-tab-content",
-    "data-achievement-tab"
-  );
-
-  initGenericTabs(
-    ".shop-tab",
-    ".shop-tab-content",
-    "data-shop-tab"
-  );
-
-  initGenericTabs(
-    ".locker-tab",
-    ".locker-tab-content",
-    "data-locker-tab"
-  );
-
-  initGenericTabs(
-    ".ranking-type-tab",
-    ".ranking-content",
-    "data-ranking-type",
-    true
-  );
-}
-
-function initGenericTabs(
-  buttonsSelector,
-  contentSelector,
-  dataAttribute,
-  special = false
+async function initializeSubjectsForUid(
+  uid,
+  subjectIds
 ) {
+  for (const id of subjectIds) {
+    await setDoc(
+      doc(
+        db,
+        "users",
+        uid,
+        "subjects",
+        id
+      ),
+      {
+        subjectId: id,
+        name: subjectName(id),
+        xp: 0,
+        level: 1,
+        totalMinutes: 0,
+        createdAt:
+          serverTimestamp()
+      }
+    );
+  }
+}
 
+async function login(
+  userId,
+  password
+) {
+  const email =
+    usernameEmail(
+      userId.trim()
+    );
+
+  await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+}
+
+
+// ============================================================
+// AUTH UI
+// ============================================================
+
+function setupAuth() {
+  $("show-register-button")
+    ?.addEventListener(
+      "click",
+      () => {
+        hide("login-screen");
+        show("register-screen");
+      }
+    );
+
+  $("show-login-button")
+    ?.addEventListener(
+      "click",
+      () => {
+        hide("register-screen");
+        show("login-screen");
+      }
+    );
+
+  $("login-form")
+    ?.addEventListener(
+      "submit",
+      async event => {
+        event.preventDefault();
+
+        error(
+          "login-error",
+          ""
+        );
+
+        const userId =
+          $("login-user-id")
+            .value;
+
+        const password =
+          $("login-password")
+            .value;
+
+        try {
+          await login(
+            userId,
+            password
+          );
+        } catch (e) {
+          error(
+            "login-error",
+            authErrorMessage(e)
+          );
+        }
+      }
+    );
+
+  $("register-form")
+    ?.addEventListener(
+      "submit",
+      async event => {
+        event.preventDefault();
+
+        error(
+          "register-error",
+          ""
+        );
+
+        const subjects =
+          [
+            ...document.querySelectorAll(
+              'input[name="subjects"]:checked'
+            )
+          ].map(
+            input => input.value
+          );
+
+        const course =
+          document.querySelector(
+            'input[name="course"]:checked'
+          )?.value;
+
+        try {
+          await register({
+            userId:
+              $("register-user-id")
+                .value,
+            password:
+              $("register-password")
+                .value,
+            passwordConfirm:
+              $("register-password-confirm")
+                .value,
+            displayName:
+              $("register-display-name")
+                .value,
+            course,
+            subjects
+          });
+
+          notify(
+            "冒険者登録完了！"
+          );
+        } catch (e) {
+          error(
+            "register-error",
+            authErrorMessage(e)
+          );
+        }
+      }
+    );
+
+  $("logout-button")
+    ?.addEventListener(
+      "click",
+      async () => {
+        resetTimer();
+        await signOut(auth);
+      }
+    );
+}
+
+
+// ============================================================
+// EVENT SETUP
+// ============================================================
+
+function setupNavigation() {
   document
-    .querySelectorAll(buttonsSelector)
+    .querySelectorAll(
+      ".nav-button"
+    )
     .forEach(button => {
-
       button.addEventListener(
         "click",
         () => {
+          navigateTo(
+            button.dataset.screen
+          );
+        }
+      );
+    });
 
-          document
-            .querySelectorAll(buttonsSelector)
-            .forEach(b =>
-              b.classList.remove("active")
-            );
+  document
+    .querySelectorAll(
+      ".menu-card"
+    )
+    .forEach(button => {
+      button.addEventListener(
+        "click",
+        () => {
+          navigateTo(
+            button.dataset.menuScreen
+          );
+        }
+      );
+    });
+}
 
-          button.classList.add("active");
+function setupStudy() {
+  $("study-timer-start")
+    ?.addEventListener(
+      "click",
+      startTimer
+    );
 
-          const target =
-            button.getAttribute(
-              dataAttribute
-            );
+  $("study-timer-pause")
+    ?.addEventListener(
+      "click",
+      pauseTimer
+    );
+
+  $("study-timer-reset")
+    ?.addEventListener(
+      "click",
+      resetTimer
+    );
+
+  $("timer-save-button")
+    ?.addEventListener(
+      "click",
+      saveTimer
+    );
+
+  $("study-record-form")
+    ?.addEventListener(
+      "submit",
+      async event => {
+        event.preventDefault();
+
+        error(
+          "study-error",
+          ""
+        );
+
+        try {
+          await recordStudy(
+            $("study-subject")
+              .value,
+            $("study-minutes")
+              .value,
+            $("study-note")
+              .value,
+            "manual"
+          );
+
+          event.target.reset();
+        } catch (e) {
+          error(
+            "study-error",
+            e.message
+          );
+        }
+      }
+    );
+}
+
+function setupParty() {
+  $("party-invite-form")
+    ?.addEventListener(
+      "submit",
+      async event => {
+        event.preventDefault();
+
+        error(
+          "party-error",
+          ""
+        );
+
+        try {
+          await inviteToParty(
+            $("party-invite-user-id")
+              .value.trim()
+          );
+
+          event.target.reset();
+        } catch (e) {
+          error(
+            "party-error",
+            e.message
+          );
+        }
+      }
+    );
+
+  $("friend-add-form")
+    ?.addEventListener(
+      "submit",
+      async event => {
+        event.preventDefault();
+
+        error(
+          "friend-error",
+          ""
+        );
+
+        try {
+          await addFriend(
+            $("friend-user-id")
+              .value.trim()
+          );
+
+          event.target.reset();
+        } catch (e) {
+          error(
+            "friend-error",
+            e.message
+          );
+        }
+      }
+    );
+}
+
+function setupSettings() {
+  $("display-name-form")
+    ?.addEventListener(
+      "submit",
+      async event => {
+        event.preventDefault();
+
+        try {
+          await changeDisplayName(
+            $("settings-display-name")
+              .value
+          );
+        } catch (e) {
+          error(
+            "display-name-error",
+            e.message
+          );
+        }
+      }
+    );
+
+  $("subject-settings-form")
+    ?.addEventListener(
+      "submit",
+      async event => {
+        event.preventDefault();
+
+        const subjects =
+          [
+            ...document.querySelectorAll(
+              'input[name="settings-subjects"]:checked'
+            )
+          ].map(
+            x => x.value
+          );
+
+        try {
+          await changeSubjects(
+            subjects
+          );
+        } catch (e) {
+          error(
+            "settings-subject-error",
+            e.message
+          );
+        }
+      }
+    );
+
+  $("password-form")
+    ?.addEventListener(
+      "submit",
+      async event => {
+        event.preventDefault();
+
+        try {
+          const password =
+            $("settings-new-password")
+              .value;
 
           if (
-            special &&
-            dataAttribute ===
-            "data-ranking-type"
+            password.length < 6
           ) {
-
-            document
-              .querySelectorAll(
-                ".ranking-content"
-              )
-              .forEach(content =>
-                content.classList.add("hidden")
-              );
-
-            if (target === "friends") {
-              show("friends-ranking");
-            } else {
-              show("global-ranking");
-              renderGlobalRanking();
-            }
-
-            return;
+            throw new Error(
+              "パスワードは6文字以上です。"
+            );
           }
 
-          document
-            .querySelectorAll(contentSelector)
-            .forEach(content => {
+          await updatePassword(
+            auth.currentUser,
+            password
+          );
 
-              content.classList.toggle(
-                "hidden",
-                content.id !== target
-              );
+          event.target.reset();
 
-            });
-
+          notify(
+            "パスワードを変更しました！"
+          );
+        } catch (e) {
+          error(
+            "password-error",
+            authErrorMessage(e)
+          );
         }
-      );
-    });
+      }
+    );
+
+  $("delete-account-button")
+    ?.addEventListener(
+      "click",
+      async () => {
+        const ok =
+          confirm(
+            "本当にアカウントを削除しますか？"
+          );
+
+        if (!ok) return;
+
+        try {
+          await deleteDoc(
+            userRef()
+          );
+
+          await deleteUser(
+            auth.currentUser
+          );
+
+          notify(
+            "アカウントを削除しました。"
+          );
+        } catch (e) {
+          notify(
+            authErrorMessage(e)
+          );
+        }
+      }
+    );
 }
 
-
-// =====================================================
-// RANKING
-// =====================================================
-
-async function renderGlobalRanking() {
-
-  const list =
-    $("global-ranking-list");
-
-  if (!list) return;
-
-  try {
-
-    const q =
-      query(
-        collection(db, "users"),
-        orderBy(
-          "seasonStudyMinutes",
-          "desc"
-        ),
-        limit(50)
-      );
-
-    const snap =
-      await getDocs(q);
-
-    let index = 0;
-
-    list.innerHTML =
-      snap.docs.map(docSnap => {
-
-        index++;
-
-        const user =
-          docSnap.data();
-
-        return `
-          <div class="ranking-card">
-            <span>#${index}</span>
-            <strong>
-              ${escapeHTML(
-                user.displayName
-              )}
-            </strong>
-            <span>
-              ${
-                (
-                  user.seasonStudyMinutes ||
-                  0
-                ) / 60
-              .toFixed(1)
-              }時間
-            </span>
-          </div>
-        `;
-
-      }).join("");
-
-  } catch (error) {
-
-    console.error(error);
-
-    list.innerHTML =
-      `<p class="empty-message">ランキングを読み込めませんでした。</p>`;
-  }
-}
-
-
-// =====================================================
-// MODALS
-// =====================================================
-
-function initModals() {
-
+function setupModal() {
   $("level-up-close-button")
     ?.addEventListener(
       "click",
-      () =>
-        hide("level-up-modal")
+      () => {
+        hide("level-up-modal");
+      }
     );
 
   $("achievement-unlock-close-button")
     ?.addEventListener(
       "click",
-      () =>
-        hide("achievement-unlock-modal")
+      () => {
+        hide(
+          "achievement-unlock-modal"
+        );
+      }
     );
 
   $("purchase-cancel-button")
     ?.addEventListener(
       "click",
       () => {
-        selectedPurchase = null;
         hide("purchase-modal");
       }
     );
-
-  $("purchase-confirm-button")
-    ?.addEventListener(
-      "click",
-      purchaseSelected
-    );
-
-  $("boss-refresh-button")
-    ?.addEventListener(
-      "click",
-      renderBoss
-    );
 }
 
 
-// =====================================================
-// SETTINGS EVENTS
-// =====================================================
+// ============================================================
+// REFRESH
+// ============================================================
 
-function initSettings() {
+function refreshAll() {
+  refreshLevelUI();
+  refreshHome();
+  refreshStudy();
+  refreshQuest();
+  refreshParty();
+  refreshRank();
+  refreshProfile();
+  refreshShop();
+  refreshLocker();
+  refreshSettings();
+}
 
-  $("display-name-form")
-    ?.addEventListener(
-      "submit",
-      changeDisplayName
-    );
+async function refreshQuest() {
+  await autoCompleteQuests();
 
-  $("subject-settings-form")
-    ?.addEventListener(
-      "submit",
-      changeSubjects
-    );
+  renderQuests();
 
-  $("password-form")
-    ?.addEventListener(
-      "submit",
-      changePassword
-    );
+  if (state.boss) {
+    renderBoss();
+  }
+}
 
-  $("delete-account-button")
-    ?.addEventListener(
-      "click",
-      deleteAccount
-    );
+async function refreshParty() {
+  await loadParty();
+  await loadInvitations();
+
+  if (state.party) {
+    await refreshBossHpForParty();
+  }
+
+  renderParty();
+
+  if (state.boss) {
+    renderBoss();
+  }
 }
 
 
-// =====================================================
-// PARTY / FRIEND EVENTS
-// =====================================================
+// ============================================================
+// APP INITIALIZATION
+// ============================================================
 
-function initPartyAndFriends() {
+async function initializeUserApp() {
+  show("main-app");
+  hide("auth-screen");
 
-  $("party-invite-form")
-    ?.addEventListener(
-      "submit",
-      inviteToParty
-    );
+  await loadProfile();
+  await loadSubjects();
+  await loadStudyRecords();
+  await loadQuestCompletions();
+  await loadSeasonStats();
+  await loadParty();
+  await loadInvitations();
+  await loadFriends();
+  await loadBoss();
 
-  $("friend-add-form")
-    ?.addEventListener(
-      "submit",
-      addFriend
-    );
+  populateSubjectSelects();
+
+  refreshAll();
+
+  navigateTo(
+    "home-screen"
+  );
+}
+
+function resetState() {
+  state.user = null;
+  state.profile = null;
+  state.subjects = [];
+  state.studyRecords = [];
+  state.questCompletions = [];
+  state.party = null;
+  state.friends = [];
+  state.invitations = [];
+  state.boss = null;
+  state.seasonStats = null;
+
+  resetTimer();
+
+  hide("main-app");
+  show("auth-screen");
 }
 
 
-// =====================================================
-// ESCAPE
-// =====================================================
+// ============================================================
+// ERROR HANDLING
+// ============================================================
 
-function escapeHTML(value) {
+function authErrorMessage(error) {
+  const code =
+    error?.code || "";
 
+  const messages = {
+    "auth/email-already-in-use":
+      "そのユーザーIDは既に使用されています。",
+    "auth/invalid-credential":
+      "ユーザーIDまたはパスワードが違います。",
+    "auth/wrong-password":
+      "パスワードが違います。",
+    "auth/user-not-found":
+      "ユーザーが見つかりません。",
+    "auth/weak-password":
+      "パスワードが弱すぎます。",
+    "auth/requires-recent-login":
+      "安全のため、一度ログインし直してください。"
+  };
+
+  return (
+    messages[code] ||
+    error?.message ||
+    "エラーが発生しました。"
+  );
+}
+
+
+// ============================================================
+// XSS対策
+// ============================================================
+
+function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
@@ -4527,76 +4073,40 @@ function escapeHTML(value) {
 }
 
 
-// =====================================================
-// FIREBASE AUTH STATE
-// =====================================================
+// ============================================================
+// START
+// ============================================================
+
+setupAuth();
+setupNavigation();
+setupStudy();
+setupParty();
+setupSettings();
+setupModal();
+
+updateTimerDisplay();
 
 onAuthStateChanged(
   auth,
   async user => {
-
-    if (user) {
-
-      currentUser =
-        user;
-
-      hide("auth-screen");
-      show("main-app");
-
-      try {
-
-        await loadProfile();
-
-      } catch (error) {
-
-        console.error(
-          "Initialization error:",
-          error
-        );
-
-        notify(
-          "データの読み込みに失敗しました。"
-        );
-      }
-
-    } else {
-
-      currentUser = null;
-      currentProfile = null;
-
-      hide("main-app");
-      show("auth-screen");
-
-      hide("register-screen");
-      show("login-screen");
+    if (!user) {
+      resetState();
+      return;
     }
 
+    state.user = user;
+
+    try {
+      await initializeUserApp();
+    } catch (e) {
+      console.error(
+        "Initialization error:",
+        e
+      );
+
+      notify(
+        "データの読み込みに失敗しました。"
+      );
+    }
   }
 );
-
-
-// =====================================================
-// INITIALIZATION
-// =====================================================
-
-function init() {
-
-  initAuthUI();
-
-  initNavigation();
-
-  initTabs();
-
-  initStudyForm();
-
-  initSettings();
-
-  initPartyAndFriends();
-
-  initModals();
-
-  updateTimerDisplay();
-
-}
-
-init();
