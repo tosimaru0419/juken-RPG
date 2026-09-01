@@ -5248,13 +5248,11 @@ async function startApp() {
 
   applyTheme();
 
-  await refreshAll();
+  await refreshHeader();
+  await renderHome();
 
-  switchScreen(
-    "home-screen"
-  );
+  switchScreen("home-screen");
 }
-
 async function refreshAll() {
   if (!player) return;
 
