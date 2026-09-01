@@ -111,36 +111,102 @@ function setText(id, value) {
 // ============================================================
 
 function showLoginScreen() {
-  showElement("auth-screen");
-  showElement("login-screen");
-  hideElement("register-screen");
-  hideElement("main-app");
+  const authScreen = getElement("auth-screen");
+  const loginScreen = getElement("login-screen");
+  const registerScreen = getElement("register-screen");
+  const mainApp = getElement("main-app");
+
+  if (authScreen) {
+    authScreen.classList.remove("hidden");
+    authScreen.style.display = "";
+  }
+
+  if (loginScreen) {
+    loginScreen.classList.remove("hidden");
+    loginScreen.style.display = "";
+  }
+
+  if (registerScreen) {
+    registerScreen.classList.add("hidden");
+    registerScreen.style.display = "none";
+  }
+
+  if (mainApp) {
+    mainApp.classList.add("hidden");
+    mainApp.style.display = "none";
+  }
 }
+
 
 function showRegisterScreen() {
-  showElement("auth-screen");
-  hideElement("login-screen");
-  showElement("register-screen");
-  hideElement("main-app");
+  const authScreen = getElement("auth-screen");
+  const loginScreen = getElement("login-screen");
+  const registerScreen = getElement("register-screen");
+  const mainApp = getElement("main-app");
+
+  if (authScreen) {
+    authScreen.classList.remove("hidden");
+    authScreen.style.display = "";
+  }
+
+  if (loginScreen) {
+    loginScreen.classList.add("hidden");
+    loginScreen.style.display = "none";
+  }
+
+  if (registerScreen) {
+    registerScreen.classList.remove("hidden");
+    registerScreen.style.display = "";
+  }
+
+  if (mainApp) {
+    mainApp.classList.add("hidden");
+    mainApp.style.display = "none";
+  }
 }
 
+
 function showMainScreen() {
-  hideElement("auth-screen");
-  showElement("main-app");
+  const authScreen = getElement("auth-screen");
+  const loginScreen = getElement("login-screen");
+  const registerScreen = getElement("register-screen");
+  const mainApp = getElement("main-app");
+
+  // 認証画面を完全に隠す
+  if (authScreen) {
+    authScreen.classList.add("hidden");
+    authScreen.style.display = "none";
+  }
+
+  if (loginScreen) {
+    loginScreen.classList.add("hidden");
+    loginScreen.style.display = "none";
+  }
+
+  if (registerScreen) {
+    registerScreen.classList.add("hidden");
+    registerScreen.style.display = "none";
+  }
+
+  // メインアプリを確実に表示
+  if (mainApp) {
+    mainApp.classList.remove("hidden");
+    mainApp.style.display = "";
+  }
+
+  // ホームだけ表示
+  document.querySelectorAll(".app-screen").forEach(screen => {
+    screen.classList.add("hidden");
+    screen.style.display = "none";
+  });
 
   const homeScreen = getElement("home-screen");
 
   if (homeScreen) {
-    document.querySelectorAll("[id$='-screen']").forEach(el => {
-      if (el.id !== "main-app" && el.id !== "auth-screen") {
-        el.style.display = "none";
-      }
-    });
-
+    homeScreen.classList.remove("hidden");
     homeScreen.style.display = "";
   }
 }
-
 
 // ============================================================
 // ユーティリティ
