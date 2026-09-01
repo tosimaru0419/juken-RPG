@@ -61,7 +61,7 @@ let db = null;
 
 let currentUser = null;
 let currentPlayer = null;
-
+let authObserverStarted = false;
 
 // ============================================================
 // Timer
