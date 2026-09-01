@@ -1,13 +1,14 @@
 // ============================================================
 // 受験RPG - script.js
-// PHASE 2
-// Firebase Auth
-// Firestore
+// PHASE 3 COMPLETE
+// Firebase Auth / Firestore
 // XP / LEVEL / COINS
 // Study Timer
 // Manual Study Record
 // Subject Level
 // Study History
+// Japan Time
+// Level Up
 // ============================================================
 
 import {
@@ -19,7 +20,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  updatePassword
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 import {
@@ -28,6 +30,7 @@ import {
   getDoc,
   setDoc,
   updateDoc,
+  deleteDoc,
   collection,
   addDoc,
   query,
@@ -59,12 +62,9 @@ let db = null;
 let currentUser = null;
 let currentPlayer = null;
 
-let booted = false;
-let authObserverStarted = false;
-
 
 // ============================================================
-// タイマー状態
+// Timer
 // ============================================================
 
 let timerInterval = null;
@@ -72,144 +72,107 @@ let timerInterval = null;
 let timerState = {
   running: false,
   startedAt: null,
-  accumulatedSeconds: 0
+  accumulatedSeconds: 0,
+  lastTickAt: null,
+  lastSavedDate: null
 };
 
 
 // ============================================================
-// DOM
+// DOM helpers
 // ============================================================
 
 function getElement(id) {
   return document.getElementById(id);
 }
 
-function showElement(id) {
-  const el = getElement(id);
-  if (el) {
-    el.style.display = "";
-  }
-}
-
-function hideElement(id) {
-  const el = getElement(id);
-  if (el) {
-    el.style.display = "none";
-  }
-}
-
 function setText(id, value) {
   const el = getElement(id);
+
   if (el) {
     el.textContent = value;
   }
 }
 
+function showElement(id) {
+  const el = getElement(id);
+
+  if (!el) return;
+
+  el.classList.remove("hidden");
+  el.style.display = "";
+}
+
+function hideElement(id) {
+  const el = getElement(id);
+
+  if (!el) return;
+
+  el.classList.add("hidden");
+  el.style.display = "none";
+}
+
 
 // ============================================================
-// 画面切り替え
+// Screen control
 // ============================================================
 
 function showLoginScreen() {
-  const authScreen = getElement("auth-screen");
-  const loginScreen = getElement("login-screen");
-  const registerScreen = getElement("register-screen");
-  const mainApp = getElement("main-app");
+  showElement("auth-screen");
+  showElement("login-screen");
 
-  if (authScreen) {
-    authScreen.classList.remove("hidden");
-    authScreen.style.display = "";
-  }
-
-  if (loginScreen) {
-    loginScreen.classList.remove("hidden");
-    loginScreen.style.display = "";
-  }
-
-  if (registerScreen) {
-    registerScreen.classList.add("hidden");
-    registerScreen.style.display = "none";
-  }
-
-  if (mainApp) {
-    mainApp.classList.add("hidden");
-    mainApp.style.display = "none";
-  }
+  hideElement("register-screen");
+  hideElement("main-app");
 }
-
 
 function showRegisterScreen() {
-  const authScreen = getElement("auth-screen");
-  const loginScreen = getElement("login-screen");
-  const registerScreen = getElement("register-screen");
-  const mainApp = getElement("main-app");
+  showElement("auth-screen");
 
-  if (authScreen) {
-    authScreen.classList.remove("hidden");
-    authScreen.style.display = "";
-  }
-
-  if (loginScreen) {
-    loginScreen.classList.add("hidden");
-    loginScreen.style.display = "none";
-  }
-
-  if (registerScreen) {
-    registerScreen.classList.remove("hidden");
-    registerScreen.style.display = "";
-  }
-
-  if (mainApp) {
-    mainApp.classList.add("hidden");
-    mainApp.style.display = "none";
-  }
+  hideElement("login-screen");
+  showElement("register-screen");
+  hideElement("main-app");
 }
 
-
 function showMainScreen() {
-  const authScreen = getElement("auth-screen");
-  const loginScreen = getElement("login-screen");
-  const registerScreen = getElement("register-screen");
+  hideElement("auth-screen");
+  hideElement("login-screen");
+  hideElement("register-screen");
+
   const mainApp = getElement("main-app");
 
-  // 認証画面を完全に隠す
-  if (authScreen) {
-    authScreen.classList.add("hidden");
-    authScreen.style.display = "none";
-  }
-
-  if (loginScreen) {
-    loginScreen.classList.add("hidden");
-    loginScreen.style.display = "none";
-  }
-
-  if (registerScreen) {
-    registerScreen.classList.add("hidden");
-    registerScreen.style.display = "none";
-  }
-
-  // メインアプリを確実に表示
   if (mainApp) {
     mainApp.classList.remove("hidden");
     mainApp.style.display = "";
   }
 
-  // ホームだけ表示
   document.querySelectorAll(".app-screen").forEach(screen => {
     screen.classList.add("hidden");
     screen.style.display = "none";
   });
 
-  const homeScreen = getElement("home-screen");
+  const home = getElement("home-screen");
 
-  if (homeScreen) {
-    homeScreen.classList.remove("hidden");
-    homeScreen.style.display = "";
+  if (home) {
+    home.classList.remove("hidden");
+    home.style.display = "";
+  }
+
+  document.querySelectorAll("[data-screen]").forEach(button => {
+    button.classList.remove("active");
+  });
+
+  const homeButton = document.querySelector(
+    '[data-screen="home-screen"]'
+  );
+
+  if (homeButton) {
+    homeButton.classList.add("active");
   }
 }
 
+
 // ============================================================
-// ユーティリティ
+// Utility
 // ============================================================
 
 function normalizeUserId(value) {
@@ -234,7 +197,10 @@ function getJapanDateString(date = new Date()) {
 }
 
 function formatMinutes(minutes) {
-  const value = Math.max(0, Math.floor(Number(minutes) || 0));
+  const value = Math.max(
+    0,
+    Math.floor(Number(minutes) || 0)
+  );
 
   const hours = Math.floor(value / 60);
   const mins = value % 60;
@@ -246,6 +212,25 @@ function formatMinutes(minutes) {
   return `${mins}分`;
 }
 
+function formatSeconds(totalSeconds) {
+  const seconds = Math.max(
+    0,
+    Math.floor(Number(totalSeconds) || 0)
+  );
+
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor(
+    (seconds % 3600) / 60
+  );
+  const secs = seconds % 60;
+
+  return [
+    String(hours).padStart(2, "0"),
+    String(minutes).padStart(2, "0"),
+    String(secs).padStart(2, "0")
+  ].join(":");
+}
+
 function formatDateTime(timestamp) {
   if (!timestamp) {
     return "";
@@ -253,13 +238,15 @@ function formatDateTime(timestamp) {
 
   let date = null;
 
-  if (timestamp.toDate) {
+  if (timestamp?.toDate) {
     date = timestamp.toDate();
   } else if (timestamp instanceof Date) {
     date = timestamp;
+  } else if (typeof timestamp === "string") {
+    date = new Date(timestamp);
   }
 
-  if (!date) {
+  if (!date || Number.isNaN(date.getTime())) {
     return "";
   }
 
@@ -273,9 +260,19 @@ function formatDateTime(timestamp) {
   }).format(date);
 }
 
+function getCourseName(course) {
+  const names = {
+    science: "理系",
+    humanities: "文系",
+    undecided: "未定"
+  };
+
+  return names[course] || course || "未定";
+}
+
 
 // ============================================================
-// Firebaseエラー
+// Firebase errors
 // ============================================================
 
 function firebaseErrorMessage(error) {
@@ -313,12 +310,15 @@ function firebaseErrorMessage(error) {
       "Firestoreの設定を確認してください。"
   };
 
-  return messages[code] || `エラーが発生しました。\n${error?.message || code}`;
+  return (
+    messages[code] ||
+    `エラーが発生しました。\n${error?.message || code}`
+  );
 }
 
 
 // ============================================================
-// Firebase初期化
+// Firebase initialization
 // ============================================================
 
 function initializeFirebase() {
@@ -336,9 +336,15 @@ function initializeFirebase() {
 
     return true;
   } catch (error) {
-    console.error("Firebase initialization error:", error);
+    console.error(
+      "Firebase initialization error:",
+      error
+    );
 
-    alert("Firebaseの初期化に失敗しました。\n\n" + error.message);
+    alert(
+      "Firebaseの初期化に失敗しました。\n\n" +
+      error.message
+    );
 
     return false;
   }
@@ -346,35 +352,17 @@ function initializeFirebase() {
 
 
 // ============================================================
-// レベルシステム
+// Level system
 // ============================================================
-
-/*
-  Lv.1 → Lv.2 : 100 XP
-
-  Lv.1〜9
-    1レベル = 100 XP
-
-  Lv.10〜19
-    1レベル = 150 XP
-
-  Lv.20〜29
-    1レベル = 200 XP
-
-  ...
-
-  Lv.90〜99
-    1レベル = 550 XP
-
-  Lv.100が最大。
-*/
 
 function xpRequiredForLevel(level) {
   if (level >= 100) {
     return 0;
   }
 
-  const block = Math.floor((level - 1) / 10);
+  const block = Math.floor(
+    (level - 1) / 10
+  );
 
   return 100 + block * 50;
 }
@@ -390,14 +378,18 @@ function totalXpForLevel(level) {
 }
 
 function calculateLevel(totalXp) {
-  const xp = Math.max(0, Math.floor(Number(totalXp) || 0));
+  const xp = Math.max(
+    0,
+    Math.floor(Number(totalXp) || 0)
+  );
 
   let level = 1;
 
   while (level < 100) {
-    const required = xpRequiredForLevel(level);
+    const nextRequired =
+      totalXpForLevel(level + 1);
 
-    if (xp < totalXpForLevel(level + 1)) {
+    if (xp < nextRequired) {
       break;
     }
 
@@ -408,7 +400,10 @@ function calculateLevel(totalXp) {
 }
 
 function getLevelProgress(totalXp) {
-  const xp = Math.max(0, Math.floor(Number(totalXp) || 0));
+  const xp = Math.max(
+    0,
+    Math.floor(Number(totalXp) || 0)
+  );
 
   const level = calculateLevel(xp);
 
@@ -421,15 +416,24 @@ function getLevelProgress(totalXp) {
     };
   }
 
-  const currentLevelXp = totalXpForLevel(level);
-  const nextLevelXp = totalXpForLevel(level + 1);
+  const currentLevelXp =
+    totalXpForLevel(level);
 
-  const current = xp - currentLevelXp;
-  const required = nextLevelXp - currentLevelXp;
+  const nextLevelXp =
+    totalXpForLevel(level + 1);
+
+  const current =
+    xp - currentLevelXp;
+
+  const required =
+    nextLevelXp - currentLevelXp;
 
   const percent = Math.min(
     100,
-    Math.max(0, (current / required) * 100)
+    Math.max(
+      0,
+      (current / required) * 100
+    )
   );
 
   return {
@@ -442,7 +446,7 @@ function getLevelProgress(totalXp) {
 
 
 // ============================================================
-// 科目
+// Subjects
 // ============================================================
 
 const SUBJECT_NAMES = {
@@ -462,51 +466,52 @@ const SUBJECT_NAMES = {
 };
 
 function getSubjectName(subject) {
-  return SUBJECT_NAMES[subject] || subject || "その他";
+  return SUBJECT_NAMES[subject]
+    || subject
+    || "その他";
 }
 
 
 // ============================================================
-// デフォルトプレイヤーデータ
+// Default player
 // ============================================================
 
 function createDefaultPlayerData(userId = "") {
   return {
     userId,
 
-    displayName: userId || "プレイヤー",
+    displayName:
+      userId || "プレイヤー",
 
     course: "undecided",
 
     subjects: [],
 
-    // 全体進行
     xp: 0,
     level: 1,
 
     coins: 0,
-
     stars: 0,
 
-    // 勉強時間
     totalStudyMinutes: 0,
-    todayStudyMinutes: 0,
-    todayStudyDate: getJapanDateString(),
 
-    // 今日のXP / コイン
+    todayStudyMinutes: 0,
+    todayStudyDate:
+      getJapanDateString(),
+
     todayXp: 0,
     todayCoins: 0,
 
-    // 科目別
-    subjectLevels: {},
+    seasonStudyMinutes: 0,
 
+    subjectLevels: {},
     subjectStudyMinutes: {},
 
-    // 統計
     totalXp: 0,
     totalCoins: 0,
 
-    // その他
+    rank: "Bronze",
+
     title: "見習い受験生",
 
     createdAt: serverTimestamp(),
@@ -516,14 +521,22 @@ function createDefaultPlayerData(userId = "") {
 
 
 // ============================================================
-// 日付リセット
+// Daily data
 // ============================================================
 
 function normalizeDailyData(player) {
-  const today = getJapanDateString();
+  if (!player) {
+    return player;
+  }
 
-  if (player.todayStudyDate !== today) {
+  const today =
+    getJapanDateString();
+
+  if (
+    player.todayStudyDate !== today
+  ) {
     player.todayStudyDate = today;
+
     player.todayStudyMinutes = 0;
     player.todayXp = 0;
     player.todayCoins = 0;
@@ -534,7 +547,7 @@ function normalizeDailyData(player) {
 
 
 // ============================================================
-// Firestoreプレイヤーデータ
+// Firestore player
 // ============================================================
 
 async function loadPlayer(user) {
@@ -542,9 +555,11 @@ async function loadPlayer(user) {
     return null;
   }
 
-  const playerRef = doc(db, "players", user.uid);
+  const playerRef =
+    doc(db, "players", user.uid);
 
-  const snapshot = await getDoc(playerRef);
+  const snapshot =
+    await getDoc(playerRef);
 
   if (!snapshot.exists()) {
     return null;
@@ -563,51 +578,77 @@ async function loadPlayer(user) {
   player.subjectStudyMinutes =
     player.subjectStudyMinutes || {};
 
+  player.subjects =
+    Array.isArray(player.subjects)
+      ? player.subjects
+      : [];
+
   normalizeDailyData(player);
+
+  player.level =
+    calculateLevel(player.xp || 0);
 
   return player;
 }
 
-
-async function createPlayer(user, additionalData = {}) {
-  const defaultData = createDefaultPlayerData(
-    additionalData.userId || ""
-  );
+async function createPlayer(
+  user,
+  additionalData = {}
+) {
+  const defaultData =
+    createDefaultPlayerData(
+      additionalData.userId || ""
+    );
 
   const playerData = {
     ...defaultData,
     ...additionalData,
+
     uid: user.uid,
     email: user.email || "",
-    updatedAt: serverTimestamp()
+
+    updatedAt:
+      serverTimestamp()
   };
 
-  const playerRef = doc(db, "players", user.uid);
+  const playerRef =
+    doc(db, "players", user.uid);
 
-  await setDoc(playerRef, playerData);
+  await setDoc(
+    playerRef,
+    playerData
+  );
 
   return playerData;
 }
 
-
-// ============================================================
-// プレイヤーデータ保存
-// ============================================================
-
 async function savePlayer() {
-  if (!currentUser || !currentPlayer || !db) {
+  if (
+    !currentUser ||
+    !currentPlayer ||
+    !db
+  ) {
     return;
   }
 
-  currentPlayer = normalizeDailyData(currentPlayer);
-
-  currentPlayer.updatedAt = serverTimestamp();
-
-  const playerRef = doc(
-    db,
-    "players",
-    currentUser.uid
+  normalizeDailyData(
+    currentPlayer
   );
+
+  currentPlayer.level =
+    calculateLevel(
+      currentPlayer.xp || 0
+    );
+
+  currentPlayer.updatedAt =
+    serverTimestamp();
+
+  const playerRef =
+    doc(
+      db,
+      "players",
+      currentUser.uid
+    );
 
   await setDoc(
     playerRef,
@@ -618,7 +659,181 @@ async function savePlayer() {
 
 
 // ============================================================
-// UI反映
+// Subject select
+// ============================================================
+
+function populateStudySubjectSelect() {
+  const select =
+    getElement("study-subject");
+
+  if (!select || !currentPlayer) {
+    return;
+  }
+
+  const subjects =
+    Array.isArray(currentPlayer.subjects)
+      ? currentPlayer.subjects
+      : [];
+
+  const previousValue =
+    select.value;
+
+  select.innerHTML = "";
+
+  const placeholder =
+    document.createElement("option");
+
+  placeholder.value = "";
+  placeholder.textContent =
+    "科目を選択";
+  placeholder.disabled = true;
+
+  select.appendChild(
+    placeholder
+  );
+
+  subjects.forEach(subject => {
+    const option =
+      document.createElement("option");
+
+    option.value = subject;
+    option.textContent =
+      getSubjectName(subject);
+
+    select.appendChild(option);
+  });
+
+  if (
+    subjects.includes(
+      previousValue
+    )
+  ) {
+    select.value =
+      previousValue;
+  } else if (
+    subjects.length === 1
+  ) {
+    select.value =
+      subjects[0];
+  } else {
+    select.selectedIndex = 0;
+  }
+}
+
+
+// ============================================================
+// Subject UI
+// ============================================================
+
+function updateSubjectLevelUI() {
+  if (!currentPlayer) {
+    return;
+  }
+
+  const levelList =
+    getElement(
+      "subject-level-list"
+    );
+
+  if (levelList) {
+    levelList.innerHTML = "";
+
+    const subjects =
+      Array.isArray(currentPlayer.subjects)
+        ? currentPlayer.subjects
+        : [];
+
+    if (subjects.length === 0) {
+      levelList.textContent =
+        "登録科目がありません。";
+    } else {
+      subjects.forEach(subject => {
+        const level =
+          Math.min(
+            100,
+            Math.floor(
+              Number(
+                currentPlayer
+                  .subjectLevels?.[subject]
+              ) || 0
+            )
+          );
+
+        const minutes =
+          Math.max(
+            0,
+            Math.floor(
+              Number(
+                currentPlayer
+                  .subjectStudyMinutes?.[
+                    subject
+                  ]
+              ) || 0
+            )
+          );
+
+        const row =
+          document.createElement("div");
+
+        row.className =
+          "subject-level-row";
+
+        row.innerHTML = `
+          <span>
+            ${getSubjectName(subject)}
+          </span>
+          <span>
+            Lv.${level}
+          </span>
+          <span>
+            ${formatMinutes(minutes)}
+          </span>
+        `;
+
+        levelList.appendChild(row);
+      });
+    }
+  }
+
+  const studyList =
+    getElement(
+      "subject-study-list"
+    );
+
+  if (studyList) {
+    studyList.innerHTML = "";
+
+    const subjects =
+      Array.isArray(currentPlayer.subjects)
+        ? currentPlayer.subjects
+        : [];
+
+    subjects.forEach(subject => {
+      const minutes =
+        Number(
+          currentPlayer
+            .subjectStudyMinutes?.[
+              subject
+            ]
+        ) || 0;
+
+      const row =
+        document.createElement("div");
+
+      row.className =
+        "subject-study-row";
+
+      row.textContent =
+        `${getSubjectName(subject)}：${formatMinutes(minutes)}`;
+
+      studyList.appendChild(row);
+    });
+  }
+}
+
+
+// ============================================================
+// Player UI
 // ============================================================
 
 function applyPlayerData() {
@@ -626,24 +841,30 @@ function applyPlayerData() {
     return;
   }
 
-  currentPlayer = normalizeDailyData(currentPlayer);
-
-  const level = calculateLevel(currentPlayer.xp || 0);
-
-  currentPlayer.level = level;
-
-  const progress = getLevelProgress(
-    currentPlayer.xp || 0
+  normalizeDailyData(
+    currentPlayer
   );
 
+  const level =
+    calculateLevel(
+      currentPlayer.xp || 0
+    );
 
-  // ----------------------------------------
-  // ヘッダー
-  // ----------------------------------------
+  currentPlayer.level =
+    level;
+
+  const progress =
+    getLevelProgress(
+      currentPlayer.xp || 0
+    );
+
+
+  // Header
 
   setText(
     "header-display-name",
-    currentPlayer.displayName || "プレイヤー"
+    currentPlayer.displayName
+      || "プレイヤー"
   );
 
   setText(
@@ -653,7 +874,8 @@ function applyPlayerData() {
 
   setText(
     "header-rank",
-    currentPlayer.rank || "Bronze"
+    currentPlayer.rank
+      || "Bronze"
   );
 
   setText(
@@ -662,9 +884,7 @@ function applyPlayerData() {
   );
 
 
-  // ----------------------------------------
-  // ホーム
-  // ----------------------------------------
+  // Home
 
   setText(
     "home-level",
@@ -683,14 +903,19 @@ function applyPlayerData() {
       : `${progress.current} / ${progress.required} XP`
   );
 
-  const progressBar = getElement("level-progress");
+  const progressBar =
+    getElement(
+      "level-progress"
+    );
 
   if (progressBar) {
     if (
-      progressBar.tagName === "PROGRESS"
+      progressBar.tagName ===
+      "PROGRESS"
     ) {
       progressBar.max = 100;
-      progressBar.value = progress.percent;
+      progressBar.value =
+        progress.percent;
     } else {
       progressBar.style.width =
         `${progress.percent}%`;
@@ -700,7 +925,8 @@ function applyPlayerData() {
   setText(
     "today-study-time",
     formatMinutes(
-      currentPlayer.todayStudyMinutes || 0
+      currentPlayer
+        .todayStudyMinutes || 0
     )
   );
 
@@ -716,13 +942,15 @@ function applyPlayerData() {
 
   setText(
     "home-rank",
-    currentPlayer.rank || "Bronze"
+    currentPlayer.rank
+      || "Bronze"
   );
 
   setText(
     "home-season-study-time",
     formatMinutes(
-      currentPlayer.seasonStudyMinutes || 0
+      currentPlayer
+        .seasonStudyMinutes || 0
     )
   );
 
@@ -733,27 +961,30 @@ function applyPlayerData() {
 
   setText(
     "star-title",
-    currentPlayer.title || "見習い受験生"
+    currentPlayer.title
+      || "見習い受験生"
   );
 
 
-  // ----------------------------------------
-  // プロフィール
-  // ----------------------------------------
+  // Profile
 
   setText(
     "profile-display-name",
-    currentPlayer.displayName || "-"
+    currentPlayer.displayName
+      || "-"
   );
 
   setText(
     "profile-user-id",
-    currentPlayer.userId || "-"
+    currentPlayer.userId
+      || "-"
   );
 
   setText(
     "profile-course",
-    getCourseName(currentPlayer.course)
+    getCourseName(
+      currentPlayer.course
+    )
   );
 
   setText(
@@ -784,7 +1015,8 @@ function applyPlayerData() {
   setText(
     "profile-total-study-time",
     formatMinutes(
-      currentPlayer.totalStudyMinutes || 0
+      currentPlayer
+        .totalStudyMinutes || 0
     )
   );
 
@@ -798,27 +1030,77 @@ function applyPlayerData() {
     currentPlayer.coins || 0
   );
 
+  setText(
+    "profile-bosses-defeated",
+    currentPlayer
+      .bossesDefeated || 0
+  );
+
+  setText(
+    "profile-quests-completed",
+    currentPlayer
+      .questsCompleted || 0
+  );
+
+
+  populateStudySubjectSelect();
   updateSubjectLevelUI();
 }
 
 
-function getCourseName(course) {
-  const names = {
-    science: "理系",
-    humanities: "文系",
-    undecided: "未定"
-  };
+// ============================================================
+// Notification
+// ============================================================
 
-  return names[course] || course || "未定";
+function showNotification(message) {
+  const notification =
+    getElement("notification");
+
+  if (!notification) {
+    console.log(
+      "[NOTIFICATION]",
+      message
+    );
+    return;
+  }
+
+  notification.textContent =
+    message;
+
+  notification.classList.remove(
+    "hidden"
+  );
+
+  notification.style.display =
+    "";
+
+  clearTimeout(
+    showNotification.timeout
+  );
+
+  showNotification.timeout =
+    setTimeout(() => {
+      notification.style.display =
+        "none";
+
+      notification.classList.add(
+        "hidden"
+      );
+    }, 3500);
 }
 
 
 // ============================================================
-// レベルアップ演出
+// Level up
 // ============================================================
 
-function showLevelUp(oldLevel, newLevel) {
-  if (newLevel <= oldLevel) {
+function showLevelUp(
+  oldLevel,
+  newLevel
+) {
+  if (
+    newLevel <= oldLevel
+  ) {
     return;
   }
 
@@ -832,73 +1114,81 @@ function showLevelUp(oldLevel, newLevel) {
     newLevel
   );
 
-  const modal = getElement("level-up-modal");
+  const modal =
+    getElement(
+      "level-up-modal"
+    );
 
   if (modal) {
-    modal.style.display = "";
-  } else {
-    showNotification(
-      `🎉 LEVEL UP!!  Lv.${oldLevel} → Lv.${newLevel}`
+    modal.classList.remove(
+      "hidden"
     );
-  }
-}
 
+    modal.style.display =
+      "";
+  }
+
+  showNotification(
+    `🎉 LEVEL UP!! Lv.${oldLevel} → Lv.${newLevel}`
+  );
+}
 
 function closeLevelUpModal() {
-  const modal = getElement("level-up-modal");
+  const modal =
+    getElement(
+      "level-up-modal"
+    );
 
   if (modal) {
-    modal.style.display = "none";
+    modal.classList.add(
+      "hidden"
+    );
+
+    modal.style.display =
+      "none";
   }
 }
 
 
 // ============================================================
-// 通知
+// Study recording
 // ============================================================
 
-function showNotification(message) {
-  const notification = getElement("notification");
-
-  if (!notification) {
-    console.log("[NOTIFICATION]", message);
-    return;
-  }
-
-  notification.textContent = message;
-  notification.style.display = "";
-
-  clearTimeout(
-    showNotification.timeout
-  );
-
-  showNotification.timeout = setTimeout(() => {
-    notification.style.display = "none";
-  }, 3000);
-}
-
-
-// ============================================================
-// 勉強記録
-// ============================================================
+let studyRecordBusy = false;
 
 async function recordStudy(
   subject,
   minutes,
   note = "",
-  source = "manual"
+  source = "manual",
+  recordDate = null
 ) {
-  if (!currentUser || !currentPlayer) {
+  if (
+    !currentUser ||
+    !currentPlayer
+  ) {
     throw new Error(
       "ログインしていません。"
     );
   }
 
-  const safeMinutes = Math.floor(
-    Number(minutes)
-  );
+  if (studyRecordBusy) {
+    throw new Error(
+      "現在、別の勉強記録を保存中です。"
+    );
+  }
 
-  if (!Number.isFinite(safeMinutes) || safeMinutes < 1) {
+  const safeMinutes =
+    Math.floor(
+      Number(minutes)
+    );
+
+  if (
+    !Number.isFinite(
+      safeMinutes
+    ) ||
+    safeMinutes < 1
+  ) {
     throw new Error(
       "勉強時間は1分以上で入力してください。"
     );
@@ -910,366 +1200,501 @@ async function recordStudy(
     );
   }
 
-
-  // ----------------------------------------
-  // 日付更新
-  // ----------------------------------------
-
-  normalizeDailyData(currentPlayer);
-
-
-  // ----------------------------------------
-  // 旧レベル
-  // ----------------------------------------
-
-  const oldLevel = calculateLevel(
-    currentPlayer.xp || 0
-  );
-
-
-  // ----------------------------------------
-  // XP
-  // ----------------------------------------
-
-  const gainedXp = safeMinutes;
-
-
-  // ----------------------------------------
-  // コイン
-  // ----------------------------------------
-
-  const gainedCoins = safeMinutes;
-
-
-  // ----------------------------------------
-  // 全体
-  // ----------------------------------------
-
-  currentPlayer.xp =
-    (currentPlayer.xp || 0) +
-    gainedXp;
-
-  currentPlayer.totalXp =
-    (currentPlayer.totalXp || 0) +
-    gainedXp;
-
-  currentPlayer.coins =
-    (currentPlayer.coins || 0) +
-    gainedCoins;
-
-  currentPlayer.totalCoins =
-    (currentPlayer.totalCoins || 0) +
-    gainedCoins;
-
-
-  // ----------------------------------------
-  // 今日
-  // ----------------------------------------
-
-  currentPlayer.todayStudyMinutes =
-    (currentPlayer.todayStudyMinutes || 0) +
-    safeMinutes;
-
-  currentPlayer.todayXp =
-    (currentPlayer.todayXp || 0) +
-    gainedXp;
-
-  currentPlayer.todayCoins =
-    (currentPlayer.todayCoins || 0) +
-    gainedCoins;
-
-
-  // ----------------------------------------
-  // 総勉強時間
-  // ----------------------------------------
-
-  currentPlayer.totalStudyMinutes =
-    (currentPlayer.totalStudyMinutes || 0) +
-    safeMinutes;
-
-
-  // ----------------------------------------
-  // シーズン
-  // ----------------------------------------
-
-  currentPlayer.seasonStudyMinutes =
-    (currentPlayer.seasonStudyMinutes || 0) +
-    safeMinutes;
-
-
-  // ----------------------------------------
-  // 科目
-  // ----------------------------------------
-
-  if (!currentPlayer.subjectStudyMinutes[subject]) {
-    currentPlayer.subjectStudyMinutes[subject] = 0;
-  }
-
-  currentPlayer.subjectStudyMinutes[subject] +=
-    safeMinutes;
-
-
-  // 30分 = 科目Lv +1
-  currentPlayer.subjectLevels[subject] =
-    Math.floor(
-      currentPlayer.subjectStudyMinutes[subject] / 30
-    );
-
-
-  // 科目Lv上限100
-  currentPlayer.subjectLevels[subject] =
-    Math.min(
-      100,
-      currentPlayer.subjectLevels[subject]
-    );
-
-
-  // ----------------------------------------
-  // 新レベル
-  // ----------------------------------------
-
-  const newLevel = calculateLevel(
-    currentPlayer.xp
-  );
-
-  currentPlayer.level = newLevel;
-
-
-  // ----------------------------------------
-  // Firestoreへ勉強記録
-  // ----------------------------------------
-
-  const recordRef = collection(
-    db,
-    "players",
-    currentUser.uid,
-    "studyRecords"
-  );
-
-  await addDoc(recordRef, {
-    subject,
-    subjectName: getSubjectName(subject),
-
-    minutes: safeMinutes,
-
-    xp: gainedXp,
-    coins: gainedCoins,
-
-    note: String(note || ""),
-
-    source,
-
-    date: getJapanDateString(),
-
-    createdAt: serverTimestamp()
-  });
-
-
-  // ----------------------------------------
-  // プレイヤー保存
-  // ----------------------------------------
-
-  await savePlayer();
-
-
-  // ----------------------------------------
-  // UI更新
-  // ----------------------------------------
-
-  applyPlayerData();
-
-  await loadStudyHistory();
-
-
-  // ----------------------------------------
-  // レベルアップ
-  // ----------------------------------------
-
-  if (newLevel > oldLevel) {
-    showLevelUp(
-      oldLevel,
-      newLevel
+  if (
+    !Array.isArray(
+      currentPlayer.subjects
+    ) ||
+    !currentPlayer.subjects.includes(
+      subject
+    )
+  ) {
+    throw new Error(
+      "登録されていない科目です。"
     );
   }
 
-
-  // ----------------------------------------
-  // 通知
-  // ----------------------------------------
-
-  showNotification(
-    `📚 ${safeMinutes}分記録！ +${gainedXp} XP / +${gainedCoins} 🪙`
-  );
-
-  return {
-    minutes: safeMinutes,
-    xp: gainedXp,
-    coins: gainedCoins,
-    oldLevel,
-    newLevel
-  };
-}
-
-
-// ============================================================
-// 手動勉強記録フォーム
-// ============================================================
-
-async function handleStudyRecord(event) {
-  event.preventDefault();
-
-  const errorElement =
-    getElement("study-error");
-
-  if (errorElement) {
-    errorElement.textContent = "";
-  }
-
-  const subject =
-    getElement("study-subject")?.value;
-
-  const minutes =
-    getElement("study-minutes")?.value;
-
-  const note =
-    getElement("study-note")?.value || "";
+  studyRecordBusy = true;
 
   try {
-    const result = await recordStudy(
-      subject,
-      minutes,
-      note,
-      "manual"
+    normalizeDailyData(
+      currentPlayer
     );
 
-    const form =
-      getElement("study-record-form");
+    const oldLevel =
+      calculateLevel(
+        currentPlayer.xp || 0
+      );
 
-    if (form) {
-      form.reset();
+    const gainedXp =
+      safeMinutes;
+
+    const gainedCoins =
+      safeMinutes;
+
+
+    // Total XP
+
+    currentPlayer.xp =
+      Math.min(
+        Number.MAX_SAFE_INTEGER,
+        (currentPlayer.xp || 0)
+          + gainedXp
+      );
+
+    currentPlayer.totalXp =
+      (currentPlayer.totalXp || 0)
+      + gainedXp;
+
+
+    // Coins
+
+    currentPlayer.coins =
+      Math.min(
+        Number.MAX_SAFE_INTEGER,
+        (currentPlayer.coins || 0)
+          + gainedCoins
+      );
+
+    currentPlayer.totalCoins =
+      (currentPlayer.totalCoins || 0)
+      + gainedCoins;
+
+
+    // Today
+
+    currentPlayer.todayStudyMinutes =
+      (currentPlayer.todayStudyMinutes || 0)
+      + safeMinutes;
+
+    currentPlayer.todayXp =
+      (currentPlayer.todayXp || 0)
+      + gainedXp;
+
+    currentPlayer.todayCoins =
+      (currentPlayer.todayCoins || 0)
+      + gainedCoins;
+
+
+    // Total study
+
+    currentPlayer.totalStudyMinutes =
+      (currentPlayer.totalStudyMinutes || 0)
+      + safeMinutes;
+
+
+    // Season
+
+    currentPlayer.seasonStudyMinutes =
+      (currentPlayer.seasonStudyMinutes || 0)
+      + safeMinutes;
+
+
+    // Subject
+
+    if (
+      !currentPlayer
+        .subjectStudyMinutes
+    ) {
+      currentPlayer
+        .subjectStudyMinutes = {};
     }
+
+    if (
+      !currentPlayer
+        .subjectLevels
+    ) {
+      currentPlayer
+        .subjectLevels = {};
+    }
+
+    currentPlayer
+      .subjectStudyMinutes[subject] =
+      (currentPlayer
+        .subjectStudyMinutes[subject] || 0)
+      + safeMinutes;
+
+
+    // 30min = Subject Lv +1
+
+    currentPlayer
+      .subjectLevels[subject] =
+      Math.min(
+        100,
+        Math.floor(
+          currentPlayer
+            .subjectStudyMinutes[subject]
+          / 30
+        )
+      );
+
+
+    // New level
+
+    const newLevel =
+      calculateLevel(
+        currentPlayer.xp
+      );
+
+    currentPlayer.level =
+      newLevel;
+
+
+    // Firestore study record
+
+    const recordRef =
+      collection(
+        db,
+        "players",
+        currentUser.uid,
+        "studyRecords"
+      );
+
+    await addDoc(
+      recordRef,
+      {
+        subject,
+        subjectName:
+          getSubjectName(
+            subject
+          ),
+
+        minutes:
+          safeMinutes,
+
+        xp:
+          gainedXp,
+
+        coins:
+          gainedCoins,
+
+        note:
+          String(note || ""),
+
+        source,
+
+        date:
+          recordDate ||
+          getJapanDateString(),
+
+        createdAt:
+          serverTimestamp()
+      }
+    );
+
+
+    // Save player
+
+    await savePlayer();
+
+
+    // UI
+
+    applyPlayerData();
+
+    await loadStudyHistory();
+
+
+    // Level up
+
+    if (
+      newLevel > oldLevel
+    ) {
+      showLevelUp(
+        oldLevel,
+        newLevel
+      );
+    }
+
 
     showNotification(
-      `勉強記録完了！ +${result.xp} XP`
+      `📚 ${safeMinutes}分記録！ +${gainedXp} XP / +${gainedCoins} 🪙`
     );
 
-  } catch (error) {
-    console.error(error);
+    return {
+      minutes: safeMinutes,
+      xp: gainedXp,
+      coins: gainedCoins,
+      oldLevel,
+      newLevel
+    };
 
-    if (errorElement) {
-      errorElement.textContent =
-        error.message;
-    } else {
-      alert(error.message);
-    }
+  } finally {
+    studyRecordBusy = false;
   }
 }
 
 
 // ============================================================
-// タイマー
+// Manual study form
+// ============================================================
+
+function initializeStudyForm() {
+  const form =
+    getElement(
+      "study-record-form"
+    );
+
+  if (!form) {
+    return;
+  }
+
+  form.addEventListener(
+    "submit",
+    async event => {
+      event.preventDefault();
+
+      const subject =
+        getElement(
+          "study-subject"
+        )?.value;
+
+      const minutes =
+        getElement(
+          "study-minutes"
+        )?.value;
+
+      const note =
+        getElement(
+          "study-note"
+        )?.value || "";
+
+      const errorEl =
+        getElement(
+          "study-error"
+        );
+
+      if (errorEl) {
+        errorEl.textContent =
+          "";
+      }
+
+      try {
+        await recordStudy(
+          subject,
+          minutes,
+          note,
+          "manual"
+        );
+
+        form.reset();
+
+        populateStudySubjectSelect();
+
+      } catch (error) {
+        console.error(
+          "Manual study error:",
+          error
+        );
+
+        if (errorEl) {
+          errorEl.textContent =
+            firebaseErrorMessage(
+              error
+            );
+        } else {
+          showNotification(
+            error.message
+          );
+        }
+      }
+    }
+  );
+}
+
+
+// ============================================================
+// Study history
+// ============================================================
+
+async function loadStudyHistory() {
+  const historyList =
+    getElement(
+      "study-history-list"
+    );
+
+  if (!historyList) {
+    return;
+  }
+
+  if (
+    !currentUser ||
+    !db
+  ) {
+    historyList.innerHTML =
+      "";
+
+    return;
+  }
+
+  historyList.innerHTML =
+    "<div>読み込み中...</div>";
+
+  try {
+    const recordsRef =
+      collection(
+        db,
+        "players",
+        currentUser.uid,
+        "studyRecords"
+      );
+
+    const q =
+      query(
+        recordsRef,
+        orderBy(
+          "createdAt",
+          "desc"
+        ),
+        limit(50)
+      );
+
+    const snapshot =
+      await getDocs(q);
+
+    historyList.innerHTML =
+      "";
+
+    if (snapshot.empty) {
+      historyList.innerHTML =
+        "<div>まだ勉強記録がありません。</div>";
+
+      return;
+    }
+
+    snapshot.forEach(docSnap => {
+      const data =
+        docSnap.data();
+
+      const row =
+        document.createElement(
+          "div"
+        );
+
+      row.className =
+        "study-history-item";
+
+      const sourceText =
+        data.source === "timer"
+          ? "タイマー"
+          : "手動";
+
+      row.innerHTML = `
+        <div>
+          <strong>
+            ${escapeHtml(
+              data.subjectName ||
+              getSubjectName(
+                data.subject
+              )
+            )}
+          </strong>
+          <span>
+            ${formatMinutes(
+              data.minutes || 0
+            )}
+          </span>
+        </div>
+
+        <div>
+          +${Number(data.xp || 0)} XP
+          ・
+          +${Number(data.coins || 0)} 🪙
+        </div>
+
+        <div>
+          ${sourceText}
+          ${data.date
+            ? `・${escapeHtml(data.date)}`
+            : ""}
+        </div>
+
+        ${
+          data.note
+            ? `<div>${escapeHtml(
+                data.note
+              )}</div>`
+            : ""
+        }
+      `;
+
+      historyList.appendChild(
+        row
+      );
+    });
+
+  } catch (error) {
+    console.error(
+      "Study history error:",
+      error
+    );
+
+    historyList.innerHTML =
+      "<div>履歴の読み込みに失敗しました。</div>";
+  }
+}
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+// ============================================================
+// Timer
 // ============================================================
 
 function getTimerElapsedSeconds() {
-  if (!timerState.running) {
-    return timerState.accumulatedSeconds;
+  let seconds =
+    timerState.accumulatedSeconds || 0;
+
+  if (
+    timerState.running &&
+    timerState.startedAt
+  ) {
+    const elapsed =
+      Math.floor(
+        (Date.now() -
+          timerState.startedAt)
+        / 1000
+      );
+
+    seconds += Math.max(
+      0,
+      elapsed
+    );
   }
 
-  return (
-    timerState.accumulatedSeconds +
-    Math.floor(
-      (Date.now() - timerState.startedAt) / 1000
+  return seconds;
+}
+
+function updateTimerDisplay() {
+  setText(
+    "study-timer-display",
+    formatSeconds(
+      getTimerElapsedSeconds()
     )
   );
 }
 
-
-function updateTimerDisplay() {
-  const seconds =
-    getTimerElapsedSeconds();
-
-  const totalMinutes =
-    Math.floor(seconds / 60);
-
-  const displaySeconds =
-    seconds % 60;
-
-  const hours =
-    Math.floor(totalMinutes / 60);
-
-  const minutes =
-    totalMinutes % 60;
-
-  const display =
-    `${String(hours).padStart(2, "0")}:` +
-    `${String(minutes).padStart(2, "0")}:` +
-    `${String(displaySeconds).padStart(2, "0")}`;
-
-  setText(
-    "study-timer-display",
-    display
-  );
-}
-
-
-function startTimer() {
-  if (timerState.running) {
-    return;
-  }
-
-  timerState.running = true;
-  timerState.startedAt = Date.now();
-
-  clearInterval(timerInterval);
-
-  timerInterval = setInterval(() => {
-    updateTimerDisplay();
-
-    // 日付変更を検知
-    handleTimerDateChange();
-
-  }, 1000);
-
-  updateTimerButtons();
-  updateTimerDisplay();
-}
-
-
-function pauseTimer() {
-  if (!timerState.running) {
-    return;
-  }
-
-  timerState.accumulatedSeconds =
-    getTimerElapsedSeconds();
-
-  timerState.running = false;
-  timerState.startedAt = null;
-
-  clearInterval(timerInterval);
-  timerInterval = null;
-
-  updateTimerButtons();
-  updateTimerDisplay();
-}
-
-
-function resetTimer() {
-  pauseTimer();
-
-  timerState.accumulatedSeconds = 0;
-
-  updateTimerDisplay();
-  updateTimerButtons();
-}
-
-
 function updateTimerButtons() {
   const startButton =
-    getElement("study-timer-start");
+    getElement(
+      "study-timer-start"
+    );
 
   const pauseButton =
-    getElement("study-timer-pause");
+    getElement(
+      "study-timer-pause"
+    );
+
+  const resetButton =
+    getElement(
+      "study-timer-reset"
+    );
 
   if (startButton) {
     startButton.disabled =
@@ -1280,83 +1705,316 @@ function updateTimerButtons() {
     pauseButton.disabled =
       !timerState.running;
   }
+
+  if (resetButton) {
+    resetButton.disabled =
+      getTimerElapsedSeconds() <= 0;
+  }
+}
+
+function stopTimerInterval() {
+  if (timerInterval) {
+    clearInterval(
+      timerInterval
+    );
+
+    timerInterval = null;
+  }
+}
+
+function startTimerInterval() {
+  stopTimerInterval();
+
+  timerInterval =
+    setInterval(
+      handleTimerTick,
+      1000
+    );
+}
+
+function startTimer() {
+  if (timerState.running) {
+    return;
+  }
+
+  timerState.running = true;
+
+  timerState.startedAt =
+    Date.now();
+
+  timerState.lastTickAt =
+    Date.now();
+
+  timerState.lastSavedDate =
+    getJapanDateString();
+
+  startTimerInterval();
+
+  updateTimerDisplay();
+  updateTimerButtons();
+
+  showNotification(
+    "⏱️ タイマー開始！"
+  );
+}
+
+function pauseTimer() {
+  if (!timerState.running) {
+    return;
+  }
+
+  timerState.accumulatedSeconds =
+    getTimerElapsedSeconds();
+
+  timerState.running = false;
+
+  timerState.startedAt = null;
+
+  timerState.lastTickAt = null;
+
+  stopTimerInterval();
+
+  updateTimerDisplay();
+  updateTimerButtons();
+
+  showNotification(
+    "⏸️ タイマー一時停止"
+  );
+}
+
+function resetTimer() {
+  stopTimerInterval();
+
+  timerState = {
+    running: false,
+    startedAt: null,
+    accumulatedSeconds: 0,
+    lastTickAt: null,
+    lastSavedDate: null
+  };
+
+  updateTimerDisplay();
+  updateTimerButtons();
+
+  showNotification(
+    "🔄 タイマーをリセットしました。"
+  );
 }
 
 
 // ============================================================
-// タイマー日付変更
+// Timer midnight handling
 // ============================================================
 
-let lastTimerDate =
-  getJapanDateString();
-
 async function handleTimerDateChange() {
-  const currentDate =
-    getJapanDateString();
-
-  if (currentDate === lastTimerDate) {
+  if (!timerState.running) {
     return;
   }
 
-  lastTimerDate = currentDate;
+  const currentDate =
+    getJapanDateString();
+
+  if (
+    !timerState.lastSavedDate
+  ) {
+    timerState.lastSavedDate =
+      currentDate;
+
+    return;
+  }
+
+  if (
+    currentDate ===
+    timerState.lastSavedDate
+  ) {
+    return;
+  }
 
   /*
-    00:00になったら、
-    前日分を自動保存する。
+    00:00を跨いだ場合、
+    その瞬間までの経過分を
+    前日の記録として保存する。
 
-    タイマーはそのまま継続する。
+    その後、タイマーの秒数を
+    新しい日の計測へ移す。
   */
 
   const elapsedSeconds =
     getTimerElapsedSeconds();
 
-  const elapsedMinutes =
-    Math.floor(elapsedSeconds / 60);
-
-  if (elapsedMinutes >= 1) {
-    await saveTimerMinutes(
-      elapsedMinutes,
-      "timer-midnight"
-    );
-  }
-
-  timerState.accumulatedSeconds =
-    Math.max(
-      0,
-      elapsedSeconds -
-      elapsedMinutes * 60
+  const minutes =
+    Math.floor(
+      elapsedSeconds / 60
     );
 
-  if (timerState.running) {
+  const subject =
+    getElement(
+      "study-subject"
+    )?.value;
+
+  if (
+    minutes >= 1 &&
+    subject
+  ) {
+    const previousDate =
+      getPreviousJapanDate(
+        currentDate
+      );
+
+    try {
+      await recordStudy(
+        subject,
+        minutes,
+        "日付跨ぎ自動保存",
+        "timer-midnight",
+        previousDate
+      );
+
+      timerState.accumulatedSeconds =
+        0;
+
+      timerState.startedAt =
+        Date.now();
+
+      timerState.lastSavedDate =
+        currentDate;
+
+      updateTimerDisplay();
+
+      showNotification(
+        `🌙 ${previousDate}分を自動保存しました。`
+      );
+
+    } catch (error) {
+      console.error(
+        "Midnight timer save error:",
+        error
+      );
+    }
+  } else {
+    /*
+      1分未満なら記録せず、
+      新しい日のタイマーとして継続。
+    */
+
+    timerState.accumulatedSeconds =
+      0;
+
     timerState.startedAt =
       Date.now();
-  }
 
+    timerState.lastSavedDate =
+      currentDate;
+
+    updateTimerDisplay();
+  }
+}
+
+function getPreviousJapanDate(
+  japanDate
+) {
+  const [year, month, day] =
+    japanDate
+      .split("-")
+      .map(Number);
+
+  const date =
+    new Date(
+      Date.UTC(
+        year,
+        month - 1,
+        day - 1
+      )
+    );
+
+  return [
+    date.getUTCFullYear(),
+    String(
+      date.getUTCMonth() + 1
+    ).padStart(2, "0"),
+    String(
+      date.getUTCDate()
+    ).padStart(2, "0")
+  ].join("-");
+}
+
+async function handleTimerTick() {
   updateTimerDisplay();
+
+  updateTimerButtons();
+
+  if (
+    timerState.running
+  ) {
+    await handleTimerDateChange();
+  }
 }
 
 
-async function saveTimerMinutes(
-  minutes,
-  source = "timer"
-) {
+// ============================================================
+// Timer save
+// ============================================================
+
+async function saveTimerMinutes() {
+  if (!currentUser) {
+    showNotification(
+      "ログインしてください。"
+    );
+
+    return;
+  }
+
+  const seconds =
+    getTimerElapsedSeconds();
+
+  const minutes =
+    Math.floor(
+      seconds / 60
+    );
+
+  if (minutes < 1) {
+    showNotification(
+      "1分以上勉強してから保存してください。"
+    );
+
+    return;
+  }
+
   const subject =
-    getElement("study-subject")?.value;
+    getElement(
+      "study-subject"
+    )?.value;
 
   if (!subject) {
     showNotification(
       "タイマー記録には科目を選択してください。"
     );
+
     return;
   }
+
+  pauseTimer();
 
   try {
     await recordStudy(
       subject,
       minutes,
       "",
-      source
+      "timer"
     );
+
+    timerState =
+      {
+        running: false,
+        startedAt: null,
+        accumulatedSeconds: 0,
+        lastTickAt: null,
+        lastSavedDate: null
+      };
+
+    updateTimerDisplay();
+    updateTimerButtons();
+
   } catch (error) {
     console.error(
       "Timer save error:",
@@ -1364,6 +2022,7 @@ async function saveTimerMinutes(
     );
 
     showNotification(
+      error.message ||
       "タイマー記録に失敗しました。"
     );
   }
@@ -1371,932 +2030,29 @@ async function saveTimerMinutes(
 
 
 // ============================================================
-// タイマー保存ボタン
+// Timer initialization
 // ============================================================
 
-async function saveTimer() {
-  const seconds =
-    getTimerElapsedSeconds();
-
-  const minutes =
-    Math.floor(seconds / 60);
-
-  if (minutes < 1) {
-    showNotification(
-      "1分以上勉強してから保存してください。"
-    );
-    return;
-  }
-
-  await pauseTimer();
-
-  await saveTimerMinutes(
-    minutes,
-    "timer"
-  );
-
-  timerState.accumulatedSeconds =
-    0;
-
-  updateTimerDisplay();
-}
-
-
-// ============================================================
-// 勉強履歴
-// ============================================================
-
-async function loadStudyHistory() {
-  const list =
-    getElement("study-history-list");
-
-  if (!list || !currentUser || !db) {
-    return;
-  }
-
-  list.innerHTML =
-    `<div class="empty-message">読み込み中...</div>`;
-
-  try {
-    const recordsRef = collection(
-      db,
-      "players",
-      currentUser.uid,
-      "studyRecords"
-    );
-
-    const recordsQuery = query(
-      recordsRef,
-      orderBy("createdAt", "desc"),
-      limit(50)
-    );
-
-    const snapshot =
-      await getDocs(recordsQuery);
-
-    if (snapshot.empty) {
-      list.innerHTML =
-        `<div class="empty-message">まだ勉強記録がありません。</div>`;
-      return;
-    }
-
-    list.innerHTML = "";
-
-    snapshot.forEach(record => {
-      const data = record.data();
-
-      const item =
-        document.createElement("div");
-
-      item.className =
-        "study-history-item";
-
-      item.innerHTML = `
-        <div class="study-history-main">
-          <strong>
-            ${escapeHtml(
-              getSubjectName(data.subject)
-            )}
-          </strong>
-
-          <span>
-            ${Number(data.minutes || 0)}分
-          </span>
-        </div>
-
-        <div class="study-history-sub">
-          +${Number(data.xp || 0)} XP
-          ・
-          +${Number(data.coins || 0)} 🪙
-          ${data.createdAt
-            ? `・ ${escapeHtml(
-                formatDateTime(data.createdAt)
-              )}`
-            : ""}
-        </div>
-
-        ${
-          data.note
-            ? `<div class="study-history-note">
-                ${escapeHtml(data.note)}
-              </div>`
-            : ""
-        }
-      `;
-
-      list.appendChild(item);
-    });
-
-  } catch (error) {
-    console.error(
-      "Study history error:",
-      error
-    );
-
-    list.innerHTML =
-      `<div class="empty-message">
-        履歴を読み込めませんでした。
-      </div>`;
-  }
-}
-
-
-// ============================================================
-// HTMLエスケープ
-// ============================================================
-
-function escapeHtml(value) {
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-
-// ============================================================
-// 科目レベルUI
-// ============================================================
-
-function updateSubjectLevelUI() {
-  const list =
-    getElement("subject-level-list");
-
-  if (!list || !currentPlayer) {
-    return;
-  }
-
-  const subjects =
-    currentPlayer.subjects || [];
-
-  if (subjects.length === 0) {
-    list.innerHTML =
-      `<div class="empty-message">選択科目がありません。</div>`;
-    return;
-  }
-
-  list.innerHTML = "";
-
-  subjects.forEach(subject => {
-    const minutes =
-      currentPlayer.subjectStudyMinutes?.[subject] || 0;
-
-    const level =
-      Math.min(
-        100,
-        Math.floor(minutes / 30)
-      );
-
-    const item =
-      document.createElement("div");
-
-    item.className =
-      "subject-level-item";
-
-    item.innerHTML = `
-      <div>
-        <strong>
-          ${escapeHtml(
-            getSubjectName(subject)
-          )}
-        </strong>
-      </div>
-
-      <div>
-        Lv.${level}
-      </div>
-
-      <div>
-        ${minutes}分
-      </div>
-    `;
-
-    list.appendChild(item);
-  });
-
-
-  // ----------------------------------------
-  // 科目勉強時間一覧
-  // ----------------------------------------
-
-  const studyList =
-    getElement("subject-study-list");
-
-  if (!studyList) {
-    return;
-  }
-
-  studyList.innerHTML = "";
-
-  subjects.forEach(subject => {
-    const minutes =
-      currentPlayer.subjectStudyMinutes?.[subject] || 0;
-
-    const item =
-      document.createElement("div");
-
-    item.className =
-      "subject-study-item";
-
-    item.innerHTML = `
-      <span>
-        ${escapeHtml(
-          getSubjectName(subject)
-        )}
-      </span>
-
-      <span>
-        ${formatMinutes(minutes)}
-      </span>
-    `;
-
-    studyList.appendChild(item);
-  });
-}
-
-
-// ============================================================
-// ログイン
-// ============================================================
-
-async function handleLogin(event) {
-  event.preventDefault();
-
-  const userId =
-    normalizeUserId(
-      getElement("login-user-id")?.value
-    );
-
-  const password =
-    getElement("login-password")?.value || "";
-
-  const errorElement =
-    getElement("login-error");
-
-  if (errorElement) {
-    errorElement.textContent = "";
-  }
-
-  if (!userId) {
-    if (errorElement) {
-      errorElement.textContent =
-        "ユーザーIDを入力してください。";
-    }
-    return;
-  }
-
-  if (!password) {
-    if (errorElement) {
-      errorElement.textContent =
-        "パスワードを入力してください。";
-    }
-    return;
-  }
-
-  const button =
-    getElement("login-button");
-
-  if (button) {
-    button.disabled = true;
-  }
-
-  try {
-    await signInWithEmailAndPassword(
-      auth,
-      userIdToEmail(userId),
-      password
-    );
-
-    console.log("Login successful.");
-
-  } catch (error) {
-    console.error(
-      "Login error:",
-      error
-    );
-
-    if (errorElement) {
-      errorElement.textContent =
-        firebaseErrorMessage(error);
-    }
-  } finally {
-    if (button) {
-      button.disabled = false;
-    }
-  }
-}
-
-
-// ============================================================
-// 登録
-// ============================================================
-
-async function handleRegister(event) {
-  event.preventDefault();
-
-  const errorElement =
-    getElement("register-error");
-
-  const subjectError =
-    getElement("subject-error");
-
-  if (errorElement) {
-    errorElement.textContent = "";
-  }
-
-  if (subjectError) {
-    subjectError.textContent = "";
-  }
-
-
-  const userId =
-    normalizeUserId(
-      getElement("register-user-id")?.value
-    );
-
-  const password =
-    getElement("register-password")?.value || "";
-
-  const passwordConfirm =
-    getElement("register-password-confirm")?.value || "";
-
-  const displayName =
-    getElement("register-display-name")?.value.trim() || "";
-
-  const course =
-    document.querySelector(
-      'input[name="course"]:checked'
-    )?.value || "undecided";
-
-  const subjects =
-    Array.from(
-      document.querySelectorAll(
-        'input[name="subjects"]:checked'
-      )
-    ).map(
-      checkbox => checkbox.value
-    );
-
-
-  if (!userId) {
-    if (errorElement) {
-      errorElement.textContent =
-        "ユーザーIDを入力してください。";
-    }
-    return;
-  }
-
-  if (!/^[a-zA-Z0-9_-]{3,30}$/.test(userId)) {
-    if (errorElement) {
-      errorElement.textContent =
-        "ユーザーIDは3〜30文字の英数字・_・-で入力してください。";
-    }
-    return;
-  }
-
-  if (password.length < 6) {
-    if (errorElement) {
-      errorElement.textContent =
-        "パスワードは6文字以上にしてください。";
-    }
-    return;
-  }
-
-  if (password !== passwordConfirm) {
-    if (errorElement) {
-      errorElement.textContent =
-        "パスワードが一致していません。";
-    }
-    return;
-  }
-
-  if (!displayName) {
-    if (errorElement) {
-      errorElement.textContent =
-        "表示名を入力してください。";
-    }
-    return;
-  }
-
-  if (subjects.length === 0) {
-    if (subjectError) {
-      subjectError.textContent =
-        "少なくとも1科目選択してください。";
-    }
-    return;
-  }
-
-
-  const button =
-    getElement("register-button");
-
-  if (button) {
-    button.disabled = true;
-  }
-
-
-  try {
-    const credential =
-      await createUserWithEmailAndPassword(
-        auth,
-        userIdToEmail(userId),
-        password
-      );
-
-    await createPlayer(
-      credential.user,
-      {
-        userId,
-        displayName,
-        course,
-        subjects
-      }
-    );
-
-    currentUser =
-      credential.user;
-
-    currentPlayer =
-      await loadPlayer(currentUser);
-
-    showMainScreen();
-    applyPlayerData();
-
-    showNotification(
-      "🎉 アカウント作成完了！"
-    );
-
-  } catch (error) {
-    console.error(
-      "Registration error:",
-      error
-    );
-
-    if (errorElement) {
-      errorElement.textContent =
-        firebaseErrorMessage(error);
-    }
-  } finally {
-    if (button) {
-      button.disabled = false;
-    }
-  }
-}
-
-
-// ============================================================
-// ログアウト
-// ============================================================
-
-async function handleLogout() {
-  try {
-    resetTimer();
-
-    await signOut(auth);
-
-  } catch (error) {
-    console.error(
-      "Logout error:",
-      error
-    );
-
-    alert(
-      firebaseErrorMessage(error)
-    );
-  }
-}
-
-
-// ============================================================
-// 認証状態
-// ============================================================
-
-function startAuthObserver() {
-  if (authObserverStarted) {
-    return;
-  }
-
-  authObserverStarted = true;
-
-  onAuthStateChanged(
-    auth,
-    async user => {
-
-      console.log(
-        "Auth state changed:",
-        user
-          ? user.email
-          : "signed out"
-      );
-
-      if (!user) {
-        currentUser = null;
-        currentPlayer = null;
-
-        resetTimer();
-
-        showLoginScreen();
-
-        return;
-      }
-
-      currentUser = user;
-
-      try {
-        let player =
-          await loadPlayer(user);
-
-        if (!player) {
-          /*
-            Firebase Authにはユーザーがいるが、
-            Firestoreのプレイヤーデータがない場合。
-          */
-
-          player =
-            await createPlayer(
-              user,
-              {
-                userId:
-                  user.email
-                    ?.replace(
-                      "@juken-rpg.local",
-                      ""
-                    ) || "",
-                displayName:
-                  user.email
-                    ?.replace(
-                      "@juken-rpg.local",
-                      ""
-                    ) || "プレイヤー"
-              }
-            );
-
-          player =
-            await loadPlayer(user);
-        }
-
-        currentPlayer =
-          normalizeDailyData(player);
-
-        currentPlayer.level =
-          calculateLevel(
-            currentPlayer.xp || 0
-          );
-
-        await savePlayer();
-
-        showMainScreen();
-
-        applyPlayerData();
-
-        await loadStudyHistory();
-
-        console.log(
-          "Player loaded:",
-          currentPlayer
-        );
-
-      } catch (error) {
-        console.error(
-          "Player loading error:",
-          error
-        );
-
-        /*
-          Firestoreエラーでもログイン状態自体は
-          維持しておく。
-        */
-
-        showMainScreen();
-
-        setText(
-          "header-display-name",
-          user.email || "プレイヤー"
-        );
-
-        showNotification(
-          "プレイヤーデータの読み込みに失敗しました。"
-        );
-      }
-    }
-  );
-}
-
-
-// ============================================================
-// 画面ナビゲーション
-// ============================================================
-
-function initializeNavigation() {
-  document
-    .querySelectorAll("[data-screen]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const target =
-            button.dataset.screen;
-
-          if (!target) {
-            return;
-          }
-
-          document
-            .querySelectorAll("[id$='-screen']")
-            .forEach(screen => {
-
-              if (
-                screen.id === "auth-screen" ||
-                screen.id === "login-screen" ||
-                screen.id === "register-screen"
-              ) {
-                return;
-              }
-
-              screen.style.display =
-                screen.id === target
-                  ? ""
-                  : "none";
-            });
-
-          if (
-            target === "study-screen"
-          ) {
-            updateTimerDisplay();
-            updateTimerButtons();
-            updateSubjectLevelUI();
-            loadStudyHistory();
-          }
-        }
-      );
-    });
-}
-
-
-// ============================================================
-// クエストタブ・その他タブなど
-// Phase 2では画面だけ切り替える
-// ============================================================
-
-function initializeTabs() {
-
-  // クエスト
-  document
-    .querySelectorAll("[data-quest-tab]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const target =
-            button.dataset.questTab;
-
-          document
-            .querySelectorAll(
-              "[id$='-quest-tab']"
-            )
-            .forEach(tab => {
-              tab.style.display = "none";
-            });
-
-          const targetTab =
-            getElement(
-              `${target}-quest-tab`
-            );
-
-          if (targetTab) {
-            targetTab.style.display = "";
-          }
-        }
-      );
-    });
-
-
-  // パーティー
-  document
-    .querySelectorAll("[data-party-tab]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const target =
-            button.dataset.partyTab;
-
-          document
-            .querySelectorAll(
-              "[id$='-tab']"
-            )
-            .forEach(tab => {
-
-              if (
-                tab.id.includes("party") ||
-                tab.id.includes("friends") ||
-                tab.id.includes("request")
-              ) {
-                tab.style.display = "none";
-              }
-            });
-
-          const targetTab =
-            getElement(
-              `${target}-tab`
-            );
-
-          if (targetTab) {
-            targetTab.style.display = "";
-          }
-        }
-      );
-    });
-
-
-  // ランク
-  document
-    .querySelectorAll("[data-rank-tab]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const target =
-            button.dataset.rankTab;
-
-          document
-            .querySelectorAll(
-              "[id$='-tab']"
-            )
-            .forEach(tab => {
-
-              if (
-                tab.id.includes("rank") ||
-                tab.id.includes("ranking") ||
-                tab.id.includes("season")
-              ) {
-                tab.style.display = "none";
-              }
-            });
-
-          const targetTab =
-            getElement(
-              `${target}-tab`
-            );
-
-          if (targetTab) {
-            targetTab.style.display = "";
-          }
-        }
-      );
-    });
-
-
-  // Other
-  document
-    .querySelectorAll("[data-other-tab]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const target =
-            button.dataset.otherTab;
-
-          document
-            .querySelectorAll(
-              "[id$='-tab']"
-            )
-            .forEach(tab => {
-
-              if (
-                tab.id.includes("other") ||
-                tab.id.includes("achievement") ||
-                tab.id.includes("shop") ||
-                tab.id.includes("locker") ||
-                tab.id.includes("profile") ||
-                tab.id.includes("settings")
-              ) {
-                tab.style.display = "none";
-              }
-            });
-
-          const targetTab =
-            getElement(
-              `${target}-tab`
-            );
-
-          if (targetTab) {
-            targetTab.style.display = "";
-          }
-        }
-      );
-    });
-}
-
-
-// ============================================================
-// イベント初期化
-// ============================================================
-
-function initializeEvents() {
-
-  // ----------------------------------------
-  // ログイン
-  // ----------------------------------------
-
-  const loginForm =
-    getElement("login-form");
-
-  if (loginForm) {
-    loginForm.addEventListener(
-      "submit",
-      handleLogin
-    );
-  }
-
-
-  // ----------------------------------------
-  // 登録
-  // ----------------------------------------
-
-  const registerForm =
-    getElement("register-form");
-
-  if (registerForm) {
-    registerForm.addEventListener(
-      "submit",
-      handleRegister
-    );
-  }
-
-
-  // ----------------------------------------
-  // ログイン ↔ 登録
-  // ----------------------------------------
-
-  const showRegisterButton =
-    getElement("show-register-button");
-
-  if (showRegisterButton) {
-    showRegisterButton.addEventListener(
-      "click",
-      showRegisterScreen
-    );
-  }
-
-  const showLoginButton =
-    getElement("show-login-button");
-
-  if (showLoginButton) {
-    showLoginButton.addEventListener(
-      "click",
-      showLoginScreen
-    );
-  }
-
-
-  // ----------------------------------------
-  // ログアウト
-  // ----------------------------------------
-
-  const logoutButton =
-    getElement("logout-button");
-
-  if (logoutButton) {
-    logoutButton.addEventListener(
-      "click",
-      handleLogout
-    );
-  }
-
-
-  // ----------------------------------------
-  // 手動記録
-  // ----------------------------------------
-
-  const studyForm =
-    getElement("study-record-form");
-
-  if (studyForm) {
-    studyForm.addEventListener(
-      "submit",
-      handleStudyRecord
-    );
-  }
-
-
-  // ----------------------------------------
-  // タイマー
-  // ----------------------------------------
-
+function initializeTimer() {
   const startButton =
-    getElement("study-timer-start");
+    getElement(
+      "study-timer-start"
+    );
+
+  const pauseButton =
+    getElement(
+      "study-timer-pause"
+    );
+
+  const resetButton =
+    getElement(
+      "study-timer-reset"
+    );
+
+  const saveButton =
+    getElement(
+      "timer-save-button"
+    );
 
   if (startButton) {
     startButton.addEventListener(
@@ -2305,20 +2061,12 @@ function initializeEvents() {
     );
   }
 
-
-  const pauseButton =
-    getElement("study-timer-pause");
-
   if (pauseButton) {
     pauseButton.addEventListener(
       "click",
       pauseTimer
     );
   }
-
-
-  const resetButton =
-    getElement("study-timer-reset");
 
   if (resetButton) {
     resetButton.addEventListener(
@@ -2327,67 +2075,12 @@ function initializeEvents() {
     );
   }
 
-
-  const timerSaveButton =
-    getElement("timer-save-button");
-
-  if (timerSaveButton) {
-    timerSaveButton.addEventListener(
+  if (saveButton) {
+    saveButton.addEventListener(
       "click",
-      saveTimer
+      saveTimerMinutes
     );
   }
-
-
-  // ----------------------------------------
-  // Lvアップモーダル
-  // ----------------------------------------
-
-  const levelUpClose =
-    getElement(
-      "level-up-close-button"
-    );
-
-  if (levelUpClose) {
-    levelUpClose.addEventListener(
-      "click",
-      closeLevelUpModal
-    );
-  }
-
-
-  // ----------------------------------------
-  // 報酬モーダル
-  // ----------------------------------------
-
-  const rewardClose =
-    getElement(
-      "reward-close-button"
-    );
-
-  if (rewardClose) {
-    rewardClose.addEventListener(
-      "click",
-      () => {
-        const modal =
-          getElement("reward-modal");
-
-        if (modal) {
-          modal.style.display =
-            "none";
-        }
-      }
-    );
-  }
-
-
-  // ----------------------------------------
-  // ナビゲーション
-  // ----------------------------------------
-
-  initializeNavigation();
-
-  initializeTabs();
 
   updateTimerDisplay();
   updateTimerButtons();
@@ -2395,56 +2088,964 @@ function initializeEvents() {
 
 
 // ============================================================
+// Navigation
+// ============================================================
+
+function showAppScreen(screenId) {
+  if (!currentUser) {
+    return;
+  }
+
+  document
+    .querySelectorAll(".app-screen")
+    .forEach(screen => {
+      screen.classList.add(
+        "hidden"
+      );
+
+      screen.style.display =
+        "none";
+    });
+
+  const target =
+    getElement(screenId);
+
+  if (!target) {
+    return;
+  }
+
+  target.classList.remove(
+    "hidden"
+  );
+
+  target.style.display =
+    "";
+
+  document
+    .querySelectorAll(
+      "[data-screen]"
+    )
+    .forEach(button => {
+      button.classList.remove(
+        "active"
+      );
+    });
+
+  const activeButton =
+    document.querySelector(
+      `[data-screen="${screenId}"]`
+    );
+
+  if (activeButton) {
+    activeButton.classList.add(
+      "active"
+    );
+  }
+
+  if (
+    screenId ===
+    "study-screen"
+  ) {
+    populateStudySubjectSelect();
+    updateSubjectLevelUI();
+    updateTimerDisplay();
+    updateTimerButtons();
+    loadStudyHistory();
+  }
+
+  if (
+    screenId ===
+    "home-screen"
+  ) {
+    applyPlayerData();
+  }
+}
+
+function initializeNavigation() {
+  document
+    .querySelectorAll(
+      "[data-screen]"
+    )
+    .forEach(button => {
+      button.addEventListener(
+        "click",
+        () => {
+          const target =
+            button.dataset.screen;
+
+          if (!target) {
+            return;
+          }
+
+          showAppScreen(
+            target
+          );
+        }
+      );
+    });
+}
+
+
+// ============================================================
+// Quest placeholders
+// ============================================================
+
+function initializeQuestTabs() {
+  document
+    .querySelectorAll(
+      "[data-quest-tab]"
+    )
+    .forEach(button => {
+      button.addEventListener(
+        "click",
+        () => {
+          const target =
+            button.dataset.questTab;
+
+          document
+            .querySelectorAll(
+              "[data-quest-tab]"
+            )
+            .forEach(item => {
+              item.classList.remove(
+                "active"
+              );
+            });
+
+          button.classList.add(
+            "active"
+          );
+
+          document
+            .querySelectorAll(
+              "[id$='-quest-tab'], [id$='-tab']"
+            )
+            .forEach(tab => {
+              if (
+                tab.id ===
+                `${target}-quest-tab`
+              ) {
+                tab.classList.remove(
+                  "hidden"
+                );
+
+                tab.style.display =
+                  "";
+              }
+            });
+        }
+      );
+    });
+}
+
+
+// ============================================================
+// Party / Rank / Other tabs
+// ============================================================
+
+function initializeGenericTabs() {
+  document
+    .querySelectorAll(
+      "[data-party-tab]"
+    )
+    .forEach(button => {
+      button.addEventListener(
+        "click",
+        () => {
+          document
+            .querySelectorAll(
+              "[data-party-tab]"
+            )
+            .forEach(item => {
+              item.classList.remove(
+                "active"
+              );
+            });
+
+          button.classList.add(
+            "active"
+          );
+        }
+      );
+    });
+
+  document
+    .querySelectorAll(
+      "[data-rank-tab]"
+    )
+    .forEach(button => {
+      button.addEventListener(
+        "click",
+        () => {
+          document
+            .querySelectorAll(
+              "[data-rank-tab]"
+            )
+            .forEach(item => {
+              item.classList.remove(
+                "active"
+              );
+            });
+
+          button.classList.add(
+            "active"
+          );
+        }
+      );
+    });
+
+  document
+    .querySelectorAll(
+      "[data-other-tab]"
+    )
+    .forEach(button => {
+      button.addEventListener(
+        "click",
+        () => {
+          document
+            .querySelectorAll(
+              "[data-other-tab]"
+            )
+            .forEach(item => {
+              item.classList.remove(
+                "active"
+              );
+            });
+
+          button.classList.add(
+            "active"
+          );
+        }
+      );
+    });
+}
+
+
+// ============================================================
+// Login
+// ============================================================
+
+function initializeLoginForm() {
+  const form =
+    getElement(
+      "login-form"
+    );
+
+  if (!form) {
+    return;
+  }
+
+  form.addEventListener(
+    "submit",
+    async event => {
+      event.preventDefault();
+
+      const userId =
+        normalizeUserId(
+          getElement(
+            "login-user-id"
+          )?.value
+        );
+
+      const password =
+        getElement(
+          "login-password"
+        )?.value || "";
+
+      const errorEl =
+        getElement(
+          "login-error"
+        );
+
+      if (errorEl) {
+        errorEl.textContent =
+          "";
+      }
+
+      if (!userId || !password) {
+        if (errorEl) {
+          errorEl.textContent =
+            "ユーザーIDとパスワードを入力してください。";
+        }
+
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(
+          auth,
+          userIdToEmail(userId),
+          password
+        );
+
+      } catch (error) {
+        console.error(
+          "Login error:",
+          error
+        );
+
+        if (errorEl) {
+          errorEl.textContent =
+            firebaseErrorMessage(
+              error
+            );
+        }
+      }
+    }
+  );
+}
+
+
+// ============================================================
+// Registration
+// ============================================================
+
+function initializeRegisterForm() {
+  const form =
+    getElement(
+      "register-form"
+    );
+
+  if (!form) {
+    return;
+  }
+
+  form.addEventListener(
+    "submit",
+    async event => {
+      event.preventDefault();
+
+      const errorEl =
+        getElement(
+          "register-error"
+        );
+
+      const subjectError =
+        getElement(
+          "subject-error"
+        );
+
+      if (errorEl) {
+        errorEl.textContent =
+          "";
+      }
+
+      if (subjectError) {
+        subjectError.textContent =
+          "";
+      }
+
+      const userId =
+        normalizeUserId(
+          getElement(
+            "register-user-id"
+          )?.value
+        );
+
+      const password =
+        getElement(
+          "register-password"
+        )?.value || "";
+
+      const confirmPassword =
+        getElement(
+          "register-password-confirm"
+        )?.value || "";
+
+      const displayName =
+        getElement(
+          "register-display-name"
+        )?.value.trim()
+        || userId;
+
+      const course =
+        document.querySelector(
+          'input[name="course"]:checked'
+        )?.value
+        || "undecided";
+
+      const subjects =
+        Array.from(
+          document.querySelectorAll(
+            'input[name="subjects"]:checked'
+          )
+        ).map(
+          checkbox =>
+            checkbox.value
+        );
+
+      if (!userId) {
+        if (errorEl) {
+          errorEl.textContent =
+            "ユーザーIDを入力してください。";
+        }
+
+        return;
+      }
+
+      if (
+        !password ||
+        password.length < 6
+      ) {
+        if (errorEl) {
+          errorEl.textContent =
+            "パスワードは6文字以上にしてください。";
+        }
+
+        return;
+      }
+
+      if (
+        password !==
+        confirmPassword
+      ) {
+        if (errorEl) {
+          errorEl.textContent =
+            "パスワードが一致していません。";
+        }
+
+        return;
+      }
+
+      if (
+        subjects.length === 0
+      ) {
+        if (subjectError) {
+          subjectError.textContent =
+            "少なくとも1科目選択してください。";
+        }
+
+        return;
+      }
+
+      try {
+        const credential =
+          await createUserWithEmailAndPassword(
+            auth,
+            userIdToEmail(userId),
+            password
+          );
+
+        await createPlayer(
+          credential.user,
+          {
+            userId,
+            displayName,
+            course,
+            subjects
+          }
+        );
+
+        showNotification(
+          "🎉 登録完了！"
+        );
+
+      } catch (error) {
+        console.error(
+          "Registration error:",
+          error
+        );
+
+        if (errorEl) {
+          errorEl.textContent =
+            firebaseErrorMessage(
+              error
+            );
+        }
+      }
+    }
+  );
+}
+
+
+// ============================================================
+// Login / register screen buttons
+// ============================================================
+
+function initializeAuthNavigation() {
+  const registerButton =
+    getElement(
+      "show-register-button"
+    );
+
+  const loginButton =
+    getElement(
+      "show-login-button"
+    );
+
+  if (registerButton) {
+    registerButton.addEventListener(
+      "click",
+      showRegisterScreen
+    );
+  }
+
+  if (loginButton) {
+    loginButton.addEventListener(
+      "click",
+      showLoginScreen
+    );
+  }
+}
+
+
+// ============================================================
+// Logout
+// ============================================================
+
+function initializeLogout() {
+  const button =
+    getElement(
+      "logout-button"
+    );
+
+  if (!button) {
+    return;
+  }
+
+  button.addEventListener(
+    "click",
+    async () => {
+      try {
+        pauseTimer();
+
+        await signOut(auth);
+
+      } catch (error) {
+        console.error(
+          "Logout error:",
+          error
+        );
+
+        showNotification(
+          firebaseErrorMessage(
+            error
+          )
+        );
+      }
+    }
+  );
+}
+
+
+// ============================================================
+// Display name settings
+// ============================================================
+
+function initializeDisplayNameForm() {
+  const form =
+    getElement(
+      "display-name-form"
+    );
+
+  if (!form) {
+    return;
+  }
+
+  form.addEventListener(
+    "submit",
+    async event => {
+      event.preventDefault();
+
+      if (
+        !currentPlayer ||
+        !currentUser
+      ) {
+        return;
+      }
+
+      const input =
+        getElement(
+          "settings-display-name"
+        );
+
+      const errorEl =
+        getElement(
+          "display-name-error"
+        );
+
+      const value =
+        input?.value.trim()
+        || "";
+
+      if (!value) {
+        if (errorEl) {
+          errorEl.textContent =
+            "表示名を入力してください。";
+        }
+
+        return;
+      }
+
+      try {
+        currentPlayer.displayName =
+          value;
+
+        await savePlayer();
+
+        applyPlayerData();
+
+        if (errorEl) {
+          errorEl.textContent =
+            "";
+        }
+
+        showNotification(
+          "表示名を更新しました。"
+        );
+
+      } catch (error) {
+        console.error(
+          error
+        );
+
+        if (errorEl) {
+          errorEl.textContent =
+            firebaseErrorMessage(
+              error
+            );
+        }
+      }
+    }
+  );
+}
+
+
+// ============================================================
+// Subject settings
+// ============================================================
+
+function initializeSubjectSettings() {
+  const form =
+    getElement(
+      "subject-settings-form"
+    );
+
+  if (!form) {
+    return;
+  }
+
+  form.addEventListener(
+    "submit",
+    async event => {
+      event.preventDefault();
+
+      if (!currentPlayer) {
+        return;
+      }
+
+      const errorEl =
+        getElement(
+          "settings-subject-error"
+        );
+
+      const subjects =
+        Array.from(
+          document.querySelectorAll(
+            'input[name="settings-subjects"]:checked'
+          )
+        ).map(
+          checkbox =>
+            checkbox.value
+        );
+
+      if (
+        subjects.length === 0
+      ) {
+        if (errorEl) {
+          errorEl.textContent =
+            "少なくとも1科目選択してください。";
+        }
+
+        return;
+      }
+
+      try {
+        currentPlayer.subjects =
+          subjects;
+
+        await savePlayer();
+
+        applyPlayerData();
+
+        if (errorEl) {
+          errorEl.textContent =
+            "";
+        }
+
+        showNotification(
+          "科目設定を更新しました。"
+        );
+
+      } catch (error) {
+        console.error(
+          error
+        );
+
+        if (errorEl) {
+          errorEl.textContent =
+            firebaseErrorMessage(
+              error
+            );
+        }
+      }
+    }
+  );
+}
+
+
+// ============================================================
+// Password settings
+// ============================================================
+
+function initializePasswordForm() {
+  const form =
+    getElement(
+      "password-form"
+    );
+
+  if (!form) {
+    return;
+  }
+
+  form.addEventListener(
+    "submit",
+    async event => {
+      event.preventDefault();
+
+      const input =
+        getElement(
+          "settings-new-password"
+        );
+
+      const errorEl =
+        getElement(
+          "password-error"
+        );
+
+      const password =
+        input?.value || "";
+
+      if (
+        password.length < 6
+      ) {
+        if (errorEl) {
+          errorEl.textContent =
+            "パスワードは6文字以上にしてください。";
+        }
+
+        return;
+      }
+
+      try {
+        await updatePassword(
+          currentUser,
+          password
+        );
+
+        if (input) {
+          input.value = "";
+        }
+
+        if (errorEl) {
+          errorEl.textContent =
+            "";
+        }
+
+        showNotification(
+          "パスワードを変更しました。"
+        );
+
+      } catch (error) {
+        console.error(
+          error
+        );
+
+        if (errorEl) {
+          errorEl.textContent =
+            firebaseErrorMessage(
+              error
+            );
+        }
+      }
+    }
+  );
+}
+
+
+// ============================================================
+// Auth observer
+// ============================================================
+
+function initializeAuthObserver() {
+  if (
+    authObserverStarted
+  ) {
+    return;
+  }
+
+  authObserverStarted =
+    true;
+
+  onAuthStateChanged(
+    auth,
+    async user => {
+      console.log(
+        "Auth state:",
+        user
+          ? user.uid
+          : "signed out"
+      );
+
+      currentUser =
+        user;
+
+      if (!user) {
+        currentPlayer =
+          null;
+
+        resetTimer();
+
+        showLoginScreen();
+
+        return;
+      }
+
+      try {
+        let player =
+          await loadPlayer(
+            user
+          );
+
+        if (!player) {
+          /*
+            既存Firebaseユーザーだが
+            Firestoreプレイヤーデータが
+            無い場合の救済。
+          */
+
+          const fallbackUserId =
+            (
+              user.email || ""
+            )
+              .split("@")[0];
+
+          player =
+            await createPlayer(
+              user,
+              {
+                userId:
+                  fallbackUserId
+              }
+            );
+        }
+
+        currentPlayer =
+          player;
+
+        applyPlayerData();
+
+        showMainScreen();
+
+        /*
+          画面表示後にもう一度
+          UIを同期。
+        */
+
+        applyPlayerData();
+
+      } catch (error) {
+        console.error(
+          "Auth player load error:",
+          error
+        );
+
+        alert(
+          "プレイヤーデータの読み込みに失敗しました。\n\n" +
+          firebaseErrorMessage(
+            error
+          )
+        );
+      }
+    }
+  );
+}
+
+
+// ============================================================
+// Initial UI
+// ============================================================
+
+function initializeUI() {
+  initializeLoginForm();
+  initializeRegisterForm();
+  initializeAuthNavigation();
+
+  initializeLogout();
+
+  initializeNavigation();
+
+  initializeStudyForm();
+  initializeTimer();
+
+  initializeQuestTabs();
+  initializeGenericTabs();
+
+  initializeDisplayNameForm();
+  initializeSubjectSettings();
+  initializePasswordForm();
+
+  const closeButton =
+    getElement(
+      "level-up-close-button"
+    );
+
+  if (closeButton) {
+    closeButton.addEventListener(
+      "click",
+      closeLevelUpModal
+    );
+  }
+
+  showLoginScreen();
+}
+
+
+// ============================================================
 // Boot
 // ============================================================
 
-async function boot() {
+function boot() {
+  if (
+    document.readyState ===
+    "loading"
+  ) {
+    document.addEventListener(
+      "DOMContentLoaded",
+      boot,
+      { once: true }
+    );
 
-  if (booted) {
     return;
   }
 
-  booted = true;
-
   console.log(
-    "===================================="
+    "受験RPG Phase 3 booting..."
   );
 
-  console.log(
-    "受験RPG PHASE 2 START"
-  );
-
-  console.log(
-    "===================================="
-  );
-
-
-  showLoginScreen();
-
-
-  if (!initializeFirebase()) {
+  if (
+    !initializeFirebase()
+  ) {
     return;
   }
 
+  initializeUI();
 
-  initializeEvents();
+  initializeAuthObserver();
 
-  startAuthObserver();
-}
-
-
-// ============================================================
-// 起動
-// ============================================================
-
-if (
-  document.readyState === "loading"
-) {
-  document.addEventListener(
-    "DOMContentLoaded",
-    boot,
-    { once: true }
+  console.log(
+    "受験RPG Phase 3 ready!"
   );
-} else {
-  boot();
 }
+
+boot();
