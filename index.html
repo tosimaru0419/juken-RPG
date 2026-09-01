@@ -1,144 +1,871 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <meta
+    name="theme-color"
+    content="#080a10"
+  >
 
   <title>受験RPG</title>
 
   <link rel="stylesheet" href="style.css">
 </head>
 
+
 <body>
 
-  <!-- =====================================================
-       AUTH
-       ===================================================== -->
 
-  <div id="auth-screen">
+<!-- =========================================================
+     AUTH
+========================================================= -->
 
-    <div class="auth-container">
+<div id="auth-screen">
 
-      <header class="auth-header">
-        <div class="logo-icon">⚔️</div>
-        <h1>受験RPG</h1>
-        <p>勉強を冒険に変えろ。</p>
+  <div class="auth-container">
+
+    <header class="auth-header">
+
+      <div class="logo-icon">
+        ⚔️
+      </div>
+
+      <h1>
+        受験RPG
+      </h1>
+
+      <p>
+        勉強を冒険に変えろ。
+      </p>
+
+    </header>
+
+
+    <!-- =========================
+         LOGIN
+    ========================== -->
+
+    <section
+      id="login-screen"
+      class="auth-card"
+    >
+
+      <h2>
+        ログイン
+      </h2>
+
+      <p class="auth-description">
+        冒険を再開しよう。
+      </p>
+
+
+      <form id="login-form">
+
+        <div class="form-group">
+
+          <label for="login-user-id">
+            ユーザーID
+          </label>
+
+          <input
+            type="text"
+            id="login-user-id"
+            autocomplete="username"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="login-password">
+            パスワード
+          </label>
+
+          <input
+            type="password"
+            id="login-password"
+            autocomplete="current-password"
+            required
+          >
+
+        </div>
+
+
+        <p
+          id="login-error"
+          class="error-message"
+        ></p>
+
+
+        <button
+          type="submit"
+          id="login-button"
+          class="primary-button"
+        >
+          ログイン
+        </button>
+
+      </form>
+
+
+      <div class="auth-switch">
+
+        <p>
+          まだ冒険者登録していない？
+        </p>
+
+        <button
+          type="button"
+          id="show-register-button"
+          class="secondary-button"
+        >
+          新規登録
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         REGISTER
+    ========================== -->
+
+    <section
+      id="register-screen"
+      class="auth-card hidden"
+    >
+
+      <h2>
+        冒険者登録
+      </h2>
+
+      <p class="auth-description">
+        新しい冒険を始めよう。
+      </p>
+
+
+      <form id="register-form">
+
+
+        <!-- USER ID -->
+
+        <div class="form-group">
+
+          <label for="register-user-id">
+            ユーザーID
+          </label>
+
+          <input
+            type="text"
+            id="register-user-id"
+            maxlength="30"
+            autocomplete="username"
+            placeholder="3〜30文字"
+            required
+          >
+
+          <small>
+            英数字・_・-のみ
+          </small>
+
+        </div>
+
+
+        <!-- PASSWORD -->
+
+        <div class="form-group">
+
+          <label for="register-password">
+            パスワード
+          </label>
+
+          <input
+            type="password"
+            id="register-password"
+            autocomplete="new-password"
+            placeholder="6文字以上"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="register-password-confirm">
+            パスワード確認
+          </label>
+
+          <input
+            type="password"
+            id="register-password-confirm"
+            autocomplete="new-password"
+            required
+          >
+
+        </div>
+
+
+        <!-- DISPLAY NAME -->
+
+        <div class="form-group">
+
+          <label for="register-display-name">
+            表示名
+          </label>
+
+          <input
+            type="text"
+            id="register-display-name"
+            maxlength="30"
+            placeholder="ゲーム内で表示される名前"
+            required
+          >
+
+        </div>
+
+
+        <!-- COURSE -->
+
+        <fieldset>
+
+          <legend>
+            文理
+          </legend>
+
+          <div class="choice-group">
+
+            <label>
+              <input
+                type="radio"
+                name="course"
+                value="science"
+              >
+              理系
+            </label>
+
+            <label>
+              <input
+                type="radio"
+                name="course"
+                value="humanities"
+              >
+              文系
+            </label>
+
+            <label>
+              <input
+                type="radio"
+                name="course"
+                value="undecided"
+              >
+              未定
+            </label>
+
+          </div>
+
+        </fieldset>
+
+
+        <!-- SUBJECTS -->
+
+        <fieldset>
+
+          <legend>
+            受験教科
+          </legend>
+
+          <p class="field-description">
+            使用する教科を選択してください。
+          </p>
+
+
+          <div id="subject-selection">
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="japanese"
+              >
+              国語
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="math"
+              >
+              数学
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="english"
+              >
+              英語
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="physics"
+              >
+              物理
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="chemistry"
+              >
+              化学
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="biology"
+              >
+              生物
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="earth-science"
+              >
+              地学
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="biology-basic"
+              >
+              生物基礎
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="earth-science-basic"
+              >
+              地学基礎
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="geography"
+              >
+              地理
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="japanese-history"
+              >
+              日本史
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="world-history"
+              >
+              世界史
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="civics"
+              >
+              公民
+            </label>
+
+
+          </div>
+
+
+          <p
+            id="subject-error"
+            class="error-message"
+          ></p>
+
+        </fieldset>
+
+
+        <p
+          id="register-error"
+          class="error-message"
+        ></p>
+
+
+        <button
+          type="submit"
+          id="register-button"
+          class="primary-button"
+        >
+          冒険を始める
+        </button>
+
+      </form>
+
+
+      <div class="auth-switch">
+
+        <p>
+          すでに冒険者？
+        </p>
+
+        <button
+          type="button"
+          id="show-login-button"
+          class="secondary-button"
+        >
+          ログインへ戻る
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     MAIN APP
+========================================================= -->
+
+<div
+  id="main-app"
+  class="hidden"
+>
+
+
+  <!-- =======================================================
+       HEADER
+  ======================================================== -->
+
+  <header id="app-header">
+
+    <div id="player-summary">
+
+      <span id="header-display-name">
+        冒険者
+      </span>
+
+      <span id="header-level">
+        Lv.1
+      </span>
+
+      <span id="header-rank">
+        Bronze
+      </span>
+
+      <span id="header-coins">
+        🪙 0
+      </span>
+
+    </div>
+
+
+    <button
+      type="button"
+      id="logout-button"
+    >
+      ログアウト
+    </button>
+
+  </header>
+
+
+
+  <!-- =======================================================
+       MAIN CONTENT
+  ======================================================== -->
+
+  <main id="main-content">
+
+
+    <!-- =====================================================
+         HOME
+    ====================================================== -->
+
+    <section
+      id="home-screen"
+      class="app-screen"
+    >
+
+      <header class="screen-header">
+
+        <h2>
+          🏠 ホーム
+        </h2>
+
+        <p>
+          今日の冒険を始めよう。
+        </p>
+
       </header>
 
 
-      <!-- ================= LOGIN ================= -->
+      <!-- PLAYER STATUS -->
 
-      <section id="login-screen" class="auth-card">
+      <section id="home-player-status">
 
-        <h2>ログイン</h2>
+        <h3>
+          PLAYER STATUS
+        </h3>
 
-        <p class="auth-description">
-          冒険を再開しよう。
-        </p>
 
-        <form id="login-form">
+        <div id="level-status">
 
-          <div class="form-group">
-            <label for="login-user-id">ユーザーID</label>
-
-            <input
-              type="text"
-              id="login-user-id"
-              autocomplete="username"
-              required
-            >
+          <div>
+            Lv.
+            <span id="home-level">
+              1
+            </span>
           </div>
 
-          <div class="form-group">
-            <label for="login-password">パスワード</label>
-
-            <input
-              type="password"
-              id="login-password"
-              autocomplete="current-password"
-              required
-            >
+          <div id="home-xp">
+            0 XP
           </div>
 
-          <p id="login-error" class="error-message"></p>
+        </div>
 
-          <button
-            type="submit"
-            id="login-button"
-            class="primary-button"
-          >
-            ログイン
-          </button>
 
-        </form>
+        <div id="level-progress-container">
 
-        <div class="auth-switch">
-          <p>まだ冒険者登録していない？</p>
+          <div id="level-progress-bar">
 
-          <button
-            type="button"
-            id="show-register-button"
-            class="secondary-button"
-          >
-            新規登録
-          </button>
+            <div id="level-progress"></div>
+
+          </div>
+
+        </div>
+
+
+        <div id="home-xp-required">
+          次のレベルまで 100 XP
+        </div>
+
+
+        <div id="star-status">
+
+          <span id="star-count">
+            ⭐ 0
+          </span>
+
+          <span id="star-title">
+            無名の冒険者
+          </span>
+
         </div>
 
       </section>
 
 
-      <!-- ================= REGISTER ================= -->
+      <!-- TODAY -->
 
-      <section
-        id="register-screen"
-        class="auth-card hidden"
-      >
+      <section id="today-summary">
 
-        <h2>冒険者登録</h2>
+        <h3>
+          今日の記録
+        </h3>
 
-        <p class="auth-description">
-          新しい冒険を始めよう。
+
+        <div class="summary-grid">
+
+          <div class="summary-card">
+
+            <span>
+              勉強時間
+            </span>
+
+            <strong id="today-study-time">
+              0分
+            </strong>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <span>
+              獲得XP
+            </span>
+
+            <strong id="today-xp">
+              0 XP
+            </strong>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <span>
+              クエスト
+            </span>
+
+            <strong id="today-quests">
+              0
+            </strong>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <span>
+              コイン
+            </span>
+
+            <strong id="today-coins">
+              🪙 0
+            </strong>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- HOME QUEST -->
+
+      <section id="home-quests">
+
+        <h3>
+          ⚔️ 今日のクエスト
+        </h3>
+
+        <div id="home-quest-list">
+
+          <p class="empty-message">
+            クエストを読み込み中...
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- SEASON -->
+
+      <section id="home-season">
+
+        <h3>
+          🏆 シーズン
+        </h3>
+
+
+        <div class="info-row">
+
+          <span>
+            現在のランク
+          </span>
+
+          <strong id="home-rank">
+            Bronze
+          </strong>
+
+        </div>
+
+
+        <div class="info-row">
+
+          <span>
+            シーズン勉強時間
+          </span>
+
+          <strong id="home-season-study-time">
+            0時間
+          </strong>
+
+        </div>
+
+
+        <div class="info-row">
+
+          <span>
+            シーズン終了
+          </span>
+
+          <strong id="home-season-end">
+            -
+          </strong>
+
+        </div>
+
+      </section>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         STUDY
+    ====================================================== -->
+
+    <section
+      id="study-screen"
+      class="app-screen hidden"
+    >
+
+      <header class="screen-header">
+
+        <h2>
+          📚 勉強
+        </h2>
+
+        <p>
+          勉強時間を記録してXP・コインを獲得しよう。
         </p>
 
-        <form id="register-form">
+      </header>
 
-          <!-- USER ID -->
+
+      <!-- TIMER -->
+
+      <section id="study-timer-section">
+
+        <h3>
+          ⏱️ 勉強タイマー
+        </h3>
+
+
+        <div id="study-timer-display">
+          00:00:00
+        </div>
+
+
+        <div id="study-timer-controls">
+
+          <button
+            type="button"
+            id="study-timer-start"
+            class="primary-button"
+          >
+            スタート
+          </button>
+
+          <button
+            type="button"
+            id="study-timer-pause"
+            class="secondary-button"
+          >
+            一時停止
+          </button>
+
+          <button
+            type="button"
+            id="study-timer-reset"
+            class="secondary-button"
+          >
+            リセット
+          </button>
+
+        </div>
+
+
+        <button
+          type="button"
+          id="timer-save-button"
+          class="primary-button"
+        >
+          タイマーの勉強時間を記録
+        </button>
+
+      </section>
+
+
+      <!-- MANUAL RECORD -->
+
+      <section id="study-form">
+
+        <h3>
+          📝 勉強時間を記録
+        </h3>
+
+
+        <form id="study-record-form">
+
 
           <div class="form-group">
 
-            <label for="register-user-id">
-              ユーザーID
+            <label for="study-subject">
+              教科
             </label>
 
-            <input
-              type="text"
-              id="register-user-id"
-              maxlength="30"
-              autocomplete="username"
-              placeholder="3〜30文字"
+            <select
+              id="study-subject"
               required
             >
 
-            <small>
-              英数字・_・-のみ
-            </small>
+              <option value="">
+                教科を選択
+              </option>
+
+            </select>
 
           </div>
 
 
-          <!-- PASSWORD -->
-
           <div class="form-group">
 
-            <label for="register-password">
-              パスワード
+            <label for="study-minutes">
+              勉強時間（分）
             </label>
 
             <input
-              type="password"
-              id="register-password"
-              autocomplete="new-password"
-              placeholder="6文字以上"
+              type="number"
+              id="study-minutes"
+              min="1"
+              max="1440"
               required
             >
 
@@ -147,742 +874,206 @@
 
           <div class="form-group">
 
-            <label for="register-password-confirm">
-              パスワード確認
+            <label for="study-note">
+              メモ
             </label>
 
-            <input
-              type="password"
-              id="register-password-confirm"
-              autocomplete="new-password"
-              required
-            >
+            <textarea
+              id="study-note"
+              placeholder="何を勉強した？"
+            ></textarea>
 
           </div>
-
-
-          <!-- DISPLAY NAME -->
-
-          <div class="form-group">
-
-            <label for="register-display-name">
-              表示名
-            </label>
-
-            <input
-              type="text"
-              id="register-display-name"
-              maxlength="30"
-              placeholder="ゲーム内で表示される名前"
-              required
-            >
-
-          </div>
-
-
-          <!-- COURSE -->
-
-          <fieldset>
-
-            <legend>文理</legend>
-
-            <div class="choice-group">
-
-              <label>
-                <input
-                  type="radio"
-                  name="course"
-                  value="science"
-                >
-                理系
-              </label>
-
-              <label>
-                <input
-                  type="radio"
-                  name="course"
-                  value="humanities"
-                >
-                文系
-              </label>
-
-              <label>
-                <input
-                  type="radio"
-                  name="course"
-                  value="undecided"
-                >
-                未定
-              </label>
-
-            </div>
-
-          </fieldset>
-
-
-          <!-- SUBJECTS -->
-
-          <fieldset>
-
-            <legend>受験教科</legend>
-
-            <p class="field-description">
-              受験に使用する教科を複数選択してください。
-            </p>
-
-
-            <div id="subject-selection">
-
-              <!-- 共通 -->
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="japanese"
-                >
-                国語
-              </label>
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="math"
-                >
-                数学
-              </label>
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="english"
-                >
-                英語
-              </label>
-
-
-              <!-- 理系理科 -->
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="physics"
-                >
-                物理
-              </label>
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="chemistry"
-                >
-                化学
-              </label>
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="biology"
-                >
-                生物
-              </label>
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="earth-science"
-                >
-                地学
-              </label>
-
-
-              <!-- 理科基礎 -->
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="physics-basic"
-                >
-                物理基礎
-              </label>
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="chemistry-basic"
-                >
-                化学基礎
-              </label>
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="biology-basic"
-                >
-                生物基礎
-              </label>
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="earth-science-basic"
-                >
-                地学基礎
-              </label>
-
-
-              <!-- 地歴 -->
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="japanese-history"
-                >
-                日本史
-              </label>
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="world-history"
-                >
-                世界史
-              </label>
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="geography"
-                >
-                地理
-              </label>
-
-
-              <!-- 公民 -->
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="subjects"
-                  value="civics"
-                >
-                公民
-              </label>
-
-            </div>
-
-
-            <p
-              id="subject-error"
-              class="error-message"
-            ></p>
-
-          </fieldset>
 
 
           <p
-            id="register-error"
+            id="study-error"
             class="error-message"
           ></p>
 
 
           <button
             type="submit"
-            id="register-button"
+            id="record-study-button"
             class="primary-button"
           >
-            冒険を始める
+            勉強を記録する
           </button>
 
         </form>
 
+      </section>
 
-        <div class="auth-switch">
 
-          <p>すでに冒険者？</p>
+      <!-- SUBJECT LEVEL -->
 
-          <button
-            type="button"
-            id="show-login-button"
-            class="secondary-button"
-          >
-            ログインへ戻る
-          </button>
+      <section id="subject-level-section">
 
-        </div>
+        <h3>
+          📊 教科別レベル
+        </h3>
+
+        <div id="subject-level-list"></div>
 
       </section>
 
-    </div>
 
-  </div>
+      <!-- SUBJECT STUDY -->
+
+      <section id="subject-study-summary">
+
+        <h3>
+          📚 教科別記録
+        </h3>
+
+        <div id="subject-study-list"></div>
+
+      </section>
+
+
+      <!-- HISTORY -->
+
+      <section id="study-history">
+
+        <h3>
+          📜 勉強履歴
+        </h3>
+
+        <div id="study-history-list"></div>
+
+      </section>
+
+    </section>
 
 
 
-  <!-- =====================================================
-       MAIN APP
-       ===================================================== -->
+    <!-- =====================================================
+         QUEST + BOSS
+    ====================================================== -->
 
-  <div id="main-app" class="hidden">
+    <section
+      id="quest-screen"
+      class="app-screen hidden"
+    >
+
+      <header class="screen-header">
+
+        <h2>
+          ⚔️ クエスト＆ボス
+        </h2>
+
+        <p>
+          クエストを達成し、仲間とボスを討伐しよう。
+        </p>
+
+      </header>
 
 
-    <!-- ================= HEADER ================= -->
+      <!-- TABS -->
 
-    <header id="app-header">
+      <div
+        id="quest-navigation"
+        class="tab-navigation"
+      >
 
-      <div id="player-summary">
+        <button
+          type="button"
+          class="active"
+          data-quest-tab="daily"
+        >
+          📅 デイリー
+        </button>
 
-        <span id="header-display-name">
-          冒険者
-        </span>
+        <button
+          type="button"
+          data-quest-tab="weekly"
+        >
+          🗓️ ウィークリー
+        </button>
 
-        <span id="header-level">
-          Lv.1
-        </span>
+        <button
+          type="button"
+          data-quest-tab="boss"
+        >
+          👹 ボス
+        </button>
 
-        <span id="header-rank">
-          Bronze
-        </span>
-
-        <span id="header-coins">
-          🪙 0
-        </span>
+        <button
+          type="button"
+          data-quest-tab="history"
+        >
+          📜 履歴
+        </button>
 
       </div>
 
-      <button
-        type="button"
-        id="logout-button"
+
+      <!-- DAILY -->
+
+      <div
+        id="daily-quest-tab"
+        class="quest-tab-content"
       >
-        ログアウト
-      </button>
-
-    </header>
-
-
-    <!-- =================================================
-         MAIN CONTENT
-         ================================================= -->
-
-    <main id="main-content">
-
-
-      <!-- =================================================
-           HOME
-           ================================================= -->
-
-      <section
-        id="home-screen"
-        class="app-screen"
-      >
-
-        <header class="screen-header">
-
-          <h2>🏠 ホーム</h2>
-
-          <p>
-            今日の冒険を始めよう。
-          </p>
-
-        </header>
-
-
-        <section id="home-player-status">
-
-          <h3>PLAYER STATUS</h3>
-
-          <div id="level-status">
-
-            <div>
-              Lv.
-              <span id="home-level">1</span>
-            </div>
-
-            <div id="home-xp">
-              0 XP
-            </div>
-
-          </div>
-
-
-          <div id="level-progress-container">
-
-            <div id="level-progress-bar">
-              <div id="level-progress"></div>
-            </div>
-
-          </div>
-
-
-          <div id="home-xp-required">
-            次のレベルまで 100 XP
-          </div>
-
-
-          <div id="star-status">
-
-            <span id="star-count">
-              ⭐ 0
-            </span>
-
-            <span id="star-title">
-              無名の冒険者
-            </span>
-
-          </div>
-
-        </section>
-
-
-        <section id="today-summary">
-
-          <h3>今日の記録</h3>
-
-          <div class="summary-grid">
-
-            <div class="summary-card">
-              <span>勉強時間</span>
-              <strong id="today-study-time">
-                0分
-              </strong>
-            </div>
-
-            <div class="summary-card">
-              <span>獲得XP</span>
-              <strong id="today-xp">
-                0 XP
-              </strong>
-            </div>
-
-            <div class="summary-card">
-              <span>クエスト</span>
-              <strong id="today-quests">
-                0
-              </strong>
-            </div>
-
-          </div>
-
-        </section>
-
-
-        <section id="home-quests">
-
-          <h3>⚔️ 今日のクエスト</h3>
-
-          <div id="home-quest-list">
-
-            <p class="empty-message">
-              クエストを読み込み中...
-            </p>
-
-          </div>
-
-        </section>
-
-
-        <section id="home-season">
-
-          <h3>🏆 シーズン</h3>
-
-          <div class="info-row">
-            <span>現在のランク</span>
-            <strong id="home-rank">
-              Bronze
-            </strong>
-          </div>
-
-          <div class="info-row">
-            <span>シーズン終了</span>
-            <strong id="home-season-end">
-              -
-            </strong>
-          </div>
-
-        </section>
-
-      </section>
-
-
-
-      <!-- =================================================
-           STUDY
-           ================================================= -->
-
-      <section
-        id="study-screen"
-        class="app-screen hidden"
-      >
-
-        <header class="screen-header">
-
-          <h2>📚 勉強</h2>
-
-          <p>
-            勉強時間を記録してXPを獲得しよう。
-          </p>
-
-        </header>
-
-
-        <!-- TIMER -->
-
-        <section id="study-timer-section">
-
-          <h3>⏱️ 勉強タイマー</h3>
-
-          <div id="study-timer-display">
-            00:00:00
-          </div>
-
-          <div id="study-timer-controls">
-
-            <button
-              type="button"
-              id="timer-start-button"
-              class="primary-button"
-            >
-              開始
-            </button>
-
-            <button
-              type="button"
-              id="timer-pause-button"
-              class="secondary-button"
-            >
-              一時停止
-            </button>
-
-            <button
-              type="button"
-              id="timer-reset-button"
-              class="secondary-button"
-            >
-              リセット
-            </button>
-
-          </div>
-
-          <button
-            type="button"
-            id="timer-save-button"
-            class="primary-button"
-          >
-            タイマーを記録
-          </button>
-
-        </section>
-
-
-        <!-- MANUAL RECORD -->
-
-        <section id="study-form">
-
-          <form id="study-record-form">
-
-            <div class="form-group">
-
-              <label for="study-subject">
-                教科
-              </label>
-
-              <select
-                id="study-subject"
-                required
-              >
-
-                <option value="">
-                  教科を選択
-                </option>
-
-              </select>
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="study-minutes">
-                勉強時間（分）
-              </label>
-
-              <input
-                type="number"
-                id="study-minutes"
-                min="1"
-                max="1440"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="study-note">
-                メモ
-              </label>
-
-              <textarea
-                id="study-note"
-                placeholder="何を勉強した？"
-              ></textarea>
-
-            </div>
-
-
-            <p
-              id="study-error"
-              class="error-message"
-            ></p>
-
-
-            <button
-              type="submit"
-              id="record-study-button"
-              class="primary-button"
-            >
-              勉強を記録する
-            </button>
-
-          </form>
-
-        </section>
-
-
-        <!-- SUBJECT LEVEL -->
-
-        <section id="subject-level-section">
-
-          <h3>📊 教科別レベル</h3>
-
-          <p class="field-description">
-            選択した受験教科ごとに成長していこう。
-          </p>
-
-          <div id="subject-level-list"></div>
-
-        </section>
-
-
-        <!-- SUBJECT STUDY -->
-
-        <section id="subject-study-summary">
-
-          <h3>📚 教科別記録</h3>
-
-          <div id="subject-study-list"></div>
-
-        </section>
-
-
-        <!-- HISTORY -->
-
-        <section id="study-history">
-
-          <h3>📜 勉強履歴</h3>
-
-          <div id="study-history-list"></div>
-
-        </section>
-
-      </section>
-
-
-
-      <!-- =================================================
-           QUEST + BOSS
-           ================================================= -->
-
-      <section
-        id="quest-screen"
-        class="app-screen hidden"
-      >
-
-        <header class="screen-header">
-
-          <h2>⚔️ クエスト</h2>
-
-          <p>
-            課題を達成して、ボスを倒せ。
-          </p>
-
-        </header>
-
-
-        <!-- DAILY -->
 
         <section id="daily-quest-section">
 
-          <h3>📅 デイリークエスト</h3>
+          <h3>
+            📅 デイリークエスト
+          </h3>
 
           <div id="daily-quest-list"></div>
 
         </section>
 
-
-        <!-- SUBJECT QUEST -->
-
-        <section id="subject-quest-section">
-
-          <h3>📚 教科クエスト</h3>
-
-          <div id="subject-quest-list"></div>
-
-        </section>
+      </div>
 
 
-        <!-- WEEKLY -->
+      <!-- WEEKLY -->
+
+      <div
+        id="weekly-quest-tab"
+        class="quest-tab-content hidden"
+      >
 
         <section id="weekly-quest-section">
 
-          <h3>🗓️ ウィークリークエスト</h3>
+          <h3>
+            🗓️ ウィークリークエスト
+          </h3>
 
           <div id="weekly-quest-list"></div>
 
         </section>
 
+      </div>
 
-        <!-- =================================================
-             BOSS
-             ================================================= -->
+
+      <!-- BOSS -->
+
+      <div
+        id="boss-tab"
+        class="quest-tab-content hidden"
+      >
 
         <section id="boss-section">
-
-          <h3>👹 BOSS BATTLE</h3>
 
 
           <!-- BOSS ILLUSTRATION -->
 
-          <div id="boss-illustration">
+          <div
+            id="boss-illustration"
+            class="boss-illustration"
+          >
 
-            <div id="boss-image-container">
-
-              <img
-                id="boss-image"
-                src="assets/boss-default.png"
-                alt="ボスイラスト"
-              >
-
+            <div
+              id="boss-image"
+              class="boss-image-placeholder"
+            >
+              👹
             </div>
 
           </div>
 
-
-          <!-- BOSS STATUS -->
 
           <div id="boss-status">
 
@@ -895,11 +1086,15 @@
             </p>
 
 
+            <!-- HP -->
+
             <div id="boss-hp-container">
 
               <div id="boss-hp-text">
 
-                <span>HP</span>
+                <span>
+                  HP
+                </span>
 
                 <span>
                   <span id="boss-current-hp">
@@ -923,6 +1118,8 @@
             </div>
 
 
+            <!-- WEAKNESS -->
+
             <div id="boss-weakness">
 
               <span>
@@ -939,6 +1136,24 @@
 
             </div>
 
+
+            <!-- WEEK -->
+
+            <div
+              id="boss-week-info"
+              class="info-row"
+            >
+
+              <span>
+                次回リセット
+              </span>
+
+              <strong id="boss-reset-date">
+                -
+              </strong>
+
+            </div>
+
           </div>
 
 
@@ -946,14 +1161,14 @@
 
           <div id="boss-party">
 
-            <h4>
+            <h3>
               👥 集団戦メンバー
-            </h4>
+            </h3>
 
             <div id="boss-party-member-list"></div>
 
             <p id="boss-party-count">
-              0人
+              0 / 4人
             </p>
 
           </div>
@@ -963,9 +1178,9 @@
 
           <div id="boss-battle-log">
 
-            <h4>
+            <h3>
               ⚔️ バトルログ
-            </h4>
+            </h3>
 
             <div id="boss-log-list">
 
@@ -988,50 +1203,101 @@
 
         </section>
 
+      </div>
 
-        <!-- QUEST HISTORY -->
+
+      <!-- HISTORY -->
+
+      <div
+        id="quest-history-tab"
+        class="quest-tab-content hidden"
+      >
 
         <section id="quest-history-section">
 
-          <h3>📜 クエスト履歴</h3>
+          <h3>
+            📜 クエスト履歴
+          </h3>
 
           <div id="quest-history-list"></div>
 
         </section>
 
-      </section>
+      </div>
+
+    </section>
 
 
 
-      <!-- =================================================
-           PARTY
-           ※ その他から開くサブ画面
-           ================================================= -->
+    <!-- =====================================================
+         PARTY + FRIENDS
+    ====================================================== -->
 
-      <section
-        id="party-screen"
-        class="app-screen hidden"
+    <section
+      id="party-screen"
+      class="app-screen hidden"
+    >
+
+      <header class="screen-header">
+
+        <h2>
+          👥 パーティー＆フレンド
+        </h2>
+
+        <p>
+          仲間と一緒に受験を攻略しよう。
+        </p>
+
+      </header>
+
+
+      <div
+        id="party-navigation"
+        class="tab-navigation"
       >
 
-        <header class="screen-header">
+        <button
+          type="button"
+          class="active"
+          data-party-tab="party"
+        >
+          👥 パーティー
+        </button>
 
-          <h2>👥 パーティー</h2>
+        <button
+          type="button"
+          data-party-tab="friends"
+        >
+          🤝 フレンド
+        </button>
 
-          <p>
-            仲間と一緒に受験を攻略しよう。
-          </p>
+        <button
+          type="button"
+          data-party-tab="requests"
+        >
+          📩 申請
+        </button>
 
-        </header>
+      </div>
 
+
+      <!-- PARTY -->
+
+      <div
+        id="party-tab"
+        class="party-tab-content"
+      >
 
         <section id="current-party">
 
-          <h3>現在のパーティー</h3>
+          <h3>
+            現在のパーティー
+          </h3>
 
           <div id="party-member-list"></div>
 
           <p id="party-member-count">
-            0人
+            0 / 4人
           </p>
 
         </section>
@@ -1039,7 +1305,9 @@
 
         <section id="party-invite-section">
 
-          <h3>仲間を招待</h3>
+          <h3>
+            仲間を招待
+          </h3>
 
           <form id="party-invite-form">
 
@@ -1084,47 +1352,122 @@
 
         </section>
 
+      </div>
+
+
+      <!-- FRIENDS -->
+
+      <div
+        id="friends-tab"
+        class="party-tab-content hidden"
+      >
 
         <section id="friends-section">
 
-          <h3>👥 フレンド</h3>
+          <h3>
+            🤝 フレンド
+          </h3>
 
-          <div id="friend-list"></div>
+          <div id="friend-list">
+
+            <p class="empty-message">
+              フレンドがいません。
+            </p>
+
+          </div>
 
         </section>
 
+      </div>
+
+
+      <!-- REQUESTS -->
+
+      <div
+        id="friend-requests-tab"
+        class="party-tab-content hidden"
+      >
 
         <section id="friend-requests-section">
 
-          <h3>📨 フレンド申請</h3>
+          <h3>
+            📩 フレンド・パーティー申請
+          </h3>
 
-          <div id="friend-request-list"></div>
+          <div id="friend-request-list">
+
+            <p class="empty-message">
+              申請はありません。
+            </p>
+
+          </div>
 
         </section>
 
-      </section>
+      </div>
+
+    </section>
 
 
 
-      <!-- =================================================
-           RANK
-           ================================================= -->
+    <!-- =====================================================
+         RANK + RANKING
+    ====================================================== -->
 
-      <section
-        id="rank-screen"
-        class="app-screen hidden"
+    <section
+      id="rank-screen"
+      class="app-screen hidden"
+    >
+
+      <header class="screen-header">
+
+        <h2>
+          🏆 ランク＆ランキング
+        </h2>
+
+        <p>
+          1か月の勉強時間でランクを競おう。
+        </p>
+
+      </header>
+
+
+      <div
+        id="rank-navigation"
+        class="tab-navigation"
       >
 
-        <header class="screen-header">
+        <button
+          type="button"
+          class="active"
+          data-rank-tab="rank"
+        >
+          🏆 ランク
+        </button>
 
-          <h2>🏆 ランク</h2>
+        <button
+          type="button"
+          data-rank-tab="ranking"
+        >
+          📊 ランキング
+        </button>
 
-          <p>
-            シーズン中の勉強時間でランクを競え。
-          </p>
+        <button
+          type="button"
+          data-rank-tab="history"
+        >
+          📜 シーズン履歴
+        </button>
 
-        </header>
+      </div>
 
+
+      <!-- RANK INFO -->
+
+      <div
+        id="rank-info-tab"
+        class="rank-tab-content"
+      >
 
         <section id="current-rank">
 
@@ -1132,7 +1475,22 @@
             Bronze
           </span>
 
-          <div>
+
+          <div class="info-row">
+
+            <span>
+              今月の勉強時間
+            </span>
+
+            <strong id="current-season-study-time">
+              0時間
+            </strong>
+
+          </div>
+
+
+          <div class="info-row">
+
             <span>
               シーズン終了まで
             </span>
@@ -1140,76 +1498,75 @@
             <strong id="current-season-time">
               -
             </strong>
+
           </div>
 
         </section>
 
 
-        <section id="season-progress">
-
-          <h3>📈 シーズン進行</h3>
-
-          <div id="season-progress-bar">
-            <div id="season-progress-value"></div>
-          </div>
-
-          <p id="season-progress-text">
-            0時間
-          </p>
-
-        </section>
-
+        <!-- REQUIREMENTS -->
 
         <section id="rank-requirements">
 
-          <h3>ランク条件</h3>
+          <h3>
+            ランク条件
+          </h3>
+
 
           <table>
 
             <thead>
 
               <tr>
-                <th>ランク</th>
-                <th>必要勉強時間</th>
+
+                <th>
+                  ランク
+                </th>
+
+                <th>
+                  必要勉強時間
+                </th>
+
               </tr>
 
             </thead>
+
 
             <tbody>
 
               <tr>
                 <td>Bronze</td>
-                <td>0〜9時間</td>
+                <td>0時間〜</td>
               </tr>
 
               <tr>
                 <td>Silver</td>
-                <td>10〜19時間</td>
+                <td>10時間〜</td>
               </tr>
 
               <tr>
                 <td>Gold</td>
-                <td>20〜34時間</td>
+                <td>20時間〜</td>
               </tr>
 
               <tr>
                 <td>Platinum</td>
-                <td>35〜49時間</td>
+                <td>35時間〜</td>
               </tr>
 
               <tr>
                 <td>Diamond</td>
-                <td>50〜69時間</td>
+                <td>50時間〜</td>
               </tr>
 
               <tr>
                 <td>Master</td>
-                <td>70〜99時間</td>
+                <td>70時間〜</td>
               </tr>
 
               <tr>
                 <td>Grandmaster</td>
-                <td>100〜149時間</td>
+                <td>100時間〜</td>
               </tr>
 
               <tr>
@@ -1223,12 +1580,35 @@
 
         </section>
 
+      </div>
 
-        <section id="ranking-tab">
 
-          <h3>🌎 ランキング</h3>
+      <!-- RANKING -->
 
-          <div id="ranking-type-tabs">
+      <div
+        id="ranking-tab"
+        class="rank-tab-content hidden"
+      >
+
+        <section>
+
+          <h3>
+            📊 ランキング
+          </h3>
+
+
+          <div
+            id="ranking-type-tabs"
+            class="tab-navigation"
+          >
+
+            <button
+              type="button"
+              class="active"
+              data-ranking-type="friends"
+            >
+              フレンド
+            </button>
 
             <button
               type="button"
@@ -1237,18 +1617,16 @@
               全体
             </button>
 
-            <button
-              type="button"
-              data-ranking-type="friends"
-            >
-              フレンド
-            </button>
-
           </div>
 
-          <div id="global-ranking-list"></div>
 
           <div id="friends-ranking-list"></div>
+
+          <div
+            id="global-ranking-list"
+            class="hidden"
+          ></div>
+
 
           <div id="my-global-rank">
 
@@ -1256,7 +1634,7 @@
               自分の順位
             </span>
 
-            <strong id="my-global-rank-value">
+            <strong id="global-rank-number">
               -
             </strong>
 
@@ -1264,10 +1642,21 @@
 
         </section>
 
+      </div>
+
+
+      <!-- HISTORY -->
+
+      <div
+        id="season-history-tab"
+        class="rank-tab-content hidden"
+      >
 
         <section id="season-history">
 
-          <h3>📜 シーズン履歴</h3>
+          <h3>
+            📜 シーズン履歴
+          </h3>
 
           <div id="season-history-list">
 
@@ -1279,82 +1668,407 @@
 
         </section>
 
-      </section>
+      </div>
+
+    </section>
 
 
 
-      <!-- =================================================
+    <!-- =====================================================
+         OTHER
+    ====================================================== -->
+
+    <section
+      id="other-screen"
+      class="app-screen hidden"
+    >
+
+      <header class="screen-header">
+
+        <h2>
+          📦 その他
+        </h2>
+
+        <p>
+          冒険に関するその他の機能。
+        </p>
+
+      </header>
+
+
+      <div
+        id="other-navigation"
+        class="tab-navigation"
+      >
+
+        <button
+          type="button"
+          class="active"
+          data-other-tab="menu"
+        >
+          📦 メニュー
+        </button>
+
+        <button
+          type="button"
+          data-other-tab="achievement"
+        >
+          ⭐ 実績
+        </button>
+
+        <button
+          type="button"
+          data-other-tab="shop"
+        >
+          🛒 ショップ
+        </button>
+
+        <button
+          type="button"
+          data-other-tab="locker"
+        >
+          🎒 ロッカー
+        </button>
+
+        <button
+          type="button"
+          data-other-tab="profile"
+        >
+          👤 プロフィール
+        </button>
+
+        <button
+          type="button"
+          data-other-tab="settings"
+        >
+          ⚙️ 設定
+        </button>
+
+      </div>
+
+
+      <!-- ===================================================
+           OTHER MENU
+      ==================================================== -->
+
+      <div
+        id="other-menu-tab"
+        class="other-tab-content"
+      >
+
+        <div id="menu-grid">
+
+
+          <button
+            type="button"
+            class="menu-card"
+            data-open-other-tab="achievement"
+          >
+
+            <span>
+              ⭐
+            </span>
+
+            <strong>
+              実績
+            </strong>
+
+            <small>
+              冒険の記録
+            </small>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="menu-card"
+            data-open-other-tab="shop"
+          >
+
+            <span>
+              🛒
+            </span>
+
+            <strong>
+              ショップ
+            </strong>
+
+            <small>
+              コインでアイテムを購入
+            </small>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="menu-card"
+            data-open-other-tab="locker"
+          >
+
+            <span>
+              🎒
+            </span>
+
+            <strong>
+              ロッカー
+            </strong>
+
+            <small>
+              称号・アイテム・背景
+            </small>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="menu-card"
+            data-open-other-tab="profile"
+          >
+
+            <span>
+              👤
+            </span>
+
+            <strong>
+              プロフィール
+            </strong>
+
+            <small>
+              自分の冒険者情報
+            </small>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="menu-card"
+            data-open-other-tab="settings"
+          >
+
+            <span>
+              ⚙️
+            </span>
+
+            <strong>
+              設定
+            </strong>
+
+            <small>
+              アカウント・教科設定
+            </small>
+
+          </button>
+
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ===================================================
            ACHIEVEMENTS
-           ================================================= -->
+      ==================================================== -->
 
-      <section
-        id="achievement-screen"
-        class="app-screen hidden"
+      <div
+        id="achievement-tab"
+        class="other-tab-content hidden"
       >
 
-        <header class="screen-header">
+        <section id="achievement-screen-content">
 
-          <h2>⭐ 実績・称号</h2>
+          <h3>
+            ⭐ 実績
+          </h3>
 
-          <p>
-            冒険の記録を確認しよう。
-          </p>
+          <div id="achievement-count">
+            0 / 10
+          </div>
 
-        </header>
+          <div id="achievement-list"></div>
 
+        </section>
 
-        <div id="achievement-count">
-          0 / 3
-        </div>
-
-
-        <div class="tab-navigation">
-
-          <button
-            type="button"
-            class="active"
-            data-achievement-tab="normal"
-          >
-            実績
-          </button>
-
-          <button
-            type="button"
-            data-achievement-tab="hidden"
-          >
-            🔒 隠し実績
-          </button>
-
-        </div>
-
-
-        <div id="achievement-list"></div>
-
-      </section>
+      </div>
 
 
 
-      <!-- =================================================
+      <!-- ===================================================
+           SHOP
+      ==================================================== -->
+
+      <div
+        id="shop-tab"
+        class="other-tab-content hidden"
+      >
+
+        <section id="shop-section">
+
+          <header>
+
+            <h3>
+              🛒 ショップ
+            </h3>
+
+            <p>
+              勉強・クエスト・ボスバトルで獲得したコインを使おう。
+            </p>
+
+          </header>
+
+
+          <div id="shop-coins">
+
+            🪙
+            <strong id="shop-coin-count">
+              0
+            </strong>
+            コイン
+
+          </div>
+
+
+          <!-- TITLES -->
+
+          <section id="shop-titles">
+
+            <h4>
+              🏷️ 称号
+            </h4>
+
+            <div id="shop-title-list"></div>
+
+          </section>
+
+
+          <!-- ITEMS -->
+
+          <section id="shop-items">
+
+            <h4>
+              🎁 アイテム
+            </h4>
+
+            <div id="shop-item-list"></div>
+
+          </section>
+
+
+          <!-- BACKGROUNDS -->
+
+          <section id="shop-backgrounds">
+
+            <h4>
+              🖼️ 背景
+            </h4>
+
+            <div id="shop-background-list"></div>
+
+          </section>
+
+        </section>
+
+      </div>
+
+
+
+      <!-- ===================================================
+           LOCKER
+      ==================================================== -->
+
+      <div
+        id="locker-tab"
+        class="other-tab-content hidden"
+      >
+
+        <section id="locker-section">
+
+          <h3>
+            🎒 ロッカー
+          </h3>
+
+
+          <!-- TITLES -->
+
+          <section id="locker-titles-tab">
+
+            <h4>
+              🏷️ 称号
+            </h4>
+
+            <div id="locker-title-list">
+
+              <p class="empty-message">
+                所持している称号はありません。
+              </p>
+
+            </div>
+
+          </section>
+
+
+          <!-- ITEMS -->
+
+          <section id="locker-items-tab">
+
+            <h4>
+              🎁 アイテム
+            </h4>
+
+            <div id="locker-item-list">
+
+              <p class="empty-message">
+                所持しているアイテムはありません。
+              </p>
+
+            </div>
+
+          </section>
+
+
+          <!-- OUTFITS / BACKGROUND -->
+
+          <section id="locker-outfits-tab">
+
+            <h4>
+              🖼️ 背景・外観
+            </h4>
+
+            <div id="locker-outfit-list">
+
+              <p class="empty-message">
+                所持している背景はありません。
+              </p>
+
+            </div>
+
+          </section>
+
+        </section>
+
+      </div>
+
+
+
+      <!-- ===================================================
            PROFILE
-           ================================================= -->
+      ==================================================== -->
 
-      <section
-        id="profile-screen"
-        class="app-screen hidden"
+      <div
+        id="profile-tab"
+        class="other-tab-content hidden"
       >
-
-        <header class="screen-header">
-
-          <h2>👤 プロフィール</h2>
-
-        </header>
-
 
         <section id="profile-card">
 
           <h2 id="profile-display-name">
             冒険者
           </h2>
+
 
           <p>
             ID：
@@ -1363,12 +2077,14 @@
             </span>
           </p>
 
+
           <p>
             文理：
             <span id="profile-course">
               -
             </span>
           </p>
+
 
           <p>
             レベル：
@@ -1377,12 +2093,30 @@
             </span>
           </p>
 
+
+          <p>
+            XP：
+            <span id="profile-xp">
+              0
+            </span>
+          </p>
+
+
           <p>
             ⭐：
             <span id="profile-stars">
               0
             </span>
           </p>
+
+
+          <p>
+            🪙：
+            <span id="profile-coins">
+              0
+            </span>
+          </p>
+
 
           <p>
             称号：
@@ -1394,42 +2128,67 @@
         </section>
 
 
+        <!-- SUBJECTS -->
+
         <section id="profile-subjects">
 
-          <h3>📚 受験教科</h3>
+          <h3>
+            📚 受験教科
+          </h3>
 
           <div id="profile-subject-list"></div>
 
         </section>
 
 
+        <!-- STATISTICS -->
+
         <section id="profile-statistics">
 
-          <h3>📊 冒険記録</h3>
+          <h3>
+            📊 冒険記録
+          </h3>
+
 
           <p>
             総勉強時間
+
             <strong id="profile-total-study-time">
               0分
             </strong>
           </p>
 
+
           <p>
             総獲得XP
+
             <strong id="profile-total-xp">
               0 XP
             </strong>
           </p>
 
+
+          <p>
+            総獲得コイン
+
+            <strong id="profile-total-coins">
+              0
+            </strong>
+          </p>
+
+
           <p>
             ボス撃破数
+
             <strong id="profile-bosses-defeated">
               0
             </strong>
           </p>
 
+
           <p>
             クエスト達成数
+
             <strong id="profile-quests-completed">
               0
             </strong>
@@ -1437,119 +2196,33 @@
 
         </section>
 
-      </section>
+      </div>
 
 
 
-      <!-- =================================================
-           LOCKER
-           ================================================= -->
-
-      <section
-        id="locker-screen"
-        class="app-screen hidden"
-      >
-
-        <header class="screen-header">
-
-          <h2>🎒 ロッカー</h2>
-
-          <p>
-            獲得した称号やアイテムを確認しよう。
-          </p>
-
-        </header>
-
-
-        <div class="tab-navigation">
-
-          <button
-            type="button"
-            class="active"
-            data-locker-tab="titles"
-          >
-            🏷️ 称号
-          </button>
-
-          <button
-            type="button"
-            data-locker-tab="items"
-          >
-            🎁 アイテム
-          </button>
-
-          <button
-            type="button"
-            data-locker-tab="outfits"
-          >
-            👕 装備
-          </button>
-
-        </div>
-
-
-        <section id="locker-titles-tab">
-
-          <h3>🏷️ 称号</h3>
-
-          <div id="locker-title-list"></div>
-
-        </section>
-
-
-        <section
-          id="locker-items-tab"
-          class="hidden"
-        >
-
-          <h3>🎁 アイテム</h3>
-
-          <div id="locker-item-list"></div>
-
-        </section>
-
-
-        <section
-          id="locker-outfits-tab"
-          class="hidden"
-        >
-
-          <h3>👕 装備</h3>
-
-          <div id="locker-outfit-list"></div>
-
-        </section>
-
-      </section>
-
-
-
-      <!-- =================================================
+      <!-- ===================================================
            SETTINGS
-           ================================================= -->
+      ==================================================== -->
 
-      <section
-        id="settings-screen"
-        class="app-screen hidden"
+      <div
+        id="settings-tab"
+        class="other-tab-content hidden"
       >
-
-        <header class="screen-header">
-
-          <h2>⚙️ 設定</h2>
-
-        </header>
-
 
         <section id="account-settings">
 
-          <h3>アカウント設定</h3>
+          <h3>
+            ⚙️ アカウント設定
+          </h3>
 
 
-          <!-- NAME -->
+          <!-- DISPLAY NAME -->
 
           <form id="display-name-form">
 
-            <h4>表示名変更</h4>
+            <h4>
+              表示名変更
+            </h4>
 
             <input
               type="text"
@@ -1570,22 +2243,160 @@
           </form>
 
 
-          <!-- SUBJECTS -->
+          <!-- SUBJECT -->
 
           <form id="subject-settings-form">
 
-            <h4>受験教科</h4>
+            <h4>
+              受験教科
+            </h4>
 
             <p class="field-description">
-              使用する教科を複数選択できます。
+              登録する教科を変更できます。
             </p>
 
-            <div id="settings-subject-selection"></div>
+
+            <div id="settings-subject-selection">
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="japanese"
+                >
+                国語
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="math"
+                >
+                数学
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="english"
+                >
+                英語
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="physics"
+                >
+                物理
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="chemistry"
+                >
+                化学
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="biology"
+                >
+                生物
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="earth-science"
+                >
+                地学
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="biology-basic"
+                >
+                生物基礎
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="earth-science-basic"
+                >
+                地学基礎
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="geography"
+                >
+                地理
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="japanese-history"
+                >
+                日本史
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="world-history"
+                >
+                世界史
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="civics"
+                >
+                公民
+              </label>
+
+
+            </div>
+
 
             <p
               id="settings-subject-error"
               class="error-message"
             ></p>
+
 
             <button type="submit">
               教科を保存
@@ -1598,12 +2409,15 @@
 
           <form id="password-form">
 
-            <h4>パスワード変更</h4>
+            <h4>
+              パスワード変更
+            </h4>
 
             <input
               type="password"
               id="settings-new-password"
               minlength="6"
+              placeholder="新しいパスワード"
               required
             >
 
@@ -1623,7 +2437,9 @@
 
           <div id="delete-account-section">
 
-            <h4>アカウント</h4>
+            <h4>
+              アカウント
+            </h4>
 
             <p>
               アカウント削除は取り消せません。
@@ -1640,335 +2456,240 @@
 
         </section>
 
-      </section>
+      </div>
+
+    </section>
+
+  </main>
 
 
 
-      <!-- =================================================
-           OTHER MENU
-           ================================================= -->
+  <!-- =======================================================
+       BOTTOM NAVIGATION
+  ======================================================== -->
 
-      <section
-        id="other-screen"
-        class="app-screen hidden"
-      >
-
-        <header class="screen-header">
-
-          <h2>☰ その他</h2>
-
-          <p>
-            冒険に関するその他の機能。
-          </p>
-
-        </header>
+  <nav id="main-navigation">
 
 
-        <div id="menu-grid">
+    <!-- HOME -->
+
+    <button
+      class="nav-button active"
+      data-screen="home-screen"
+      type="button"
+    >
+
+      <span class="nav-icon">
+        🏠
+      </span>
+
+      <span class="nav-label">
+        ホーム
+      </span>
+
+    </button>
 
 
-          <button
-            type="button"
-            class="menu-card"
-            data-open-screen="rank-screen"
-          >
+    <!-- STUDY -->
 
-            <span>🏆</span>
+    <button
+      class="nav-button"
+      data-screen="study-screen"
+      type="button"
+    >
 
-            <strong>ランク</strong>
+      <span class="nav-icon">
+        📚
+      </span>
 
-            <small>
-              シーズン・ランキング
-            </small>
+      <span class="nav-label">
+        勉強
+      </span>
 
-          </button>
-
-
-          <button
-            type="button"
-            class="menu-card"
-            data-open-screen="achievement-screen"
-          >
-
-            <span>⭐</span>
-
-            <strong>実績・称号</strong>
-
-            <small>
-              通常 / 隠し実績
-            </small>
-
-          </button>
+    </button>
 
 
-          <button
-            type="button"
-            class="menu-card"
-            data-open-screen="profile-screen"
-          >
+    <!-- QUEST + BOSS -->
 
-            <span>👤</span>
+    <button
+      class="nav-button"
+      data-screen="quest-screen"
+      type="button"
+    >
 
-            <strong>プロフィール</strong>
+      <span class="nav-icon">
+        ⚔️
+      </span>
 
-            <small>
-              冒険者情報
-            </small>
+      <span class="nav-label">
+        クエスト
+      </span>
 
-          </button>
-
-
-          <button
-            type="button"
-            class="menu-card"
-            data-open-screen="locker-screen"
-          >
-
-            <span>🎒</span>
-
-            <strong>ロッカー</strong>
-
-            <small>
-              称号・アイテム・装備
-            </small>
-
-          </button>
+    </button>
 
 
-          <button
-            type="button"
-            class="menu-card"
-            data-open-screen="party-screen"
-          >
+    <!-- PARTY + FRIENDS -->
 
-            <span>👥</span>
+    <button
+      class="nav-button"
+      data-screen="party-screen"
+      type="button"
+    >
 
-            <strong>パーティー</strong>
+      <span class="nav-icon">
+        👥
+      </span>
 
-            <small>
-              仲間・フレンド
-            </small>
+      <span class="nav-label">
+        パーティー
+      </span>
 
-          </button>
+    </button>
 
 
-          <button
-            type="button"
-            class="menu-card"
-            data-open-screen="settings-screen"
-          >
+    <!-- RANK + RANKING -->
 
-            <span>⚙️</span>
+    <button
+      class="nav-button"
+      data-screen="rank-screen"
+      type="button"
+    >
 
-            <strong>設定</strong>
+      <span class="nav-icon">
+        🏆
+      </span>
 
-            <small>
-              アカウント・教科設定
-            </small>
+      <span class="nav-label">
+        ランク
+      </span>
 
-          </button>
+    </button>
 
-        </div>
 
-      </section>
+    <!-- OTHER -->
 
-    </main>
+    <button
+      class="nav-button"
+      data-screen="other-screen"
+      type="button"
+    >
+
+      <span class="nav-icon">
+        📦
+      </span>
+
+      <span class="nav-label">
+        その他
+      </span>
+
+    </button>
+
+
+  </nav>
+
+</div>
 
 
 
-    <!-- =====================================================
-         BOTTOM NAVIGATION — 5 TABS
-         ===================================================== -->
+<!-- =========================================================
+     LEVEL UP MODAL
+========================================================= -->
 
-    <nav id="main-navigation">
+<div
+  id="level-up-modal"
+  class="modal hidden"
+>
 
-      <button
-        class="nav-button active"
-        data-screen="home-screen"
-      >
-        <span class="nav-icon">🏠</span>
-        <span>ホーム</span>
-      </button>
+  <div class="modal-content">
 
-
-      <button
-        class="nav-button"
-        data-screen="study-screen"
-      >
-        <span class="nav-icon">📚</span>
-        <span>勉強</span>
-      </button>
+    <h2>
+      🎉 LEVEL UP!
+    </h2>
 
 
-      <button
-        class="nav-button"
-        data-screen="quest-screen"
-      >
-        <span class="nav-icon">⚔️</span>
-        <span>クエスト</span>
-      </button>
+    <p>
+
+      Lv.
+      <span id="level-up-old-level">
+        1
+      </span>
+
+      →
+
+      <strong id="level-up-new-level">
+        2
+      </strong>
+
+    </p>
 
 
-      <button
-        class="nav-button"
-        data-screen="party-screen"
-      >
-        <span class="nav-icon">👥</span>
-        <span>パーティー</span>
-      </button>
-
-
-      <button
-        class="nav-button"
-        data-screen="other-screen"
-      >
-        <span class="nav-icon">☰</span>
-        <span>その他</span>
-      </button>
-
-    </nav>
+    <button
+      type="button"
+      id="level-up-close-button"
+    >
+      OK
+    </button>
 
   </div>
 
+</div>
 
 
-  <!-- =====================================================
-       LEVEL UP MODAL
-       ===================================================== -->
 
-  <div
-    id="level-up-modal"
-    class="modal hidden"
-  >
+<!-- =========================================================
+     REWARD MODAL
+========================================================= -->
 
-    <div class="modal-content">
+<div
+  id="reward-modal"
+  class="modal hidden"
+>
 
-      <h2>🎉 LEVEL UP!</h2>
+  <div class="modal-content">
 
-      <p>
+    <h2>
+      🎁 REWARD
+    </h2>
 
-        Lv.
-        <span id="level-up-old-level">
-          1
-        </span>
-
-        →
-
-        <strong id="level-up-new-level">
-          2
-        </strong>
-
-      </p>
-
-      <button
-        type="button"
-        id="level-up-close-button"
-      >
-        OK
-      </button>
-
+    <div id="reward-modal-content">
+      -
     </div>
 
-  </div>
-
-
-
-  <!-- =====================================================
-       STAR RESET / PRESTIGE MODAL
-       ===================================================== -->
-
-  <div
-    id="prestige-modal"
-    class="modal hidden"
-  >
-
-    <div class="modal-content">
-
-      <h2>⭐ PRESTIGE!</h2>
-
-      <p>
-        Lv.101到達！
-      </p>
-
-      <p>
-        新たな周回が始まります。
-      </p>
-
-      <p>
-        ⭐
-        <span id="prestige-new-star">
-          1
-        </span>
-      </p>
-
-      <button
-        type="button"
-        id="prestige-close-button"
-      >
-        新たな冒険へ
-      </button>
-
-    </div>
+    <button
+      type="button"
+      id="reward-close-button"
+    >
+      OK
+    </button>
 
   </div>
 
-
-
-  <!-- =====================================================
-       HIDDEN ACHIEVEMENT UNLOCK MODAL
-       ===================================================== -->
-
-  <div
-    id="hidden-achievement-modal"
-    class="modal hidden"
-  >
-
-    <div class="modal-content">
-
-      <h2>🔒 隠し実績解除！</h2>
-
-      <p id="hidden-achievement-name">
-        -
-      </p>
-
-      <p id="hidden-achievement-description">
-        -
-      </p>
-
-      <button
-        type="button"
-        id="hidden-achievement-close-button"
-      >
-        OK
-      </button>
-
-    </div>
-
-  </div>
+</div>
 
 
 
-  <!-- =====================================================
-       NOTIFICATION
-       ===================================================== -->
+<!-- =========================================================
+     NOTIFICATION
+========================================================= -->
 
-  <div
-    id="notification"
-    class="hidden"
-  >
-    -
-  </div>
+<div
+  id="notification"
+  class="hidden"
+>
+  -
+</div>
 
 
 
-  <!-- =====================================================
-       FIREBASE / JS
-       ===================================================== -->
+<!-- =========================================================
+     FIREBASE / JAVASCRIPT
+========================================================= -->
 
-  <script
-    type="module"
-    src="script.js"
-  ></script>
+<script
+  type="module"
+  src="script.js"
+></script>
+
 
 </body>
 </html>
