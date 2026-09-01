@@ -6021,22 +6021,27 @@ onAuthStateChanged(
 
     try {
 
-      await startApp();
+  show($("main-app"));
+  hide($("auth-screen"));
 
-    } catch (error) {
+  console.log("AUTH OK - MAIN APP SHOWN");
 
-      console.error(
-        "APP INIT ERROR:",
-        error
-      );
+  await startApp();
 
-      showNotification(
-        "データの読み込みに失敗しました。"
-      );
-    }
-  }
-);
+} catch (error) {
 
+  console.error(
+    "APP INIT ERROR:",
+    error
+  );
+
+  show($("main-app"));
+  hide($("auth-screen"));
+
+  showNotification(
+    "データの読み込みに失敗しました。"
+  );
+}
 
 /* =========================================================
    BOOT
