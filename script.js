@@ -1,13 +1,21 @@
 // ============================================================
 // 受験RPG - script.js
-// PHASE 2 FIXED
+// STUDY SYSTEM COMPLETE
+//
 // Firebase Auth
 // Firestore (/users/{uid})
-// XP / LEVEL / COINS
-// Study Timer
+//
+// XP
+// LEVEL
+// COINS
+// MONTHLY SEASON RANK
+//
 // Manual Study Record
+// Study Timer
+// Japan Time Midnight Split
 // Subject Level
 // Study History
+//
 // ============================================================
 
 import {
@@ -28,14 +36,14 @@ import {
   doc,
   getDoc,
   setDoc,
-  updateDoc,
   collection,
   addDoc,
   query,
   orderBy,
   limit,
   getDocs,
-  serverTimestamp
+  serverTimestamp,
+  writeBatch
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 
@@ -72,11 +80,26 @@ let studyRecordBusy = false;
 
 let timerInterval = null;
 
-let timerState = {
+const timerState = {
   running: false,
+
+  // 現在のタイマー区間開始時刻
   startedAt: null,
+
+  // 一時停止などで確定した秒数
   accumulatedSeconds: 0,
-  lastJapanDate: null
+
+  // 日本時間の日付
+  lastJapanDate: null,
+
+  // 現在の区間開始時刻
+  segmentStartedAt: null,
+
+  // 現在の区間の日付
+  segmentJapanDate: null,
+
+  // 日跨ぎ保存中
+  midnightBusy: false
 };
 
 
@@ -99,6 +122,46 @@ const SUBJECT_NAMES = {
   "world-history": "世界史",
   civics: "公民"
 };
+
+
+// ============================================================
+// Ranks
+// ============================================================
+
+const RANKS = [
+  {
+    name: "Bronze",
+    minMinutes: 0
+  },
+  {
+    name: "Silver",
+    minMinutes: 10 * 60
+  },
+  {
+    name: "Gold",
+    minMinutes: 25 * 60
+  },
+  {
+    name: "Platinum",
+    minMinutes: 45 * 60
+  },
+  {
+    name: "Diamond",
+    minMinutes: 70 * 60
+  },
+  {
+    name: "Master",
+    minMinutes: 100 * 60
+  },
+  {
+    name: "Grandmaster",
+    minMinutes: 135 * 60
+  },
+  {
+    name: "Legend",
+    minMinutes: 170 * 60
+  }
+];
 
 
 // ============================================================
@@ -145,7 +208,22 @@ function showError(id, message) {
 
 
 // ============================================================
-// Date / time
+// HTML escape
+// ============================================================
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+// ============================================================
+// Date / Time
+// Japan is authoritative
 // ============================================================
 
 function getJapanDateString(date = new Date()) {
@@ -159,14 +237,58 @@ function getJapanDateString(date = new Date()) {
     .replaceAll("/", "-");
 }
 
-function formatMinutes(minutes) {
-  const value = Math.max(
-    0,
-    Math.floor(Number(minutes) || 0)
-  );
 
-  const hours = Math.floor(value / 60);
-  const mins = value % 60;
+function getJapanMonthString(date = new Date()) {
+  const parts =
+    new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Tokyo",
+      year: "numeric",
+      month: "2-digit"
+    }).formatToParts(date);
+
+  const year =
+    parts.find(
+      part => part.type === "year"
+    )?.value || "0000";
+
+  const month =
+    parts.find(
+      part => part.type === "month"
+    )?.value || "00";
+
+  return `${year}-${month}`;
+}
+
+
+/*
+  日本時間の00:00を実際のUNIX時刻へ変換。
+
+  例:
+  2026-09-02
+  ↓
+  2026-09-02T00:00:00+09:00
+*/
+function japanMidnightTimestamp(dateString) {
+  return new Date(
+    `${dateString}T00:00:00+09:00`
+  ).getTime();
+}
+
+
+function formatMinutes(minutes) {
+  const value =
+    Math.max(
+      0,
+      Math.floor(
+        Number(minutes) || 0
+      )
+    );
+
+  const hours =
+    Math.floor(value / 60);
+
+  const mins =
+    value % 60;
 
   if (hours > 0) {
     return `${hours}時間 ${mins}分`;
@@ -175,6 +297,7 @@ function formatMinutes(minutes) {
   return `${mins}分`;
 }
 
+
 function formatDateTime(timestamp) {
   if (!timestamp) {
     return "";
@@ -182,9 +305,13 @@ function formatDateTime(timestamp) {
 
   let date = null;
 
-  if (timestamp.toDate) {
+  if (
+    typeof timestamp.toDate === "function"
+  ) {
     date = timestamp.toDate();
-  } else if (timestamp instanceof Date) {
+  } else if (
+    timestamp instanceof Date
+  ) {
     date = timestamp;
   }
 
@@ -192,14 +319,17 @@ function formatDateTime(timestamp) {
     return "";
   }
 
-  return new Intl.DateTimeFormat("ja-JP", {
-    timeZone: "Asia/Tokyo",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit"
-  }).format(date);
+  return new Intl.DateTimeFormat(
+    "ja-JP",
+    {
+      timeZone: "Asia/Tokyo",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit"
+    }
+  ).format(date);
 }
 
 
@@ -210,7 +340,8 @@ function formatDateTime(timestamp) {
 function firebaseErrorMessage(error) {
   console.error(error);
 
-  const code = error?.code || "";
+  const code =
+    error?.code || "";
 
   const messages = {
     "auth/invalid-credential":
@@ -261,15 +392,29 @@ function initializeFirebase() {
   }
 
   try {
-    firebaseApp = initializeApp(firebaseConfig);
+    firebaseApp =
+      initializeApp(
+        firebaseConfig
+      );
 
-    auth = getAuth(firebaseApp);
-    db = getFirestore(firebaseApp);
+    auth =
+      getAuth(
+        firebaseApp
+      );
 
-    console.log("Firebase initialized.");
+    db =
+      getFirestore(
+        firebaseApp
+      );
+
+    console.log(
+      "Firebase initialized."
+    );
 
     return true;
+
   } catch (error) {
+
     console.error(
       "Firebase initialization error:",
       error
@@ -295,6 +440,7 @@ function normalizeUserId(value) {
     .toLowerCase();
 }
 
+
 function userIdToEmail(userId) {
   return `${normalizeUserId(userId)}@juken-rpg.local`;
 }
@@ -311,12 +457,38 @@ function getCourseName(course) {
     undecided: "未定"
   };
 
-  return names[course] || "未定";
+  return (
+    names[course] ||
+    "未定"
+  );
 }
 
 
 // ============================================================
-// Level system
+// Subject
+// ============================================================
+
+function getSubjectName(subject) {
+  return (
+    SUBJECT_NAMES[subject] ||
+    subject ||
+    "その他"
+  );
+}
+
+
+// ============================================================
+// Level System
+//
+// Lv.1 → Lv.2 : 100 XP
+//
+// Lv.1〜9   : 100 XP / Lv
+// Lv.10〜19 : 150 XP / Lv
+// Lv.20〜29 : 200 XP / Lv
+// ...
+// Lv.90〜99 : 550 XP / Lv
+//
+// MAX Lv.100
 // ============================================================
 
 function xpRequiredForLevel(level) {
@@ -324,52 +496,79 @@ function xpRequiredForLevel(level) {
     return 0;
   }
 
-  const block = Math.floor(
-    (level - 1) / 10
-  );
+  const block =
+    Math.floor(
+      (level - 1) / 10
+    );
 
-  return 100 + block * 50;
+  return (
+    100 +
+    block * 50
+  );
 }
+
 
 function totalXpForLevel(level) {
   let total = 0;
 
-  for (let lv = 1; lv < level; lv++) {
-    total += xpRequiredForLevel(lv);
+  for (
+    let lv = 1;
+    lv < level;
+    lv++
+  ) {
+    total +=
+      xpRequiredForLevel(lv);
   }
 
   return total;
 }
 
+
 function calculateLevel(totalXp) {
-  const xp = Math.max(
-    0,
-    Math.floor(Number(totalXp) || 0)
-  );
+  const xp =
+    Math.max(
+      0,
+      Math.floor(
+        Number(totalXp) || 0
+      )
+    );
 
   let level = 1;
 
   while (level < 100) {
-    const nextRequired =
-      totalXpForLevel(level + 1);
 
-    if (xp < nextRequired) {
+    const nextLevelXp =
+      totalXpForLevel(
+        level + 1
+      );
+
+    if (
+      xp < nextLevelXp
+    ) {
       break;
     }
 
     level++;
   }
 
-  return Math.min(100, level);
+  return Math.min(
+    100,
+    level
+  );
 }
 
-function getLevelProgress(totalXp) {
-  const xp = Math.max(
-    0,
-    Math.floor(Number(totalXp) || 0)
-  );
 
-  const level = calculateLevel(xp);
+function getLevelProgress(totalXp) {
+  const xp =
+    Math.max(
+      0,
+      Math.floor(
+        Number(totalXp) || 0
+      )
+    );
+
+  const level =
+    calculateLevel(xp);
 
   if (level >= 100) {
     return {
@@ -381,23 +580,30 @@ function getLevelProgress(totalXp) {
   }
 
   const currentLevelXp =
-    totalXpForLevel(level);
+    totalXpForLevel(
+      level
+    );
 
   const nextLevelXp =
-    totalXpForLevel(level + 1);
+    totalXpForLevel(
+      level + 1
+    );
 
   const current =
-    xp - currentLevelXp;
+    xp -
+    currentLevelXp;
 
   const required =
-    nextLevelXp - currentLevelXp;
+    nextLevelXp -
+    currentLevelXp;
 
   const percent =
     Math.min(
       100,
       Math.max(
         0,
-        (current / required) * 100
+        (current / required) *
+          100
       )
     );
 
@@ -414,105 +620,257 @@ function getLevelProgress(totalXp) {
 // Rank
 // ============================================================
 
-function calculateRank(seasonStudyMinutes) {
-  const hours =
-    Math.floor(
-      Number(seasonStudyMinutes || 0) / 60
+function calculateRank(
+  seasonStudyMinutes
+) {
+  const minutes =
+    Math.max(
+      0,
+      Math.floor(
+        Number(
+          seasonStudyMinutes
+        ) || 0
+      )
     );
 
-  if (hours >= 170) {
-    return "Legend";
+  let rank =
+    "Bronze";
+
+  for (const data of RANKS) {
+    if (
+      minutes >=
+      data.minMinutes
+    ) {
+      rank =
+        data.name;
+    }
   }
 
-  if (hours >= 135) {
-    return "Grandmaster";
-  }
+  return rank;
+}
 
-  if (hours >= 100) {
-    return "Master";
-  }
 
-  if (hours >= 70) {
-    return "Diamond";
-  }
-
-  if (hours >= 45) {
-    return "Platinum";
-  }
-
-  if (hours >= 25) {
-    return "Gold";
-  }
-
-  if (hours >= 10) {
-    return "Silver";
-  }
-
-  return "Bronze";
+function getRankInfo(rank) {
+  return (
+    RANKS.find(
+      item =>
+        item.name === rank
+    ) ||
+    RANKS[0]
+  );
 }
 
 
 // ============================================================
-// Default player
+// Default Player
 // ============================================================
 
-function createDefaultPlayerData(userId = "") {
+function createDefaultPlayerData(
+  userId = ""
+) {
+  const seasonId =
+    getJapanMonthString();
+
   return {
     uid: "",
-    userId: userId,
+
+    userId,
 
     displayName:
-      userId || "プレイヤー",
+      userId ||
+      "プレイヤー",
 
-    course: "undecided",
+    course:
+      "undecided",
 
     subjects: [],
 
+    // Overall
     xp: 0,
     level: 1,
 
+    // Currency
     coins: 0,
     stars: 0,
 
+    // Study
     totalStudyMinutes: 0,
 
     todayStudyMinutes: 0,
+
     todayStudyDate:
       getJapanDateString(),
 
     todayXp: 0,
+
     todayCoins: 0,
+
+    // Monthly Season
+    seasonId,
+
+    seasonStartDate:
+      `${seasonId}-01`,
 
     seasonStudyMinutes: 0,
 
+    rank:
+      "Bronze",
+
+    // Subjects
     subjectLevels: {},
+
     subjectStudyMinutes: {},
 
-    rank: "Bronze",
-
-    title: "見習い受験生",
+    // Cosmetic
+    title:
+      "見習い受験生",
 
     createdAt: null,
+
     updatedAt: null
   };
 }
 
 
 // ============================================================
-// Daily reset
+// Daily normalization
 // ============================================================
 
-function normalizeDailyData(player) {
+function normalizeDailyData(
+  player
+) {
   const today =
     getJapanDateString();
 
   if (
-    player.todayStudyDate !== today
+    player.todayStudyDate !==
+    today
   ) {
-    player.todayStudyDate = today;
-    player.todayStudyMinutes = 0;
-    player.todayXp = 0;
-    player.todayCoins = 0;
+    player.todayStudyDate =
+      today;
+
+    player.todayStudyMinutes =
+      0;
+
+    player.todayXp =
+      0;
+
+    player.todayCoins =
+      0;
+  }
+
+  player.todayStudyMinutes =
+    Math.max(
+      0,
+      Math.floor(
+        Number(
+          player.todayStudyMinutes
+        ) || 0
+      )
+    );
+
+  player.todayXp =
+    Math.max(
+      0,
+      Math.floor(
+        Number(
+          player.todayXp
+        ) || 0
+      )
+    );
+
+  player.todayCoins =
+    Math.max(
+      0,
+      Math.floor(
+        Number(
+          player.todayCoins
+        ) || 0
+      )
+    );
+
+  return player;
+}
+
+
+// ============================================================
+// Season normalization
+//
+// 毎月1日になると自動的に新シーズン。
+// XP / 総勉強時間は維持。
+// シーズン勉強時間とランクだけリセット。
+// ============================================================
+
+function normalizeSeasonData(
+  player
+) {
+  const currentSeason =
+    getJapanMonthString();
+
+  if (
+    player.seasonId !==
+    currentSeason
+  ) {
+
+    player.seasonId =
+      currentSeason;
+
+    player.seasonStartDate =
+      `${currentSeason}-01`;
+
+    player.seasonStudyMinutes =
+      0;
+
+    player.rank =
+      "Bronze";
+  }
+
+  player.seasonStudyMinutes =
+    Math.max(
+      0,
+      Math.floor(
+        Number(
+          player.seasonStudyMinutes
+        ) || 0
+      )
+    );
+
+  const calculatedRank =
+    calculateRank(
+      player.seasonStudyMinutes
+    );
+
+  /*
+    シーズン中のランクは
+    勉強時間が減ることがないため
+    通常はそのまま。
+  */
+
+  const oldIndex =
+    RANKS.findIndex(
+      item =>
+        item.name ===
+        player.rank
+    );
+
+  const newIndex =
+    RANKS.findIndex(
+      item =>
+        item.name ===
+        calculatedRank
+    );
+
+  if (
+    oldIndex < 0 ||
+    newIndex > oldIndex
+  ) {
+    player.rank =
+      calculatedRank;
+  }
+
+  if (!player.rank) {
+    player.rank =
+      calculatedRank;
   }
 
   return player;
@@ -520,13 +878,18 @@ function normalizeDailyData(player) {
 
 
 // ============================================================
-// Firestore
+// Firestore Player
 // IMPORTANT:
-// users/{uid}
+// /users/{uid}
 // ============================================================
 
-async function loadPlayer(user) {
-  if (!user || !db) {
+async function loadPlayer(
+  user
+) {
+  if (
+    !user ||
+    !db
+  ) {
     return null;
   }
 
@@ -538,9 +901,13 @@ async function loadPlayer(user) {
     );
 
   const snapshot =
-    await getDoc(playerRef);
+    await getDoc(
+      playerRef
+    );
 
-  if (!snapshot.exists()) {
+  if (
+    !snapshot.exists()
+  ) {
     return null;
   }
 
@@ -548,43 +915,59 @@ async function loadPlayer(user) {
     snapshot.data();
 
   const player = {
-    ...createDefaultPlayerData(""),
+    ...createDefaultPlayerData(
+      ""
+    ),
+
     ...data
   };
 
   player.uid =
-    player.uid || user.uid;
+    player.uid ||
+    user.uid;
 
   player.userId =
     player.userId ||
     normalizeUserId(
-      user.email?.split("@")[0]
+      user.email
+        ?.split("@")[0]
     );
 
   player.subjects =
-    Array.isArray(player.subjects)
+    Array.isArray(
+      player.subjects
+    )
       ? player.subjects
       : [];
 
   player.subjectLevels =
-    player.subjectLevels || {};
+    player.subjectLevels ||
+    {};
 
   player.subjectStudyMinutes =
-    player.subjectStudyMinutes || {};
+    player.subjectStudyMinutes ||
+    {};
 
-  normalizeDailyData(player);
+  normalizeDailyData(
+    player
+  );
+
+  normalizeSeasonData(
+    player
+  );
 
   player.level =
-    calculateLevel(player.xp || 0);
-
-  player.rank =
-    calculateRank(
-      player.seasonStudyMinutes || 0
+    calculateLevel(
+      player.xp || 0
     );
 
   return player;
 }
 
+
+// ============================================================
+// Create Player
+// ============================================================
 
 async function createPlayer(
   user,
@@ -593,7 +976,8 @@ async function createPlayer(
   const userId =
     normalizeUserId(
       additionalData.userId ||
-      user.email?.split("@")[0] ||
+      user.email
+        ?.split("@")[0] ||
       ""
     );
 
@@ -604,18 +988,22 @@ async function createPlayer(
 
   const playerData = {
     ...defaultData,
+
     ...additionalData,
 
-    uid: user.uid,
+    uid:
+      user.uid,
 
     userId,
 
     email:
       user.email || "",
 
-    level: 1,
+    level:
+      1,
 
-    rank: "Bronze",
+    rank:
+      "Bronze",
 
     createdAt:
       serverTimestamp(),
@@ -640,6 +1028,10 @@ async function createPlayer(
 }
 
 
+// ============================================================
+// Save Player
+// ============================================================
+
 async function savePlayer() {
   if (
     !currentUser ||
@@ -653,6 +1045,10 @@ async function savePlayer() {
     currentPlayer
   );
 
+  normalizeSeasonData(
+    currentPlayer
+  );
+
   currentPlayer.level =
     calculateLevel(
       currentPlayer.xp || 0
@@ -660,7 +1056,8 @@ async function savePlayer() {
 
   currentPlayer.rank =
     calculateRank(
-      currentPlayer.seasonStudyMinutes || 0
+      currentPlayer.seasonStudyMinutes ||
+      0
     );
 
   const playerRef =
@@ -670,13 +1067,19 @@ async function savePlayer() {
       currentUser.uid
     );
 
-  await updateDoc(
+  await setDoc(
     playerRef,
     {
       ...currentPlayer,
-      uid: currentUser.uid,
+
+      uid:
+        currentUser.uid,
+
       updatedAt:
         serverTimestamp()
+    },
+    {
+      merge: true
     }
   );
 }
@@ -687,41 +1090,79 @@ async function savePlayer() {
 // ============================================================
 
 function showLoginScreen() {
-  showElement("auth-screen");
-  showElement("login-screen");
-  hideElement("register-screen");
-  hideElement("main-app");
-}
-
-function showRegisterScreen() {
-  showElement("auth-screen");
-  hideElement("login-screen");
-  showElement("register-screen");
-  hideElement("main-app");
-}
-
-function showMainScreen() {
-  hideElement("auth-screen");
-  showElement("main-app");
-
-  const screens =
-    document.querySelectorAll(
-      ".app-screen"
-    );
-
-  screens.forEach(
-    screen => {
-      screen.classList.add("hidden");
-      screen.style.display = "none";
-    }
+  showElement(
+    "auth-screen"
   );
 
+  showElement(
+    "login-screen"
+  );
+
+  hideElement(
+    "register-screen"
+  );
+
+  hideElement(
+    "main-app"
+  );
+}
+
+
+function showRegisterScreen() {
+  showElement(
+    "auth-screen"
+  );
+
+  hideElement(
+    "login-screen"
+  );
+
+  showElement(
+    "register-screen"
+  );
+
+  hideElement(
+    "main-app"
+  );
+}
+
+
+function showMainScreen() {
+  hideElement(
+    "auth-screen"
+  );
+
+  showElement(
+    "main-app"
+  );
+
+  document
+    .querySelectorAll(
+      ".app-screen"
+    )
+    .forEach(
+      screen => {
+        screen.classList.add(
+          "hidden"
+        );
+
+        screen.style.display =
+          "none";
+      }
+    );
+
   const home =
-    getElement("home-screen");
+    getElement(
+      "home-screen"
+    );
 
   if (home) {
-    home.classList.remove("hidden");
-    home.style.display = "";
+    home.classList.remove(
+      "hidden"
+    );
+
+    home.style.display =
+      "";
   }
 
   activateBottomNav(
@@ -731,7 +1172,7 @@ function showMainScreen() {
 
 
 // ============================================================
-// App navigation
+// Navigation
 // ============================================================
 
 function activateBottomNav(
@@ -741,14 +1182,17 @@ function activateBottomNav(
     .querySelectorAll(
       "[data-screen]"
     )
-    .forEach(button => {
-      button.classList.toggle(
-        "active",
-        button.dataset.screen ===
-          screenId
-      );
-    });
+    .forEach(
+      button => {
+        button.classList.toggle(
+          "active",
+          button.dataset.screen ===
+            screenId
+        );
+      }
+    );
 }
+
 
 function showAppScreen(
   screenId
@@ -764,17 +1208,21 @@ function showAppScreen(
     .querySelectorAll(
       ".app-screen"
     )
-    .forEach(screen => {
-      screen.classList.add(
-        "hidden"
-      );
+    .forEach(
+      screen => {
+        screen.classList.add(
+          "hidden"
+        );
 
-      screen.style.display =
-        "none";
-    });
+        screen.style.display =
+          "none";
+      }
+    );
 
   const target =
-    getElement(screenId);
+    getElement(
+      screenId
+    );
 
   if (!target) {
     return;
@@ -784,7 +1232,8 @@ function showAppScreen(
     "hidden"
   );
 
-  target.style.display = "";
+  target.style.display =
+    "";
 
   activateBottomNav(
     screenId
@@ -830,6 +1279,10 @@ function updatePlayerUI() {
     currentPlayer
   );
 
+  normalizeSeasonData(
+    currentPlayer
+  );
+
   const progress =
     getLevelProgress(
       currentPlayer.xp || 0
@@ -840,7 +1293,8 @@ function updatePlayerUI() {
 
   const rank =
     calculateRank(
-      currentPlayer.seasonStudyMinutes || 0
+      currentPlayer.seasonStudyMinutes ||
+      0
     );
 
   currentPlayer.level =
@@ -850,7 +1304,9 @@ function updatePlayerUI() {
     rank;
 
 
+  // ----------------------------------------------------------
   // Header
+  // ----------------------------------------------------------
 
   setText(
     "header-display-name",
@@ -874,7 +1330,9 @@ function updatePlayerUI() {
   );
 
 
+  // ----------------------------------------------------------
   // Home
+  // ----------------------------------------------------------
 
   setText(
     "home-level",
@@ -911,7 +1369,8 @@ function updatePlayerUI() {
   setText(
     "home-season-study-time",
     formatMinutes(
-      currentPlayer.seasonStudyMinutes || 0
+      currentPlayer.seasonStudyMinutes ||
+      0
     )
   );
 
@@ -927,7 +1386,9 @@ function updatePlayerUI() {
   );
 
 
-  // XP bar
+  // ----------------------------------------------------------
+  // XP Bar
+  // ----------------------------------------------------------
 
   const progressBar =
     getElement(
@@ -939,7 +1400,9 @@ function updatePlayerUI() {
       `${progress.percent}%`;
   }
 
-  if (level >= 100) {
+  if (
+    level >= 100
+  ) {
     setText(
       "home-xp-required",
       "MAX LEVEL"
@@ -955,7 +1418,9 @@ function updatePlayerUI() {
   }
 
 
+  // ----------------------------------------------------------
   // Profile
+  // ----------------------------------------------------------
 
   setText(
     "profile-display-name",
@@ -1005,7 +1470,8 @@ function updatePlayerUI() {
   setText(
     "profile-total-study-time",
     formatMinutes(
-      currentPlayer.totalStudyMinutes || 0
+      currentPlayer.totalStudyMinutes ||
+      0
     )
   );
 
@@ -1027,21 +1493,16 @@ function updatePlayerUI() {
 // Subject UI
 // ============================================================
 
-function getSubjectName(subject) {
-  return (
-    SUBJECT_NAMES[subject] ||
-    subject ||
-    "その他"
-  );
-}
-
 function populateStudySubjectSelect() {
   const select =
     getElement(
       "study-subject"
     );
 
-  if (!select || !currentPlayer) {
+  if (
+    !select ||
+    !currentPlayer
+  ) {
     return;
   }
 
@@ -1102,26 +1563,32 @@ function updateSubjectLevelUI() {
       "subject-level-list"
     );
 
-  if (levelList) {
-    levelList.innerHTML = "";
+  const subjects =
+    Array.isArray(
+      currentPlayer.subjects
+    )
+      ? currentPlayer.subjects
+      : [];
 
-    const subjects =
-      Array.isArray(
-        currentPlayer.subjects
-      )
-        ? currentPlayer.subjects
-        : [];
+  if (levelList) {
+
+    levelList.innerHTML =
+      "";
 
     if (
       subjects.length === 0
     ) {
+
       levelList.innerHTML =
         `<p class="empty-message">
           受験教科が登録されていません。
         </p>`;
+
     } else {
+
       subjects.forEach(
         subject => {
+
           const level =
             Math.min(
               100,
@@ -1141,6 +1608,14 @@ function updateSubjectLevelUI() {
                 ] || 0
             );
 
+          const remaining =
+            level >= 100
+              ? 0
+              : 30 -
+                (
+                  minutes % 30
+                );
+
           const item =
             document.createElement(
               "div"
@@ -1152,15 +1627,31 @@ function updateSubjectLevelUI() {
           item.innerHTML = `
             <div>
               <strong>
-                ${getSubjectName(subject)}
+                ${escapeHtml(
+                  getSubjectName(
+                    subject
+                  )
+                )}
               </strong>
+
               <span>
                 Lv.${level}
               </span>
             </div>
+
             <div>
-              ${formatMinutes(minutes)}
+              ${formatMinutes(
+                minutes
+              )}
             </div>
+
+            ${
+              level >= 100
+                ? `<small>MAX</small>`
+                : `<small>
+                    次のLvまで ${remaining}分
+                   </small>`
+            }
           `;
 
           levelList.appendChild(
@@ -1178,17 +1669,13 @@ function updateSubjectLevelUI() {
     );
 
   if (studyList) {
-    studyList.innerHTML = "";
 
-    const subjects =
-      Array.isArray(
-        currentPlayer.subjects
-      )
-        ? currentPlayer.subjects
-        : [];
+    studyList.innerHTML =
+      "";
 
     subjects.forEach(
       subject => {
+
         const minutes =
           Number(
             currentPlayer
@@ -1207,10 +1694,17 @@ function updateSubjectLevelUI() {
 
         item.innerHTML = `
           <span>
-            ${getSubjectName(subject)}
+            ${escapeHtml(
+              getSubjectName(
+                subject
+              )
+            )}
           </span>
+
           <strong>
-            ${formatMinutes(minutes)}
+            ${formatMinutes(
+              minutes
+            )}
           </strong>
         `;
 
@@ -1224,14 +1718,26 @@ function updateSubjectLevelUI() {
 
 
 // ============================================================
-// Study recording
+// Study Record
+//
+// IMPORTANT:
+//
+// recordDateを指定可能。
+// これによって日跨ぎ時に
+// 「前日の勉強」を前日として保存できる。
+//
+// todayStudyMinutesは
+// recordDate === 今日
+// の場合だけ増える。
+//
 // ============================================================
 
 async function recordStudy(
   subject,
   minutes,
   note = "",
-  source = "manual"
+  source = "manual",
+  options = {}
 ) {
   if (
     !currentUser ||
@@ -1247,6 +1753,10 @@ async function recordStudy(
       Number(minutes)
     );
 
+  // ----------------------------------------------------------
+  // Validation
+  // ----------------------------------------------------------
+
   if (
     !Number.isFinite(
       safeMinutes
@@ -1258,9 +1768,14 @@ async function recordStudy(
     );
   }
 
+  /*
+    意図的に上限を設定していない。
+    10分でも100分でも1000分でもOK。
+  */
+
   if (!subject) {
     throw new Error(
-      "科目を選択してください。"
+      "教科を選択してください。"
     );
   }
 
@@ -1272,21 +1787,56 @@ async function recordStudy(
       : [];
 
   if (
-    !subjects.includes(subject)
+    !subjects.includes(
+      subject
+    )
   ) {
     throw new Error(
       "登録している受験教科から選択してください。"
     );
   }
 
+
+  // ----------------------------------------------------------
+  // Normalize date
+  // ----------------------------------------------------------
+
   normalizeDailyData(
     currentPlayer
   );
+
+  normalizeSeasonData(
+    currentPlayer
+  );
+
+  const recordDate =
+    options.recordDate ||
+    getJapanDateString();
+
+  const currentSeason =
+    getJapanMonthString();
+
+
+  // ----------------------------------------------------------
+  // Old state
+  // ----------------------------------------------------------
 
   const oldLevel =
     calculateLevel(
       currentPlayer.xp || 0
     );
+
+  const oldRank =
+    currentPlayer.rank ||
+    "Bronze";
+
+
+  // ----------------------------------------------------------
+  // Rewards
+  //
+  // 1分 = 1 XP
+  // 1分 = 1 Coin
+  // ----------------------------------------------------------
 
   const gainedXp =
     safeMinutes;
@@ -1294,50 +1844,99 @@ async function recordStudy(
   const gainedCoins =
     safeMinutes;
 
+
+  // ----------------------------------------------------------
   // Overall
+  // ----------------------------------------------------------
 
   currentPlayer.xp =
     Number(
       currentPlayer.xp || 0
-    ) + gainedXp;
+    ) +
+    gainedXp;
 
   currentPlayer.totalStudyMinutes =
     Number(
-      currentPlayer.totalStudyMinutes || 0
-    ) + safeMinutes;
-
-  currentPlayer.todayStudyMinutes =
-    Number(
-      currentPlayer.todayStudyMinutes || 0
-    ) + safeMinutes;
-
-  currentPlayer.todayXp =
-    Number(
-      currentPlayer.todayXp || 0
-    ) + gainedXp;
+      currentPlayer.totalStudyMinutes ||
+      0
+    ) +
+    safeMinutes;
 
   currentPlayer.coins =
     Number(
       currentPlayer.coins || 0
-    ) + gainedCoins;
+    ) +
+    gainedCoins;
 
-  currentPlayer.todayCoins =
-    Number(
-      currentPlayer.todayCoins || 0
-    ) + gainedCoins;
 
-  currentPlayer.seasonStudyMinutes =
-    Number(
-      currentPlayer.seasonStudyMinutes || 0
-    ) + safeMinutes;
+  // ----------------------------------------------------------
+  // Today
+  //
+  // 過去日の記録なら
+  // 今日の集計には入れない。
+  // ----------------------------------------------------------
 
+  const today =
+    getJapanDateString();
+
+  if (
+    recordDate === today
+  ) {
+
+    currentPlayer.todayStudyMinutes =
+      Number(
+        currentPlayer.todayStudyMinutes ||
+        0
+      ) +
+      safeMinutes;
+
+    currentPlayer.todayXp =
+      Number(
+        currentPlayer.todayXp ||
+        0
+      ) +
+      gainedXp;
+
+    currentPlayer.todayCoins =
+      Number(
+        currentPlayer.todayCoins ||
+        0
+      ) +
+      gainedCoins;
+  }
+
+
+  // ----------------------------------------------------------
+  // Season
+  //
+  // 現在のシーズンに記録された場合のみ加算。
+  // ----------------------------------------------------------
+
+  if (
+    currentSeason ===
+    currentPlayer.seasonId
+  ) {
+
+    currentPlayer.seasonStudyMinutes =
+      Number(
+        currentPlayer.seasonStudyMinutes ||
+        0
+      ) +
+      safeMinutes;
+  }
+
+
+  // ----------------------------------------------------------
   // Subject
+  // ----------------------------------------------------------
 
   currentPlayer.subjectLevels =
-    currentPlayer.subjectLevels || {};
+    currentPlayer.subjectLevels ||
+    {};
 
   currentPlayer.subjectStudyMinutes =
-    currentPlayer.subjectStudyMinutes || {};
+    currentPlayer.subjectStudyMinutes ||
+    {};
 
   const oldSubjectMinutes =
     Number(
@@ -1363,9 +1962,15 @@ async function recordStudy(
     Math.min(
       100,
       Math.floor(
-        newSubjectMinutes / 30
+        newSubjectMinutes /
+        30
       )
     );
+
+
+  // ----------------------------------------------------------
+  // Level / Rank
+  // ----------------------------------------------------------
 
   currentPlayer.level =
     calculateLevel(
@@ -1378,59 +1983,114 @@ async function recordStudy(
     );
 
 
-  // Firestore player
+  // ----------------------------------------------------------
+  // Firestore
+  //
+  // Player更新 + Study Recordを
+  // 1つのBatchで保存。
+  //
+  // 途中で片方だけ保存される事故を減らす。
+  // ----------------------------------------------------------
 
-  await savePlayer();
+  const batch =
+    writeBatch(db);
 
-
-  // Firestore study record
-
-  const recordsRef =
-    collection(
+  const playerRef =
+    doc(
       db,
       "users",
-      currentUser.uid,
-      "studyRecords"
+      currentUser.uid
     );
 
-  await addDoc(
-    recordsRef,
-    {
-      userId:
+  const recordRef =
+    doc(
+      collection(
+        db,
+        "users",
         currentUser.uid,
+        "studyRecords"
+      )
+    );
 
-      subject,
+  const playerData = {
+    ...currentPlayer,
 
-      minutes:
-        safeMinutes,
+    uid:
+      currentUser.uid,
 
-      note:
-        String(note || "").trim(),
+    updatedAt:
+      serverTimestamp()
+  };
 
-      source,
+  const recordData = {
+    userId:
+      currentUser.uid,
 
-      date:
-        getJapanDateString(),
+    subject,
 
-      xp:
-        gainedXp,
+    subjectName:
+      getSubjectName(
+        subject
+      ),
 
-      coins:
-        gainedCoins,
+    minutes:
+      safeMinutes,
 
-      createdAt:
-        serverTimestamp()
+    note:
+      String(
+        note || ""
+      ).trim(),
+
+    source,
+
+    // 実際に勉強した日本日付
+    date:
+      recordDate,
+
+    // 記録した時点のシーズン
+    seasonId:
+      currentSeason,
+
+    xp:
+      gainedXp,
+
+    coins:
+      gainedCoins,
+
+    createdAt:
+      serverTimestamp()
+  };
+
+  batch.set(
+    playerRef,
+    playerData,
+    {
+      merge: true
     }
   );
 
+  batch.set(
+    recordRef,
+    recordData
+  );
+
+  await batch.commit();
+
+
+  // ----------------------------------------------------------
+  // UI
+  // ----------------------------------------------------------
 
   updatePlayerUI();
+
   updateStudyUI();
 
   await loadStudyHistory();
 
 
-  // Level up
+  // ----------------------------------------------------------
+  // Notifications
+  // ----------------------------------------------------------
 
   const newLevel =
     calculateLevel(
@@ -1438,27 +2098,51 @@ async function recordStudy(
     );
 
   if (
-    newLevel > oldLevel
+    newLevel >
+    oldLevel
   ) {
+
     showNotification(
       `🎉 LEVEL UP!! Lv.${oldLevel} → Lv.${newLevel}`
     );
   }
 
-  showNotification(
-    `📚 ${getSubjectName(subject)} +${safeMinutes}分 / +${gainedXp} XP / +${gainedCoins}🪙`
-  );
+  if (
+    currentPlayer.rank !==
+    oldRank
+  ) {
+
+    showNotification(
+      `🏆 RANK UP!! ${oldRank} → ${currentPlayer.rank}`
+    );
+  }
 
   return {
-    minutes: safeMinutes,
-    xp: gainedXp,
-    coins: gainedCoins
+    minutes:
+      safeMinutes,
+
+    xp:
+      gainedXp,
+
+    coins:
+      gainedCoins,
+
+    oldLevel,
+
+    newLevel,
+
+    oldRank,
+
+    newRank:
+      currentPlayer.rank,
+
+    recordDate
   };
 }
 
 
 // ============================================================
-// Manual study form
+// Manual Study Form
 // ============================================================
 
 function initializeStudyForm() {
@@ -1474,9 +2158,12 @@ function initializeStudyForm() {
   form.addEventListener(
     "submit",
     async event => {
+
       event.preventDefault();
 
-      if (studyRecordBusy) {
+      if (
+        studyRecordBusy
+      ) {
         return;
       }
 
@@ -1497,9 +2184,11 @@ function initializeStudyForm() {
       const note =
         getElement(
           "study-note"
-        )?.value || "";
+        )?.value ||
+        "";
 
-      studyRecordBusy = true;
+      studyRecordBusy =
+        true;
 
       const button =
         getElement(
@@ -1507,22 +2196,36 @@ function initializeStudyForm() {
         );
 
       if (button) {
-        button.disabled = true;
+
+        button.disabled =
+          true;
+
         button.textContent =
           "記録中...";
       }
 
       try {
-        await recordStudy(
-          subject,
-          minutes,
-          note,
-          "manual"
-        );
+
+        const result =
+          await recordStudy(
+            subject,
+            minutes,
+            note,
+            "manual"
+          );
 
         form.reset();
+
+        showNotification(
+          `📚 ${result.minutes}分記録！ +${result.xp} XP / +${result.coins}🪙`
+        );
+
       } catch (error) {
-        console.error(error);
+
+        console.error(
+          "Manual study error:",
+          error
+        );
 
         showError(
           "study-error",
@@ -1530,11 +2233,17 @@ function initializeStudyForm() {
             error
           )
         );
+
       } finally {
-        studyRecordBusy = false;
+
+        studyRecordBusy =
+          false;
 
         if (button) {
-          button.disabled = false;
+
+          button.disabled =
+            false;
+
           button.textContent =
             "勉強を記録する";
         }
@@ -1545,7 +2254,7 @@ function initializeStudyForm() {
 
 
 // ============================================================
-// Study history
+// Study History
 // ============================================================
 
 async function loadStudyHistory() {
@@ -1571,6 +2280,7 @@ async function loadStudyHistory() {
     </p>`;
 
   try {
+
     const recordsRef =
       collection(
         db,
@@ -1582,21 +2292,25 @@ async function loadStudyHistory() {
     const q =
       query(
         recordsRef,
+
         orderBy(
           "createdAt",
           "desc"
         ),
-        limit(50)
+
+        limit(100)
       );
 
     const snapshot =
       await getDocs(q);
 
-    list.innerHTML = "";
+    list.innerHTML =
+      "";
 
     if (
       snapshot.empty
     ) {
+
       list.innerHTML =
         `<p class="empty-message">
           まだ勉強記録がありません。
@@ -1607,6 +2321,7 @@ async function loadStudyHistory() {
 
     snapshot.forEach(
       record => {
+
         const data =
           record.data();
 
@@ -1621,22 +2336,52 @@ async function loadStudyHistory() {
         item.innerHTML = `
           <div>
             <strong>
-              ${getSubjectName(data.subject)}
+              ${escapeHtml(
+                getSubjectName(
+                  data.subject
+                )
+              )}
             </strong>
+
             <span>
-              ${Number(data.minutes || 0)}分
+              ${Number(
+                data.minutes || 0
+              )}分
             </span>
           </div>
 
           <div>
-            +${Number(data.xp || 0)} XP
+            +${Number(
+              data.xp || 0
+            )} XP
             /
-            +${Number(data.coins || 0)}🪙
+            +${Number(
+              data.coins || 0
+            )}🪙
           </div>
 
           <small>
-            ${data.date || ""}
-            ${data.note ? ` / ${escapeHtml(data.note)}` : ""}
+            ${escapeHtml(
+              data.date || ""
+            )}
+
+            ${
+              data.createdAt
+                ? ` / ${escapeHtml(
+                    formatDateTime(
+                      data.createdAt
+                    )
+                  )}`
+                : ""
+            }
+
+            ${
+              data.note
+                ? ` / ${escapeHtml(
+                    data.note
+                  )}`
+                : ""
+            }
           </small>
         `;
 
@@ -1645,7 +2390,9 @@ async function loadStudyHistory() {
         );
       }
     );
+
   } catch (error) {
+
     console.error(
       "Study history error:",
       error
@@ -1660,20 +2407,6 @@ async function loadStudyHistory() {
 
 
 // ============================================================
-// HTML escape
-// ============================================================
-
-function escapeHtml(value) {
-  return String(value || "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-
-// ============================================================
 // Study UI
 // ============================================================
 
@@ -1682,7 +2415,10 @@ function updateStudyUI() {
     return;
   }
 
+  populateStudySubjectSelect();
+
   updateSubjectLevelUI();
+
   updateTimerDisplay();
 }
 
@@ -1692,21 +2428,25 @@ function updateStudyUI() {
 // ============================================================
 
 function getTimerSeconds() {
+
   let seconds =
     Number(
-      timerState.accumulatedSeconds || 0
+      timerState.accumulatedSeconds ||
+      0
     );
 
   if (
     timerState.running &&
     timerState.startedAt
   ) {
+
     seconds +=
       Math.max(
         0,
-        (Date.now() -
-          timerState.startedAt) /
-          1000
+        (
+          Date.now() -
+          timerState.startedAt
+        ) / 1000
       );
   }
 
@@ -1715,7 +2455,30 @@ function getTimerSeconds() {
   );
 }
 
+
+function getTimerSegmentSeconds() {
+
+  if (
+    !timerState.running ||
+    !timerState.segmentStartedAt
+  ) {
+    return 0;
+  }
+
+  return Math.max(
+    0,
+    Math.floor(
+      (
+        Date.now() -
+        timerState.segmentStartedAt
+      ) / 1000
+    )
+  );
+}
+
+
 function formatTimer(seconds) {
+
   const value =
     Math.max(
       0,
@@ -1750,6 +2513,7 @@ function formatTimer(seconds) {
     .join(":");
 }
 
+
 function updateTimerDisplay() {
   setText(
     "study-timer-display",
@@ -1759,21 +2523,55 @@ function updateTimerDisplay() {
   );
 }
 
+
+// ============================================================
+// Timer Start
+// ============================================================
+
 function startTimer() {
+
   if (
     timerState.running
   ) {
     return;
   }
 
+  const subject =
+    getElement(
+      "study-subject"
+    )?.value;
+
+  if (!subject) {
+
+    showNotification(
+      "⚠️ 先に教科を選択してください。"
+    );
+
+    return;
+  }
+
+  const now =
+    Date.now();
+
+  const today =
+    getJapanDateString(
+      new Date(now)
+    );
+
   timerState.running =
     true;
 
   timerState.startedAt =
-    Date.now();
+    now;
 
   timerState.lastJapanDate =
-    getJapanDateString();
+    today;
+
+  timerState.segmentStartedAt =
+    now;
+
+  timerState.segmentJapanDate =
+    today;
 
   clearInterval(
     timerInterval
@@ -1792,7 +2590,15 @@ function startTimer() {
   );
 }
 
-function pauseTimer() {
+
+// ============================================================
+// Timer Pause
+// ============================================================
+
+function pauseTimer(
+  silent = false
+) {
+
   if (
     !timerState.running
   ) {
@@ -1801,9 +2607,10 @@ function pauseTimer() {
 
   const elapsed =
     Math.floor(
-      (Date.now() -
-        timerState.startedAt) /
-        1000
+      (
+        Date.now() -
+        timerState.startedAt
+      ) / 1000
     );
 
   timerState.accumulatedSeconds +=
@@ -1818,6 +2625,12 @@ function pauseTimer() {
   timerState.startedAt =
     null;
 
+  timerState.segmentStartedAt =
+    null;
+
+  timerState.segmentJapanDate =
+    null;
+
   clearInterval(
     timerInterval
   );
@@ -1827,12 +2640,23 @@ function pauseTimer() {
 
   updateTimerDisplay();
 
-  showNotification(
-    "⏸️ タイマー一時停止"
-  );
+  if (!silent) {
+
+    showNotification(
+      "⏸️ タイマー一時停止"
+    );
+  }
 }
 
-function resetTimer() {
+
+// ============================================================
+// Timer Reset
+// ============================================================
+
+function resetTimer(
+  silent = false
+) {
+
   timerState.running =
     false;
 
@@ -1845,6 +2669,15 @@ function resetTimer() {
   timerState.lastJapanDate =
     getJapanDateString();
 
+  timerState.segmentStartedAt =
+    null;
+
+  timerState.segmentJapanDate =
+    null;
+
+  timerState.midnightBusy =
+    false;
+
   clearInterval(
     timerInterval
   );
@@ -1854,13 +2687,269 @@ function resetTimer() {
 
   updateTimerDisplay();
 
-  showNotification(
-    "🔄 タイマーをリセットしました。"
-  );
+  if (!silent) {
+
+    showNotification(
+      "🔄 タイマーをリセットしました。"
+    );
+  }
 }
 
+
+// ============================================================
+// Midnight Timer
+//
+// ★ここが今回の最大強化部分
+//
+// 00:00を検知したら:
+//
+// ① 前日00:00〜23:59:59までを計算
+// ② 前日分だけ保存
+// ③ 新しい日の00:00を新しい区間開始地点にする
+// ④ 00:00後に経過した秒数を新しい日のタイマーへ持ち越す
+// ⑤ タイマーは自動継続
+//
+// これにより日付を跨いでも
+// 前日の勉強と当日の勉強が混ざらない。
+// ============================================================
+
+async function handleMidnightTimer() {
+
+  if (
+    !timerState.running ||
+    timerState.midnightBusy
+  ) {
+    return;
+  }
+
+  const now =
+    Date.now();
+
+  const currentDate =
+    getJapanDateString(
+      new Date(now)
+    );
+
+  const oldDate =
+    timerState.segmentJapanDate ||
+    timerState.lastJapanDate;
+
+  if (
+    !oldDate ||
+    oldDate === currentDate
+  ) {
+    timerState.lastJapanDate =
+      currentDate;
+
+    return;
+  }
+
+  timerState.midnightBusy =
+    true;
+
+  try {
+
+    const subject =
+      getElement(
+        "study-subject"
+      )?.value;
+
+    if (!subject) {
+
+      /*
+        教科が消えていた場合は
+        安全のためタイマー停止。
+      */
+
+      pauseTimer(true);
+
+      showNotification(
+        "⚠️ 日付変更時に教科が見つからなかったためタイマーを停止しました。"
+      );
+
+      return;
+    }
+
+
+    // --------------------------------------------------------
+    // 前日の00:00
+    // --------------------------------------------------------
+
+    const previousMidnight =
+      japanMidnightTimestamp(
+        oldDate
+      );
+
+
+    // --------------------------------------------------------
+    // 今日の00:00
+    // --------------------------------------------------------
+
+    const currentMidnight =
+      japanMidnightTimestamp(
+        currentDate
+      );
+
+
+    /*
+      本来の前日区間終了地点。
+      setIntervalの検知が数秒遅れても、
+      ここで正確に00:00を境界にする。
+    */
+
+    const previousSegmentStart =
+      timerState.segmentStartedAt ||
+      previousMidnight;
+
+
+    const previousSegmentEnd =
+      currentMidnight;
+
+
+    const previousSeconds =
+      Math.max(
+        0,
+        Math.floor(
+          (
+            previousSegmentEnd -
+            previousSegmentStart
+          ) / 1000
+        )
+      );
+
+
+    /*
+      今日00:00から現在まで。
+      これを新しいタイマー区間として保持。
+    */
+
+    const todaySeconds =
+      Math.max(
+        0,
+        Math.floor(
+          (
+            now -
+            currentMidnight
+          ) / 1000
+        )
+      );
+
+
+    // --------------------------------------------------------
+    // 前日分を保存
+    // --------------------------------------------------------
+
+    const previousMinutes =
+      Math.floor(
+        previousSeconds / 60
+      );
+
+    if (
+      previousMinutes >= 1
+    ) {
+
+      await recordStudy(
+        subject,
+        previousMinutes,
+        "日付変更による自動記録",
+        "timer-midnight",
+        {
+          recordDate:
+            oldDate
+        }
+      );
+    }
+
+
+    // --------------------------------------------------------
+    // 新しい日のタイマーへ切り替え
+    //
+    // 秒未満/分未満の部分も捨てない。
+    // --------------------------------------------------------
+
+    timerState.accumulatedSeconds =
+      todaySeconds;
+
+    timerState.startedAt =
+      now;
+
+    timerState.segmentStartedAt =
+      currentMidnight;
+
+    timerState.segmentJapanDate =
+      currentDate;
+
+    timerState.lastJapanDate =
+      currentDate;
+
+
+    updateTimerDisplay();
+
+    showNotification(
+      `🌅 ${currentDate}になりました。前日分を保存してタイマーを継続します！`
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Midnight timer error:",
+      error
+    );
+
+    showNotification(
+      "⚠️ 日付変更時の自動保存に失敗しました。"
+    );
+
+  } finally {
+
+    timerState.midnightBusy =
+      false;
+  }
+}
+
+
+// ============================================================
+// Timer Tick
+// ============================================================
+
+function handleTimerTick() {
+
+  if (
+    !timerState.running
+  ) {
+    return;
+  }
+
+  const today =
+    getJapanDateString();
+
+  if (
+    timerState.segmentJapanDate &&
+    today !==
+      timerState.segmentJapanDate
+  ) {
+
+    handleMidnightTimer();
+
+    return;
+  }
+
+  timerState.lastJapanDate =
+    today;
+
+  updateTimerDisplay();
+}
+
+
+// ============================================================
+// Save Timer Study
+// ============================================================
+
 async function saveTimerStudy() {
-  if (studyRecordBusy) {
+
+  if (
+    studyRecordBusy
+  ) {
     return;
   }
 
@@ -1872,7 +2961,10 @@ async function saveTimerStudy() {
       seconds / 60
     );
 
-  if (minutes < 1) {
+  if (
+    minutes < 1
+  ) {
+
     showNotification(
       "⚠️ 1分以上勉強してから記録してください。"
     );
@@ -1886,6 +2978,7 @@ async function saveTimerStudy() {
     )?.value;
 
   if (!subject) {
+
     showNotification(
       "⚠️ 先に教科を選択してください。"
     );
@@ -1893,7 +2986,8 @@ async function saveTimerStudy() {
     return;
   }
 
-  studyRecordBusy = true;
+  studyRecordBusy =
+    true;
 
   const button =
     getElement(
@@ -1901,13 +2995,23 @@ async function saveTimerStudy() {
     );
 
   if (button) {
-    button.disabled = true;
+
+    button.disabled =
+      true;
+
     button.textContent =
       "記録中...";
   }
 
   try {
-    pauseTimer();
+
+    /*
+      保存時にタイマーを止める。
+    */
+
+    pauseTimer(
+      true
+    );
 
     await recordStudy(
       subject,
@@ -1916,106 +3020,41 @@ async function saveTimerStudy() {
       "timer"
     );
 
-    resetTimer();
+    resetTimer(
+      true
+    );
+
+    showNotification(
+      `⏱️ ${minutes}分保存！ +${minutes} XP / +${minutes}🪙`
+    );
+
   } catch (error) {
-    console.error(error);
+
+    console.error(
+      "Timer save error:",
+      error
+    );
 
     showNotification(
       firebaseErrorMessage(
         error
       )
     );
+
   } finally {
-    studyRecordBusy = false;
+
+    studyRecordBusy =
+      false;
 
     if (button) {
-      button.disabled = false;
+
+      button.disabled =
+        false;
+
       button.textContent =
         "タイマーの勉強時間を記録";
     }
   }
-}
-
-function handleTimerTick() {
-  const today =
-    getJapanDateString();
-
-  // 日本時間の日付が変わったら
-  // それまでの時間を自動保存
-  if (
-    timerState.running &&
-    timerState.lastJapanDate &&
-    today !==
-      timerState.lastJapanDate
-  ) {
-    handleMidnightTimer();
-    return;
-  }
-
-  timerState.lastJapanDate =
-    today;
-
-  updateTimerDisplay();
-}
-
-async function handleMidnightTimer() {
-  if (
-    !timerState.running
-  ) {
-    return;
-  }
-
-  const seconds =
-    getTimerSeconds();
-
-  const minutes =
-    Math.floor(
-      seconds / 60
-    );
-
-  // 日付変更前の時間を
-  // 現在選択中の教科で保存
-  if (
-    minutes >= 1 &&
-    !studyRecordBusy
-  ) {
-    const subject =
-      getElement(
-        "study-subject"
-      )?.value;
-
-    if (subject) {
-      studyRecordBusy =
-        true;
-
-      try {
-        pauseTimer();
-
-        await recordStudy(
-          subject,
-          minutes,
-          "日付変更による自動記録",
-          "timer-midnight"
-        );
-
-        resetTimer();
-
-        // 新しい日のタイマーを自動再開
-        startTimer();
-      } catch (error) {
-        console.error(
-          "Midnight timer save error:",
-          error
-        );
-      } finally {
-        studyRecordBusy =
-          false;
-      }
-    }
-  }
-
-  timerState.lastJapanDate =
-    getJapanDateString();
 }
 
 
@@ -2024,6 +3063,7 @@ async function handleMidnightTimer() {
 // ============================================================
 
 function initializeTimer() {
+
   const start =
     getElement(
       "study-timer-start"
@@ -2045,6 +3085,7 @@ function initializeTimer() {
     );
 
   if (start) {
+
     start.addEventListener(
       "click",
       startTimer
@@ -2052,6 +3093,7 @@ function initializeTimer() {
   }
 
   if (pause) {
+
     pause.addEventListener(
       "click",
       pauseTimer
@@ -2059,6 +3101,7 @@ function initializeTimer() {
   }
 
   if (reset) {
+
     reset.addEventListener(
       "click",
       resetTimer
@@ -2066,6 +3109,7 @@ function initializeTimer() {
   }
 
   if (save) {
+
     save.addEventListener(
       "click",
       saveTimerStudy
@@ -2077,10 +3121,11 @@ function initializeTimer() {
 
 
 // ============================================================
-// Quest tabs
+// Quest Tabs
 // ============================================================
 
 function initializeQuestTabs() {
+
   const buttons =
     document.querySelectorAll(
       "[data-quest-tab]"
@@ -2088,23 +3133,29 @@ function initializeQuestTabs() {
 
   buttons.forEach(
     button => {
+
       if (
-        button.dataset.questInitialized
+        button.dataset
+          .questInitialized
       ) {
         return;
       }
 
-      button.dataset.questInitialized =
+      button.dataset
+        .questInitialized =
         "true";
 
       button.addEventListener(
         "click",
         () => {
+
           const tab =
-            button.dataset.questTab;
+            button.dataset
+              .questTab;
 
           buttons.forEach(
             btn => {
+
               btn.classList.toggle(
                 "active",
                 btn === button
@@ -2116,14 +3167,17 @@ function initializeQuestTabs() {
             .querySelectorAll(
               ".quest-tab-content"
             )
-            .forEach(content => {
-              content.classList.add(
-                "hidden"
-              );
+            .forEach(
+              content => {
 
-              content.style.display =
-                "none";
-            });
+                content.classList.add(
+                  "hidden"
+                );
+
+                content.style.display =
+                  "none";
+              }
+            );
 
           const target =
             getElement(
@@ -2134,6 +3188,7 @@ function initializeQuestTabs() {
             );
 
           if (target) {
+
             target.classList.remove(
               "hidden"
             );
@@ -2153,13 +3208,19 @@ function initializeQuestTabs() {
 // ============================================================
 
 function updateRankUI() {
+
   if (!currentPlayer) {
     return;
   }
 
+  normalizeSeasonData(
+    currentPlayer
+  );
+
   const rank =
     calculateRank(
-      currentPlayer.seasonStudyMinutes || 0
+      currentPlayer.seasonStudyMinutes ||
+      0
     );
 
   setText(
@@ -2175,7 +3236,8 @@ function updateRankUI() {
   setText(
     "rank-study-time",
     formatMinutes(
-      currentPlayer.seasonStudyMinutes || 0
+      currentPlayer.seasonStudyMinutes ||
+      0
     )
   );
 }
@@ -2188,12 +3250,14 @@ function updateRankUI() {
 function showNotification(
   message
 ) {
+
   const notification =
     getElement(
       "notification"
     );
 
   if (!notification) {
+
     console.log(
       "[NOTIFICATION]",
       message
@@ -2219,12 +3283,14 @@ function showNotification(
   showNotification.timeout =
     setTimeout(
       () => {
+
         notification.classList.add(
           "hidden"
         );
 
         notification.style.display =
           "none";
+
       },
       3000
     );
@@ -2232,16 +3298,18 @@ function showNotification(
 
 
 // ============================================================
-// Level up modal
+// Level Up Modal
 // ============================================================
 
 function closeLevelUpModal() {
+
   const modal =
     getElement(
       "level-up-modal"
     );
 
   if (modal) {
+
     modal.classList.add(
       "hidden"
     );
@@ -2251,13 +3319,16 @@ function closeLevelUpModal() {
   }
 }
 
+
 function initializeLevelUpModal() {
+
   const close =
     getElement(
       "level-up-close"
     );
 
   if (close) {
+
     close.addEventListener(
       "click",
       closeLevelUpModal
@@ -2271,6 +3342,7 @@ function initializeLevelUpModal() {
 // ============================================================
 
 function initializeLoginForm() {
+
   const form =
     getElement(
       "login-form"
@@ -2283,6 +3355,7 @@ function initializeLoginForm() {
   form.addEventListener(
     "submit",
     async event => {
+
       event.preventDefault();
 
       clearError(
@@ -2299,9 +3372,11 @@ function initializeLoginForm() {
       const password =
         getElement(
           "login-password"
-        )?.value || "";
+        )?.value ||
+        "";
 
       if (!userId) {
+
         showError(
           "login-error",
           "ユーザーIDを入力してください。"
@@ -2311,6 +3386,7 @@ function initializeLoginForm() {
       }
 
       if (!password) {
+
         showError(
           "login-error",
           "パスワードを入力してください。"
@@ -2325,6 +3401,7 @@ function initializeLoginForm() {
         );
 
       if (button) {
+
         button.disabled =
           true;
 
@@ -2333,16 +3410,21 @@ function initializeLoginForm() {
       }
 
       try {
+
         await signInWithEmailAndPassword(
           auth,
-          userIdToEmail(userId),
+          userIdToEmail(
+            userId
+          ),
           password
         );
 
         console.log(
           "Login successful."
         );
+
       } catch (error) {
+
         console.error(
           "Login error:",
           error
@@ -2354,8 +3436,11 @@ function initializeLoginForm() {
             error
           )
         );
+
       } finally {
+
         if (button) {
+
           button.disabled =
             false;
 
@@ -2373,6 +3458,7 @@ function initializeLoginForm() {
 // ============================================================
 
 function initializeRegisterForm() {
+
   const form =
     getElement(
       "register-form"
@@ -2385,6 +3471,7 @@ function initializeRegisterForm() {
   form.addEventListener(
     "submit",
     async event => {
+
       event.preventDefault();
 
       clearError(
@@ -2405,18 +3492,21 @@ function initializeRegisterForm() {
       const password =
         getElement(
           "register-password"
-        )?.value || "";
+        )?.value ||
+        "";
 
       const passwordConfirm =
         getElement(
           "register-password-confirm"
-        )?.value || "";
+        )?.value ||
+        "";
 
       const displayName =
         String(
           getElement(
             "register-display-name"
-          )?.value || ""
+          )?.value ||
+            ""
         ).trim();
 
       const course =
@@ -2435,6 +3525,7 @@ function initializeRegisterForm() {
             input.value
         );
 
+
       // User ID
 
       if (
@@ -2442,6 +3533,7 @@ function initializeRegisterForm() {
           userId
         )
       ) {
+
         showError(
           "register-error",
           "ユーザーIDは3〜30文字の英数字・_・-で入力してください。"
@@ -2450,11 +3542,13 @@ function initializeRegisterForm() {
         return;
       }
 
+
       // Password
 
       if (
         password.length < 6
       ) {
+
         showError(
           "register-error",
           "パスワードは6文字以上にしてください。"
@@ -2463,10 +3557,12 @@ function initializeRegisterForm() {
         return;
       }
 
+
       if (
         password !==
         passwordConfirm
       ) {
+
         showError(
           "register-error",
           "パスワードが一致していません。"
@@ -2475,7 +3571,9 @@ function initializeRegisterForm() {
         return;
       }
 
+
       if (!displayName) {
+
         showError(
           "register-error",
           "表示名を入力してください。"
@@ -2484,9 +3582,11 @@ function initializeRegisterForm() {
         return;
       }
 
+
       if (
         subjects.length === 0
       ) {
+
         showError(
           "subject-error",
           "受験教科を1つ以上選択してください。"
@@ -2495,12 +3595,14 @@ function initializeRegisterForm() {
         return;
       }
 
+
       const button =
         getElement(
           "register-button"
         );
 
       if (button) {
+
         button.disabled =
           true;
 
@@ -2508,11 +3610,15 @@ function initializeRegisterForm() {
           "冒険者登録中...";
       }
 
+
       try {
+
         const credential =
           await createUserWithEmailAndPassword(
             auth,
-            userIdToEmail(userId),
+            userIdToEmail(
+              userId
+            ),
             password
           );
 
@@ -2521,8 +3627,11 @@ function initializeRegisterForm() {
             credential.user,
             {
               userId,
+
               displayName,
+
               course,
+
               subjects
             }
           );
@@ -2534,13 +3643,17 @@ function initializeRegisterForm() {
           player;
 
         updatePlayerUI();
+
         populateStudySubjectSelect();
+
         showMainScreen();
 
         showNotification(
           "🎉 冒険者登録完了！"
         );
+
       } catch (error) {
+
         console.error(
           "Register error:",
           error
@@ -2552,8 +3665,11 @@ function initializeRegisterForm() {
             error
           )
         );
+
       } finally {
+
         if (button) {
+
           button.disabled =
             false;
 
@@ -2571,6 +3687,7 @@ function initializeRegisterForm() {
 // ============================================================
 
 function initializeSettings() {
+
   const displayNameInput =
     getElement(
       "settings-display-name"
@@ -2581,19 +3698,29 @@ function initializeSettings() {
       "save-settings-button"
     );
 
+  /*
+    Auth observer後にも
+    currentPlayerが入るため、
+    初期値設定は保存時にも行う。
+  */
+
   if (
     displayNameInput &&
     currentPlayer
   ) {
+
     displayNameInput.value =
       currentPlayer.displayName ||
       "";
   }
 
+
   if (saveButton) {
+
     saveButton.addEventListener(
       "click",
       async () => {
+
         if (
           !currentPlayer ||
           !currentUser
@@ -2608,6 +3735,7 @@ function initializeSettings() {
           ).trim();
 
         if (!value) {
+
           showNotification(
             "表示名を入力してください。"
           );
@@ -2616,6 +3744,7 @@ function initializeSettings() {
         }
 
         try {
+
           currentPlayer.displayName =
             value;
 
@@ -2626,7 +3755,9 @@ function initializeSettings() {
           showNotification(
             "✅ 設定を保存しました。"
           );
+
         } catch (error) {
+
           console.error(
             error
           );
@@ -2648,6 +3779,7 @@ function initializeSettings() {
 // ============================================================
 
 function initializeLogout() {
+
   const button =
     getElement(
       "logout-button"
@@ -2660,8 +3792,12 @@ function initializeLogout() {
   button.addEventListener(
     "click",
     async () => {
+
       try {
-        resetTimer();
+
+        resetTimer(
+          true
+        );
 
         await signOut(
           auth
@@ -2678,7 +3814,9 @@ function initializeLogout() {
         showNotification(
           "ログアウトしました。"
         );
+
       } catch (error) {
+
         console.error(
           error
         );
@@ -2695,10 +3833,11 @@ function initializeLogout() {
 
 
 // ============================================================
-// Auth observer
+// Auth Observer
 // ============================================================
 
 function initializeAuthObserver() {
+
   if (
     authObserverStarted
   ) {
@@ -2711,17 +3850,23 @@ function initializeAuthObserver() {
   onAuthStateChanged(
     auth,
     async user => {
+
       console.log(
         "Auth state changed:",
         user
       );
 
       if (!user) {
+
         currentUser =
           null;
 
         currentPlayer =
           null;
+
+        resetTimer(
+          true
+        );
 
         showLoginScreen();
 
@@ -2732,15 +3877,20 @@ function initializeAuthObserver() {
         user;
 
       try {
+
         let player =
           await loadPlayer(
             user
           );
 
-        // 既存Authユーザーに
+
+        // ------------------------------------------------------
+        // Authユーザーは存在するが
         // Firestoreプロフィールがない場合
-        // 自動で /users/{uid} を作る
+        // ------------------------------------------------------
+
         if (!player) {
+
           const userId =
             normalizeUserId(
               user.email
@@ -2753,6 +3903,7 @@ function initializeAuthObserver() {
               user,
               {
                 userId,
+
                 displayName:
                   userId ||
                   "プレイヤー"
@@ -2760,12 +3911,27 @@ function initializeAuthObserver() {
             );
         }
 
+
         currentPlayer =
           player;
 
         normalizeDailyData(
           currentPlayer
         );
+
+        normalizeSeasonData(
+          currentPlayer
+        );
+
+        currentPlayer.level =
+          calculateLevel(
+            currentPlayer.xp || 0
+          );
+
+        /*
+          日付・シーズンが変わっていた場合の
+          正規化をFirestoreにも保存。
+        */
 
         await savePlayer();
 
@@ -2775,11 +3941,15 @@ function initializeAuthObserver() {
 
         showMainScreen();
 
+        await loadStudyHistory();
+
         console.log(
           "Player loaded successfully:",
           currentPlayer
         );
+
       } catch (error) {
+
         console.error(
           "Player loading error:",
           error
@@ -2788,8 +3958,6 @@ function initializeAuthObserver() {
         currentPlayer =
           null;
 
-        // Auth自体は成功しているので
-        // Firestoreエラーを明確に表示
         showLoginScreen();
 
         showError(
@@ -2805,42 +3973,48 @@ function initializeAuthObserver() {
 
 
 // ============================================================
-// Bottom navigation
+// Bottom Navigation
 // ============================================================
 
 function initializeBottomNavigation() {
+
   document
     .querySelectorAll(
       "[data-screen]"
     )
-    .forEach(button => {
-      if (
-        button.dataset
-          .navigationInitialized
-      ) {
-        return;
-      }
+    .forEach(
+      button => {
 
-      button.dataset
-        .navigationInitialized =
-        "true";
-
-      button.addEventListener(
-        "click",
-        () => {
-          const screenId =
-            button.dataset.screen;
-
-          if (!screenId) {
-            return;
-          }
-
-          showAppScreen(
-            screenId
-          );
+        if (
+          button.dataset
+            .navigationInitialized
+        ) {
+          return;
         }
-      );
-    });
+
+        button.dataset
+          .navigationInitialized =
+          "true";
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const screenId =
+              button.dataset
+                .screen;
+
+            if (!screenId) {
+              return;
+            }
+
+            showAppScreen(
+              screenId
+            );
+          }
+        );
+      }
+    );
 }
 
 
@@ -2849,6 +4023,7 @@ function initializeBottomNavigation() {
 // ============================================================
 
 function initializeAuthButtons() {
+
   const showRegister =
     getElement(
       "show-register-button"
@@ -2859,10 +4034,13 @@ function initializeAuthButtons() {
       "show-login-button"
     );
 
+
   if (showRegister) {
+
     showRegister.addEventListener(
       "click",
       () => {
+
         clearError(
           "register-error"
         );
@@ -2876,10 +4054,13 @@ function initializeAuthButtons() {
     );
   }
 
+
   if (showLogin) {
+
     showLogin.addEventListener(
       "click",
       () => {
+
         clearError(
           "login-error"
         );
@@ -2896,15 +4077,26 @@ function initializeAuthButtons() {
 // ============================================================
 
 function boot() {
+
   if (booted) {
     return;
   }
 
-  booted = true;
+  booted =
+    true;
 
   console.log(
-    "受験RPG booting..."
+    "======================================"
   );
+
+  console.log(
+    "受験RPG STUDY SYSTEM COMPLETE"
+  );
+
+  console.log(
+    "======================================"
+  );
+
 
   if (
     !initializeFirebase()
@@ -2912,21 +4104,29 @@ function boot() {
     return;
   }
 
+
   initializeLoginForm();
+
   initializeRegisterForm();
 
   initializeTimer();
+
   initializeStudyForm();
 
   initializeBottomNavigation();
+
   initializeAuthButtons();
 
   initializeLogout();
+
   initializeLevelUpModal();
+
+  initializeSettings();
 
   initializeAuthObserver();
 
   showLoginScreen();
+
 
   console.log(
     "受験RPG boot complete."
@@ -2942,10 +4142,16 @@ if (
   document.readyState ===
   "loading"
 ) {
+
   document.addEventListener(
     "DOMContentLoaded",
-    boot
+    boot,
+    {
+      once: true
+    }
   );
+
 } else {
+
   boot();
 }
