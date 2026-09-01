@@ -1,5 +1,15 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+// =====================================================
+// 受験RPG - Firebase Configuration
+// =====================================================
+
+import { initializeApp } from
+  "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+import { getAuth } from
+  "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+import { getFirestore } from
+  "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCggQfYsVVlngak6EJLS74OB3ADV4vFjyo",
@@ -13,12 +23,12 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-let analytics = null;
+const auth = getAuth(app);
 
-try {
-  analytics = getAnalytics(app);
-} catch (error) {
-  console.warn("Analytics initialization skipped:", error);
-}
+const db = getFirestore(app);
 
-export { app, analytics };
+export {
+  app,
+  auth,
+  db
+};
