@@ -5101,8 +5101,9 @@ async function register(event) {
 async function login(event) {
   event.preventDefault();
 
-  $("login-error").textContent =
-    "";
+  const errorEl = $("login-error");
+
+  errorEl.textContent = "ログイン処理中...";
 
   const userId =
     normalizeUserId(
@@ -5112,6 +5113,12 @@ async function login(event) {
   const password =
     $("login-password").value;
 
+  if (!userId || !password) {
+    errorEl.textContent =
+      "IDとパスワードを入力してください。";
+    return;
+  }
+
   try {
 
     await signInWithEmailAndPassword(
@@ -5120,37 +5127,18 @@ async function login(event) {
       password
     );
 
+    errorEl.textContent =
+      "Firebase認証成功！アプリを起動しています...";
+
   } catch (error) {
+
     console.error(error);
 
-    $("login-error").textContent =
-      "ユーザーIDまたはパスワードが違います。";
+    errorEl.textContent =
+      `ログイン失敗：${error.code || error.message}`;
+
   }
 }
-
-function firebaseAuthError(error) {
-  switch (error.code) {
-    case "auth/email-already-in-use":
-      return "そのユーザーIDはすでに使用されています。";
-
-    case "auth/invalid-credential":
-      return "入力内容を確認してください。";
-
-    case "auth/weak-password":
-      return "パスワードが弱すぎます。";
-
-    case "auth/network-request-failed":
-      return "ネットワークエラーです。";
-
-    default:
-      return "登録に失敗しました。";
-  }
-}
-
-async function logout() {
-  await signOut(auth);
-}
-
 
 /* =========================================================
    LOAD PLAYER
