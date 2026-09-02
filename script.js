@@ -447,24 +447,6 @@ const SHOP_ITEMS = [
   }
 ];
 
-const SHOP_BACKGROUNDS = [
-  {
-    id: "bg-abyss",
-    name: "深淵",
-    price: 1500
-  },
-  {
-    id: "bg-royal",
-    name: "ロイヤル",
-    price: 3000
-  },
-  {
-    id: "bg-cosmic",
-    name: "コズミック",
-    price: 6000
-  }
-];
-
 
 // ============================================================
 // TITLES
@@ -785,53 +767,41 @@ function closeLevelUp() {
 function showAppScreen(id) {
   if (!APP_SCREEN_IDS.includes(id)) return;
 
-  APP_SCREEN_IDS.forEach(screenId => {
-    const screen = $(screenId);
-
-    if (!screen) return;
-
-    screen.classList.toggle(
-      "hidden",
-      screenId !== id
-    );
+  const current = APP_SCREEN_IDS.find(screenId => {
+    const el = $(screenId);
+    return el && !el.classList.contains("hidden");
   });
 
-  document
-    .querySelectorAll("[data-screen]")
-    .forEach(button => {
-      button.classList.toggle(
-        "active",
-        button.dataset.screen === id
-      );
-    });
+  if (current === id) return;
+
+  APP_SCREEN_IDS.forEach(screenId => {
+    const screen = $(screenId);
+    if (!screen) return;
+    screen.classList.remove("rpg-screen-active", "rpg-screen-leaving", "rpg-screen-enter");
+  });
+
+  if (current && $(current)) {
+    const oldScreen = $(current);
+    oldScreen.classList.add("rpg-screen-leaving");
+    oldScreen.classList.add("hidden");
+  }
 
   const target = $(id);
-
   if (target) {
-    target.classList.remove("rpg-screen-enter");
-    void target.offsetWidth;
-    target.classList.add("rpg-screen-enter");
-
-    setTimeout(() => {
-      target.classList.remove("rpg-screen-enter");
-    }, 350);
+    target.classList.remove("hidden");
+    target.classList.add("rpg-screen-active", "rpg-screen-enter");
+    setTimeout(() => target.classList.remove("rpg-screen-enter"), 420);
   }
 
-  if (id === "quest-screen") {
-    renderQuestScreen();
-  }
+  document.querySelectorAll("[data-screen]").forEach(button => {
+    button.classList.toggle("active", button.dataset.screen === id);
+    button.setAttribute("aria-current", button.dataset.screen === id ? "page" : "false");
+  });
 
-  if (id === "party-screen") {
-    renderPartyScreen();
-  }
-
-  if (id === "rank-screen") {
-    renderRankScreen();
-  }
-
-  if (id === "other-screen") {
-    renderOtherScreen();
-  }
+  if (id === "quest-screen") renderQuestScreen();
+  if (id === "party-screen") renderPartyScreen();
+  if (id === "rank-screen") renderRankScreen();
+  if (id === "other-screen") renderOtherScreen();
 }
 
 
@@ -4107,81 +4077,78 @@ async function inviteToParty(event) {
 // ============================================================
 
 async function renderPartyRequests() {
-  const list =
-    $("friend-request-list");
-
+  const list = $("friend-request-list");
   if (!list || !currentPlayer) return;
 
   try {
-    const q =
-      query(
-        collection(db, "requests"),
-        where("toUid", "==", currentPlayer.uid),
-        where("status", "==", "pending"),
-        limit(50)
-      );
+    const q = query(
+      collection(db, "requests"),
+      where("toUid", "==", currentPlayer.uid),
+      limit(100)
+    );
 
-    const snapshot =
-      await getDocs(q);
+    const snapshot = await getDocs(q);
+    const requests = snapshot.docs
+      .map(item => ({ id: item.id, ...item.data() }))
+      .filter(item => item.status === "pending" && (item.type === "friend" || item.type === "party"));
 
-    if (snapshot.empty) {
-      list.innerHTML =
-        `<p class="empty-message">申請はありません。</p>`;
+    if (!requests.length) {
+      list.innerHTML = `
+        <div class="rpg-request-empty">
+          <div class="rpg-empty-icon">📨</div>
+          <strong>新しい申請はありません</strong>
+          <small>フレンド申請やパーティー招待が届くとここに表示されます。</small>
+        </div>
+      `;
       return;
     }
 
-    list.innerHTML =
-      snapshot.docs
-        .map(item => {
-          const data =
-            item.data();
-
-          if (data.type !== "party") {
-            return "";
-          }
-
-          return `
-            <div class="rpg-card">
-              <strong>
-                ${escapeHtml(
-                  data.fromDisplayName ||
-                  data.fromUserId ||
-                  "冒険者"
-                )}
-              </strong>
-
-              <p>
-                パーティー招待
-              </p>
-
-              <button
-                type="button"
-                data-party-action="accept"
-                data-request-id="${escapeHtml(item.id)}"
-              >
-                参加
-              </button>
-
-              <button
-                type="button"
-                data-party-action="decline"
-                data-request-id="${escapeHtml(item.id)}"
-              >
-                拒否
-              </button>
+    list.innerHTML = requests.map(request => {
+      if (request.type === "friend") {
+        return `
+          <div class="rpg-request-card">
+            <div class="rpg-request-icon">👤</div>
+            <div class="rpg-request-main">
+              <strong>${escapeHtml(request.fromDisplayName || request.fromUserId || "冒険者")}</strong>
+              <small>@${escapeHtml(request.fromUserId || "-")} からフレンド申請</small>
+              <div class="rpg-request-actions">
+                <button type="button" class="primary-button" data-friend-action="accept" data-request-id="${escapeHtml(request.id)}">承認</button>
+                <button type="button" class="secondary-button" data-friend-action="decline" data-request-id="${escapeHtml(request.id)}">拒否</button>
+              </div>
             </div>
-          `;
-        })
-        .join("");
+          </div>
+        `;
+      }
 
+      if (request.type === "party") {
+        return `
+          <div class="rpg-request-card">
+            <div class="rpg-request-icon">⚔️</div>
+            <div class="rpg-request-main">
+              <strong>${escapeHtml(request.fromDisplayName || request.fromUserId || "冒険者")}</strong>
+              <small>@${escapeHtml(request.fromUserId || "-")} からパーティー招待</small>
+              <div class="rpg-request-actions">
+                <button type="button" class="primary-button" data-party-action="accept" data-request-id="${escapeHtml(request.id)}">参加</button>
+                <button type="button" class="secondary-button" data-party-action="decline" data-request-id="${escapeHtml(request.id)}">拒否</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      return "";
+    }).join("");
   } catch (error) {
     console.error(error);
-
-    list.innerHTML =
-      `<p class="empty-message">申請を読み込めませんでした。</p>`;
+    list.innerHTML = `
+      <div class="rpg-request-empty">
+        <div class="rpg-empty-icon">⚠️</div>
+        <strong>申請を読み込めませんでした</strong>
+        <small>Firestoreの権限またはネットワーク接続を確認してください。</small>
+      </div>
+    `;
   }
 }
-
 
 // ============================================================
 // ACCEPT PARTY REQUEST
@@ -4388,6 +4355,354 @@ async function leaveParty() {
 // ============================================================
 // FRIENDS
 // ============================================================
+
+function ensureFriendRequestUI() {
+  const list = $("friend-list");
+  if (!list || !currentPlayer) return;
+
+  if (!document.getElementById("friend-request-form-runtime")) {
+    const form = document.createElement("form");
+    form.id = "friend-request-form-runtime";
+    form.className = "rpg-friend-request-panel";
+    form.innerHTML = `
+      <div class="rpg-section-heading">
+        <div>
+          <strong>フレンドを追加</strong>
+          <small>相手のユーザーIDを入力してください</small>
+        </div>
+      </div>
+      <div class="rpg-friend-request-row">
+        <input
+          id="friend-request-user-id"
+          name="friendUserId"
+          type="text"
+          maxlength="30"
+          autocomplete="off"
+          placeholder="ユーザーID"
+        >
+        <button type="submit" class="primary-button">申請する</button>
+      </div>
+      <p id="friend-request-error-runtime" class="rpg-inline-error"></p>
+    `;
+    list.prepend(form);
+  }
+}
+
+async function sendFriendRequest(event) {
+  event.preventDefault();
+  if (!currentPlayer) return;
+
+  const input = $("friend-request-user-id");
+  const errorEl = $("friend-request-error-runtime");
+  const userId = (input?.value || "").trim().toLowerCase();
+
+  if (errorEl) errorEl.textContent = "";
+
+  if (!/^[A-Za-z0-9_-]{3,30}$/.test(userId)) {
+    if (errorEl) errorEl.textContent = "ユーザーIDは3〜30文字の英数字・_・-で入力してください。";
+    return;
+  }
+
+  if (userId === String(currentPlayer.userId || "").toLowerCase()) {
+    if (errorEl) errorEl.textContent = "自分自身には申請できません。";
+    return;
+  }
+
+  const button = event.submitter || event.currentTarget.querySelector("button[type=submit]");
+  if (button) button.disabled = true;
+
+  try {
+    const targetQuery = query(
+      collection(db, "users"),
+      where("userId", "==", userId),
+      limit(1)
+    );
+    const targetSnapshot = await getDocs(targetQuery);
+
+    if (targetSnapshot.empty) {
+      throw new Error("そのユーザーIDの冒険者は見つかりません。");
+    }
+
+    const targetDoc = targetSnapshot.docs[0];
+    const target = targetDoc.data();
+    const targetUid = targetDoc.id;
+
+    if (targetUid === currentPlayer.uid) {
+      throw new Error("自分自身には申請できません。");
+    }
+
+    if ((currentPlayer.friendIds || []).includes(targetUid)) {
+      throw new Error("すでにフレンドです。");
+    }
+
+    // 逆方向から既に申請されている場合は、新規申請ではなく受信申請として扱う。
+    const incomingQuery = query(
+      collection(db, "requests"),
+      where("toUid", "==", currentPlayer.uid),
+      limit(50)
+    );
+    const incomingSnapshot = await getDocs(incomingQuery);
+    const incomingRequest = incomingSnapshot.docs.find(docSnap => {
+      const data = docSnap.data();
+      return data.type === "friend" && data.status === "pending" && data.fromUid === targetUid;
+    });
+
+    if (incomingRequest) {
+      await acceptFriendRequest(incomingRequest.id, true);
+      if (input) input.value = "";
+      showNotification(`${target.displayName || target.userId || "冒険者"}さんとのフレンド申請を承認しました！`);
+      return;
+    }
+
+    const requestId = `friend-${[currentPlayer.uid, targetUid].sort().join("-")}`;
+    const requestRef = doc(db, "requests", requestId);
+    const existing = await getDoc(requestRef);
+
+    if (existing.exists()) {
+      const data = existing.data();
+      if (data.status === "pending") {
+        throw new Error("すでにフレンド申請を送っています。");
+      }
+      if (data.status === "accepted") {
+        throw new Error("すでにフレンドです。");
+      }
+    }
+
+    await setDoc(requestRef, {
+      type: "friend",
+      fromUid: currentPlayer.uid,
+      fromUserId: currentPlayer.userId,
+      fromDisplayName: currentPlayer.displayName,
+      toUid: targetUid,
+      toUserId: target.userId || userId,
+      toDisplayName: target.displayName || target.userId || "冒険者",
+      status: "pending",
+      createdAt: new Date().toISOString()
+    });
+
+    if (input) input.value = "";
+    showNotification(`${target.displayName || target.userId || "冒険者"}さんにフレンド申請を送りました！`);
+    await renderFriends();
+  } catch (error) {
+    console.error("Friend request error:", error);
+    if (errorEl) errorEl.textContent = error.message || "フレンド申請に失敗しました。";
+  } finally {
+    if (button) button.disabled = false;
+  }
+}
+
+async function acceptFriendRequest(requestId, silent = false) {
+  if (!currentPlayer || !requestId) return;
+
+  const requestRef = doc(db, "requests", requestId);
+
+  await runTransaction(db, async transaction => {
+    const requestSnapshot = await transaction.get(requestRef);
+    if (!requestSnapshot.exists()) {
+      throw new Error("フレンド申請が見つかりません。");
+    }
+
+    const request = requestSnapshot.data();
+    if (
+      request.type !== "friend" ||
+      request.toUid !== currentPlayer.uid ||
+      request.status !== "pending"
+    ) {
+      throw new Error("このフレンド申請は無効です。");
+    }
+
+    const senderRef = doc(db, "users", request.fromUid);
+    const receiverRef = doc(db, "users", currentPlayer.uid);
+    const senderSnapshot = await transaction.get(senderRef);
+    const receiverSnapshot = await transaction.get(receiverRef);
+
+    if (!senderSnapshot.exists() || !receiverSnapshot.exists()) {
+      throw new Error("ユーザーデータを取得できませんでした。");
+    }
+
+    const sender = senderSnapshot.data();
+    const receiver = receiverSnapshot.data();
+    const senderFriends = uniqueArray(sender.friendIds);
+    const receiverFriends = uniqueArray(receiver.friendIds);
+
+    if (!senderFriends.includes(currentPlayer.uid)) {
+      senderFriends.push(currentPlayer.uid);
+    }
+    if (!receiverFriends.includes(request.fromUid)) {
+      receiverFriends.push(request.fromUid);
+    }
+
+    transaction.update(senderRef, { friendIds: senderFriends });
+    transaction.update(receiverRef, { friendIds: receiverFriends });
+    transaction.update(requestRef, {
+      status: "accepted",
+      acceptedAt: new Date().toISOString()
+    });
+  });
+
+  currentPlayer.friendIds = uniqueArray([
+    ...(currentPlayer.friendIds || []),
+    await getFriendUidFromRequest(requestId)
+  ].filter(Boolean));
+
+  await savePlayer();
+
+  if (!silent) {
+    showNotification("フレンド申請を承認しました！");
+    await renderPartyScreen();
+  }
+}
+
+async function getFriendUidFromRequest(requestId) {
+  try {
+    const snapshot = await getDoc(doc(db, "requests", requestId));
+    if (!snapshot.exists()) return "";
+    const request = snapshot.data();
+    return request.fromUid === currentPlayer?.uid ? request.toUid : request.fromUid;
+  } catch (error) {
+    console.error(error);
+    return "";
+  }
+}
+
+async function declineFriendRequest(requestId) {
+  if (!currentPlayer || !requestId) return;
+
+  const requestRef = doc(db, "requests", requestId);
+  const snapshot = await getDoc(requestRef);
+
+  if (!snapshot.exists()) {
+    showNotification("フレンド申請が見つかりません。");
+    return;
+  }
+
+  const request = snapshot.data();
+  if (
+    request.type !== "friend" ||
+    request.toUid !== currentPlayer.uid ||
+    request.status !== "pending"
+  ) {
+    showNotification("このフレンド申請は無効です。");
+    return;
+  }
+
+  await updateDoc(requestRef, {
+    status: "declined",
+    declinedAt: new Date().toISOString()
+  });
+
+  showNotification("フレンド申請を拒否しました。");
+  await renderPartyScreen();
+}
+
+async function renderFriends() {
+  const list = $("friend-list");
+  if (!list || !currentPlayer) return;
+
+  ensureFriendRequestUI();
+
+  const existingCards = list.querySelectorAll(".rpg-friend-card, .rpg-friend-empty, .rpg-friend-sent");
+  existingCards.forEach(el => el.remove());
+
+  const ids = uniqueArray(currentPlayer.friendIds || []);
+  const users = [];
+
+  for (const uid of ids.slice(0, 30)) {
+    try {
+      const snapshot = await getDoc(doc(db, "users", uid));
+      if (snapshot.exists()) users.push({ uid, ...snapshot.data() });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const sent = [];
+  try {
+    const sentQuery = query(
+      collection(db, "requests"),
+      where("fromUid", "==", currentPlayer.uid),
+      limit(50)
+    );
+    const sentSnapshot = await getDocs(sentQuery);
+    sentSnapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      if (data.type === "friend" && data.status === "pending") {
+        sent.push({ id: docSnap.id, ...data });
+      }
+    });
+  } catch (error) {
+    console.error("sent friend request query error:", error);
+  }
+
+  const cards = [];
+
+  if (sent.length) {
+    cards.push(`
+      <div class="rpg-friend-sent">
+        <div class="rpg-section-heading">
+          <div>
+            <strong>送信中の申請</strong>
+            <small>${sent.length}件の申請を送信しています</small>
+          </div>
+        </div>
+        <div class="rpg-friend-sent-list">
+          ${sent.map(request => `
+            <div class="rpg-friend-mini-card">
+              <div>
+                <strong>${escapeHtml(request.toDisplayName || request.toUserId || "冒険者")}</strong>
+                <small>@${escapeHtml(request.toUserId || "-")}</small>
+              </div>
+              <span class="rpg-status-pill">申請中</span>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `);
+  }
+
+  if (!users.length) {
+    cards.push(`
+      <div class="rpg-friend-empty">
+        <div class="rpg-empty-icon">👥</div>
+        <strong>まだフレンドがいません</strong>
+        <small>上のフォームからユーザーIDを入力して仲間を追加しよう。</small>
+      </div>
+    `);
+  } else {
+    cards.push(`
+      <div class="rpg-friend-section">
+        <div class="rpg-section-heading">
+          <div>
+            <strong>フレンド一覧</strong>
+            <small>${users.length}人</small>
+          </div>
+        </div>
+        <div class="rpg-friend-grid">
+          ${users.map(user => {
+            const rank = calculateRank(user.seasonStudyMinutes);
+            const hours = (safeNumber(user.seasonStudyMinutes) / 60).toFixed(1);
+            return `
+              <div class="rpg-friend-card">
+                <div class="rpg-friend-avatar">${escapeHtml((user.displayName || user.userId || "冒").slice(0, 1))}</div>
+                <div class="rpg-friend-main">
+                  <strong>${escapeHtml(user.displayName || user.userId || "冒険者")}</strong>
+                  <small>@${escapeHtml(user.userId || "-")}</small>
+                  <div class="rpg-friend-meta">
+                    <span>${escapeHtml(rank)}</span>
+                    <span>${hours}h</span>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      </div>
+    `);
+  }
+
+  list.insertAdjacentHTML("beforeend", cards.join(""));
+}
+
 
 async function renderFriends() {
   const list =
@@ -4728,7 +5043,6 @@ function renderShop() {
 
   renderShopTitles();
   renderShopItems();
-  renderShopBackgrounds();
 }
 
 function renderShopTitles() {
@@ -4797,38 +5111,6 @@ function renderShopItems() {
           >
             購入
           </button>
-        </div>
-      `;
-    }).join("");
-}
-
-function renderShopBackgrounds() {
-  const container =
-    $("shop-background-list");
-
-  if (!container) return;
-
-  container.innerHTML =
-    SHOP_BACKGROUNDS.map(background => {
-      const purchased =
-        currentPlayer.purchasedItems
-          .includes(background.id);
-
-      return `
-        <div class="rpg-card">
-          <strong>
-            ${escapeHtml(background.name)}
-          </strong>
-
-          <p>
-            🪙 ${background.price}
-          </p>
-
-          ${
-            purchased
-              ? `<button type="button" disabled>購入済み</button>`
-              : `<button type="button" data-buy-background="${escapeHtml(background.id)}">購入</button>`
-          }
         </div>
       `;
     }).join("");
@@ -4943,64 +5225,6 @@ async function buyShopTitle(titleId) {
 }
 
 
-// ============================================================
-// SHOP PURCHASE - BACKGROUND
-// ============================================================
-
-async function buyShopBackground(
-  backgroundId
-) {
-  if (!currentPlayer) return;
-
-  const background =
-    SHOP_BACKGROUNDS.find(
-      item =>
-        item.id === backgroundId
-    );
-
-  if (!background) {
-    showNotification(
-      "背景が見つかりません。"
-    );
-    return;
-  }
-
-  if (
-    currentPlayer.purchasedItems
-      .includes(backgroundId)
-  ) {
-    showNotification(
-      "すでに購入済みです。"
-    );
-    return;
-  }
-
-  if (
-    currentPlayer.coins <
-    background.price
-  ) {
-    showNotification(
-      "コインが足りません。"
-    );
-    return;
-  }
-
-  currentPlayer.coins -=
-    background.price;
-
-  currentPlayer.purchasedItems.push(
-    backgroundId
-  );
-
-  await savePlayer();
-
-  showNotification(
-    `${background.name}を購入しました！`
-  );
-
-  renderAll();
-}
-
 
 // ============================================================
 // USE ITEM
@@ -5091,7 +5315,6 @@ function renderLocker() {
 
   renderLockerTitles();
   renderLockerItems();
-  renderLockerBackgrounds();
 }
 
 function renderLockerTitles() {
@@ -5248,46 +5471,6 @@ function renderLockerItems() {
     }).join("");
 }
 
-function renderLockerBackgrounds() {
-  const container =
-    $("locker-outfit-list");
-
-  if (!container) return;
-
-  const owned =
-    SHOP_BACKGROUNDS.filter(
-      bg =>
-        currentPlayer.purchasedItems
-          .includes(bg.id)
-    );
-
-  if (!owned.length) {
-    container.innerHTML =
-      `<p class="empty-message">所持している背景はありません。</p>`;
-    return;
-  }
-
-  container.innerHTML =
-    owned.map(bg => {
-      const equipped =
-        currentPlayer.background ===
-        bg.id;
-
-      return `
-        <div class="rpg-card">
-          <strong>
-            ${escapeHtml(bg.name)}
-          </strong>
-
-          ${
-            equipped
-              ? `<button type="button" disabled>装備中</button>`
-              : `<button type="button" data-equip-background="${escapeHtml(bg.id)}">装備</button>`
-          }
-        </div>
-      `;
-    }).join("");
-}
 
 
 // ============================================================
@@ -5339,34 +5522,6 @@ function applyEquippedBackground() {
     bg;
 }
 
-async function equipBackground(
-  backgroundId
-) {
-  if (!currentPlayer) return;
-
-  if (
-    !currentPlayer.purchasedItems
-      .includes(backgroundId)
-  ) {
-    showNotification(
-      "その背景はまだ購入していません。"
-    );
-    return;
-  }
-
-  currentPlayer.background =
-    backgroundId;
-
-  await savePlayer();
-
-  applyEquippedBackground();
-
-  showNotification(
-    "背景を装備しました！"
-  );
-
-  renderAll();
-}
 
 
 // ============================================================
@@ -6178,46 +6333,6 @@ document.addEventListener(
 
 
     // ------------------------------------------
-    // SHOP BACKGROUND
-    // ★ 今回修正ポイント
-    // ------------------------------------------
-
-    const buyBackgroundButton =
-      event.target.closest(
-        "[data-buy-background]"
-      );
-
-    if (buyBackgroundButton) {
-      const backgroundId =
-        buyBackgroundButton.dataset.buyBackground;
-
-      if (!backgroundId) return;
-
-      buyBackgroundButton.disabled = true;
-
-      try {
-        await buyShopBackground(
-          backgroundId
-        );
-      } catch (error) {
-        console.error(
-          "Buy background error:",
-          error
-        );
-
-        buyBackgroundButton.disabled = false;
-
-        showNotification(
-          error.message ||
-          "背景の購入に失敗しました。"
-        );
-      }
-
-      return;
-    }
-
-
-    // ------------------------------------------
     // EQUIP TITLE
     // ★ 今回修正ポイント
     // ------------------------------------------
@@ -6250,46 +6365,6 @@ document.addEventListener(
         showNotification(
           error.message ||
           "タイトルの装備に失敗しました。"
-        );
-      }
-
-      return;
-    }
-
-
-    // ------------------------------------------
-    // EQUIP BACKGROUND
-    // ★ 今回修正ポイント
-    // ------------------------------------------
-
-    const equipBackgroundButton =
-      event.target.closest(
-        "[data-equip-background]"
-      );
-
-    if (equipBackgroundButton) {
-      const backgroundId =
-        equipBackgroundButton.dataset.equipBackground;
-
-      if (!backgroundId) return;
-
-      equipBackgroundButton.disabled = true;
-
-      try {
-        await equipBackground(
-          backgroundId
-        );
-      } catch (error) {
-        console.error(
-          "Equip background error:",
-          error
-        );
-
-        equipBackgroundButton.disabled = false;
-
-        showNotification(
-          error.message ||
-          "背景の装備に失敗しました。"
         );
       }
 
@@ -6333,6 +6408,32 @@ document.addEventListener(
       return;
     }
 
+
+    // ------------------------------------------
+    // FRIEND ACTION
+    // ------------------------------------------
+
+    const friendActionButton = event.target.closest("[data-friend-action]");
+
+    if (friendActionButton) {
+      const action = friendActionButton.dataset.friendAction;
+      const requestId = friendActionButton.dataset.requestId;
+      if (!requestId) return;
+
+      friendActionButton.disabled = true;
+      try {
+        if (action === "accept") {
+          await acceptFriendRequest(requestId);
+        } else if (action === "decline") {
+          await declineFriendRequest(requestId);
+        }
+      } catch (error) {
+        console.error("Friend action error:", error);
+        friendActionButton.disabled = false;
+        showNotification(error.message || "フレンド申請の処理に失敗しました。");
+      }
+      return;
+    }
 
     // ------------------------------------------
     // PARTY ACTION
@@ -6383,6 +6484,17 @@ document.addEventListener(
     }
   }
 );
+
+
+// ============================================================
+// DYNAMIC FORM EVENTS
+// ============================================================
+
+document.addEventListener("submit", async event => {
+  if (event.target?.id === "friend-request-form-runtime") {
+    await sendFriendRequest(event);
+  }
+});
 
 
 // ============================================================
@@ -6622,83 +6734,214 @@ onAuthStateChanged(
 // RUNTIME CSS
 // ============================================================
 
-const runtimeStyle =
-  document.createElement("style");
+const runtimeStyle = document.createElement("style");
 
 runtimeStyle.textContent = `
+  /* ========================================================
+     受験RPG UI ENHANCEMENT
+     ======================================================== */
+
+  #main-app {
+    min-height: 100vh;
+  }
+
+  #main-app > * {
+    transition: opacity .2s ease;
+  }
+
+  /* ページ間移動 */
+  .rpg-screen-active {
+    position: relative;
+    z-index: 1;
+  }
+
   .rpg-screen-enter {
-    animation: rpgScreenEnter .3s ease;
+    animation: rpgPageEnter .42s cubic-bezier(.22,.8,.25,1) both;
+    will-change: opacity, transform, filter;
   }
 
-  @keyframes rpgScreenEnter {
-    from {
-      opacity: .4;
-      transform: translateY(5px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .rpg-screen-leaving {
+    animation: rpgPageLeave .18s ease both;
   }
 
+  @keyframes rpgPageEnter {
+    0% { opacity: 0; transform: translateY(14px) scale(.992); filter: blur(2px); }
+    55% { opacity: 1; }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  }
+
+  @keyframes rpgPageLeave {
+    from { opacity: 1; }
+    to { opacity: .82; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rpg-screen-enter, .rpg-screen-leaving { animation: none !important; }
+    *, *::before, *::after { scroll-behavior: auto !important; }
+  }
+
+  /* カード */
   .rpg-card {
     margin: 10px 0;
-    padding: 14px;
-    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 16px;
+    background: rgba(255,255,255,.035);
+    box-shadow: 0 8px 24px rgba(0,0,0,.12);
+    overflow: hidden;
+    transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
   }
 
-  .rpg-card > strong,
-  .rpg-card > span {
-    display: block;
+  .rpg-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,.16);
+    background: rgba(255,255,255,.05);
+    box-shadow: 0 12px 30px rgba(0,0,0,.18);
   }
 
-  .rpg-card button {
-    margin-top: 8px;
+  .rpg-card > strong, .rpg-card > span { display: block; }
+
+  /* ボタン */
+  #main-app button {
+    min-height: 40px;
+    padding: 9px 14px;
+    border-radius: 11px;
+    border: 1px solid rgba(255,255,255,.11);
+    transition: transform .15s ease, filter .15s ease, background .15s ease, border-color .15s ease;
   }
 
+  #main-app button:not(:disabled):hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+  }
+
+  #main-app button:not(:disabled):active {
+    transform: translateY(0) scale(.98);
+  }
+
+  #main-app button:focus-visible,
+  #main-app input:focus-visible,
+  #main-app select:focus-visible,
+  #main-app textarea:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  /* 入力欄 */
+  #main-app input, #main-app select, #main-app textarea {
+    border-radius: 11px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.18);
+    color: inherit;
+    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+
+  #main-app input:focus, #main-app select:focus, #main-app textarea:focus {
+    border-color: rgba(255,255,255,.28);
+    background: rgba(0,0,0,.24);
+    box-shadow: 0 0 0 3px rgba(255,255,255,.045);
+  }
+
+  /* タブ */
+  [data-quest-tab], [data-party-tab], [data-rank-tab], [data-other-tab], [data-ranking-type] {
+    transition: transform .16s ease, background .16s ease, border-color .16s ease, opacity .16s ease;
+  }
+
+  [data-quest-tab].active, [data-party-tab].active, [data-rank-tab].active, [data-other-tab].active, [data-ranking-type].active {
+    border-color: rgba(255,255,255,.2);
+    box-shadow: 0 5px 18px rgba(0,0,0,.12);
+  }
+
+  /* プログレス */
   .rpg-progress {
     width: 100%;
-    height: 8px;
+    height: 9px;
     overflow: hidden;
     border-radius: 999px;
     background: rgba(255,255,255,.08);
-    margin: 8px 0;
+    margin: 9px 0;
   }
 
   .rpg-progress > div {
     height: 100%;
     border-radius: inherit;
     background: currentColor;
-    transition: width .3s ease;
+    transition: width .45s cubic-bezier(.22,.8,.25,1);
   }
 
+  /* セクション */
+  .rpg-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 18px 0 12px;
+  }
+
+  .rpg-section-heading strong { display: block; font-size: 1.02rem; }
+
+  /* 通知 */
   #notification {
     position: fixed;
     left: 50%;
     bottom: 90px;
-    transform: translateX(-50%);
     z-index: 9999;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: min(90vw, 520px);
     padding: 12px 18px;
-    border-radius: 10px;
-    max-width: min(90vw, 500px);
+    border-radius: 13px;
+    box-shadow: 0 14px 35px rgba(0,0,0,.25);
+    animation: rpgToastIn .25s ease both;
   }
 
-  [data-claim-quest],
-  [data-buy-item],
-  [data-buy-title],
-  [data-buy-background],
-  [data-equip-title],
-  [data-equip-background],
-  [data-use-item],
-  [data-party-action] {
-    cursor: pointer;
+  @keyframes rpgToastIn {
+    from { opacity: 0; transform: translate(-50%, 8px) scale(.97); }
+    to { opacity: 1; transform: translate(-50%, 0) scale(1); }
   }
 
-  button:disabled {
-    cursor: not-allowed;
+  /* フレンド */
+  .rpg-friend-request-panel, .rpg-friend-sent, .rpg-friend-section, .rpg-request-empty {
+    margin: 14px 0; padding: 16px; border: 1px solid rgba(255,255,255,.10);
+    border-radius: 16px; background: rgba(255,255,255,.035);
+  }
+
+  .rpg-section-heading small, .rpg-friend-main small, .rpg-request-main small, .rpg-friend-empty small, .rpg-request-empty small {
+    display: block; margin-top: 4px; opacity: .68; line-height: 1.45;
+  }
+
+  .rpg-friend-request-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; }
+  .rpg-friend-request-row input { width: 100%; min-height: 46px; padding: 0 14px; }
+  .rpg-inline-error { min-height: 18px; margin: 8px 0 0; font-size: .86rem; }
+  .rpg-friend-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 10px; }
+
+  .rpg-friend-card, .rpg-friend-mini-card, .rpg-request-card {
+    display: flex; align-items: center; gap: 12px; padding: 13px;
+    border: 1px solid rgba(255,255,255,.09); border-radius: 14px; background: rgba(0,0,0,.13);
+  }
+
+  .rpg-friend-avatar, .rpg-request-icon, .rpg-empty-icon { flex: 0 0 auto; display: grid; place-items: center; }
+  .rpg-friend-avatar { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,.09); font-weight: 700; font-size: 1.05rem; }
+  .rpg-request-icon { width: 42px; height: 42px; border-radius: 12px; background: rgba(255,255,255,.07); font-size: 1.2rem; }
+  .rpg-friend-main, .rpg-request-main { min-width: 0; flex: 1; }
+  .rpg-friend-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .rpg-friend-meta span, .rpg-status-pill { display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 999px; background: rgba(255,255,255,.07); font-size: .76rem; }
+  .rpg-friend-sent-list { display: grid; gap: 8px; }
+  .rpg-request-empty, .rpg-friend-empty { text-align: center; padding: 28px 16px; }
+  .rpg-empty-icon { font-size: 2rem; margin-bottom: 8px; }
+  .rpg-request-card { align-items: flex-start; margin-bottom: 10px; }
+  .rpg-request-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .rpg-request-actions button, .rpg-friend-request-row button { min-height: 42px; padding: 9px 15px; border-radius: 10px; }
+
+  @media (max-width: 700px) {
+    .rpg-friend-request-row { grid-template-columns: 1fr; }
+    .rpg-friend-request-row button { width: 100%; }
+    .rpg-friend-grid { grid-template-columns: 1fr; }
+    .rpg-request-actions button { flex: 1 1 120px; }
+    .rpg-card { padding: 14px; border-radius: 14px; }
   }
 `;
+
 
 document.head.appendChild(
   runtimeStyle
@@ -6708,6 +6951,11 @@ document.head.appendChild(
 // ============================================================
 // INITIAL UI
 // ============================================================
+
+// 背景ショップ／旧背景ロッカーUIは今回の仕様から削除
+$("shop-background-list")?.closest("section, .shop-section, .rpg-card")?.classList.add("hidden");
+$("locker-outfit-list")?.closest("section, .locker-section, .rpg-card")?.classList.add("hidden");
+
 
 // 星機能の旧UIを非表示
 $("star-status")
@@ -6742,8 +6990,6 @@ window.JukenRPG = {
   claimQuest,
   buyShopItem,
   buyShopTitle,
-  buyShopBackground,
   equipTitle,
-  equipBackground,
   useItem
 };
