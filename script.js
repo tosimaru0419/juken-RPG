@@ -660,8 +660,6 @@ function createDefaultPlayer(firebaseUser, data = {}) {
     pendingBossLevelDownMultiplier:
       safeNumber(data.pendingBossLevelDownMultiplier, 1),
 
-    background: data.background || "",
-
     subjectStudyMinutes:
       data.subjectStudyMinutes || {},
 
@@ -777,25 +775,36 @@ function showAppScreen(id) {
   APP_SCREEN_IDS.forEach(screenId => {
     const screen = $(screenId);
     if (!screen) return;
-    screen.classList.remove("rpg-screen-active", "rpg-screen-leaving", "rpg-screen-enter");
+    screen.classList.remove(
+      "rpg-screen-active",
+      "rpg-screen-leaving",
+      "rpg-screen-enter"
+    );
   });
 
-  if (current && $(current)) {
-    const oldScreen = $(current);
+  const target = $(id);
+  const oldScreen = current ? $(current) : null;
+
+  if (oldScreen) {
     oldScreen.classList.add("rpg-screen-leaving");
-    oldScreen.classList.add("hidden");
+    window.setTimeout(() => {
+      oldScreen.classList.add("hidden");
+      oldScreen.classList.remove("rpg-screen-leaving", "rpg-screen-active");
+    }, 180);
   }
 
-  const target = $(id);
   if (target) {
     target.classList.remove("hidden");
     target.classList.add("rpg-screen-active", "rpg-screen-enter");
-    setTimeout(() => target.classList.remove("rpg-screen-enter"), 420);
+    window.setTimeout(() => {
+      target.classList.remove("rpg-screen-enter");
+    }, 440);
   }
 
   document.querySelectorAll("[data-screen]").forEach(button => {
-    button.classList.toggle("active", button.dataset.screen === id);
-    button.setAttribute("aria-current", button.dataset.screen === id ? "page" : "false");
+    const active = button.dataset.screen === id;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-current", active ? "page" : "false");
   });
 
   if (id === "quest-screen") renderQuestScreen();
@@ -803,7 +812,6 @@ function showAppScreen(id) {
   if (id === "rank-screen") renderRankScreen();
   if (id === "other-screen") renderOtherScreen();
 }
-
 
 // ============================================================
 // AUTH UI
@@ -5504,27 +5512,6 @@ async function equipTitle(titleId) {
 
 
 // ============================================================
-// EQUIP BACKGROUND
-// ============================================================
-
-function applyEquippedBackground() {
-  const bg =
-    currentPlayer?.background;
-
-  if (!bg) {
-    document.body.removeAttribute(
-      "data-background"
-    );
-    return;
-  }
-
-  document.body.dataset.background =
-    bg;
-}
-
-
-
-// ============================================================
 // PROFILE
 // ============================================================
 
@@ -5983,14 +5970,6 @@ function renderAll() {
     );
   }
 
-  try {
-    applyEquippedBackground();
-  } catch (error) {
-    console.error(
-      "background error:",
-      error
-    );
-  }
 }
 
 
@@ -6753,26 +6732,29 @@ runtimeStyle.textContent = `
   .rpg-screen-active {
     position: relative;
     z-index: 1;
+    transform-origin: 50% 12%;
   }
 
   .rpg-screen-enter {
-    animation: rpgPageEnter .42s cubic-bezier(.22,.8,.25,1) both;
+    animation: rpgPageEnter .44s cubic-bezier(.22,.8,.25,1) both;
     will-change: opacity, transform, filter;
   }
 
   .rpg-screen-leaving {
-    animation: rpgPageLeave .18s ease both;
+    animation: rpgPageLeave .18s cubic-bezier(.4,0,.8,1) both;
+    pointer-events: none;
+    will-change: opacity, transform, filter;
   }
 
   @keyframes rpgPageEnter {
-    0% { opacity: 0; transform: translateY(14px) scale(.992); filter: blur(2px); }
+    0% { opacity: 0; transform: translateY(18px) scale(.985); filter: blur(3px); }
     55% { opacity: 1; }
     100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
   }
 
   @keyframes rpgPageLeave {
-    from { opacity: 1; }
-    to { opacity: .82; }
+    from { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    to { opacity: 0; transform: translateY(-7px) scale(.995); filter: blur(1px); }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -6952,7 +6934,7 @@ document.head.appendChild(
 // INITIAL UI
 // ============================================================
 
-// 背景ショップ／旧背景ロッカーUIは今回の仕様から削除
+// 旧背景UIがHTMLに残っている場合は表示しない
 $("shop-background-list")?.closest("section, .shop-section, .rpg-card")?.classList.add("hidden");
 $("locker-outfit-list")?.closest("section, .locker-section, .rpg-card")?.classList.add("hidden");
 
