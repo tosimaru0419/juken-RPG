@@ -431,6 +431,7 @@ let partyInvites = [];
 let todayRecords = [];
 let timerTicker = null;
 let currentPage = "home";
+let pendingRegistration = null;
 
 // ============================================================
 // Level / rank
@@ -507,12 +508,14 @@ function defaultSelectedSubjects(track = "humanities") {
 }
 
 function defaultProfile(user) {
+  const registration = pendingRegistration;
+  const track = registration?.track || "humanities";
   return {
     uid: user.uid,
-    globalId: makeGlobalId(),
-    username: (user.email || "冒険者").split("@")[0] || "冒険者",
-    track: "humanities",
-    selectedSubjects: defaultSelectedSubjects("humanities"),
+    globalId: registration?.globalId || makeGlobalId(),
+    username: registration?.username || (user.email || "冒険者").split("@")[0] || "冒険者",
+    track,
+    selectedSubjects: registration?.selectedSubjects || defaultSelectedSubjects(track),
     level: 1,
     xp: 0,
     stars: 0,
@@ -618,51 +621,384 @@ async function saveTimerState() {
 // Auth UI
 // ============================================================
 
-function ensureAuthOverlay() {
-  let root = $("juken-auth-overlay");
-  if (root) return root;
-  root = document.createElement("div");
-  root.id = "juken-auth-overlay";
-  root.style.cssText = "position:fixed;inset:0;z-index:99999;background:#080b12;display:flex;align-items:center;justify-content:center;padding:24px;color:#fff";
+function normalizeLoginId(value) {
+  return String(value || "").trim().toUpperCase();
+}
+
+function validLoginId(value) {
+  return /^[A-Z0-9_-]{4,20}$/.test(value);
+}
+
+function loginEmailFromId(value) {
+  return `${normalizeLoginId(value).toLowerCase()}@juken-rpg.local`;
+}
+
+function authFieldStyle() {
+  return "width:100%;box-sizing:border-box;padding:13px 14px;border-radius:11px;border:1px solid #334155;background:#0b1220;color:#fff;outline:none";
+}
+
+function authButtonStyle(primary = false) {
+  return primary
+    ? "width:100%;padding:13px;border:0;border-radius:11px;background:#38bdf8;color:#07111f;font-weight:800;cursor:pointer"
+    : "width:100%;padding:13px;border:1px solid #334155;border-radius:11px;background:#182235;color:#fff;font-weight:700;cursor:pointer";
+}
+
+function authSubjectOptions(selectedSubjects = []) {
+  return SUBJECTS.map((subject) => `
+    <label style="display:flex;align-items:center;gap:8px;padding:9px 10px;border:1px solid #263247;border-radius:10px">
+      <input
+        type="checkbox"
+        data-auth-subject
+        value="${subject.id}"
+        ${selectedSubjects.includes(subject.id) ? "checked" : ""}
+      >
+      <span>${escapeHtml(subject.name)}</span>
+    </label>
+  `).join("");
+}
+
+function renderLoginAuth(root) {
   root.innerHTML = `
-    <div style="width:min(420px,100%);background:#111827;border:1px solid #263247;border-radius:20px;padding:24px;display:grid;gap:14px">
-      <h1 style="margin:0">受験RPG</h1>
-      <p style="margin:0;color:#aab3c5">ログインして冒険を続ける</p>
-      <input id="juken-auth-email" type="email" placeholder="メールアドレス" style="padding:14px;border-radius:10px;border:1px solid #334155;background:#0b1220;color:white">
-      <input id="juken-auth-password" type="password" placeholder="パスワード（6文字以上）" style="padding:14px;border-radius:10px;border:1px solid #334155;background:#0b1220;color:white">
-      <button id="juken-auth-login" type="button" style="padding:14px;border-radius:10px">ログイン</button>
-      <button id="juken-auth-register" type="button" style="padding:14px;border-radius:10px">新規登録</button>
+    <div style="width:min(430px,100%);max-height:92vh;overflow:auto;background:#111827;border:1px solid #263247;border-radius:20px;padding:24px;display:grid;gap:14px">
+      <div>
+        <h1 style="margin:0 0 5px">受験RPG</h1>
+        <p style="margin:0;color:#aab3c5">冒険の続きを始めよう</p>
+      </div>
+
+      <div style="display:grid;gap:8px">
+        <label style="font-size:.86rem;color:#aab3c5">ユーザーID</label>
+        <input
+          id="juken-auth-user-id"
+          type="text"
+          maxlength="20"
+          autocomplete="username"
+          placeholder="例：TOSIMARU0419"
+          style="${authFieldStyle()}"
+        >
+      </div>
+
+      <div style="display:grid;gap:8px">
+        <label style="font-size:.86rem;color:#aab3c5">パスワード</label>
+        <input
+          id="juken-auth-password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="6文字以上"
+          style="${authFieldStyle()}"
+        >
+      </div>
+
+      <button id="juken-auth-login" type="button" style="${authButtonStyle(true)}">
+        ログイン
+      </button>
+
+      <button id="juken-show-register" type="button" style="${authButtonStyle(false)}">
+        新規登録
+      </button>
+
       <p id="juken-auth-error" style="min-height:1.4em;color:#ff8b8b;margin:0"></p>
-    </div>`;
-  document.body.appendChild(root);
+    </div>
+  `;
+
   $("juken-auth-login").onclick = async () => {
     try {
       text("juken-auth-error", "");
-      await signInWithEmailAndPassword(auth, $("juken-auth-email").value.trim(), $("juken-auth-password").value);
+
+      const userId = normalizeLoginId($("juken-auth-user-id")?.value);
+      const password = $("juken-auth-password")?.value || "";
+
+      if (!validLoginId(userId)) {
+        throw new Error("ユーザーIDは4〜20文字の半角英数字・_・-で入力してください。");
+      }
+
+      if (password.length < 6) {
+        throw new Error("パスワードは6文字以上です。");
+      }
+
+      await signInWithEmailAndPassword(
+        auth,
+        loginEmailFromId(userId),
+        password,
+      );
     } catch (error) {
       text("juken-auth-error", authError(error));
     }
   };
+
+  $("juken-show-register").onclick = () => renderRegisterAuth(root);
+
+  $("juken-auth-password")?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") $("juken-auth-login")?.click();
+  });
+}
+
+function renderRegisterAuth(root) {
+  const initialTrack = "humanities";
+  const initialSubjects = defaultSelectedSubjects(initialTrack);
+
+  root.innerHTML = `
+    <div style="width:min(500px,100%);max-height:92vh;overflow:auto;background:#111827;border:1px solid #263247;border-radius:20px;padding:24px;display:grid;gap:15px">
+      <div>
+        <h1 style="margin:0 0 5px">冒険者登録</h1>
+        <p style="margin:0;color:#aab3c5">受験RPGのプロフィールを作成</p>
+      </div>
+
+      <div style="display:grid;gap:7px">
+        <label style="font-size:.86rem;color:#aab3c5">ユーザー名</label>
+        <input
+          id="juken-register-name"
+          type="text"
+          maxlength="20"
+          placeholder="ゲーム内で表示する名前"
+          style="${authFieldStyle()}"
+        >
+      </div>
+
+      <div style="display:grid;gap:7px">
+        <label style="font-size:.86rem;color:#aab3c5">ユーザーID</label>
+        <input
+          id="juken-register-id"
+          type="text"
+          maxlength="20"
+          autocomplete="username"
+          placeholder="4〜20文字 / 半角英数字・_・-"
+          style="${authFieldStyle()}"
+        >
+        <small style="color:#7f8ba3">
+          ログインとフレンド検索に使います。登録後は変更できません。
+        </small>
+      </div>
+
+      <div style="display:grid;gap:7px">
+        <label style="font-size:.86rem;color:#aab3c5">パスワード</label>
+        <input
+          id="juken-register-password"
+          type="password"
+          autocomplete="new-password"
+          placeholder="6文字以上"
+          style="${authFieldStyle()}"
+        >
+      </div>
+
+      <div style="display:grid;gap:7px">
+        <label style="font-size:.86rem;color:#aab3c5">パスワード確認</label>
+        <input
+          id="juken-register-password-confirm"
+          type="password"
+          autocomplete="new-password"
+          placeholder="もう一度入力"
+          style="${authFieldStyle()}"
+        >
+      </div>
+
+      <div style="display:grid;gap:8px">
+        <label style="font-size:.86rem;color:#aab3c5">文理選択</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button
+            type="button"
+            data-auth-track="humanities"
+            style="${authButtonStyle(true)}"
+          >
+            文系
+          </button>
+
+          <button
+            type="button"
+            data-auth-track="science"
+            style="${authButtonStyle(false)}"
+          >
+            理系
+          </button>
+        </div>
+        <input id="juken-register-track" type="hidden" value="humanities">
+      </div>
+
+      <div style="display:grid;gap:8px">
+        <div>
+          <b>選択教科</b>
+          <p style="font-size:.8rem;color:#8f9aae;margin:4px 0 0">
+            あとから設定画面でも変更できます。
+          </p>
+        </div>
+
+        <div
+          id="juken-register-subjects"
+          style="display:grid;grid-template-columns:1fr 1fr;gap:7px"
+        >
+          ${authSubjectOptions(initialSubjects)}
+        </div>
+      </div>
+
+      <button
+        id="juken-auth-register"
+        type="button"
+        style="${authButtonStyle(true)}"
+      >
+        登録して始める
+      </button>
+
+      <button
+        id="juken-back-login"
+        type="button"
+        style="${authButtonStyle(false)}"
+      >
+        ログインへ戻る
+      </button>
+
+      <p id="juken-auth-error" style="min-height:1.4em;color:#ff8b8b;margin:0"></p>
+    </div>
+  `;
+
+  function setTrack(track) {
+    $("juken-register-track").value = track;
+
+    $$("[data-auth-track]").forEach((button) => {
+      button.style.cssText = authButtonStyle(button.dataset.authTrack === track);
+    });
+
+    const recommended = defaultSelectedSubjects(track);
+
+    $$("[data-auth-subject]").forEach((checkbox) => {
+      checkbox.checked = recommended.includes(checkbox.value);
+    });
+  }
+
+  $$("[data-auth-track]").forEach((button) => {
+    button.onclick = () => setTrack(button.dataset.authTrack);
+  });
+
+  $("juken-back-login").onclick = () => renderLoginAuth(root);
+
   $("juken-auth-register").onclick = async () => {
     try {
       text("juken-auth-error", "");
-      await createUserWithEmailAndPassword(auth, $("juken-auth-email").value.trim(), $("juken-auth-password").value);
+
+      const username = $("juken-register-name")?.value.trim() || "";
+      const globalId = normalizeLoginId($("juken-register-id")?.value);
+      const password = $("juken-register-password")?.value || "";
+      const confirmPassword = $("juken-register-password-confirm")?.value || "";
+      const track = $("juken-register-track")?.value || "humanities";
+      const selectedSubjects = $$("[data-auth-subject]:checked")
+        .map((checkbox) => checkbox.value)
+        .filter((id) => SUBJECT_BY_ID[id]);
+
+      if (!username || username.length > 20) {
+        throw new Error("ユーザー名は1〜20文字で入力してください。");
+      }
+
+      if (!validLoginId(globalId)) {
+        throw new Error("ユーザーIDは4〜20文字の半角英数字・_・-で入力してください。");
+      }
+
+      if (password.length < 6) {
+        throw new Error("パスワードは6文字以上です。");
+      }
+
+      if (password !== confirmPassword) {
+        throw new Error("確認用パスワードが一致しません。");
+      }
+
+      if (!selectedSubjects.length) {
+        throw new Error("教科を最低1つ選択してください。");
+      }
+
+      // Global ID重複チェック
+      const duplicate = await getDocs(
+        query(
+          collection(db, "users"),
+          where("globalId", "==", globalId),
+        ),
+      );
+
+      if (!duplicate.empty) {
+        throw new Error("このユーザーIDはすでに使用されています。");
+      }
+
+      pendingRegistration = {
+        username,
+        globalId,
+        track,
+        selectedSubjects: uniq(selectedSubjects),
+      };
+
+      const credential = await createUserWithEmailAndPassword(
+        auth,
+        loginEmailFromId(globalId),
+        password,
+      );
+
+      const initial = normalizeProfile(
+        {
+          ...defaultProfile(credential.user),
+          username,
+          globalId,
+          track,
+          selectedSubjects: uniq(selectedSubjects),
+        },
+        credential.user,
+      );
+
+      await setDoc(
+        doc(db, "users", credential.user.uid),
+        {
+          ...initial,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true },
+      );
+
+      pendingRegistration = null;
     } catch (error) {
+      pendingRegistration = null;
+      console.error("REGISTER ERROR", error);
       text("juken-auth-error", authError(error));
     }
   };
+}
+
+function ensureAuthOverlay() {
+  let root = $("juken-auth-overlay");
+  if (root) return root;
+
+  root = document.createElement("div");
+  root.id = "juken-auth-overlay";
+  root.style.cssText = `
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    background:#080b12;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    color:#fff;
+  `;
+
+  document.body.appendChild(root);
+  renderLoginAuth(root);
   return root;
 }
 
 function authError(error) {
+  if (error instanceof Error && !String(error.message).includes("Firebase")) {
+    return error.message;
+  }
+
   const code = error?.code || "";
+
   const map = {
-    "auth/invalid-credential": "メールアドレスかパスワードが違います。",
-    "auth/email-already-in-use": "このメールアドレスは登録済みです。",
+    "auth/invalid-credential": "ユーザーIDかパスワードが違います。",
+    "auth/user-not-found": "ユーザーIDかパスワードが違います。",
+    "auth/wrong-password": "ユーザーIDかパスワードが違います。",
+    "auth/email-already-in-use": "このユーザーIDはすでに使用されています。",
     "auth/weak-password": "パスワードは6文字以上にしてください。",
-    "auth/invalid-email": "メールアドレスの形式を確認してください。",
+    "auth/invalid-email": "ユーザーIDの形式を確認してください。",
     "auth/too-many-requests": "試行回数が多すぎます。少し時間を置いてください。",
+    "auth/network-request-failed": "通信に失敗しました。ネット接続を確認してください。",
+    "auth/operation-not-allowed": "Firebase Authenticationでメール/パスワード認証が有効になっていません。",
   };
+
   return map[code] || `認証に失敗しました：${error?.message || code}`;
 }
 
