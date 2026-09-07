@@ -4481,255 +4481,360 @@ body > main.rank-theme-legend {
 
 
 
+<style id="final-global-neon-v1">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<style id="final-flat-neon-v7">
+/* =========================================================
+   受験RPG FINAL NEON POLISH
+   レイアウト・下部ナビ・ゲームロジックは変更しない
+========================================================= */
 
 :root {
-  --flat-purple: 124,92,255;
-  --flat-cyan: 53,201,255;
-  --flat-green: 66,211,146;
-  --flat-gold: 255,209,102;
+  --ui-neon-purple: 124, 92, 255;
+  --ui-neon-cyan: 53, 201, 255;
 }
 
 
 /* =========================================================
-   GLOBAL
-   光らせず、面に色を混ぜる
+   PAGE BACKGROUND
+   ランク固有背景・ボス演出は除外
 ========================================================= */
 
-body > main:not(.rank-main-themed) {
-  background:#080b12 !important;
-}
-
-
-/* =========================================================
-   PAGE TRANSITION
-   opacityだけ
-========================================================= */
-
-body > main > section {
-  animation:
-    flatPageIn
-    130ms ease-out both;
-}
-
-@keyframes flatPageIn {
-  from {
-    opacity:.60;
-  }
-
-  to {
-    opacity:1;
-  }
-}
-
-
-/* =========================================================
-   HOME
-========================================================= */
-
-#home-player-status {
+body:not(:has(.boss-battle-card))
+> main:not(.rank-main-themed) {
 
   background:
     radial-gradient(
-      circle at 90% 5%,
-      rgba(var(--flat-purple),.18),
-      transparent 42%
+      circle at 18% 8%,
+      rgba(var(--ui-neon-purple), .105),
+      transparent 31%
     ),
-    linear-gradient(
-      145deg,
-      #151a28,
-      #0e121c
-    )
-    !important;
-}
 
-
-.home-player-avatar {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.23),
-      rgba(var(--flat-cyan),.08)
-    )
-    !important;
-}
-
-
-.home-player-title,
-.home-player-level strong {
-
-  color:#ad9cff !important;
-}
-
-
-.home-xp-fill {
-
-  background:
-    linear-gradient(
-      90deg,
-      #6548eb,
-      #9d82ff,
-      #35c9ff
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-#home-study-status {
-
-  background:
     radial-gradient(
-      circle at 50% 0%,
-      rgba(var(--flat-cyan),.12),
-      transparent 50%
+      circle at 82% 17%,
+      rgba(var(--ui-neon-cyan), .065),
+      transparent 28%
     ),
-    linear-gradient(
-      145deg,
-      #121a25,
-      #0d1119
-    )
-    !important;
+
+    #080b12 !important;
 }
 
 
 /* =========================================================
-   STUDY
+   MAIN APP CARD
 ========================================================= */
 
-.study-main-choice:nth-child(1) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-cyan),.12),
-      #111722 48%
-    )
-    !important;
-}
-
-
-.study-main-choice:nth-child(2) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.13),
-      #111722 48%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   QUEST
-========================================================= */
-
-#quest-main-tabs button.active {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.25),
-      rgba(var(--flat-purple),.10)
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-body:has(#quest-main-tabs)
+body
 > main
-> section {
+> section:not(.rank-page-themed) {
 
-  background:
-    linear-gradient(
-      150deg,
-      rgba(var(--flat-purple),.07),
-      #111722 32%
-    )
-    !important;
+  border-color:
+    rgba(var(--ui-neon-purple), .16) !important;
+
+  box-shadow:
+    0 0 32px
+      rgba(var(--ui-neon-purple), .055),
+
+    0 0 70px
+      rgba(var(--ui-neon-cyan), .018),
+
+    inset 0 1px 0
+      rgba(255,255,255,.025);
 }
 
 
 /* =========================================================
-   PARTY
+   PAGE TITLES
 ========================================================= */
 
-#party-main-tabs button.active {
+body > main > section h1 {
 
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-cyan),.21),
-      rgba(var(--flat-purple),.10)
-    )
-    !important;
+  text-shadow:
+    0 0 16px
+      rgba(var(--ui-neon-purple), .17),
 
-  box-shadow:none !important;
-}
-
-
-body:has(#party-main-tabs)
-> main
-> section {
-
-  background:
-    linear-gradient(
-      150deg,
-      rgba(var(--flat-cyan),.06),
-      #111722 34%
-    )
-    !important;
+    0 0 26px
+      rgba(var(--ui-neon-cyan), .055);
 }
 
 
 /* =========================================================
-   SHOP
+   NORMAL CARDS
+========================================================= */
+
+body
+> main
+> section
+> section:not(.boss-battle-card),
+
+body
+> main
+> section
+> div[style*="border-radius"][style*="background"] {
+
+  transition:
+    border-color .16s ease,
+    box-shadow .16s ease,
+    transform .16s ease;
+}
+
+
+/*
+   既存カードにはほんの少しだけ光を追加。
+   色付きランクカードは除外。
+*/
+body
+> main
+> section:not(.rank-page-themed)
+> section:not(.boss-battle-card) {
+
+  box-shadow:
+    inset 0 0 18px
+      rgba(var(--ui-neon-purple), .018);
+}
+
+
+/* =========================================================
+   BUTTON FEEL
+========================================================= */
+
+body
+> main
+> section
+button {
+
+  transition:
+    transform .12s ease,
+    filter .12s ease,
+    box-shadow .15s ease,
+    border-color .15s ease;
+}
+
+
+body
+> main
+> section
+button:not(:disabled):hover {
+
+  filter:
+    brightness(1.06);
+
+  box-shadow:
+    0 0 14px
+      rgba(var(--ui-neon-purple), .11);
+}
+
+
+body
+> main
+> section
+button:not(:disabled):active {
+
+  transform:
+    scale(.98);
+}
+
+
+/* =========================================================
+   INPUT / SELECT
+========================================================= */
+
+body
+> main
+> section
+input,
+
+body
+> main
+> section
+select,
+
+body
+> main
+> section
+textarea {
+
+  transition:
+    border-color .15s ease,
+    box-shadow .15s ease,
+    background .15s ease;
+}
+
+
+body
+> main
+> section
+input:focus,
+
+body
+> main
+> section
+select:focus,
+
+body
+> main
+> section
+textarea:focus {
+
+  outline:none !important;
+
+  border-color:
+    rgba(var(--ui-neon-purple), .52) !important;
+
+  box-shadow:
+    0 0 0 3px
+      rgba(var(--ui-neon-purple), .075),
+
+    0 0 16px
+      rgba(var(--ui-neon-cyan), .055) !important;
+}
+
+
+/* =========================================================
+   QUEST TABS
+========================================================= */
+
+#quest-main-tabs
+button.active {
+
+  box-shadow:
+    inset 0 0 0 1px
+      rgba(var(--ui-neon-purple), .24),
+
+    0 0 15px
+      rgba(var(--ui-neon-purple), .15),
+
+    0 0 22px
+      rgba(var(--ui-neon-cyan), .035) !important;
+}
+
+
+/* =========================================================
+   PARTY TABS
+========================================================= */
+
+#party-main-tabs
+button.active {
+
+  box-shadow:
+    inset 0 0 0 1px
+      rgba(var(--ui-neon-purple), .24),
+
+    0 0 15px
+      rgba(var(--ui-neon-purple), .15),
+
+    0 0 22px
+      rgba(var(--ui-neon-cyan), .035) !important;
+}
+
+
+/* =========================================================
+   SHOP TABS
 ========================================================= */
 
 .shop-tab.active {
 
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.24),
-      rgba(var(--flat-purple),.09)
-    )
-    !important;
+  box-shadow:
+    inset 0 0 0 1px
+      rgba(var(--ui-neon-purple), .24),
 
-  box-shadow:none !important;
+    0 0 15px
+      rgba(var(--ui-neon-purple), .15),
+
+    0 0 22px
+      rgba(var(--ui-neon-cyan), .035) !important;
 }
 
 
-.shop-product {
+/* =========================================================
+   OTHER MENU
+========================================================= */
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.055),
-      #0b1019 42%
-    )
-    !important;
+.other-card {
+
+  box-shadow:
+    inset 0 0 20px
+      rgba(var(--ui-neon-purple), .018);
+}
+
+
+.other-card:hover {
+
+  border-color:
+    rgba(var(--ui-neon-purple), .37) !important;
+
+  box-shadow:
+    0 0 20px
+      rgba(var(--ui-neon-purple), .11),
+
+    0 0 30px
+      rgba(var(--ui-neon-cyan), .035),
+
+    inset 0 0 24px
+      rgba(var(--ui-neon-purple), .035) !important;
+}
+
+
+.other-card-icon {
+
+  box-shadow:
+    0 0 14px
+      rgba(var(--ui-neon-purple), .07),
+
+    inset 0 0 12px
+      rgba(var(--ui-neon-cyan), .025);
+}
+
+
+/* =========================================================
+   STUDY PAGE
+========================================================= */
+
+.study-main-choice {
+
+  box-shadow:
+    inset 0 0 22px
+      rgba(var(--ui-neon-purple), .018);
+}
+
+
+.study-main-choice:hover {
+
+  border-color:
+    rgba(var(--ui-neon-purple), .34) !important;
+
+  box-shadow:
+    0 0 20px
+      rgba(var(--ui-neon-purple), .10),
+
+    0 0 30px
+      rgba(var(--ui-neon-cyan), .03),
+
+    inset 0 0 26px
+      rgba(var(--ui-neon-purple), .035) !important;
+}
+
+
+/* =========================================================
+   PROFILE SUBJECT SELECTION
+========================================================= */
+
+.subject-chip.active,
+.profile-track-btn.active {
+
+  box-shadow:
+    0 0 13px
+      rgba(var(--ui-neon-purple), .14),
+
+    inset 0 0 14px
+      rgba(var(--ui-neon-purple), .05);
+}
+
+
+.subject-chip.active {
+
+  text-shadow:
+    0 0 9px
+      rgba(var(--ui-neon-purple), .20);
 }
 
 
@@ -4739,125 +4844,250 @@ body:has(#party-main-tabs)
 
 .locker-reserved {
 
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.14),
-      rgba(var(--flat-cyan),.055)
-    )
-    !important;
+  box-shadow:
+    inset 0 0 20px
+      rgba(var(--ui-neon-purple), .04),
 
-  box-shadow:none !important;
+    0 0 14px
+      rgba(var(--ui-neon-purple), .045);
 }
 
 
-.locker-item {
+.locker-action:not(:disabled):hover {
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-cyan),.035),
-      #0b1019 42%
-    )
-    !important;
+  border-color:
+    rgba(var(--ui-neon-purple), .38) !important;
 }
 
 
 /* =========================================================
-   PROFILE
+   SHOP PRODUCT CARDS
 ========================================================= */
 
-.profile-box {
+.shop-product {
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.045),
-      #0b1019 40%
-    )
-    !important;
+  transition:
+    border-color .15s ease,
+    box-shadow .15s ease;
 }
 
 
-.subject-chip.active,
-.profile-track-btn.active {
+.shop-product:hover {
 
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.25),
-      rgba(var(--flat-purple),.10)
-    )
-    !important;
+  border-color:
+    rgba(var(--ui-neon-purple), .20);
 
-  box-shadow:none !important;
-
-  color:#fff !important;
+  box-shadow:
+    inset 0 0 20px
+      rgba(var(--ui-neon-purple), .025);
 }
 
 
 /* =========================================================
-   OTHER
+   SCROLLBAR
 ========================================================= */
 
-.other-card:nth-child(1) {
+body > main > section {
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-cyan),.13),
-      #101620 48%
-    )
-    !important;
+  scrollbar-width:thin;
+
+  scrollbar-color:
+    rgba(var(--ui-neon-purple), .35)
+    transparent;
 }
 
 
-.other-card:nth-child(2) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.14),
-      #101620 48%
-    )
-    !important;
+body > main > section::-webkit-scrollbar {
+  width:5px;
 }
 
 
-.other-card:nth-child(3) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-green),.11),
-      #101620 48%
-    )
-    !important;
+body > main > section::-webkit-scrollbar-track {
+  background:transparent;
 }
 
 
-.other-card:nth-child(4) {
+body > main > section::-webkit-scrollbar-thumb {
 
   background:
     linear-gradient(
-      145deg,
-      rgba(var(--flat-gold),.10),
-      #101620 48%
-    )
-    !important;
+      rgba(var(--ui-neon-purple), .42),
+      rgba(var(--ui-neon-cyan), .28)
+    );
+
+  border-radius:999px;
 }
 
 
 /* =========================================================
-   BUTTON INTERACTION
-   発光させない
+   FOCUS
+========================================================= */
+
+body
+> main
+> section
+button:focus-visible {
+
+  outline:
+    2px solid
+    rgba(var(--ui-neon-cyan), .45);
+
+  outline-offset:2px;
+}
+
+
+/* =========================================================
+   BOSS
+   既存の専用演出を壊さず、ごく薄い追加のみ
+========================================================= */
+
+.boss-battle-card {
+
+  box-shadow:
+    0 0 28px
+      rgba(var(--ui-neon-purple), .045);
+}
+
+
+/* =========================================================
+   RANK
+   固有ランクカラー優先
+========================================================= */
+
+.rank-page-themed {
+
+  box-shadow:
+    0 0 34px
+      rgba(var(--rank-rgb), .11),
+
+    inset 0 0 26px
+      rgba(var(--rank-rgb), .025) !important;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion: reduce
+) {
+
+  body > main > section *,
+  body > main > section *::before,
+  body > main > section *::after {
+
+    transition:none !important;
+
+  }
+
+}
+
+</style>
+
+
+
+<style id="final-safe-neon-v5">
+
+/* =========================================================
+   受験RPG FINAL SAFE NEON
+   ・既存のbackground変更なし
+   ・既存のborder変更なし
+   ・グリッドなし
+   ・常時アニメなし
+   ・scaleなし
+========================================================= */
+
+:root {
+  --safe-purple:124,92,255;
+  --safe-cyan:53,201,255;
+}
+
+
+/* =========================================================
+   PAGE TRANSITION
+   新しく生成されたカードだけ動く
+========================================================= */
+
+body > main > section {
+
+  animation:
+    safePageIn
+    175ms
+    cubic-bezier(.16,.84,.25,1)
+    both;
+
+}
+
+
+@keyframes safePageIn {
+
+  from {
+    opacity:.56;
+    transform:translateY(6px);
+  }
+
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
+
+}
+
+
+/* =========================================================
+   PAGE TITLE
+========================================================= */
+
+body > main > section h1 {
+
+  text-shadow:
+    0 0 15px
+      rgba(var(--safe-purple),.22),
+
+    0 0 28px
+      rgba(var(--safe-cyan),.07);
+
+}
+
+
+/* =========================================================
+   MAIN FRAME
+   box-shadowだけ。背景・borderは触らない
+========================================================= */
+
+body
+> main
+> section:not(.rank-page-themed)
+:not(:has(.boss-battle-card)) {
+
+  box-shadow:
+
+    0 0 26px
+      rgba(var(--safe-purple),.075),
+
+    0 0 52px
+      rgba(var(--safe-cyan),.022),
+
+    inset 0 0 30px
+      rgba(var(--safe-purple),.012)
+
+    !important;
+
+}
+
+
+/* =========================================================
+   BUTTONS
 ========================================================= */
 
 body > main > section button {
 
   transition:
-    transform 90ms ease,
-    filter 90ms ease;
+    transform 100ms ease,
+    filter 100ms ease,
+    box-shadow 130ms ease;
+
 }
 
 
@@ -4868,7 +5098,14 @@ body > main > section button {
   > section
   button:not(:disabled):hover {
 
-    filter:brightness(1.07);
+    transform:translateY(-1px);
+
+    filter:brightness(1.06);
+
+    box-shadow:
+      0 0 13px
+      rgba(var(--safe-purple),.12);
+
   }
 
 }
@@ -4879,37 +5116,230 @@ body
 > section
 button:not(:disabled):active {
 
-  transform:scale(.985);
+  transform:translateY(0);
+
 }
 
 
 /* =========================================================
-   INPUT
+   QUEST / PARTY / SHOP TABS
+========================================================= */
+
+#quest-main-tabs button.active,
+#party-main-tabs button.active,
+.shop-tab.active {
+
+  text-shadow:
+    0 0 9px
+    rgba(170,148,255,.30);
+
+  box-shadow:
+
+    inset 0 0 15px
+      rgba(var(--safe-purple),.065),
+
+    0 0 12px
+      rgba(var(--safe-purple),.14)
+
+    !important;
+
+}
+
+
+/* =========================================================
+   STUDY
+========================================================= */
+
+@media (hover:hover) {
+
+  .study-main-choice:hover {
+
+    transform:translateY(-2px);
+
+    box-shadow:
+
+      0 8px 20px
+        rgba(0,0,0,.22),
+
+      0 0 17px
+        rgba(var(--safe-cyan),.10)
+
+      !important;
+
+  }
+
+}
+
+
+/* =========================================================
+   OTHER
+========================================================= */
+
+.other-card:nth-child(1) {
+  --safe-card-rgb:53,201,255;
+}
+
+.other-card:nth-child(2) {
+  --safe-card-rgb:155,115,255;
+}
+
+.other-card:nth-child(3) {
+  --safe-card-rgb:66,211,146;
+}
+
+.other-card:nth-child(4) {
+  --safe-card-rgb:255,209,102;
+}
+
+
+.other-card-icon {
+
+  box-shadow:
+    0 0 13px
+    rgba(var(--safe-card-rgb),.11)
+    !important;
+
+}
+
+
+@media (hover:hover) {
+
+  .other-card:hover {
+
+    transform:translateY(-2px);
+
+    box-shadow:
+
+      0 8px 19px
+        rgba(0,0,0,.20),
+
+      0 0 16px
+        rgba(var(--safe-card-rgb),.11)
+
+      !important;
+
+  }
+
+}
+
+
+/* =========================================================
+   SHOP
+========================================================= */
+
+.shop-product {
+
+  transition:
+    transform 110ms ease,
+    box-shadow 130ms ease;
+
+}
+
+
+@media (hover:hover) {
+
+  .shop-product:hover {
+
+    transform:translateY(-1px);
+
+    box-shadow:
+      0 0 14px
+      rgba(var(--safe-purple),.07);
+
+  }
+
+}
+
+
+/* =========================================================
+   LOCKER
+========================================================= */
+
+.locker-reserved {
+
+  box-shadow:
+
+    0 0 13px
+      rgba(var(--safe-cyan),.07),
+
+    inset 0 0 15px
+      rgba(var(--safe-purple),.04)
+
+    !important;
+
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.subject-chip.active,
+.profile-track-btn.active {
+
+  text-shadow:
+    0 0 8px
+    rgba(180,160,255,.28);
+
+  box-shadow:
+
+    0 0 11px
+      rgba(var(--safe-purple),.11),
+
+    inset 0 0 13px
+      rgba(var(--safe-purple),.055)
+
+    !important;
+
+}
+
+
+/* =========================================================
+   INPUT FOCUS
 ========================================================= */
 
 body > main > section input:focus,
 body > main > section select:focus,
 body > main > section textarea:focus {
 
-  outline:
-    2px solid
-    rgba(var(--flat-purple),.28);
+  outline:none !important;
 
-  outline-offset:1px;
+  box-shadow:
 
-  box-shadow:none !important;
+    0 0 0 2px
+      rgba(var(--safe-purple),.10),
+
+    0 0 13px
+      rgba(var(--safe-purple),.11)
+
+    !important;
+
 }
 
 
 /* =========================================================
    RANK
-   今のランク固有テーマをそのまま使う
+   ランク固有色だけ利用
 ========================================================= */
+
+.rank-page-themed {
+
+  box-shadow:
+
+    0 0 30px
+      rgba(var(--rank-rgb),.12),
+
+    inset 0 0 24px
+      rgba(var(--rank-rgb),.02)
+
+    !important;
+
+}
 
 
 /* =========================================================
    BOSS
-   一切上書きしない
+   何も上書きしない
 ========================================================= */
 
 
@@ -4926,6 +5356,137 @@ body > main > section textarea:focus {
   body > main > section * {
     transition:none !important;
   }
+
+}
+
+</style>
+
+
+
+<style id="home-line-cleanup-v1">
+
+/* =========================================================
+   HOME INTERNAL LINE CLEANUP
+   外側カード・XPバー・ボタンは維持
+========================================================= */
+
+
+/* ヘッダー内部 */
+.screen-header,
+.screen-header h2,
+.screen-header p {
+
+  background:none !important;
+  border:none !important;
+  box-shadow:none !important;
+
+}
+
+
+/* プレイヤー情報内部 */
+.home-player-top,
+.home-player-info,
+.home-player-name,
+.home-player-title,
+.home-player-id,
+.home-player-level,
+.home-player-level small,
+.home-player-level strong {
+
+  background:none !important;
+  border:none !important;
+  box-shadow:none !important;
+
+}
+
+
+/* XP文字周辺
+   ※ XPトラック自体は残す
+*/
+.home-xp-section,
+.home-xp-row,
+.home-xp-row span {
+
+  background:none !important;
+  border:none !important;
+  box-shadow:none !important;
+
+}
+
+
+/* ステータス4分割の余計な線を削除 */
+.home-summary-grid {
+
+  border-top:none !important;
+  background:none !important;
+  box-shadow:none !important;
+
+}
+
+
+.home-summary-item,
+.home-summary-item + .home-summary-item {
+
+  border-left:none !important;
+  border-right:none !important;
+  border-top:none !important;
+  border-bottom:none !important;
+
+  background:none !important;
+  box-shadow:none !important;
+
+}
+
+
+.home-summary-item span,
+.home-summary-item strong {
+
+  background:none !important;
+  border:none !important;
+  box-shadow:none !important;
+
+}
+
+
+/* 今日の勉強内部 */
+.home-section-title,
+.home-study-time {
+
+  background:none !important;
+  border:none !important;
+  box-shadow:none !important;
+
+}
+
+
+/* 変な擬似要素が紛れ込んでいた場合も除去 */
+.screen-header h2::before,
+.screen-header h2::after,
+.screen-header p::before,
+.screen-header p::after,
+
+.home-player-name::before,
+.home-player-name::after,
+.home-player-title::before,
+.home-player-title::after,
+.home-player-id::before,
+.home-player-id::after,
+
+.home-xp-row::before,
+.home-xp-row::after,
+
+.home-summary-grid::before,
+.home-summary-grid::after,
+.home-summary-item::before,
+.home-summary-item::after,
+
+.home-section-title::before,
+.home-section-title::after,
+.home-study-time::before,
+.home-study-time::after {
+
+  content:none !important;
+  display:none !important;
 
 }
 
@@ -19043,203 +19604,3 @@ body > main
 }
 
 </style>
-
-<style id="safe-intense-neon-v7b">
-
-/* =========================================================
-   SAFE INTENSE NEON
-   背景・枠線・グラデーションには触らない
-========================================================= */
-
-:root {
-  --safe-purple:#9b7cff;
-  --safe-cyan:#35d9ff;
-  --safe-pink:#ff5cac;
-  --safe-green:#45e0a3;
-  --safe-gold:#ffd35c;
-}
-
-
-/* ===== 見出し ===== */
-
-.screen-header h2,
-body > main > section h1 {
-  color:#f8f5ff !important;
-
-  text-shadow:
-    0 0 10px rgba(155,124,255,.38);
-}
-
-
-/* ===== HOME ===== */
-
-.home-player-title {
-  color:#c6b5ff !important;
-}
-
-.home-player-level strong {
-  color:#b89cff !important;
-
-  text-shadow:
-    0 0 12px rgba(155,124,255,.42);
-}
-
-.home-player-avatar {
-  color:#d8ccff !important;
-}
-
-.home-xp-fill {
-  background:#8f6fff !important;
-
-  box-shadow:
-    0 0 10px rgba(143,111,255,.45) !important;
-}
-
-.home-study-time {
-  color:#ddf9ff !important;
-
-  text-shadow:
-    0 0 13px rgba(53,217,255,.30);
-}
-
-
-/* ===== QUEST ===== */
-
-#quest-main-tabs button.active {
-  color:#fff !important;
-  background-color:rgba(155,124,255,.28) !important;
-
-  text-shadow:
-    0 0 8px rgba(155,124,255,.40);
-
-  box-shadow:none !important;
-}
-
-
-/* ===== PARTY ===== */
-
-#party-main-tabs button.active {
-  color:#fff !important;
-  background-color:rgba(53,217,255,.20) !important;
-
-  text-shadow:
-    0 0 8px rgba(53,217,255,.35);
-
-  box-shadow:none !important;
-}
-
-
-/* ===== SHOP ===== */
-
-.shop-tab.active {
-  color:#fff !important;
-  background-color:rgba(155,124,255,.30) !important;
-
-  box-shadow:none !important;
-}
-
-.shop-buy {
-  background:#7658e8 !important;
-}
-
-
-/* ===== LOCKER ===== */
-
-.locker-action {
-  background:#7257db !important;
-}
-
-.locker-reserved strong {
-  color:#cbbcff !important;
-}
-
-
-/* ===== PROFILE ===== */
-
-.subject-chip.active {
-  color:#fff !important;
-
-  background-color:
-    rgba(155,124,255,.30) !important;
-
-  box-shadow:none !important;
-}
-
-.profile-track-btn.active {
-  color:#fff !important;
-
-  background-color:
-    rgba(53,217,255,.20) !important;
-
-  box-shadow:none !important;
-}
-
-.profile-save {
-  background:#7658e8 !important;
-}
-
-
-/* ===== OTHER ===== */
-
-.other-card:nth-child(1) .other-card-icon {
-  color:var(--safe-cyan) !important;
-  background-color:rgba(53,217,255,.14) !important;
-}
-
-.other-card:nth-child(2) .other-card-icon {
-  color:var(--safe-purple) !important;
-  background-color:rgba(155,124,255,.16) !important;
-}
-
-.other-card:nth-child(3) .other-card-icon {
-  color:var(--safe-green) !important;
-  background-color:rgba(69,224,163,.13) !important;
-}
-
-.other-card:nth-child(4) .other-card-icon {
-  color:var(--safe-gold) !important;
-  background-color:rgba(255,211,92,.13) !important;
-}
-
-
-/* ===== 軽量操作感 ===== */
-
-body > main > section button {
-  transition:
-    transform 90ms ease,
-    filter 90ms ease !important;
-}
-
-@media (hover:hover) {
-  body > main > section button:not(:disabled):hover {
-    filter:
-      brightness(1.10)
-      saturate(1.15);
-  }
-}
-
-body > main > section button:not(:disabled):active {
-  transform:scale(.985);
-}
-
-
-/* ===== ページ切替 ===== */
-
-body > main > section {
-  animation:
-    safeFadeIn
-    140ms ease-out both;
-}
-
-@keyframes safeFadeIn {
-  from {
-    opacity:.55;
-  }
-
-  to {
-    opacity:1;
-  }
-}
-
-</style>
-

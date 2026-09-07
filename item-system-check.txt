@@ -1,0 +1,1264 @@
+========== SHOP ==========
+          alert(
+            error?.message ||
+            "称号の装備に失敗しました。"
+          );
+        }
+      };
+    });
+
+  $("titles-back-btn").onclick = async () => {
+    await showHome(user);
+  };
+}
+
+
+// ============================================================
+// SHOP
+// ============================================================
+
+
+const XP_ITEM_EFFECTS = {
+  "経験の書": {
+    multiplier: 1.5,
+    durationMinutes: 60,
+  },
+
+  "上級経験の書": {
+    multiplier: 2,
+    durationMinutes: 30,
+  },
+
+  "極経験の書": {
+    multiplier: 3,
+    durationMinutes: 15,
+  },
+
+  "長時間経験の書": {
+    multiplier: 1.5,
+    durationMinutes: 90,
+  },
+
+  "超長時間経験の書": {
+    multiplier: 1.5,
+    durationMinutes: 120,
+  },
+
+  "連続の心得": {
+    multiplier: 1.2,
+    durationMinutes: null,
+  },
+};
+
+function calculateStudyXp(minutes, itemName) {
+  const baseMinutes = Math.max(0, Number(minutes || 0));
+
+  if (!itemName || !XP_ITEM_EFFECTS[itemName]) {
+    return baseMinutes;
+  }
+
+  const effect = XP_ITEM_EFFECTS[itemName];
+
+  // 連続の心得：次のタイマー全体
+  if (effect.durationMinutes == null) {
+    return Math.floor(
+      baseMinutes * effect.multiplier
+    );
+  }
+
+  // その他：効果時間内だけ倍率
+  const boostedMinutes =
+    Math.min(baseMinutes, effect.durationMinutes);
+
+  const normalMinutes =
+    Math.max(0, baseMinutes - boostedMinutes);
+
+  return (
+    Math.floor(boostedMinutes * effect.multiplier) +
+    normalMinutes
+  );
+}
+
+const SHOP_ITEMS = [
+  {
+    id: "xp_book",
+    name: "経験の書",
+    price: 1000,
+    description: "XP 1.5倍 / 60分",
+  },
+  {
+    id: "xp_book_advanced",
+    name: "上級経験の書",
+    price: 2500,
+    description: "XP 2倍 / 30分",
+  },
+  {
+    id: "xp_book_extreme",
+    name: "極経験の書",
+    price: 4000,
+    description: "XP 3倍 / 15分",
+  },
+  {
+    id: "xp_book_long",
+    name: "長時間経験の書",
+    price: 1500,
+    description: "XP 1.5倍 / 90分",
+  },
+  {
+    id: "xp_book_super_long",
+    name: "超長時間経験の書",
+    price: 2000,
+    description: "XP 1.5倍 / 120分",
+  },
+  {
+    id: "continuous_mind",
+    name: "連続の心得",
+    price: 1500,
+    description: "次のタイマー1回 XP 1.2倍",
+  },
+
+  {
+    id: "boss_level_up",
+    name: "ボスLvアップ",
+    price: 5000,
+    description: "パーティーボスのLvを1上げる",
+  },
+
+  {
+    id: "boss_level_down",
+    name: "ボスLvダウン",
+    price: 5000,
+    description: "パーティーボスのLvを1下げる",
+  },
+
+  {
+    id: "boss_random_weakness",
+    name: "ランダム弱点追加",
+    price: 7500,
+    description: "ボスにランダムな弱点教科を1つ追加",
+  },
+
+  {
+    id: "boss_selected_weakness",
+    name: "選択弱点追加",
+    price: 15000,
+    description: "好きな教科をボスの弱点に1つ追加",
+  },
+];
+
+async function showShopPage(user) {
+  await checkAllTitles(user);
+
+  const ref = doc(db, "users", user.uid);
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) {
+    throw new Error("ユーザーデータが見つかりません。");
+  }
+
+  const data = snap.data();
+  const coins = Number(data.coins ?? 0);
+  const inventory = data.inventory || {};
+
+  page(
+    card(`
+      <h1 style="margin:0">ショップ</h1>
+
+      <div style="
+        padding:12px 14px;
+        background:#0b1019;
+        border:1px solid #263247;
+        border-radius:12px;
+      ">
+        所持コイン：
+        <strong>${coins}</strong>
+      </div>
+
+      <div style="display:grid;gap:12px">
+        ${SHOP_ITEMS.map((item) => `
+          <div style="
+            padding:16px;
+            background:#0b1019;
+            border:1px solid #263247;
+            border-radius:14px;
+            display:grid;
+            gap:8px;
+          ">
+            <strong>${item.name}</strong>
+
+            <div style="color:#9aa6ba;font-size:.9rem">
+              ${item.description}
+            </div>
+
+            <div style="font-size:.9rem">
+              価格：${item.price}コイン
+            </div>
+
+            <div style="font-size:.9rem">
+              所持：${Number(inventory[item.name] ?? 0)}個
+            </div>
+
+            <button
+              class="buy-item-btn"
+              data-item-id="${item.id}"
+              style="${buttonStyle(false)}"
+              ${coins < item.price ? "disabled" : ""}
+            >
+              購入
+            </button>
+          </div>
+        `).join("")}
+      </div>
+
+      <p
+        id="shop-message"
+        style="margin:0;min-height:1.4em;color:#9fd3a9"
+      ></p>
+
+      <section style="display:grid;gap:10px">
+        <h2 style="margin:10px 0 0">称号ショップ</h2>
+
+        ${
+          ALL_TITLE_DEFS
+            .filter(title => title.category === "shop")
+            .map(title => {
+              const ownedTitles =
+                Array.isArray(data.titles)
+                  ? data.titles
+                  : [];
+
+              const owned =
+                ownedTitles.includes(title.name);
+
+              return `
+                <div style="
+                  padding:14px;
+                  background:#0b1019;
+                  border:1px solid #263247;
+                  border-radius:12px;
+                  display:grid;
+                  gap:8px;
+                ">
+                  <div>
+                    <strong>${title.name}</strong>
+
+                    <div style="
+                      color:#9aa6ba;
+                      font-size:.85rem;
+                    ">
+                      ${title.rarity} / ${title.price}コイン
+                    </div>
+                  </div>
+
+                  <button
+                    class="buy-title-btn"
+                    data-title-id="${title.id}"
+                    ${owned ? "disabled" : ""}
+                    style="${buttonStyle(!owned)}"
+                  >
+                    ${owned ? "購入済み" : "購入"}
+                  </button>
+                </div>
+              `;
+            })
+            .join("")
+        }
+      </section>
+
+      <button
+        id="shop-back-btn"
+        style="${buttonStyle(false)}"
+      >
+        ホームへ戻る
+      </button>
+    `)
+  );
+
+  document.querySelectorAll(".buy-item-btn").forEach((button) => {
+    button.onclick = async () => {
+      const item =
+        SHOP_ITEMS.find(
+          (entry) => entry.id === button.dataset.itemId
+        );
+
+      if (!item) return;
+
+      try {
+        const latestSnap = await getDoc(ref);
+
+        if (!latestSnap.exists()) {
+          throw new Error("ユーザーデータが見つかりません。");
+        }
+
+        const latest = latestSnap.data();
+        const latestCoins = Number(latest.coins ?? 0);
+
+        if (latestCoins < item.price) {
+          throw new Error("コインが足りません。");
+        }
+
+        const nextInventory = {
+          ...(latest.inventory || {}),
+        };
+
+        nextInventory[item.name] =
+          Number(nextInventory[item.name] ?? 0) + 1;
+
+        await setDoc(
+          ref,
+          {
+            coins: latestCoins - item.price,
+            inventory: nextInventory,
+
+            lifetimeCoinsSpent:
+              Number(latest.lifetimeCoinsSpent ?? 0) +
+              item.price,
+
+            shopPurchaseCount:
+              Number(latest.shopPurchaseCount ?? 0) + 1,
+
+            updatedAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+
+        await showShopPage(user);
+      } catch (error) {
+        const message = $("shop-message");
+        if (message) {
+          message.style.color = "#ff8b8b";
+          message.textContent =
+            error?.message || "購入に失敗しました。";
+        }
+
+========== BOSS ITEM USE ==========
+              <button
+                id="claim-boss-reward-btn"
+                style="${buttonStyle(true)}"
+              >
+                撃破報酬を受け取る
+              </button>
+
+              <p
+                id="boss-reward-message"
+                style="margin:0;min-height:1.4em"
+              ></p>
+            </div>
+          `
+          : ""
+      }
+    `)
+  );
+
+
+
+  const myUserSnap =
+    await getDoc(doc(db, "users", user.uid));
+
+  if (myUserSnap.exists() && $("boss-item-list")) {
+    const myUserData = myUserSnap.data();
+    const inventory = myUserData.inventory || {};
+
+    const bossItems = [
+      "ボスLvアップ",
+      "ボスLvダウン",
+      "ランダム弱点追加",
+      "選択弱点追加",
+    ];
+
+    const available = bossItems.filter(
+      itemName => Number(inventory[itemName] ?? 0) > 0
+    );
+
+    if (!available.length) {
+      $("boss-item-list").innerHTML = `
+        <div style="color:#9aa6ba;font-size:.9rem">
+          使用できるボスアイテムはありません。
+        </div>
+      `;
+    } else {
+      $("boss-item-list").innerHTML = available.map(itemName => `
+        <div style="
+          display:grid;
+          gap:7px;
+          padding:10px;
+          background:#111722;
+          border-radius:10px;
+          margin-bottom:8px;
+        ">
+          <div>
+            <strong>${itemName}</strong>
+            ×${Number(inventory[itemName] ?? 0)}
+          </div>
+
+          <button
+            class="use-boss-item-btn"
+            data-item-name="${itemName}"
+            style="${buttonStyle(false)}"
+          >
+            使用
+          </button>
+        </div>
+      `).join("");
+    }
+  }
+
+
+
+  document.querySelectorAll(".use-boss-item-btn").forEach((button) => {
+    button.onclick = async () => {
+      const itemName = button.dataset.itemName;
+
+      if (
+        itemName !== "ボスLvアップ" &&
+        itemName !== "ボスLvダウン"
+      ) {
+        return;
+      }
+
+      try {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          throw new Error("ユーザーデータが見つかりません。");
+        }
+
+        const userData = userSnap.data();
+        const inventory = {
+          ...(userData.inventory || {}),
+        };
+
+        if (Number(inventory[itemName] ?? 0) <= 0) {
+          throw new Error("このアイテムを所持していません。");
+        }
+
+        const partyRef = doc(db, "parties", party.id);
+        const partySnap = await getDoc(partyRef);
+
+        if (!partySnap.exists()) {
+          throw new Error("パーティーが見つかりません。");
+        }
+
+        const latestParty = partySnap.data();
+        const latestBoss = latestParty.boss;
+
+        if (!latestBoss) {
+          throw new Error("ボスが見つかりません。");
+        }
+
+        const usedCount =
+          Number(latestParty.bossLevelItemUseCount ?? 0);
+
+        if (usedCount >= 2) {
+          throw new Error(
+            "ボスLv変更アイテムはパーティー全体で最大2回までです。"
+          );
+        }
+
+        const direction =
+          itemName === "ボスLvアップ" ? 1 : -1;
+
+        const oldLevel =
+          Number(latestBoss.level ?? 1);
+
+        const newLevel =
+          Math.min(
+            10,
+            Math.max(1, oldLevel + direction)
+          );
+
+        if (newLevel === oldLevel) {
+          throw new Error(
+            oldLevel >= 10
+              ? "これ以上ボスLvを上げられません。"
+              : "これ以上ボスLvを下げられません。"
+          );
+        }
+
+        const oldMaxHp =
+          Number(latestBoss.maxHp ?? BOSS_HP_TABLE[oldLevel]);
+
+        const oldHp =
+          Number(latestBoss.currentHp ?? oldMaxHp);
+
+        const newMaxHp =
+          BOSS_HP_TABLE[newLevel];
+
+        // HP割合を維持
+        const hpRate =
+          oldMaxHp > 0
+            ? Math.max(0, Math.min(1, oldHp / oldMaxHp))
+            : 1;
+
+        const newHp =
+          Math.round(newMaxHp * hpRate);
+
+        inventory[itemName] =
+          Number(inventory[itemName]) - 1;
+
+        await setDoc(
+          userRef,
+          {
+            inventory,
+            updatedAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+
+        await setDoc(
+          partyRef,
+          {
+            boss: {
+              ...latestBoss,
+              level: newLevel,
+              maxHp: newMaxHp,
+              currentHp: newHp,
+            },
+
+            bossLevelItemUseCount:
+              usedCount + 1,
+
+            updatedAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+
+        await showBossPage(user);
+
+      } catch (error) {
+        alert(
+          error?.message ||
+          "ボスアイテムの使用に失敗しました。"
+        );
+      }
+    };
+  });
+
+
+
+  document.querySelectorAll(".use-boss-item-btn").forEach((button) => {
+    const itemName = button.dataset.itemName;
+
+    if (
+      itemName !== "ランダム弱点追加" &&
+      itemName !== "選択弱点追加"
+    ) {
+      return;
+    }
+
+    button.onclick = async () => {
+      try {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          throw new Error("ユーザーデータが見つかりません。");
+        }
+
+        const userData = userSnap.data();
+        const inventory = {
+          ...(userData.inventory || {}),
+        };
+
+        if (Number(inventory[itemName] ?? 0) <= 0) {
+          throw new Error("このアイテムを所持していません。");
+        }
+
+        const partyRef = doc(db, "parties", party.id);
+        const partySnap = await getDoc(partyRef);
+
+        if (!partySnap.exists()) {
+          throw new Error("パーティーが見つかりません。");
+        }
+
+        const latestParty = partySnap.data();
+        const latestBoss = latestParty.boss;
+
+        if (!latestBoss) {
+          throw new Error("ボスが見つかりません。");
+        }
+
+        const addedWeaknessSubjects =
+          Array.isArray(latestParty.addedWeaknessSubjects)
+            ? [...latestParty.addedWeaknessSubjects]
+            : [];
+
+        let selectedSubject = "";
+
+        if (itemName === "ランダム弱点追加") {
+          if (latestParty.randomWeaknessUsed) {
+            throw new Error(
+              "ランダム弱点追加はこのパーティーですでに使用済みです。"
+            );
+          }
+
+          const candidates =
+            Array.isArray(userData.selectedSubjects)
+              ? userData.selectedSubjects.filter(
+                  subject =>
+                    !addedWeaknessSubjects.includes(subject)
+                )
+              : [];
+
+          if (!candidates.length) {
+            throw new Error("追加できる教科がありません。");
+          }
+
+          selectedSubject =
+            candidates[
+              Math.floor(Math.random() * candidates.length)
+            ];
+        }
+
+        if (itemName === "選択弱点追加") {
+          if (latestParty.selectedWeaknessUsed) {
+            throw new Error(
+              "選択弱点追加はこのパーティーですでに使用済みです。"
+            );
+          }
+
+          const candidates =
+            Array.isArray(userData.selectedSubjects)
+              ? userData.selectedSubjects.filter(
+                  subject =>
+                    !addedWeaknessSubjects.includes(subject)
+                )
+              : [];
+
+          if (!candidates.length) {
+            throw new Error("追加できる教科がありません。");
+          }
+
+          selectedSubject = prompt(
+            "追加する弱点教科を入力してください。\n\n" +
+            candidates.join(" / ")
+          );
+
+          if (!selectedSubject) return;
+
+          selectedSubject = selectedSubject.trim();
+
+          if (!candidates.includes(selectedSubject)) {
+            throw new Error(
+              "選択科目の中から正確に入力してください。"
+            );
+          }
+        }
+
+        addedWeaknessSubjects.push(selectedSubject);
+
+        inventory[itemName] =
+          Number(inventory[itemName]) - 1;
+
+        await setDoc(
+          userRef,
+          {
+            inventory,
+            updatedAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+
+        await setDoc(
+          partyRef,
+          {
+            addedWeaknessSubjects,
+
+            ...(itemName === "ランダム弱点追加"
+              ? { randomWeaknessUsed: true }
+              : { selectedWeaknessUsed: true }),
+
+            updatedAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+
+        alert(
+          `${selectedSubject} が追加弱点になりました。`
+        );
+
+        await showBossPage(user);
+
+      } catch (error) {
+        alert(
+          error?.message ||
+
+========== LOCKER ==========
+    const snap = await getDoc(userRef);
+
+    if (!snap.exists()) return [];
+
+    data = snap.data();
+  }
+
+  const owned = getOwnedTitlesArray(data);
+  const before = new Set(owned);
+
+  const levelInfo =
+    calculateLevelFromTotalXp(
+      Number(data.xp || 0)
+    );
+
+  const level = levelInfo.level;
+  const totalMinutes =
+    Number(data.totalStudyMinutes || 0);
+
+  const hours = totalMinutes / 60;
+
+  const subjects =
+    getSubjectMinutesEntries(data);
+
+  const studiedSubjects =
+    subjects.filter(s => s.minutes > 0);
+
+  const inventory =
+    data.inventory || {};
+
+  const ownedItemTypes =
+    Object.entries(inventory)
+      .filter(([, count]) => Number(count || 0) > 0)
+      .length;
+
+  // ==========================================================
+  // レベル
+  // ==========================================================
+
+  if (level >= 5) addOwnedTitleById(owned, "normal-01");
+  if (level >= 10) addOwnedTitleById(owned, "normal-02");
+  if (level >= 25) addOwnedTitleById(owned, "normal-03");
+  if (level >= 50) addOwnedTitleById(owned, "normal-04");
+  if (level >= 75) addOwnedTitleById(owned, "normal-05");
+
+  if (
+    level >= 100 ||
+    Number(data.stars || 0) >= 1
+  ) {
+    addOwnedTitleById(owned, "normal-06");
+  }
+
+  // ==========================================================
+  // 累計勉強時間
+  // ==========================================================
+
+  if (hours >= 10) addOwnedTitleById(owned, "normal-07");
+  if (hours >= 50) addOwnedTitleById(owned, "normal-08");
+  if (hours >= 100) addOwnedTitleById(owned, "normal-09");
+  if (hours >= 250) addOwnedTitleById(owned, "normal-10");
+  if (hours >= 500) addOwnedTitleById(owned, "normal-11");
+  if (hours >= 1000) addOwnedTitleById(owned, "normal-12");
+
+  // ==========================================================
+  // 連続勉強
+  // ※ consecutiveStudyDays を次の工程で自動記録する
+  // ==========================================================
+
+  const streak =
+    Number(data.consecutiveStudyDays || 0);
+
+  if (streak >= 3) addOwnedTitleById(owned, "normal-13");
+  if (streak >= 7) addOwnedTitleById(owned, "normal-14");
+  if (streak >= 14) addOwnedTitleById(owned, "normal-15");
+  if (streak >= 30) addOwnedTitleById(owned, "normal-16");
+  if (streak >= 60) addOwnedTitleById(owned, "normal-17");
+  if (streak >= 100) addOwnedTitleById(owned, "normal-18");
+
+  // ==========================================================
+  // 教科
+  // ==========================================================
+
+  const systems = new Set(
+    studiedSubjects
+      .map(s => subjectSystemForTitle(s.subject))
+      .filter(Boolean)
+  );
+
+  if (
+    ["数学", "国語", "地歴公民", "理科", "英語"]
+      .every(system => systems.has(system))
+  ) {
+    addOwnedTitleById(owned, "normal-19");
+  }
+
+  const humanitiesSubjects = new Set([
+    "現代文",
+    "古文",
+    "漢文",
+    "日本史",
+    "世界史",
+    "地理",
+    "政治・経済",
+    "倫理",
+    "公共",
+  ]);
+
+  const scienceSubjects = new Set([
+    "数学IA",
+    "数学IIBC",
+    "数学III",
+    "化学",
+    "化学基礎",
+    "物理",
+    "物理基礎",
+    "生物",
+    "生物基礎",
+    "地学",
+    "地学基礎",
+  ]);
+
+
+========== TIMER ITEM ==========
+    endButton.click();
+  };
+}
+
+
+async function showTimerPage(user) {
+  const restoredTimer =
+    await loadActiveTimer(user);
+
+  if (restoredTimer) {
+    timerState = restoredTimer;
+  }
+  const ref = doc(db, "users", user.uid);
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) {
+    throw new Error("ユーザーデータが見つかりません。");
+  }
+
+  const data = snap.data();
+  const subjects = Array.isArray(data.selectedSubjects)
+    ? data.selectedSubjects
+    : [];
+
+  page(
+    card(`
+      <h1 style="margin:0">勉強タイマー</h1>
+
+      <select id="timer-subject" style="${fieldStyle()}">
+        <option value="">教科を選択</option>
+        ${subjects.map(subject => `
+          <option value="${subject}">${subject}</option>
+        `).join("")}
+      </select>
+
+      <select id="timer-xp-item" style="${fieldStyle()}">
+        <option value="">XPアイテムなし</option>
+
+        ${Object.keys(XP_ITEM_EFFECTS)
+          .filter(
+            itemName =>
+              Number(data.inventory?.[itemName] ?? 0) > 0
+          )
+          .map(itemName => `
+            <option value="${itemName}">
+              ${itemName}
+              ×${Number(data.inventory?.[itemName] ?? 0)}
+            </option>
+          `)
+          .join("")}
+      </select>
+
+      <div
+        id="timer-display"
+        style="
+          font-size:3rem;
+          font-weight:800;
+          text-align:center;
+          padding:24px 0;
+        "
+      >
+        00:00:00
+      </div>
+
+      <button id="timer-start" style="${buttonStyle(true)}">
+        開始
+      </button>
+
+      <button id="timer-pause" style="${buttonStyle(false)}" disabled>
+        一時停止
+      </button>
+
+      <button id="timer-end" style="${buttonStyle(false)}" disabled>
+        終了
+      </button>
+
+      <button id="timer-back" style="${buttonStyle(false)}">
+        ホームへ戻る
+      </button>
+
+      <p id="timer-error" style="margin:0;color:#ff8b8b"></p>
+    `)
+  );
+
+  $("timer-back").onclick = async () => {
+    stopTimerInterval();
+    await showHome(user);
+  };
+
+
+  if (timerState.subject) {
+    $("timer-subject").value =
+      timerState.subject;
+
+    if ($("timer-xp-item")) {
+      $("timer-xp-item").value =
+        timerState.xpItem || "";
+    }
+
+    $("timer-subject").disabled = true;
+    $("timer-xp-item").disabled = true;
+    $("timer-start").disabled = true;
+    $("timer-pause").disabled = false;
+    $("timer-end").disabled = false;
+
+    $("timer-pause").textContent =
+      timerState.paused
+        ? "再開"
+        : "一時停止";
+
+    const display = $("timer-display");
+
+    if (display) {
+      display.textContent =
+        formatTimer(currentElapsedMs());
+    }
+
+    if (!timerState.paused) {
+      startTimerInterval();
+    }
+  }
+
+  $("timer-start").onclick = async () => {
+    const subject = $("timer-subject").value;
+
+    if (!subject) {
+      $("timer-error").textContent = "教科を選択してください。";
+      return;
+    }
+
+    $("timer-error").textContent = "";
+
+    timerState.subject = subject;
+    timerState.xpItem =
+      $("timer-xp-item")?.value || "";
+
+    timerState.startedAt = Date.now();
+    timerState.elapsedBeforePause = 0;
+    timerState.paused = false;
+
+    $("timer-subject").disabled = true;
+    $("timer-xp-item").disabled = true;
+    $("timer-start").disabled = true;
+    $("timer-pause").disabled = false;
+    $("timer-end").disabled = false;
+
+    startTimerInterval();
+
+    await saveActiveTimer(user);
+  };
+
+  $("timer-pause").onclick = async () => {
+    if (!timerState.startedAt) return;
+
+    if (!timerState.paused) {
+      timerState.elapsedBeforePause = currentElapsedMs();
+      timerState.startedAt = null;
+      timerState.paused = true;
+
+      $("timer-pause").textContent = "再開";
+      stopTimerInterval();
+
+      await saveActiveTimer(user);
+    } else {
+      timerState.startedAt = Date.now();
+      timerState.paused = false;
+
+      $("timer-pause").textContent = "一時停止";
+      startTimerInterval();
+
+      await saveActiveTimer(user);
+    }
+  };
+
+  $("timer-end").onclick = async () => {
+    const elapsedMs = currentElapsedMs();
+    stopTimerInterval();
+
+    const totalMinutes = Math.floor(elapsedMs / 60000);
+
+    page(
+      card(`
+        <h1 style="margin:0">勉強記録の確認</h1>
+
+        <p>教科：<strong>${timerState.subject}</strong></p>
+        <p>勉強時間：<strong>${totalMinutes}分</strong></p>
+
+        ${
+          timerState.xpItem
+            ? `<p>使用アイテム：<strong>${timerState.xpItem}</strong></p>`
+            : ""
+        }
+
+        <button id="timer-confirm" style="${buttonStyle(true)}">
+          この内容で保存
+        </button>
+
+        <button id="timer-cancel" style="${buttonStyle(false)}">
+          保存せず戻る
+        </button>
+
+        <p id="confirm-error" style="margin:0;color:#ff8b8b"></p>
+      `)
+    );
+
+    $("timer-cancel").onclick = async () => {
+      await clearActiveTimer(user);
+
+      timerState = {
+        subject: "",
+        xpItem: "",
+        startedAt: null,
+        elapsedBeforePause: 0,
+        paused: false,
+        intervalId: null,
+      };
+
+      await showHome(user);
+    };
+
+    $("timer-confirm").onclick = async () => {
+      try {
+        $("confirm-error").textContent = "";
+
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          throw new Error("ユーザーデータが見つかりません。");
+        }
+
+        const current = userSnap.data();
+
+        const inventoryBeforeUse = {
+          ...(current.inventory || {}),
+        };
+
+        if (timerState.xpItem) {
+          const owned =
+            Number(inventoryBeforeUse[timerState.xpItem] ?? 0);
+
+          if (owned <= 0) {
+            throw new Error(
+              "選択したXPアイテムを所持していません。"
+            );
+          }
+
+          inventoryBeforeUse[timerState.xpItem] =
+            owned - 1;
+        }
+
+        const newStudyMinutes =
+          Number(current.totalStudyMinutes ?? 0) + totalMinutes;
+
+        const newMonthlyStudyMinutes =
+          Number(current.monthlyStudyMinutes ?? 0) + totalMinutes;
+
+        const newXp =
+          Number(current.xp ?? 0) + totalMinutes;
+
+        const subjectStudyMinutes = {
+          ...(current.subjectStudyMinutes || {}),
+        };
+
+        const previousSubjectMinutes =
+          Number(subjectStudyMinutes[timerState.subject] ?? 0);
+
+        subjectStudyMinutes[timerState.subject] =
+          previousSubjectMinutes + totalMinutes;
+
+        const subjectLevels = {
+
+========== TIMER SAVE ==========
+                ...quest,
+                progress: newProgress,
+                completed: justCompleted,
+                rewardGranted:
+                  justCompleted ? true : Boolean(quest.rewardGranted),
+              };
+            })
+          : [];
+
+        const currentWeekKey = getJstWeekKey();
+
+        const weeklyBaseProgress =
+          current.weeklyQuestWeekKey === currentWeekKey
+            ? Number(current.weeklyQuestProgress ?? 0)
+            : 0;
+
+        const weeklyQuestProgress =
+          Math.min(weeklyBaseProgress + totalMinutes, 600);
+
+        const weeklyQuestCompleted =
+          weeklyQuestProgress >= 600;
+
+        const weeklyWasAlreadyGranted =
+          current.weeklyQuestWeekKey === currentWeekKey &&
+          Boolean(current.weeklyQuestRewardGranted);
+
+        const weeklyJustCompleted =
+          weeklyQuestCompleted && !weeklyWasAlreadyGranted;
+
+        const weeklyRewardXp =
+          weeklyJustCompleted ? 1000 : 0;
+
+        const weeklyRewardCoins =
+          weeklyJustCompleted ? 2500 : 0;
+
+        const WEEKLY_RANDOM_ITEMS = [
+          "経験の書",
+          "上級経験の書",
+          "極経験の書",
+          "長時間経験の書",
+          "超長時間経験の書",
+          "連続の心得",
+          "ボスLvアップ",
+          "ボスLvダウン",
+          "ランダム弱点追加",
+          "選択弱点追加",
+        ];
+
+        const inventory = {
+          ...inventoryBeforeUse,
+        };
+
+        const RARE_RANDOM_ITEMS = [
+          "経験の書",
+          "上級経験の書",
+          "極経験の書",
+          "長時間経験の書",
+          "超長時間経験の書",
+          "連続の心得",
+          "ボスLvアップ",
+          "ボスLvダウン",
+          "ランダム弱点追加",
+          "選択弱点追加",
+        ];
+
+        const completedRareQuest =
+          dailyQuests.find(
+            (quest) =>
+              quest.rare &&
+              quest.completed &&
+              quest.rewardGranted &&
+              !current.dailyQuests?.find(
+                (oldQuest) =>
+                  oldQuest.id === quest.id &&
+                  oldQuest.rewardGranted
+              )
+          );
+
+        if (completedRareQuest) {
+          const itemCount =
+            Number(completedRareQuest.minutes) === 180 ? 3 : 2;
+
+          for (let i = 0; i < itemCount; i++) {
+            const itemName =
+              RARE_RANDOM_ITEMS[
+                Math.floor(Math.random() * RARE_RANDOM_ITEMS.length)
+              ];
+
+            inventory[itemName] =
+              Number(inventory[itemName] ?? 0) + 1;
+          }
+        }
+
+        if (weeklyJustCompleted) {
+          const randomItemName =
+            WEEKLY_RANDOM_ITEMS[
+              Math.floor(Math.random() * WEEKLY_RANDOM_ITEMS.length)
+            ];
+
+          inventory[randomItemName] =
+            Number(inventory[randomItemName] ?? 0) + 1;
+        }
+
+        const todayKey = getJstDateKey();
+
+        const sameXpDay =
+          current.dailyXpDate === todayKey;
+
+        const previousDailyXp =
+          sameXpDay
+            ? Number(current.dailyXpEarned ?? 0)
+            : 0;
+
+        const boostAlreadyActive =
+          sameXpDay &&
+          Boolean(current.rareXpBoostActive);
+
+        const completedThreeHourRare =
+          dailyQuests.some((quest) => {
+            if (!quest.rare) return false;
+            if (Number(quest.minutes) !== 180) return false;
+            if (!quest.completed || !quest.rewardGranted) return false;
+
+            const oldQuest =
+              Array.isArray(current.dailyQuests)
+                ? current.dailyQuests.find(q => q.id === quest.id)
+                : null;
+
+            return !oldQuest?.rewardGranted;
+          });
+
+        const studyXpThisSave =
+          calculateStudyXp(
+            totalMinutes,
+            timerState.xpItem
+          );
+
+        const baseXpThisSave =
+          studyXpThisSave +
+          questRewardXp +
+          weeklyRewardXp;
+
+        let xpFromThisSave = baseXpThisSave;
+
+        if (boostAlreadyActive) {
+          xpFromThisSave = Math.floor(baseXpThisSave * 1.5);
+        }
+
+        let rareCompletionBonusXp = 0;
+
+        if (completedThreeHourRare && !boostAlreadyActive) {
+          rareCompletionBonusXp =
+            Math.floor((previousDailyXp + baseXpThisSave) * 0.5);
+        }
+
+        const finalXp =
+          Number(current.xp ?? 0) +
+          xpFromThisSave +
+          rareCompletionBonusXp;
+
+        const newDailyXpEarned =
+          previousDailyXp +
+          xpFromThisSave +
+          rareCompletionBonusXp;
+
+        const finalCoins =
+          Number(current.coins ?? 0) +
+          questRewardCoins +
+          weeklyRewardCoins;
+
+        // ============================================
+        // 今日の勉強記録（JST）
+        // ============================================
+
+        const sameStudyDay =
+          current.dailyStudyDate === todayKey;
+
+        const todayStudyMinutes =
+          (sameStudyDay
+            ? Number(current.todayStudyMinutes ?? 0)
+            : 0

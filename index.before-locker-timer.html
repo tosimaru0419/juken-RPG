@@ -4479,458 +4479,6 @@ body > main.rank-theme-legend {
 
 </style>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<style id="final-flat-neon-v7">
-
-:root {
-  --flat-purple: 124,92,255;
-  --flat-cyan: 53,201,255;
-  --flat-green: 66,211,146;
-  --flat-gold: 255,209,102;
-}
-
-
-/* =========================================================
-   GLOBAL
-   光らせず、面に色を混ぜる
-========================================================= */
-
-body > main:not(.rank-main-themed) {
-  background:#080b12 !important;
-}
-
-
-/* =========================================================
-   PAGE TRANSITION
-   opacityだけ
-========================================================= */
-
-body > main > section {
-  animation:
-    flatPageIn
-    130ms ease-out both;
-}
-
-@keyframes flatPageIn {
-  from {
-    opacity:.60;
-  }
-
-  to {
-    opacity:1;
-  }
-}
-
-
-/* =========================================================
-   HOME
-========================================================= */
-
-#home-player-status {
-
-  background:
-    radial-gradient(
-      circle at 90% 5%,
-      rgba(var(--flat-purple),.18),
-      transparent 42%
-    ),
-    linear-gradient(
-      145deg,
-      #151a28,
-      #0e121c
-    )
-    !important;
-}
-
-
-.home-player-avatar {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.23),
-      rgba(var(--flat-cyan),.08)
-    )
-    !important;
-}
-
-
-.home-player-title,
-.home-player-level strong {
-
-  color:#ad9cff !important;
-}
-
-
-.home-xp-fill {
-
-  background:
-    linear-gradient(
-      90deg,
-      #6548eb,
-      #9d82ff,
-      #35c9ff
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-#home-study-status {
-
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(var(--flat-cyan),.12),
-      transparent 50%
-    ),
-    linear-gradient(
-      145deg,
-      #121a25,
-      #0d1119
-    )
-    !important;
-}
-
-
-/* =========================================================
-   STUDY
-========================================================= */
-
-.study-main-choice:nth-child(1) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-cyan),.12),
-      #111722 48%
-    )
-    !important;
-}
-
-
-.study-main-choice:nth-child(2) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.13),
-      #111722 48%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   QUEST
-========================================================= */
-
-#quest-main-tabs button.active {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.25),
-      rgba(var(--flat-purple),.10)
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-body:has(#quest-main-tabs)
-> main
-> section {
-
-  background:
-    linear-gradient(
-      150deg,
-      rgba(var(--flat-purple),.07),
-      #111722 32%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   PARTY
-========================================================= */
-
-#party-main-tabs button.active {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-cyan),.21),
-      rgba(var(--flat-purple),.10)
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-body:has(#party-main-tabs)
-> main
-> section {
-
-  background:
-    linear-gradient(
-      150deg,
-      rgba(var(--flat-cyan),.06),
-      #111722 34%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   SHOP
-========================================================= */
-
-.shop-tab.active {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.24),
-      rgba(var(--flat-purple),.09)
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-.shop-product {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.055),
-      #0b1019 42%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   LOCKER
-========================================================= */
-
-.locker-reserved {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.14),
-      rgba(var(--flat-cyan),.055)
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-.locker-item {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-cyan),.035),
-      #0b1019 42%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   PROFILE
-========================================================= */
-
-.profile-box {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.045),
-      #0b1019 40%
-    )
-    !important;
-}
-
-
-.subject-chip.active,
-.profile-track-btn.active {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.25),
-      rgba(var(--flat-purple),.10)
-    )
-    !important;
-
-  box-shadow:none !important;
-
-  color:#fff !important;
-}
-
-
-/* =========================================================
-   OTHER
-========================================================= */
-
-.other-card:nth-child(1) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-cyan),.13),
-      #101620 48%
-    )
-    !important;
-}
-
-
-.other-card:nth-child(2) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.14),
-      #101620 48%
-    )
-    !important;
-}
-
-
-.other-card:nth-child(3) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-green),.11),
-      #101620 48%
-    )
-    !important;
-}
-
-
-.other-card:nth-child(4) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-gold),.10),
-      #101620 48%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   BUTTON INTERACTION
-   発光させない
-========================================================= */
-
-body > main > section button {
-
-  transition:
-    transform 90ms ease,
-    filter 90ms ease;
-}
-
-
-@media (hover:hover) {
-
-  body
-  > main
-  > section
-  button:not(:disabled):hover {
-
-    filter:brightness(1.07);
-  }
-
-}
-
-
-body
-> main
-> section
-button:not(:disabled):active {
-
-  transform:scale(.985);
-}
-
-
-/* =========================================================
-   INPUT
-========================================================= */
-
-body > main > section input:focus,
-body > main > section select:focus,
-body > main > section textarea:focus {
-
-  outline:
-    2px solid
-    rgba(var(--flat-purple),.28);
-
-  outline-offset:1px;
-
-  box-shadow:none !important;
-}
-
-
-/* =========================================================
-   RANK
-   今のランク固有テーマをそのまま使う
-========================================================= */
-
-
-/* =========================================================
-   BOSS
-   一切上書きしない
-========================================================= */
-
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
-
-@media (prefers-reduced-motion:reduce) {
-
-  body > main > section {
-    animation:none !important;
-  }
-
-  body > main > section * {
-    transition:none !important;
-  }
-
-}
-
-</style>
-
 </head>
 
 
@@ -10635,1131 +10183,6 @@ async function showPartyFriendsMainPage(
 // OTHER
 // ============================================================
 
-
-async function showLockerPage(user) {
-
-  const ref =
-    doc(db, "users", user.uid);
-
-  const snap =
-    await getDoc(ref);
-
-  if (!snap.exists()) {
-    throw new Error(
-      "ユーザーデータが見つかりません。"
-    );
-  }
-
-  const data =
-    snap.data();
-
-  const inventory =
-    data.inventory || {};
-
-  const queuedXpItem =
-    String(
-      data.queuedXpItem ?? ""
-    );
-
-  const xpItems =
-    Object.keys(
-      XP_ITEM_EFFECTS
-    );
-
-  const bossItems = [
-    "ボスLvアップ",
-    "ボスLvダウン",
-    "ランダム弱点追加",
-    "選択弱点追加",
-  ];
-
-
-  page(
-    card(`
-
-      <style>
-
-        .locker-header {
-          display:flex;
-          align-items:center;
-          gap:10px;
-        }
-
-        .locker-back {
-          min-height:38px;
-          padding:0 12px;
-
-          color:#abb4c2;
-          background:#0b1019;
-
-          border:
-            1px solid rgba(255,255,255,.09);
-
-          border-radius:10px;
-
-          font-weight:800;
-          cursor:pointer;
-        }
-
-        .locker-section {
-          display:grid;
-          gap:9px;
-        }
-
-        .locker-section-title {
-          font-size:.9rem;
-          font-weight:900;
-        }
-
-        .locker-reserved {
-          padding:12px 13px;
-
-          color:#929cab;
-          background:
-            rgba(124,92,255,.09);
-
-          border:
-            1px solid rgba(124,92,255,.18);
-
-          border-radius:12px;
-
-          font-size:.8rem;
-        }
-
-        .locker-reserved strong {
-          color:#c9bdff;
-        }
-
-        .locker-item {
-          padding:12px 13px;
-
-          display:grid;
-          grid-template-columns:
-            minmax(0,1fr) auto;
-
-          align-items:center;
-
-          gap:8px 12px;
-
-          background:#0b1019;
-
-          border:
-            1px solid rgba(255,255,255,.075);
-
-          border-radius:12px;
-        }
-
-        .locker-item-info {
-          min-width:0;
-          display:grid;
-          gap:3px;
-        }
-
-        .locker-item-name {
-          font-size:.84rem;
-          font-weight:850;
-        }
-
-        .locker-item-desc {
-          color:#7c8797;
-          font-size:.71rem;
-          line-height:1.4;
-        }
-
-        .locker-action {
-          min-width:82px;
-          min-height:36px;
-
-          padding:6px 9px;
-
-          color:#fff;
-
-          background:
-            rgba(124,92,255,.16);
-
-          border:
-            1px solid rgba(124,92,255,.24);
-
-          border-radius:9px;
-
-          font-size:.73rem;
-          font-weight:800;
-
-          cursor:pointer;
-        }
-
-        .locker-action.active {
-          color:#ffacb8;
-
-          background:
-            rgba(255,93,115,.07);
-
-          border-color:
-            rgba(255,93,115,.18);
-        }
-
-        .locker-action:disabled {
-          opacity:.3;
-          cursor:default;
-        }
-
-        .locker-note {
-          color:#747f90;
-          font-size:.72rem;
-          line-height:1.5;
-        }
-
-      </style>
-
-
-      <div class="locker-header">
-
-        <button
-          id="locker-back"
-          class="locker-back"
-          type="button"
-        >
-          ← その他
-        </button>
-
-        <h1 style="margin:0">
-          ロッカー
-        </h1>
-
-      </div>
-
-
-      <section class="locker-section">
-
-        <div class="locker-section-title">
-          ⚡ XPアイテム
-        </div>
-
-
-        <div class="locker-reserved">
-
-          次回使用：
-
-          <strong>
-            ${queuedXpItem || "なし"}
-          </strong>
-
-        </div>
-
-
-        ${xpItems.map(itemName => {
-
-          const count =
-            Number(
-              inventory[itemName] ?? 0
-            );
-
-          const selected =
-            queuedXpItem === itemName;
-
-          const effect =
-            XP_ITEM_EFFECTS[itemName];
-
-          const description =
-            effect.durationMinutes == null
-
-              ? `XP ${effect.multiplier}倍 / 次のタイマー全体`
-
-              : `XP ${effect.multiplier}倍 / ${effect.durationMinutes}分`;
-
-
-          return `
-
-            <div class="locker-item">
-
-              <div class="locker-item-info">
-
-                <div class="locker-item-name">
-                  ${itemName} ×${count}
-                </div>
-
-                <div class="locker-item-desc">
-                  ${description}
-                </div>
-
-              </div>
-
-
-              <button
-                type="button"
-
-                class="
-                  locker-action
-                  ${selected ? "active" : ""}
-                "
-
-                data-locker-xp="${itemName}"
-
-                ${
-                  count <= 0 && !selected
-                    ? "disabled"
-                    : ""
-                }
-              >
-                ${
-                  selected
-                    ? "予約解除"
-                    : "次回使用"
-                }
-              </button>
-
-            </div>
-
-          `;
-
-        }).join("")}
-
-      </section>
-
-
-      <section class="locker-section">
-
-        <div class="locker-section-title">
-          👑 ボスアイテム
-        </div>
-
-
-        <div class="locker-note">
-          ボスアイテムの効果はボス戦画面で適用します。
-        </div>
-
-
-        ${bossItems.map(itemName => {
-
-          const count =
-            Number(
-              inventory[itemName] ?? 0
-            );
-
-          return `
-
-            <div class="locker-item">
-
-              <div class="locker-item-info">
-
-                <div class="locker-item-name">
-                  ${itemName} ×${count}
-                </div>
-
-                <div class="locker-item-desc">
-                  ${
-                    count > 0
-                      ? "使用可能"
-                      : "未所持"
-                  }
-                </div>
-
-              </div>
-
-
-              <button
-                type="button"
-                class="locker-action locker-open-boss"
-                ${count <= 0 ? "disabled" : ""}
-              >
-                ボス戦へ
-              </button>
-
-            </div>
-
-          `;
-
-        }).join("")}
-
-      </section>
-
-
-      <p
-        id="locker-message"
-        style="
-          margin:0;
-          min-height:1.2em;
-          color:#9fd3a9;
-          font-size:.8rem;
-        "
-      ></p>
-
-    `)
-  );
-
-
-  $("locker-back").onclick =
-    async () => {
-
-      await showOtherPage(user);
-
-    };
-
-
-  document
-    .querySelectorAll(
-      "[data-locker-xp]"
-    )
-    .forEach(button => {
-
-      button.onclick =
-        async () => {
-
-          const itemName =
-            button.dataset.lockerXp;
-
-          try {
-
-            const latestSnap =
-              await getDoc(ref);
-
-            if (!latestSnap.exists()) {
-              throw new Error(
-                "ユーザーデータが見つかりません。"
-              );
-            }
-
-
-            const latest =
-              latestSnap.data();
-
-
-            const currentQueued =
-              String(
-                latest.queuedXpItem ?? ""
-              );
-
-
-            // 同じアイテムなら予約解除
-            if (
-              currentQueued === itemName
-            ) {
-
-              await setDoc(
-                ref,
-                {
-                  queuedXpItem: "",
-                  updatedAt:
-                    serverTimestamp(),
-                },
-                { merge:true }
-              );
-
-              await showLockerPage(user);
-              return;
-
-            }
-
-
-            const owned =
-              Number(
-                latest.inventory?.[
-                  itemName
-                ] ?? 0
-              );
-
-
-            if (owned <= 0) {
-              throw new Error(
-                "このアイテムを所持していません。"
-              );
-            }
-
-
-            await setDoc(
-              ref,
-              {
-                queuedXpItem:
-                  itemName,
-
-                updatedAt:
-                  serverTimestamp(),
-              },
-              { merge:true }
-            );
-
-
-            await showLockerPage(user);
-
-          }
-
-          catch (error) {
-
-            const message =
-              $("locker-message");
-
-            if (message) {
-
-              message.style.color =
-                "#ff8b8b";
-
-              message.textContent =
-                error?.message ||
-                "予約に失敗しました。";
-
-            }
-
-          }
-
-        };
-
-    });
-
-
-  document
-    .querySelectorAll(
-      ".locker-open-boss"
-    )
-    .forEach(button => {
-
-      button.onclick =
-        async () => {
-
-          await showQuestBossMainPage(
-            user,
-            "boss"
-          );
-
-        };
-
-    });
-
-}
-
-
-
-
-async function showProfilePage(user) {
-
-  const ref =
-    doc(db, "users", user.uid);
-
-  const snap =
-    await getDoc(ref);
-
-  if (!snap.exists()) {
-    throw new Error(
-      "ユーザーデータが見つかりません。"
-    );
-  }
-
-  const data =
-    snap.data();
-
-
-  const groups = [
-
-    {
-      name: "数学",
-      subjects: [
-        "数学IA",
-        "数学IIBC",
-        "数学III",
-      ],
-    },
-
-    {
-      name: "国語",
-      subjects: [
-        "現代文",
-        "古文",
-        "漢文",
-      ],
-    },
-
-    {
-      name: "地歴公民",
-      subjects: [
-        "日本史",
-        "世界史",
-        "地理",
-        "公共",
-        "倫理",
-        "政治・経済",
-      ],
-    },
-
-    {
-      name: "理科",
-      subjects: [
-        "物理",
-        "物理基礎",
-        "化学",
-        "化学基礎",
-        "生物",
-        "生物基礎",
-        "地学",
-        "地学基礎",
-      ],
-    },
-
-    {
-      name: "英語",
-      subjects: [
-        "英語",
-      ],
-    },
-
-    {
-      name: "情報",
-      subjects: [
-        "情報",
-      ],
-    },
-
-  ];
-
-
-  const selected =
-    new Set(
-      Array.isArray(data.selectedSubjects)
-        ? data.selectedSubjects
-        : []
-    );
-
-
-  let track =
-    String(data.track ?? "");
-
-
-  page(
-    card(`
-
-      <style>
-
-        .profile-header {
-          display:flex;
-          align-items:center;
-          gap:10px;
-        }
-
-        .profile-back {
-          min-height:38px;
-          padding:0 12px;
-
-          color:#aeb6c4;
-          background:#0b1019;
-
-          border:
-            1px solid rgba(255,255,255,.09);
-
-          border-radius:10px;
-
-          font-weight:800;
-          cursor:pointer;
-        }
-
-
-        .profile-box {
-          display:grid;
-          gap:10px;
-
-          padding:14px;
-
-          background:#0b1019;
-
-          border:
-            1px solid rgba(255,255,255,.08);
-
-          border-radius:14px;
-        }
-
-
-        .profile-label {
-          color:#858f9f;
-
-          font-size:.73rem;
-          font-weight:850;
-        }
-
-
-        .profile-input {
-          width:100%;
-          min-height:43px;
-
-          padding:9px 11px;
-
-          color:#f3f5f8;
-          background:#080c13;
-
-          border:
-            1px solid rgba(255,255,255,.10);
-
-          border-radius:10px;
-
-          outline:none;
-        }
-
-
-        .profile-id {
-          color:#a3abba;
-          font-size:.86rem;
-        }
-
-
-        .profile-track {
-          display:grid;
-          grid-template-columns:1fr 1fr;
-          gap:8px;
-        }
-
-
-        .profile-track-btn {
-          min-height:42px;
-
-          color:#7f8999;
-          background:#090d14;
-
-          border:
-            1px solid rgba(255,255,255,.08);
-
-          border-radius:10px;
-
-          font-weight:850;
-          cursor:pointer;
-        }
-
-
-        .profile-track-btn.active {
-          color:#fff;
-
-          background:
-            rgba(124,92,255,.17);
-
-          border-color:
-            rgba(124,92,255,.35);
-        }
-
-
-        .subject-group {
-          display:grid;
-          gap:7px;
-        }
-
-
-        .subject-group-title {
-          margin-top:4px;
-
-          color:#dce0e7;
-
-          font-size:.82rem;
-          font-weight:900;
-        }
-
-
-        .subject-grid {
-          display:grid;
-
-          grid-template-columns:
-            repeat(2,minmax(0,1fr));
-
-          gap:7px;
-        }
-
-
-        .subject-chip {
-          min-width:0;
-          min-height:39px;
-
-          padding:7px 6px;
-
-          color:#7d8797;
-          background:#090d14;
-
-          border:
-            1px solid rgba(255,255,255,.07);
-
-          border-radius:9px;
-
-          font-size:.75rem;
-          font-weight:800;
-
-          cursor:pointer;
-        }
-
-
-        .subject-chip.active {
-          color:#fff;
-
-          background:
-            rgba(124,92,255,.17);
-
-          border-color:
-            rgba(124,92,255,.35);
-        }
-
-
-        .subject-chip.active::after {
-          content:" ✓";
-          color:#baaaff;
-        }
-
-
-        .profile-count {
-          color:#788293;
-          font-size:.72rem;
-        }
-
-
-        .profile-save {
-          width:100%;
-          min-height:46px;
-
-          color:#fff;
-
-          background:
-            linear-gradient(
-              135deg,
-              #6248dd,
-              #8067f5
-            );
-
-          border:0;
-          border-radius:12px;
-
-          font-weight:900;
-          cursor:pointer;
-        }
-
-      </style>
-
-
-      <div class="profile-header">
-
-        <button
-          id="profile-back"
-          class="profile-back"
-          type="button"
-        >
-          ← その他
-        </button>
-
-        <h1 style="margin:0">
-          プロフィール
-        </h1>
-
-      </div>
-
-
-      <div class="profile-box">
-
-        <div class="profile-label">
-          表示名
-        </div>
-
-        <input
-          id="profile-name"
-          class="profile-input"
-          type="text"
-          maxlength="30"
-          value="${data.username ?? ""}"
-        >
-
-      </div>
-
-
-      <div class="profile-box">
-
-        <div class="profile-label">
-          ユーザーID
-        </div>
-
-        <div class="profile-id">
-          ${data.globalId ?? "-"}
-        </div>
-
-        <div style="
-          color:#687283;
-          font-size:.68rem;
-        ">
-          IDは変更できません
-        </div>
-
-      </div>
-
-
-      <div class="profile-box">
-
-        <div class="profile-label">
-          文理
-        </div>
-
-
-        <div class="profile-track">
-
-          <button
-            type="button"
-            class="
-              profile-track-btn
-              ${track === "文系" ? "active" : ""}
-            "
-            data-track="文系"
-          >
-            文系
-          </button>
-
-          <button
-            type="button"
-            class="
-              profile-track-btn
-              ${track === "理系" ? "active" : ""}
-            "
-            data-track="理系"
-          >
-            理系
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <div class="profile-box">
-
-        <div style="
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          gap:10px;
-        ">
-
-          <div class="profile-label">
-            受験教科
-          </div>
-
-          <div
-            id="profile-count"
-            class="profile-count"
-          >
-          </div>
-
-        </div>
-
-
-        ${groups.map(group => `
-
-          <div class="subject-group">
-
-            <div class="subject-group-title">
-              ${group.name}
-            </div>
-
-
-            <div class="subject-grid">
-
-              ${group.subjects.map(subject => `
-
-                <button
-                  type="button"
-                  class="
-                    subject-chip
-                    ${
-                      selected.has(subject)
-                        ? "active"
-                        : ""
-                    }
-                  "
-                  data-subject="${subject}"
-                >
-                  ${subject}
-                </button>
-
-              `).join("")}
-
-            </div>
-
-          </div>
-
-        `).join("")}
-
-      </div>
-
-
-      <button
-        id="profile-save"
-        class="profile-save"
-        type="button"
-      >
-        変更を保存
-      </button>
-
-
-      <p
-        id="profile-message"
-        style="
-          margin:0;
-          min-height:1.2em;
-          color:#9fd3a9;
-          font-size:.8rem;
-        "
-      ></p>
-
-    `)
-  );
-
-
-  function updateCount() {
-
-    $("profile-count").textContent =
-      `${selected.size}教科選択中`;
-
-  }
-
-
-  updateCount();
-
-
-  // 戻る
-  $("profile-back").onclick =
-    async () => {
-
-      await showOtherPage(user);
-
-    };
-
-
-  // 文理
-  document
-    .querySelectorAll("[data-track]")
-    .forEach(button => {
-
-      button.onclick = () => {
-
-        track =
-          button.dataset.track;
-
-        document
-          .querySelectorAll("[data-track]")
-          .forEach(el => {
-
-            el.classList.toggle(
-              "active",
-              el.dataset.track === track
-            );
-
-          });
-
-      };
-
-    });
-
-
-  // 教科
-  document
-    .querySelectorAll("[data-subject]")
-    .forEach(button => {
-
-      button.onclick = () => {
-
-        const subject =
-          button.dataset.subject;
-
-
-        if (selected.has(subject)) {
-
-          selected.delete(subject);
-
-          button.classList.remove(
-            "active"
-          );
-
-        } else {
-
-          selected.add(subject);
-
-          button.classList.add(
-            "active"
-          );
-
-        }
-
-
-        updateCount();
-
-      };
-
-    });
-
-
-  // 保存
-  $("profile-save").onclick =
-    async () => {
-
-      const message =
-        $("profile-message");
-
-      try {
-
-        message.textContent = "";
-        message.style.color =
-          "#9fd3a9";
-
-
-        const username =
-          $("profile-name")
-            .value
-            .trim();
-
-
-        if (!username) {
-          throw new Error(
-            "表示名を入力してください。"
-          );
-        }
-
-
-        if (!track) {
-          throw new Error(
-            "文系か理系を選択してください。"
-          );
-        }
-
-
-        if (selected.size === 0) {
-          throw new Error(
-            "教科を1つ以上選択してください。"
-          );
-        }
-
-
-        await setDoc(
-          ref,
-          {
-            username,
-            track,
-
-            selectedSubjects:
-              [...selected],
-
-            updatedAt:
-              serverTimestamp(),
-          },
-          {
-            merge:true,
-          }
-        );
-
-
-        await showOtherPage(user);
-
-      }
-
-      catch (error) {
-
-        message.style.color =
-          "#ff8b8b";
-
-        message.textContent =
-          error?.message ||
-          "保存に失敗しました。";
-
-      }
-
-    };
-
-}
-
-
 async function showOtherPage(user) {
 
   const ref =
@@ -12079,7 +10502,7 @@ async function showOtherPage(user) {
 
 
         <button
-          id="other-locker"
+          id="other-items"
           class="other-card"
           type="button"
         >
@@ -12089,11 +10512,11 @@ async function showOtherPage(user) {
           </div>
 
           <div class="other-card-title">
-            ロッカー
+            アイテム
           </div>
 
           <div class="other-card-desc">
-            所持品・使用
+            所持品を確認
           </div>
 
         </button>
@@ -12278,21 +10701,160 @@ async function showOtherPage(user) {
   // ========================================================
 
   $("other-profile").onclick =
-    async () => {
+    () => {
 
-      await showProfilePage(user);
+      openOtherModal(
+        "プロフィール"
+      );
+
+
+      addInfoRow(
+        "ユーザー名",
+        data.username ?? "-"
+      );
+
+
+      addInfoRow(
+        "ID",
+        data.globalId ?? "-"
+      );
+
+
+      if (data.track) {
+
+        addInfoRow(
+          "選択",
+          data.track
+        );
+
+      }
 
     };
 
 
   // ========================================================
-  // LOCKER
+  // ITEMS
   // ========================================================
 
-  $("other-locker").onclick =
-    async () => {
+  $("other-items").onclick =
+    () => {
 
-      await showLockerPage(user);
+      openOtherModal(
+        "所持アイテム"
+      );
+
+
+      const inventory =
+        data.inventory ??
+        data.itemInventory ??
+        data.items ??
+        {};
+
+
+      const entries =
+        Array.isArray(inventory)
+          ? inventory.map(
+              (item, index) => [
+                item?.name ??
+                item?.id ??
+                `アイテム${index + 1}`,
+
+                item?.count ??
+                item?.quantity ??
+                1
+              ]
+            )
+          : Object.entries(
+              inventory
+            );
+
+
+      const owned =
+        entries.filter(
+          ([, value]) => {
+
+            if (
+              typeof value === "number"
+            ) {
+              return value > 0;
+            }
+
+            if (
+              value &&
+              typeof value === "object"
+            ) {
+
+              return Number(
+                value.count ??
+                value.quantity ??
+                value.qty ??
+                0
+              ) > 0;
+
+            }
+
+            return Boolean(value);
+
+          }
+        );
+
+
+      if (!owned.length) {
+
+        const empty =
+          document.createElement("div");
+
+        empty.style.cssText = `
+          padding:22px 10px;
+          text-align:center;
+          color:#778191;
+          font-size:.85rem;
+        `;
+
+        empty.textContent =
+          "所持アイテムはありません。";
+
+        modalContent.appendChild(
+          empty
+        );
+
+        return;
+
+      }
+
+
+      owned.forEach(
+        ([key, value]) => {
+
+          let name = key;
+          let count = value;
+
+
+          if (
+            value &&
+            typeof value === "object"
+          ) {
+
+            name =
+              value.name ??
+              key;
+
+            count =
+              value.count ??
+              value.quantity ??
+              value.qty ??
+              1;
+
+          }
+
+
+          addInfoRow(
+            name,
+            `×${count}`
+          );
+
+        }
+      );
 
     };
 
@@ -16303,81 +14865,9 @@ async function showTitlesPage(user) {
       };
     });
 
-  const titlesBackBtn =
-    $("titles-back-btn");
-
-  if (titlesBackBtn) {
-
-    titlesBackBtn.textContent =
-      "← その他";
-
-    const titlesCard =
-      document.querySelector(
-        "body > main > section"
-      );
-
-    if (titlesCard) {
-      titlesCard.prepend(
-        titlesBackBtn
-      );
-    }
-
-    titlesBackBtn.style.setProperty(
-      "position",
-      "sticky"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "top",
-      "0"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "z-index",
-      "50"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "width",
-      "fit-content"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "min-height",
-      "38px"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "padding",
-      "0 13px"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "background",
-      "#0b1019",
-      "important"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "border",
-      "1px solid rgba(255,255,255,.10)",
-      "important"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "border-radius",
-      "10px",
-      "important"
-    );
-
-    titlesBackBtn.onclick =
-      async () => {
-
-        await showOtherPage(user);
-
-      };
-
-  }
+  $("titles-back-btn").onclick = async () => {
+    await showHome(user);
+  };
 }
 
 
@@ -17791,6 +16281,23 @@ async function showTimerPage(user) {
         `).join("")}
       </select>
 
+      <select id="timer-xp-item" style="${fieldStyle()}">
+        <option value="">XPアイテムなし</option>
+
+        ${Object.keys(XP_ITEM_EFFECTS)
+          .filter(
+            itemName =>
+              Number(data.inventory?.[itemName] ?? 0) > 0
+          )
+          .map(itemName => `
+            <option value="${itemName}">
+              ${itemName}
+              ×${Number(data.inventory?.[itemName] ?? 0)}
+            </option>
+          `)
+          .join("")}
+      </select>
+
       <div
         id="timer-display"
         style="
@@ -17833,7 +16340,13 @@ async function showTimerPage(user) {
     $("timer-subject").value =
       timerState.subject;
 
+    if ($("timer-xp-item")) {
+      $("timer-xp-item").value =
+        timerState.xpItem || "";
+    }
+
     $("timer-subject").disabled = true;
+    $("timer-xp-item").disabled = true;
     $("timer-start").disabled = true;
     $("timer-pause").disabled = false;
     $("timer-end").disabled = false;
@@ -17866,70 +16379,15 @@ async function showTimerPage(user) {
     $("timer-error").textContent = "";
 
     timerState.subject = subject;
-
-    /*
-      XPアイテムはタイマーでは選ばない。
-      ロッカーで予約したアイテムを自動適用する。
-    */
-    const startSnap =
-      await getDoc(ref);
-
-    if (!startSnap.exists()) {
-      throw new Error(
-        "ユーザーデータが見つかりません。"
-      );
-    }
-
-    const startData =
-      startSnap.data();
-
-    const queuedXpItem =
-      String(
-        startData.queuedXpItem ?? ""
-      );
-
-    const queuedItemCount =
-      Number(
-        startData.inventory?.[
-          queuedXpItem
-        ] ?? 0
-      );
-
     timerState.xpItem =
-      (
-        queuedXpItem &&
-        XP_ITEM_EFFECTS[queuedXpItem] &&
-        queuedItemCount > 0
-      )
-        ? queuedXpItem
-        : "";
-
-    /*
-      「次のタイマー」の予約なので、
-      開始した時点で予約だけ解除する。
-
-      アイテム本体はまだ減らさない。
-      従来どおり勉強記録保存時に1個消費する。
-    */
-    if (timerState.xpItem) {
-
-      await setDoc(
-        ref,
-        {
-          queuedXpItem: "",
-          updatedAt:
-            serverTimestamp(),
-        },
-        { merge:true }
-      );
-
-    }
+      $("timer-xp-item")?.value || "";
 
     timerState.startedAt = Date.now();
     timerState.elapsedBeforePause = 0;
     timerState.paused = false;
 
     $("timer-subject").disabled = true;
+    $("timer-xp-item").disabled = true;
     $("timer-start").disabled = true;
     $("timer-pause").disabled = false;
     $("timer-end").disabled = false;
@@ -19043,203 +17501,3 @@ body > main
 }
 
 </style>
-
-<style id="safe-intense-neon-v7b">
-
-/* =========================================================
-   SAFE INTENSE NEON
-   背景・枠線・グラデーションには触らない
-========================================================= */
-
-:root {
-  --safe-purple:#9b7cff;
-  --safe-cyan:#35d9ff;
-  --safe-pink:#ff5cac;
-  --safe-green:#45e0a3;
-  --safe-gold:#ffd35c;
-}
-
-
-/* ===== 見出し ===== */
-
-.screen-header h2,
-body > main > section h1 {
-  color:#f8f5ff !important;
-
-  text-shadow:
-    0 0 10px rgba(155,124,255,.38);
-}
-
-
-/* ===== HOME ===== */
-
-.home-player-title {
-  color:#c6b5ff !important;
-}
-
-.home-player-level strong {
-  color:#b89cff !important;
-
-  text-shadow:
-    0 0 12px rgba(155,124,255,.42);
-}
-
-.home-player-avatar {
-  color:#d8ccff !important;
-}
-
-.home-xp-fill {
-  background:#8f6fff !important;
-
-  box-shadow:
-    0 0 10px rgba(143,111,255,.45) !important;
-}
-
-.home-study-time {
-  color:#ddf9ff !important;
-
-  text-shadow:
-    0 0 13px rgba(53,217,255,.30);
-}
-
-
-/* ===== QUEST ===== */
-
-#quest-main-tabs button.active {
-  color:#fff !important;
-  background-color:rgba(155,124,255,.28) !important;
-
-  text-shadow:
-    0 0 8px rgba(155,124,255,.40);
-
-  box-shadow:none !important;
-}
-
-
-/* ===== PARTY ===== */
-
-#party-main-tabs button.active {
-  color:#fff !important;
-  background-color:rgba(53,217,255,.20) !important;
-
-  text-shadow:
-    0 0 8px rgba(53,217,255,.35);
-
-  box-shadow:none !important;
-}
-
-
-/* ===== SHOP ===== */
-
-.shop-tab.active {
-  color:#fff !important;
-  background-color:rgba(155,124,255,.30) !important;
-
-  box-shadow:none !important;
-}
-
-.shop-buy {
-  background:#7658e8 !important;
-}
-
-
-/* ===== LOCKER ===== */
-
-.locker-action {
-  background:#7257db !important;
-}
-
-.locker-reserved strong {
-  color:#cbbcff !important;
-}
-
-
-/* ===== PROFILE ===== */
-
-.subject-chip.active {
-  color:#fff !important;
-
-  background-color:
-    rgba(155,124,255,.30) !important;
-
-  box-shadow:none !important;
-}
-
-.profile-track-btn.active {
-  color:#fff !important;
-
-  background-color:
-    rgba(53,217,255,.20) !important;
-
-  box-shadow:none !important;
-}
-
-.profile-save {
-  background:#7658e8 !important;
-}
-
-
-/* ===== OTHER ===== */
-
-.other-card:nth-child(1) .other-card-icon {
-  color:var(--safe-cyan) !important;
-  background-color:rgba(53,217,255,.14) !important;
-}
-
-.other-card:nth-child(2) .other-card-icon {
-  color:var(--safe-purple) !important;
-  background-color:rgba(155,124,255,.16) !important;
-}
-
-.other-card:nth-child(3) .other-card-icon {
-  color:var(--safe-green) !important;
-  background-color:rgba(69,224,163,.13) !important;
-}
-
-.other-card:nth-child(4) .other-card-icon {
-  color:var(--safe-gold) !important;
-  background-color:rgba(255,211,92,.13) !important;
-}
-
-
-/* ===== 軽量操作感 ===== */
-
-body > main > section button {
-  transition:
-    transform 90ms ease,
-    filter 90ms ease !important;
-}
-
-@media (hover:hover) {
-  body > main > section button:not(:disabled):hover {
-    filter:
-      brightness(1.10)
-      saturate(1.15);
-  }
-}
-
-body > main > section button:not(:disabled):active {
-  transform:scale(.985);
-}
-
-
-/* ===== ページ切替 ===== */
-
-body > main > section {
-  animation:
-    safeFadeIn
-    140ms ease-out both;
-}
-
-@keyframes safeFadeIn {
-  from {
-    opacity:.55;
-  }
-
-  to {
-    opacity:1;
-  }
-}
-
-</style>
-

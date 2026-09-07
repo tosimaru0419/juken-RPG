@@ -4485,391 +4485,432 @@ body > main.rank-theme-legend {
 
 
 
+<style id="final-visual-polish-v2">
 
-
-
-
-
-
-
-
-
-
-
-
-<style id="final-flat-neon-v7">
+/* =========================================================
+   受験RPG
+   FINAL VISUAL POLISH V2
+========================================================= */
 
 :root {
-  --flat-purple: 124,92,255;
-  --flat-cyan: 53,201,255;
-  --flat-green: 66,211,146;
-  --flat-gold: 255,209,102;
+
+  --hud-purple:
+    124,92,255;
+
+  --hud-purple-light:
+    174,150,255;
+
+  --hud-cyan:
+    53,201,255;
+
+  --hud-green:
+    66,211,146;
+
+  --hud-gold:
+    255,209,102;
+
 }
 
 
 /* =========================================================
-   GLOBAL
-   光らせず、面に色を混ぜる
+   GLOBAL STAGE
 ========================================================= */
 
-body > main:not(.rank-main-themed) {
-  background:#080b12 !important;
+body > main {
+
+  position:relative;
+
+  isolation:isolate;
+
 }
 
 
-/* =========================================================
-   PAGE TRANSITION
-   opacityだけ
-========================================================= */
+/*
+  ランクとボスは専用世界観を優先。
+*/
+body
+> main:not(.rank-main-themed)
+:not(:has(.boss-battle-card))
+::before {
 
-body > main > section {
-  animation:
-    flatPageIn
-    130ms ease-out both;
-}
+  content:"";
 
-@keyframes flatPageIn {
-  from {
-    opacity:.60;
-  }
+  position:absolute;
 
-  to {
-    opacity:1;
-  }
-}
+  inset:0;
+
+  z-index:0;
+
+  pointer-events:none;
 
 
-/* =========================================================
-   HOME
-========================================================= */
+  background-image:
 
-#home-player-status {
-
-  background:
-    radial-gradient(
-      circle at 90% 5%,
-      rgba(var(--flat-purple),.18),
-      transparent 42%
+    linear-gradient(
+      rgba(var(--hud-purple),.028) 1px,
+      transparent 1px
     ),
+
     linear-gradient(
-      145deg,
-      #151a28,
-      #0e121c
-    )
-    !important;
+      90deg,
+      rgba(var(--hud-cyan),.022) 1px,
+      transparent 1px
+    );
+
+
+  background-size:
+    38px 38px;
+
+
+  opacity:.75;
+
+
+  -webkit-mask-image:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.88),
+      rgba(0,0,0,.28) 70%,
+      transparent
+    );
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.88),
+      rgba(0,0,0,.28) 70%,
+      transparent
+    );
+
+
+  animation:
+    hudGridMove
+    22s linear infinite;
+
 }
 
 
-.home-player-avatar {
+body
+> main:not(.rank-main-themed)
+:not(:has(.boss-battle-card))
+::after {
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  z-index:0;
+
+  pointer-events:none;
+
 
   background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.23),
-      rgba(var(--flat-cyan),.08)
-    )
+
+    radial-gradient(
+      circle at 18% 13%,
+      rgba(var(--hud-purple),.18),
+      transparent 28%
+    ),
+
+    radial-gradient(
+      circle at 82% 19%,
+      rgba(var(--hud-cyan),.11),
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at 48% 88%,
+      rgba(var(--hud-purple),.055),
+      transparent 27%
+    );
+
+
+  animation:
+    hudAmbientMove
+    11s ease-in-out
+    infinite alternate;
+
+}
+
+
+/* メインカードは背景演出より前 */
+body > main > section {
+
+  position:relative;
+
+  z-index:1;
+
+}
+
+
+/* =========================================================
+   MAIN HUD FRAME
+========================================================= */
+
+body
+> main
+> section:not(.rank-page-themed)
+:not(:has(.boss-battle-card)) {
+
+  border-color:
+    rgba(var(--hud-purple),.21)
     !important;
+
+
+  box-shadow:
+
+    0 0 0 1px
+      rgba(var(--hud-purple),.025),
+
+    0 0 28px
+      rgba(var(--hud-purple),.075),
+
+    0 0 58px
+      rgba(var(--hud-cyan),.025),
+
+    inset 0 1px 0
+      rgba(255,255,255,.035),
+
+    inset 0 0 30px
+      rgba(var(--hud-purple),.012)
+
+    !important;
+
 }
 
 
-.home-player-title,
-.home-player-level strong {
+/*
+  HUD上辺の発光ライン
+*/
+body
+> main
+> section:not(.rank-page-themed)
+:not(:has(.boss-battle-card))
+::before {
 
-  color:#ad9cff !important;
-}
+  content:"";
 
+  position:absolute;
 
-.home-xp-fill {
+  top:-1px;
+
+  left:8%;
+
+  width:43%;
+
+  height:1px;
+
+  pointer-events:none;
+
 
   background:
     linear-gradient(
       90deg,
-      #6548eb,
-      #9d82ff,
-      #35c9ff
-    )
-    !important;
+      transparent,
+      rgba(var(--hud-purple-light),.7),
+      rgba(var(--hud-cyan),.38),
+      transparent
+    );
 
-  box-shadow:none !important;
+
+  box-shadow:
+    0 0 10px
+    rgba(var(--hud-purple),.3);
+
 }
 
 
-#home-study-status {
-
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(var(--flat-cyan),.12),
-      transparent 50%
-    ),
-    linear-gradient(
-      145deg,
-      #121a25,
-      #0d1119
-    )
-    !important;
-}
-
-
-/* =========================================================
-   STUDY
-========================================================= */
-
-.study-main-choice:nth-child(1) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-cyan),.12),
-      #111722 48%
-    )
-    !important;
-}
-
-
-.study-main-choice:nth-child(2) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.13),
-      #111722 48%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   QUEST
-========================================================= */
-
-#quest-main-tabs button.active {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.25),
-      rgba(var(--flat-purple),.10)
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-body:has(#quest-main-tabs)
+/* 右上にも短いエッジ */
+body
 > main
-> section {
+> section:not(.rank-page-themed)
+:not(:has(.boss-battle-card))
+::after {
+
+  content:"";
+
+  position:absolute;
+
+  top:-1px;
+
+  right:7%;
+
+  width:16%;
+
+  height:1px;
+
+  pointer-events:none;
+
 
   background:
     linear-gradient(
-      150deg,
-      rgba(var(--flat-purple),.07),
-      #111722 32%
-    )
-    !important;
+      90deg,
+      transparent,
+      rgba(var(--hud-cyan),.45),
+      transparent
+    );
+
+
+  box-shadow:
+    0 0 8px
+    rgba(var(--hud-cyan),.20);
+
 }
 
 
 /* =========================================================
-   PARTY
+   PAGE TITLE
 ========================================================= */
 
-#party-main-tabs button.active {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-cyan),.21),
-      rgba(var(--flat-purple),.10)
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-body:has(#party-main-tabs)
+body
 > main
-> section {
+> section
+h1 {
 
-  background:
-    linear-gradient(
-      150deg,
-      rgba(var(--flat-cyan),.06),
-      #111722 34%
-    )
-    !important;
+  letter-spacing:
+    -.025em;
+
+
+  text-shadow:
+
+    0 0 12px
+      rgba(var(--hud-purple),.19),
+
+    0 0 28px
+      rgba(var(--hud-cyan),.055);
+
 }
 
 
 /* =========================================================
-   SHOP
+   GENERAL CARD DEPTH
 ========================================================= */
 
-.shop-tab.active {
+body
+> main
+> section
+section:not(.boss-battle-card),
 
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.24),
-      rgba(var(--flat-purple),.09)
-    )
-    !important;
+.shop-product,
 
-  box-shadow:none !important;
-}
+.locker-item,
 
+.profile-box,
 
-.shop-product {
+.other-card,
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.055),
-      #0b1019 42%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   LOCKER
-========================================================= */
-
-.locker-reserved {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.14),
-      rgba(var(--flat-cyan),.055)
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-.locker-item {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-cyan),.035),
-      #0b1019 42%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   PROFILE
-========================================================= */
-
-.profile-box {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.045),
-      #0b1019 40%
-    )
-    !important;
-}
-
-
-.subject-chip.active,
-.profile-track-btn.active {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.25),
-      rgba(var(--flat-purple),.10)
-    )
-    !important;
-
-  box-shadow:none !important;
-
-  color:#fff !important;
-}
-
-
-/* =========================================================
-   OTHER
-========================================================= */
-
-.other-card:nth-child(1) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-cyan),.13),
-      #101620 48%
-    )
-    !important;
-}
-
-
-.other-card:nth-child(2) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.14),
-      #101620 48%
-    )
-    !important;
-}
-
-
-.other-card:nth-child(3) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-green),.11),
-      #101620 48%
-    )
-    !important;
-}
-
-
-.other-card:nth-child(4) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-gold),.10),
-      #101620 48%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   BUTTON INTERACTION
-   発光させない
-========================================================= */
-
-body > main > section button {
+.study-main-choice {
 
   transition:
-    transform 90ms ease,
-    filter 90ms ease;
+
+    transform .16s
+      cubic-bezier(.2,.8,.2,1),
+
+    border-color .16s ease,
+
+    box-shadow .18s ease,
+
+    background .18s ease;
+
 }
 
 
-@media (hover:hover) {
+/* =========================================================
+   BUTTON HUD EFFECT
+========================================================= */
 
-  body
-  > main
-  > section
-  button:not(:disabled):hover {
+body
+> main
+> section
+button {
 
-    filter:brightness(1.07);
-  }
+  position:relative;
+
+  overflow:hidden;
+
+
+  transition:
+
+    transform .13s
+      cubic-bezier(.2,.8,.2,1),
+
+    filter .13s ease,
+
+    border-color .16s ease,
+
+    box-shadow .18s ease;
+
+}
+
+
+/*
+  ボタンを光が横切る
+*/
+body
+> main
+> section
+button::after {
+
+  content:"";
+
+  position:absolute;
+
+  top:-30%;
+
+  bottom:-30%;
+
+  left:-55%;
+
+  width:28%;
+
+  pointer-events:none;
+
+
+  transform:
+    skewX(-20deg);
+
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.14),
+      transparent
+    );
+
+
+  opacity:0;
+
+}
+
+
+body
+> main
+> section
+button:not(:disabled):hover::after {
+
+  opacity:1;
+
+  animation:
+    hudButtonSweep
+    .58s ease-out;
+
+}
+
+
+body
+> main
+> section
+button:not(:disabled):hover {
+
+  filter:
+    brightness(1.07);
+
+
+  box-shadow:
+    0 0 15px
+    rgba(var(--hud-purple),.12);
 
 }
 
@@ -4879,52 +4920,723 @@ body
 > section
 button:not(:disabled):active {
 
-  transform:scale(.985);
+  transform:
+    scale(.975);
+
 }
 
 
 /* =========================================================
-   INPUT
+   INPUT HUD
 ========================================================= */
 
-body > main > section input:focus,
-body > main > section select:focus,
-body > main > section textarea:focus {
+body
+> main
+> section
+input,
 
-  outline:
-    2px solid
-    rgba(var(--flat-purple),.28);
+body
+> main
+> section
+select,
 
-  outline-offset:1px;
+body
+> main
+> section
+textarea {
 
-  box-shadow:none !important;
+  transition:
+
+    border-color .15s ease,
+
+    box-shadow .18s ease,
+
+    background .15s ease;
+
+}
+
+
+body
+> main
+> section
+input:focus,
+
+body
+> main
+> section
+select:focus,
+
+body
+> main
+> section
+textarea:focus {
+
+  outline:none !important;
+
+
+  border-color:
+    rgba(var(--hud-purple),.58)
+    !important;
+
+
+  box-shadow:
+
+    0 0 0 3px
+      rgba(var(--hud-purple),.075),
+
+    0 0 17px
+      rgba(var(--hud-purple),.11),
+
+    0 0 28px
+      rgba(var(--hud-cyan),.035)
+
+    !important;
+
+}
+
+
+/* =========================================================
+   TOP TABS
+========================================================= */
+
+#quest-main-tabs button.active,
+
+#party-main-tabs button.active,
+
+.shop-tab.active {
+
+  text-shadow:
+    0 0 10px
+    rgba(var(--hud-purple-light),.24);
+
+
+  box-shadow:
+
+    inset 0 0 0 1px
+      rgba(var(--hud-purple),.23),
+
+    inset 0 -12px 20px
+      rgba(var(--hud-purple),.045),
+
+    0 0 14px
+      rgba(var(--hud-purple),.14),
+
+    0 0 25px
+      rgba(var(--hud-cyan),.025)
+
+    !important;
+
+}
+
+
+/*
+  選択タブの下部ネオンライン
+*/
+#quest-main-tabs button.active::before,
+
+#party-main-tabs button.active::before,
+
+.shop-tab.active::before {
+
+  content:"";
+
+  position:absolute;
+
+  left:22%;
+
+  right:22%;
+
+  bottom:2px;
+
+  height:2px;
+
+  border-radius:999px;
+
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(var(--hud-purple-light)),
+      rgb(var(--hud-cyan)),
+      transparent
+    );
+
+
+  box-shadow:
+    0 0 9px
+    rgba(var(--hud-purple),.55);
+
+}
+
+
+/* =========================================================
+   STUDY MENU
+========================================================= */
+
+.study-main-choice {
+
+  --local-rgb:
+    var(--hud-purple);
+
+}
+
+
+.study-main-choice:nth-child(1) {
+
+  --local-rgb:
+    var(--hud-cyan);
+
+}
+
+
+.study-main-choice:nth-child(2) {
+
+  --local-rgb:
+    var(--hud-purple);
+
+}
+
+
+.study-main-choice:hover {
+
+  transform:
+    translateY(-3px);
+
+
+  border-color:
+    rgba(var(--local-rgb),.36)
+    !important;
+
+
+  box-shadow:
+
+    0 8px 25px
+      rgba(0,0,0,.22),
+
+    0 0 18px
+      rgba(var(--local-rgb),.12),
+
+    inset 0 0 25px
+      rgba(var(--local-rgb),.032)
+
+    !important;
+
+}
+
+
+/* =========================================================
+   OTHER MENU - 4 DIFFERENT ACCENTS
+========================================================= */
+
+.other-card:nth-child(1) {
+
+  --other-rgb:
+    var(--hud-cyan);
+
+}
+
+
+.other-card:nth-child(2) {
+
+  --other-rgb:
+    var(--hud-purple);
+
+}
+
+
+.other-card:nth-child(3) {
+
+  --other-rgb:
+    var(--hud-green);
+
+}
+
+
+.other-card:nth-child(4) {
+
+  --other-rgb:
+    var(--hud-gold);
+
+}
+
+
+.other-card-icon {
+
+  color:
+    rgb(var(--other-rgb));
+
+
+  background:
+    rgba(var(--other-rgb),.055)
+    !important;
+
+
+  border-color:
+    rgba(var(--other-rgb),.13)
+    !important;
+
+
+  box-shadow:
+
+    0 0 12px
+      rgba(var(--other-rgb),.07),
+
+    inset 0 0 13px
+      rgba(var(--other-rgb),.035);
+
+}
+
+
+.other-card:hover {
+
+  transform:
+    translateY(-3px);
+
+
+  border-color:
+    rgba(var(--other-rgb),.32)
+    !important;
+
+
+  box-shadow:
+
+    0 8px 24px
+      rgba(0,0,0,.22),
+
+    0 0 18px
+      rgba(var(--other-rgb),.11),
+
+    inset 0 0 24px
+      rgba(var(--other-rgb),.025)
+
+    !important;
+
+}
+
+
+/* =========================================================
+   SHOP
+========================================================= */
+
+.shop-product:hover {
+
+  transform:
+    translateY(-1px);
+
+
+  border-color:
+    rgba(var(--hud-purple),.20)
+    !important;
+
+
+  box-shadow:
+
+    0 0 15px
+      rgba(var(--hud-purple),.055),
+
+    inset 0 0 22px
+      rgba(var(--hud-purple),.018);
+
+}
+
+
+.shop-buy {
+
+  box-shadow:
+    inset 0 0 13px
+    rgba(var(--hud-purple),.045);
+
+}
+
+
+/* =========================================================
+   LOCKER
+========================================================= */
+
+.locker-reserved {
+
+  box-shadow:
+
+    inset 0 0 24px
+      rgba(var(--hud-purple),.055),
+
+    0 0 13px
+      rgba(var(--hud-purple),.055);
+
+}
+
+
+.locker-item:hover {
+
+  border-color:
+    rgba(var(--hud-purple),.17);
+
+}
+
+
+/* =========================================================
+   PROFILE SUBJECT SELECT
+========================================================= */
+
+.subject-chip.active,
+
+.profile-track-btn.active {
+
+  text-shadow:
+    0 0 8px
+    rgba(var(--hud-purple-light),.22);
+
+
+  box-shadow:
+
+    inset 0 0 16px
+      rgba(var(--hud-purple),.07),
+
+    0 0 13px
+      rgba(var(--hud-purple),.13);
+
+}
+
+
+.subject-chip:hover {
+
+  border-color:
+    rgba(var(--hud-purple),.22);
+
 }
 
 
 /* =========================================================
    RANK
-   今のランク固有テーマをそのまま使う
+   ランク固有カラーを最優先
 ========================================================= */
+
+.rank-page-themed {
+
+  box-shadow:
+
+    0 0 34px
+      rgba(var(--rank-rgb),.13),
+
+    0 0 64px
+      rgba(var(--rank-rgb),.035),
+
+    inset 0 0 28px
+      rgba(var(--rank-rgb),.027)
+
+    !important;
+
+}
 
 
 /* =========================================================
    BOSS
-   一切上書きしない
+   既存の演出に極力触れない
 ========================================================= */
+
+.boss-battle-card {
+
+  filter:
+    drop-shadow(
+      0 0 7px
+      rgba(var(--hud-purple),.045)
+    );
+
+}
 
 
 /* =========================================================
-   REDUCED MOTION
+   SCROLLBAR
 ========================================================= */
 
-@media (prefers-reduced-motion:reduce) {
+body > main > section {
 
-  body > main > section {
-    animation:none !important;
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    rgba(var(--hud-purple),.35)
+    transparent;
+
+}
+
+
+body
+> main
+> section
+::-webkit-scrollbar {
+
+  width:5px;
+
+}
+
+
+body
+> main
+> section
+::-webkit-scrollbar-track {
+
+  background:
+    transparent;
+
+}
+
+
+body
+> main
+> section
+::-webkit-scrollbar-thumb {
+
+  border-radius:
+    999px;
+
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(var(--hud-purple),.46),
+      rgba(var(--hud-cyan),.30)
+    );
+
+}
+
+
+/* =========================================================
+   PAGE TRANSITIONS
+========================================================= */
+
+/*
+  旧ページのコピー。
+  下部ナビ64px分は覆わない。
+*/
+.app-page-transition-ghost {
+
+  position:fixed;
+
+  top:0;
+
+  left:0;
+
+  right:0;
+
+  bottom:64px;
+
+  z-index:99990;
+
+  overflow:hidden;
+
+  pointer-events:none;
+
+
+  transform-origin:
+    center;
+
+
+  animation:
+    appPageOldOut
+    .32s
+    cubic-bezier(.4,0,.2,1)
+    forwards;
+
+}
+
+
+.app-page-transition-ghost
+> main {
+
+  width:100%;
+
+  min-height:100%;
+
+}
+
+
+/*
+  新ページが下からほんの少し入る
+*/
+body
+> main.app-page-enter
+> section {
+
+  animation:
+    appPageNewIn
+    .34s
+    cubic-bezier(.18,.78,.22,1)
+    both;
+
+}
+
+
+/* =========================================================
+   KEYFRAMES
+========================================================= */
+
+@keyframes appPageOldOut {
+
+  0% {
+
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
   }
 
-  body > main > section * {
-    transition:none !important;
+  100% {
+
+    opacity:0;
+
+    transform:
+      translateY(-7px)
+      scale(.995);
+
+  }
+
+}
+
+
+@keyframes appPageNewIn {
+
+  0% {
+
+    opacity:.18;
+
+    transform:
+      translateY(11px)
+      scale(.994);
+
+  }
+
+  55% {
+
+    opacity:.88;
+
+  }
+
+  100% {
+
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+  }
+
+}
+
+
+@keyframes hudButtonSweep {
+
+  0% {
+
+    left:-55%;
+
+  }
+
+  100% {
+
+    left:135%;
+
+  }
+
+}
+
+
+@keyframes hudGridMove {
+
+  from {
+
+    background-position:
+      0 0,
+      0 0;
+
+  }
+
+  to {
+
+    background-position:
+      38px 38px,
+      38px 38px;
+
+  }
+
+}
+
+
+@keyframes hudAmbientMove {
+
+  0% {
+
+    opacity:.72;
+
+    transform:
+      translate3d(-4px,-3px,0)
+      scale(1);
+
+  }
+
+  100% {
+
+    opacity:1;
+
+    transform:
+      translate3d(5px,5px,0)
+      scale(1.025);
+
+  }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (
+  prefers-reduced-motion:reduce
+) {
+
+  .app-page-transition-ghost {
+
+    display:none !important;
+
+  }
+
+
+  body
+  > main.app-page-enter
+  > section {
+
+    animation:none
+    !important;
+
+  }
+
+
+  body
+  > main
+  ::before,
+
+  body
+  > main
+  ::after {
+
+    animation:none
+    !important;
+
+  }
+
+
+  body
+  > main
+  * {
+
+    transition:none
+    !important;
+
   }
 
 }
@@ -7791,6 +8503,72 @@ function calculateLevelFromTotalXp(totalXp) {
 }
 
 function page(content) {
+
+  /*
+    ==========================================================
+    GLOBAL PAGE TRANSITION
+    ==========================================================
+
+    新しいページの準備が整うまでは旧ページを維持。
+    page() が呼ばれた瞬間だけ旧ページのコピーを重ね、
+    新ページとクロスフェードする。
+
+    下部ナビ領域は覆わない。
+  */
+
+  const oldGhost =
+    document.querySelector(
+      ".app-page-transition-ghost"
+    );
+
+  if (oldGhost) {
+    oldGhost.remove();
+  }
+
+
+  const reduceMotion =
+    window.matchMedia &&
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+
+  const oldMain =
+    document.querySelector(
+      "body > main"
+    );
+
+
+  let ghost = null;
+
+
+  if (
+    oldMain &&
+    !reduceMotion
+  ) {
+
+    ghost =
+      document.createElement("div");
+
+    ghost.className =
+      "app-page-transition-ghost";
+
+
+    const clone =
+      oldMain.cloneNode(true);
+
+    clone.classList.remove(
+      "app-page-enter"
+    );
+
+
+    ghost.appendChild(
+      clone
+    );
+
+  }
+
+
   document.body.innerHTML = `
     <main style="
       min-height:100vh;
@@ -7804,7 +8582,42 @@ function page(content) {
       ${content}
     </main>
   `;
+
+
+  const newMain =
+    document.querySelector(
+      "body > main"
+    );
+
+
+  if (
+    ghost &&
+    newMain
+  ) {
+
+    newMain.classList.add(
+      "app-page-enter"
+    );
+
+
+    document.body.appendChild(
+      ghost
+    );
+
+
+    window.setTimeout(
+      () => {
+
+        ghost.remove();
+
+      },
+      380
+    );
+
+  }
+
 }
+
 
 function card(content) {
   return `
@@ -19043,203 +19856,3 @@ body > main
 }
 
 </style>
-
-<style id="safe-intense-neon-v7b">
-
-/* =========================================================
-   SAFE INTENSE NEON
-   背景・枠線・グラデーションには触らない
-========================================================= */
-
-:root {
-  --safe-purple:#9b7cff;
-  --safe-cyan:#35d9ff;
-  --safe-pink:#ff5cac;
-  --safe-green:#45e0a3;
-  --safe-gold:#ffd35c;
-}
-
-
-/* ===== 見出し ===== */
-
-.screen-header h2,
-body > main > section h1 {
-  color:#f8f5ff !important;
-
-  text-shadow:
-    0 0 10px rgba(155,124,255,.38);
-}
-
-
-/* ===== HOME ===== */
-
-.home-player-title {
-  color:#c6b5ff !important;
-}
-
-.home-player-level strong {
-  color:#b89cff !important;
-
-  text-shadow:
-    0 0 12px rgba(155,124,255,.42);
-}
-
-.home-player-avatar {
-  color:#d8ccff !important;
-}
-
-.home-xp-fill {
-  background:#8f6fff !important;
-
-  box-shadow:
-    0 0 10px rgba(143,111,255,.45) !important;
-}
-
-.home-study-time {
-  color:#ddf9ff !important;
-
-  text-shadow:
-    0 0 13px rgba(53,217,255,.30);
-}
-
-
-/* ===== QUEST ===== */
-
-#quest-main-tabs button.active {
-  color:#fff !important;
-  background-color:rgba(155,124,255,.28) !important;
-
-  text-shadow:
-    0 0 8px rgba(155,124,255,.40);
-
-  box-shadow:none !important;
-}
-
-
-/* ===== PARTY ===== */
-
-#party-main-tabs button.active {
-  color:#fff !important;
-  background-color:rgba(53,217,255,.20) !important;
-
-  text-shadow:
-    0 0 8px rgba(53,217,255,.35);
-
-  box-shadow:none !important;
-}
-
-
-/* ===== SHOP ===== */
-
-.shop-tab.active {
-  color:#fff !important;
-  background-color:rgba(155,124,255,.30) !important;
-
-  box-shadow:none !important;
-}
-
-.shop-buy {
-  background:#7658e8 !important;
-}
-
-
-/* ===== LOCKER ===== */
-
-.locker-action {
-  background:#7257db !important;
-}
-
-.locker-reserved strong {
-  color:#cbbcff !important;
-}
-
-
-/* ===== PROFILE ===== */
-
-.subject-chip.active {
-  color:#fff !important;
-
-  background-color:
-    rgba(155,124,255,.30) !important;
-
-  box-shadow:none !important;
-}
-
-.profile-track-btn.active {
-  color:#fff !important;
-
-  background-color:
-    rgba(53,217,255,.20) !important;
-
-  box-shadow:none !important;
-}
-
-.profile-save {
-  background:#7658e8 !important;
-}
-
-
-/* ===== OTHER ===== */
-
-.other-card:nth-child(1) .other-card-icon {
-  color:var(--safe-cyan) !important;
-  background-color:rgba(53,217,255,.14) !important;
-}
-
-.other-card:nth-child(2) .other-card-icon {
-  color:var(--safe-purple) !important;
-  background-color:rgba(155,124,255,.16) !important;
-}
-
-.other-card:nth-child(3) .other-card-icon {
-  color:var(--safe-green) !important;
-  background-color:rgba(69,224,163,.13) !important;
-}
-
-.other-card:nth-child(4) .other-card-icon {
-  color:var(--safe-gold) !important;
-  background-color:rgba(255,211,92,.13) !important;
-}
-
-
-/* ===== 軽量操作感 ===== */
-
-body > main > section button {
-  transition:
-    transform 90ms ease,
-    filter 90ms ease !important;
-}
-
-@media (hover:hover) {
-  body > main > section button:not(:disabled):hover {
-    filter:
-      brightness(1.10)
-      saturate(1.15);
-  }
-}
-
-body > main > section button:not(:disabled):active {
-  transform:scale(.985);
-}
-
-
-/* ===== ページ切替 ===== */
-
-body > main > section {
-  animation:
-    safeFadeIn
-    140ms ease-out both;
-}
-
-@keyframes safeFadeIn {
-  from {
-    opacity:.55;
-  }
-
-  to {
-    opacity:1;
-  }
-}
-
-</style>
-

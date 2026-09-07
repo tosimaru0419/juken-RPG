@@ -3805,1132 +3805,6 @@ body:has(#main-navigation):not(:has(.boss-battle-card)):not(:has(#boss-back-btn)
 
 </style>
 
-
-
-<style id="party-ui-polish-v1">
-
-/* =========================================================
-   PARTY / FRIENDS / REQUESTS
-========================================================= */
-
-body:has(#party-main-tabs)
-> main
-> section {
-
-  gap: 14px !important;
-
-}
-
-
-/* =========================================================
-   TOP TABS
-========================================================= */
-
-#party-main-tabs {
-
-  width: 100% !important;
-
-  display: grid !important;
-
-  grid-template-columns:
-    repeat(3,minmax(0,1fr)) !important;
-
-  gap: 5px !important;
-
-  padding: 4px !important;
-
-  box-sizing: border-box !important;
-
-  background: #0a0e15 !important;
-
-  border:
-    1px solid
-    rgba(255,255,255,.08) !important;
-
-  border-radius: 13px !important;
-
-}
-
-
-#party-main-tabs button {
-
-  min-height: 38px !important;
-
-  border: 0 !important;
-
-  border-radius: 9px !important;
-
-  background: transparent !important;
-
-  color: #747d8d !important;
-
-  font-size: .83rem !important;
-
-  font-weight: 800 !important;
-
-}
-
-
-#party-main-tabs button.active {
-
-  color: #fff !important;
-
-  background:
-    rgba(124,92,255,.17) !important;
-
-  box-shadow:
-    inset 0 0 0 1px
-    rgba(124,92,255,.15) !important;
-
-}
-
-
-/* =========================================================
-   MAIN SECTIONS
-
-   ただのテキストの塊を
-   ちゃんとしたセクションカードへ
-========================================================= */
-
-body:has(#party-main-tabs)
-> main
-> section
-> div:not(#party-main-tabs):not(#friend-search-result) {
-
-  min-width: 0 !important;
-
-  padding: 16px !important;
-
-  box-sizing: border-box !important;
-
-  background:
-    linear-gradient(
-      145deg,
-      #101620,
-      #0c1119
-    ) !important;
-
-  border:
-    1px solid
-    rgba(255,255,255,.075) !important;
-
-  border-radius: 16px !important;
-
-}
-
-
-/* =========================================================
-   SECTION HEADINGS
-========================================================= */
-
-body:has(#party-main-tabs)
-> main
-> section
-> div
-> strong:first-child {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 7px;
-
-  margin-bottom: 3px;
-
-  color: #eef1f6;
-
-  font-size: .94rem;
-
-  font-weight: 850;
-
-}
-
-
-/* アイコンを自動追加 */
-
-body:has(#party-main-tabs)
-div:has(> #party-members)
-> strong:first-child::before {
-  content: "👥";
-}
-
-
-body:has(#party-main-tabs)
-div:has(> #party-invites)
-> strong:first-child::before {
-  content: "📨";
-}
-
-
-body:has(#party-main-tabs)
-div:has(> #party-friend-list)
-> strong:first-child::before {
-  content: "➕";
-}
-
-
-body:has(#party-main-tabs)
-div:has(> #friend-list)
-> strong:first-child::before {
-  content: "👥";
-}
-
-
-body:has(#party-main-tabs)
-div:has(> #incoming-friend-requests)
-> strong:first-child::before {
-  content: "📨";
-}
-
-
-body:has(#party-main-tabs)
-div:has(> #friend-search-id)
-> strong:first-child::before {
-  content: "🔎";
-}
-
-
-/* =========================================================
-   PARTY CYCLE STATUS
-========================================================= */
-
-body:has(
-  #party-main-tabs
-  [data-party-tab="party"].active
-)
-#party-main-tabs + div {
-
-  display: grid !important;
-
-  gap: 7px !important;
-
-}
-
-
-body:has(
-  #party-main-tabs
-  [data-party-tab="party"].active
-)
-#party-main-tabs
-+ div
-> strong:first-child {
-
-  width: max-content;
-
-  padding: 6px 10px;
-
-  margin: 0 0 3px !important;
-
-  border-radius: 999px;
-
-  color: #cfc5ff;
-
-  background:
-    rgba(124,92,255,.12);
-
-  border:
-    1px solid
-    rgba(124,92,255,.16);
-
-  font-size: .82rem;
-
-}
-
-
-body:has(
-  #party-main-tabs
-  [data-party-tab="party"].active
-)
-#party-main-tabs
-+ div
-> div {
-
-  padding: 7px 9px;
-
-  border-radius: 9px;
-
-  background:
-    rgba(255,255,255,.025);
-
-  color: #8f98a8 !important;
-
-  font-size: .82rem !important;
-
-}
-
-
-/* =========================================================
-   LISTS
-========================================================= */
-
-#party-members,
-#party-invites,
-#party-friend-list,
-#friend-list,
-#incoming-friend-requests {
-
-  display: grid !important;
-
-  gap: 8px !important;
-
-  margin-top: 8px;
-
-}
-
-
-/* 個々のユーザー / 招待カード */
-
-#party-members > div,
-#party-invites > div,
-#party-friend-list > div,
-#friend-list > div,
-#incoming-friend-requests > div,
-#friend-search-result > div {
-
-  min-width: 0 !important;
-
-  margin: 0 !important;
-
-  padding: 12px !important;
-
-  box-sizing: border-box !important;
-
-  background:
-    #0a0f17 !important;
-
-  border:
-    1px solid
-    rgba(255,255,255,.07) !important;
-
-  border-radius: 12px !important;
-
-}
-
-
-/* メンバー */
-
-#party-members > div {
-
-  display: flex !important;
-
-  align-items: center !important;
-
-  min-height: 42px;
-
-}
-
-
-/* =========================================================
-   REQUEST CARDS
-   承認 / 拒否を横並び
-========================================================= */
-
-#incoming-friend-requests > div,
-#party-invites > div {
-
-  display: grid !important;
-
-  grid-template-columns:
-    1fr 1fr !important;
-
-  gap: 8px !important;
-
-}
-
-
-#incoming-friend-requests
-> div
-> strong,
-
-#incoming-friend-requests
-> div
-> div,
-
-#party-invites
-> div
-> strong {
-
-  grid-column:
-    1 / -1;
-
-}
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-#open-boss-btn,
-#create-party-btn {
-
-  min-height: 46px !important;
-
-  border-radius: 12px !important;
-
-  font-weight: 850 !important;
-
-}
-
-
-/* 承認 */
-
-.accept-friend-btn,
-.accept-party-invite {
-
-  width: 100% !important;
-
-  min-height: 39px !important;
-
-  border-radius: 10px !important;
-
-  background:
-    rgba(66,211,146,.12) !important;
-
-  border:
-    1px solid
-    rgba(66,211,146,.22) !important;
-
-  color: #75e4b5 !important;
-
-}
-
-
-/* 拒否 / 脱退 */
-
-.reject-friend-btn,
-.reject-party-invite,
-#leave-party-btn {
-
-  width: 100% !important;
-
-  min-height: 39px !important;
-
-  border-radius: 10px !important;
-
-  background:
-    rgba(255,93,115,.08) !important;
-
-  border:
-    1px solid
-    rgba(255,93,115,.17) !important;
-
-  color: #ff8899 !important;
-
-}
-
-
-/* 招待 */
-
-.send-party-invite {
-
-  min-height: 38px !important;
-
-  border-radius: 10px !important;
-
-}
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-#friend-search-id {
-
-  min-height: 43px !important;
-
-  border-radius: 11px !important;
-
-}
-
-
-#friend-search-btn {
-
-  min-height: 42px !important;
-
-  border-radius: 11px !important;
-
-}
-
-
-/* =========================================================
-   REMOVE DUPLICATE NAVIGATION
-========================================================= */
-
-#party-back-btn,
-#friend-back-btn,
-#open-party-btn {
-
-  display: none !important;
-
-}
-
-
-/* =========================================================
-   MESSAGES
-========================================================= */
-
-#party-message,
-#friend-message {
-
-  min-height: 0 !important;
-
-  margin: 0 !important;
-
-  font-size: .84rem !important;
-
-}
-
-
-#party-message:empty,
-#friend-message:empty {
-
-  display: none !important;
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width:500px) {
-
-  body:has(#party-main-tabs)
-  > main
-  > section
-  > div:not(#party-main-tabs):not(#friend-search-result) {
-
-    padding: 14px !important;
-
-  }
-
-
-  #party-main-tabs button {
-
-    font-size: .78rem !important;
-
-  }
-
-}
-
-</style>
-
-
-
-
-
-
-
-
-
-
-
-<style id="party-transition-speed-v2">
-
-/*
-  mainのみatomic交換。
-  下部ナビは一切動かさない。
-*/
-body > main {
-  view-transition-name:
-    app-main-content;
-}
-
-
-/*
-  root全体のアニメーションは無効
-*/
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none !important;
-}
-
-
-/*
-  古い画面を次画面完成まで保持。
-  完成したらアニメーション無しで即交換。
-*/
-::view-transition-old(app-main-content),
-::view-transition-new(app-main-content) {
-  animation: none !important;
-}
-
-
-/*
-  View Transition中のサイズ補間で
-  ガタッとするのも抑える
-*/
-::view-transition-group(app-main-content) {
-  animation-duration: 0s !important;
-}
-
-</style>
-
-
-
-<style id="rank-background-theme-v2">
-
-/* 共通 */
-.rank-main-themed,
-.rank-page-themed {
-  --rank-rgb: 124,92,255;
-  --rank-accent: #9b83ff;
-}
-
-
-/* ページ外側 */
-body > main.rank-main-themed {
-  background:
-    radial-gradient(
-      circle at 50% 16%,
-      rgba(var(--rank-rgb), .20),
-      rgba(var(--rank-rgb), .07) 28%,
-      transparent 52%
-    ),
-    #080b12 !important;
-}
-
-
-/* ランクページ本体 */
-body > main
-> section.rank-page-themed {
-  background:
-    linear-gradient(
-      155deg,
-      rgba(var(--rank-rgb), .13),
-      #111722 30%,
-      #0d121b 100%
-    ) !important;
-
-  border-color:
-    rgba(var(--rank-rgb), .28) !important;
-}
-
-
-/* BRONZE */
-.rank-theme-bronze {
-  --rank-rgb: 176,109,67;
-  --rank-accent: #d08a57;
-}
-
-
-/* SILVER */
-.rank-theme-silver {
-  --rank-rgb: 165,178,194;
-  --rank-accent: #d5dce5;
-}
-
-
-/* GOLD */
-.rank-theme-gold {
-  --rank-rgb: 224,176,64;
-  --rank-accent: #ffd166;
-}
-
-
-/* PLATINUM */
-.rank-theme-platinum {
-  --rank-rgb: 107,205,215;
-  --rank-accent: #baf2f4;
-}
-
-
-/* DIAMOND */
-.rank-theme-diamond {
-  --rank-rgb: 70,160,255;
-  --rank-accent: #82c8ff;
-}
-
-
-/* MASTER */
-.rank-theme-master {
-  --rank-rgb: 214,70,110;
-  --rank-accent: #ff7895;
-}
-
-
-/* GRANDMASTER */
-.rank-theme-grandmaster {
-  --rank-rgb: 140,82,255;
-  --rank-accent: #b596ff;
-}
-
-
-/* LEGEND */
-.rank-theme-legend {
-  --rank-rgb: 239,185,72;
-  --rank-accent: #ffe08a;
-}
-
-body > main.rank-theme-legend {
-  background:
-    radial-gradient(
-      circle at 30% 12%,
-      rgba(239,185,72,.21),
-      transparent 35%
-    ),
-    radial-gradient(
-      circle at 75% 18%,
-      rgba(140,82,255,.13),
-      transparent 38%
-    ),
-    #080b12 !important;
-}
-
-</style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<style id="final-flat-neon-v7">
-
-:root {
-  --flat-purple: 124,92,255;
-  --flat-cyan: 53,201,255;
-  --flat-green: 66,211,146;
-  --flat-gold: 255,209,102;
-}
-
-
-/* =========================================================
-   GLOBAL
-   光らせず、面に色を混ぜる
-========================================================= */
-
-body > main:not(.rank-main-themed) {
-  background:#080b12 !important;
-}
-
-
-/* =========================================================
-   PAGE TRANSITION
-   opacityだけ
-========================================================= */
-
-body > main > section {
-  animation:
-    flatPageIn
-    130ms ease-out both;
-}
-
-@keyframes flatPageIn {
-  from {
-    opacity:.60;
-  }
-
-  to {
-    opacity:1;
-  }
-}
-
-
-/* =========================================================
-   HOME
-========================================================= */
-
-#home-player-status {
-
-  background:
-    radial-gradient(
-      circle at 90% 5%,
-      rgba(var(--flat-purple),.18),
-      transparent 42%
-    ),
-    linear-gradient(
-      145deg,
-      #151a28,
-      #0e121c
-    )
-    !important;
-}
-
-
-.home-player-avatar {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.23),
-      rgba(var(--flat-cyan),.08)
-    )
-    !important;
-}
-
-
-.home-player-title,
-.home-player-level strong {
-
-  color:#ad9cff !important;
-}
-
-
-.home-xp-fill {
-
-  background:
-    linear-gradient(
-      90deg,
-      #6548eb,
-      #9d82ff,
-      #35c9ff
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-#home-study-status {
-
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(var(--flat-cyan),.12),
-      transparent 50%
-    ),
-    linear-gradient(
-      145deg,
-      #121a25,
-      #0d1119
-    )
-    !important;
-}
-
-
-/* =========================================================
-   STUDY
-========================================================= */
-
-.study-main-choice:nth-child(1) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-cyan),.12),
-      #111722 48%
-    )
-    !important;
-}
-
-
-.study-main-choice:nth-child(2) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.13),
-      #111722 48%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   QUEST
-========================================================= */
-
-#quest-main-tabs button.active {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.25),
-      rgba(var(--flat-purple),.10)
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-body:has(#quest-main-tabs)
-> main
-> section {
-
-  background:
-    linear-gradient(
-      150deg,
-      rgba(var(--flat-purple),.07),
-      #111722 32%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   PARTY
-========================================================= */
-
-#party-main-tabs button.active {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-cyan),.21),
-      rgba(var(--flat-purple),.10)
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-body:has(#party-main-tabs)
-> main
-> section {
-
-  background:
-    linear-gradient(
-      150deg,
-      rgba(var(--flat-cyan),.06),
-      #111722 34%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   SHOP
-========================================================= */
-
-.shop-tab.active {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.24),
-      rgba(var(--flat-purple),.09)
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-.shop-product {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.055),
-      #0b1019 42%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   LOCKER
-========================================================= */
-
-.locker-reserved {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.14),
-      rgba(var(--flat-cyan),.055)
-    )
-    !important;
-
-  box-shadow:none !important;
-}
-
-
-.locker-item {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-cyan),.035),
-      #0b1019 42%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   PROFILE
-========================================================= */
-
-.profile-box {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.045),
-      #0b1019 40%
-    )
-    !important;
-}
-
-
-.subject-chip.active,
-.profile-track-btn.active {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(var(--flat-purple),.25),
-      rgba(var(--flat-purple),.10)
-    )
-    !important;
-
-  box-shadow:none !important;
-
-  color:#fff !important;
-}
-
-
-/* =========================================================
-   OTHER
-========================================================= */
-
-.other-card:nth-child(1) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-cyan),.13),
-      #101620 48%
-    )
-    !important;
-}
-
-
-.other-card:nth-child(2) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.14),
-      #101620 48%
-    )
-    !important;
-}
-
-
-.other-card:nth-child(3) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-green),.11),
-      #101620 48%
-    )
-    !important;
-}
-
-
-.other-card:nth-child(4) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-gold),.10),
-      #101620 48%
-    )
-    !important;
-}
-
-
-/* =========================================================
-   BUTTON INTERACTION
-   発光させない
-========================================================= */
-
-body > main > section button {
-
-  transition:
-    transform 90ms ease,
-    filter 90ms ease;
-}
-
-
-@media (hover:hover) {
-
-  body
-  > main
-  > section
-  button:not(:disabled):hover {
-
-    filter:brightness(1.07);
-  }
-
-}
-
-
-body
-> main
-> section
-button:not(:disabled):active {
-
-  transform:scale(.985);
-}
-
-
-/* =========================================================
-   INPUT
-========================================================= */
-
-body > main > section input:focus,
-body > main > section select:focus,
-body > main > section textarea:focus {
-
-  outline:
-    2px solid
-    rgba(var(--flat-purple),.28);
-
-  outline-offset:1px;
-
-  box-shadow:none !important;
-}
-
-
-/* =========================================================
-   RANK
-   今のランク固有テーマをそのまま使う
-========================================================= */
-
-
-/* =========================================================
-   BOSS
-   一切上書きしない
-========================================================= */
-
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
-
-@media (prefers-reduced-motion:reduce) {
-
-  body > main > section {
-    animation:none !important;
-  }
-
-  body > main > section * {
-    transition:none !important;
-  }
-
-}
-
-</style>
-
 </head>
 
 
@@ -8505,12 +7379,8 @@ async function showPartyFriendsHubPage(user) {
 // ============================================================
 
 async function showRankPage(user) {
-
-  const ref =
-    doc(db, "users", user.uid);
-
-  const snap =
-    await getDoc(ref);
+  const ref = doc(db, "users", user.uid);
+  const snap = await getDoc(ref);
 
   if (!snap.exists()) {
     throw new Error(
@@ -8518,698 +7388,112 @@ async function showRankPage(user) {
     );
   }
 
-
-  const data =
-    snap.data();
-
+  const data = snap.data();
 
   const monthlyMinutes =
-    Number(
-      data.monthlyStudyMinutes ?? 0
-    );
-
+    Number(data.monthlyStudyMinutes ?? 0);
 
   const currentRank =
-    calculateRank(
-      monthlyMinutes
-    );
-
-
-  // ========================================================
-  // RANK STEPS
-  // ========================================================
-
-  const rankSteps = [
-
-    ["Bronze III", 0],
-    ["Bronze II", 120],
-    ["Bronze I", 240],
-
-    ["Silver III", 480],
-    ["Silver II", 720],
-    ["Silver I", 960],
-
-    ["Gold III", 1320],
-    ["Gold II", 1680],
-    ["Gold I", 2040],
-
-    ["Platinum III", 2520],
-    ["Platinum II", 3000],
-    ["Platinum I", 3480],
-
-    ["Diamond III", 4080],
-    ["Diamond II", 4680],
-    ["Diamond I", 5280],
-
-    ["Master", 6600],
-    ["Grandmaster", 8400],
-    ["Legend", 10200],
-
-  ].map(([name, minutes]) => ({
-    name,
-    minutes,
-  }));
-
-
-  let currentIndex = 0;
-
-
-  for (
-    let i = 0;
-    i < rankSteps.length;
-    i++
-  ) {
-
-    if (
-      monthlyMinutes >=
-      rankSteps[i].minutes
-    ) {
-
-      currentIndex = i;
-
-    }
-
-  }
-
-
-  const currentStep =
-    rankSteps[currentIndex];
-
-
-  const nextStep =
-    rankSteps[
-      currentIndex + 1
-    ] ?? null;
-
-
-  let progress = 100;
-
-  let remaining = 0;
-
-
-  if (nextStep) {
-
-    const range =
-      nextStep.minutes -
-      currentStep.minutes;
-
-
-    const gained =
-      monthlyMinutes -
-      currentStep.minutes;
-
-
-    progress =
-      Math.max(
-        0,
-        Math.min(
-          100,
-          gained / range * 100
-        )
-      );
-
-
-    remaining =
-      Math.max(
-        0,
-        nextStep.minutes -
-        monthlyMinutes
-      );
-
-  }
-
-
-  const monthHours =
-    Math.floor(
-      monthlyMinutes / 60
-    );
-
-
-  const monthMins =
-    monthlyMinutes % 60;
-
-
-  const remainHours =
-    Math.floor(
-      remaining / 60
-    );
-
-
-  const remainMins =
-    remaining % 60;
-
-
-  const remainText =
-    nextStep
-      ? (
-          remainHours > 0
-            ? `あと ${remainHours}時間${
-                remainMins
-                  ? `${remainMins}分`
-                  : ""
-              }`
-            : `あと ${remainMins}分`
-        )
-      : "最高ランク到達";
-
-
-  const distributions = [
-
-    ["Bronze", "0〜8時間"],
-    ["Silver", "8〜22時間"],
-    ["Gold", "22〜42時間"],
-    ["Platinum", "42〜68時間"],
-    ["Diamond", "68〜110時間"],
-    ["Master", "110〜140時間"],
-    ["Grandmaster", "140〜170時間"],
-    ["Legend", "170時間〜"],
-
-  ];
-
+    calculateRank(monthlyMinutes);
 
   page(
     card(`
-
-      <h1 style="
-        margin:0;
-      ">
-        ランク
-      </h1>
-
-
-      <!-- CURRENT RANK -->
-
-      <div style="
-        padding:26px 18px;
-
-        text-align:center;
-
-        background:
-          linear-gradient(
-            145deg,
-            #121722,
-            #0c1119
-          );
-
-        border:
-          1px solid
-          rgba(255,255,255,.09);
-
-        border-radius:18px;
-      ">
-
+      <div>
         <div style="
-          color:#747e90;
+          color:#768398;
+          font-size:.72rem;
+          font-weight:700;
+          letter-spacing:.1em;
+        ">
+          MONTHLY RANK
+        </div>
 
-          font-size:.68rem;
+        <h1 style="margin:4px 0 0">
+          ランク
+        </h1>
+      </div>
 
-          font-weight:800;
-
-          letter-spacing:.14em;
+      <section style="
+        padding:22px;
+        text-align:center;
+        border-radius:18px;
+        border:1px solid #32415a;
+        background:#0d141f;
+      ">
+        <div style="
+          color:#7d899c;
+          font-size:.75rem;
         ">
           CURRENT RANK
         </div>
 
-
-        <div style="
-          margin-top:7px;
-
-          font-size:2.2rem;
-
-          line-height:1.05;
-
-          font-weight:950;
-
-          color:#f4f5f8;
-        ">
-          ${currentRank}
-        </div>
-
-
-        <div style="
-          margin-top:11px;
-
-          color:#919aab;
-
-          font-size:.9rem;
-        ">
-          今月 ${monthHours}時間${monthMins}分
-        </div>
-
-      </div>
-
-
-      <!-- NEXT RANK -->
-
-      <div style="
-        padding:17px;
-
-        background:#0c1119;
-
-        border:
-          1px solid
-          rgba(255,255,255,.08);
-
-        border-radius:15px;
-      ">
-
-        <div style="
-          display:flex;
-
-          justify-content:space-between;
-
-          align-items:center;
-
-          gap:12px;
-        ">
-
-          <strong style="
-            font-size:.87rem;
-          ">
-            ${
-              nextStep
-                ? `${currentStep.name} → ${nextStep.name}`
-                : "Legend"
-            }
-          </strong>
-
-
-          <span style="
-            color:#9b83ff;
-
-            font-size:.82rem;
-
-            font-weight:850;
-          ">
-            ${Math.round(progress)}%
-          </span>
-
-        </div>
-
-
-        <div style="
-          width:100%;
-
-          height:10px;
-
-          margin-top:12px;
-
-          overflow:hidden;
-
-          background:
-            rgba(255,255,255,.065);
-
-          border-radius:999px;
-        ">
-
-          <div style="
-            width:${progress}%;
-
-            height:100%;
-
-            background:
-              linear-gradient(
-                90deg,
-                #5940d8,
-                #9b83ff
-              );
-
-            border-radius:inherit;
-          ">
-          </div>
-
-        </div>
-
-
-        <div style="
-          margin-top:9px;
-
-          color:#8d96a6;
-
-          font-size:.82rem;
-        ">
-          ${remainText}
-        </div>
-
-      </div>
-
-
-      <!-- DISTRIBUTION -->
-
-      <div style="
-        padding:17px;
-
-        background:#0c1119;
-
-        border:
-          1px solid
-          rgba(255,255,255,.08);
-
-        border-radius:15px;
-      ">
-
         <strong style="
           display:block;
-
-          margin-bottom:10px;
-
-          font-size:.94rem;
+          margin-top:5px;
+          font-size:2rem;
         ">
-          ランク分布の目安
+          ${currentRank}
         </strong>
 
-
         <div style="
-          display:grid;
-
-          gap:3px;
+          margin-top:10px;
+          color:#96a2b4;
+          font-size:.9rem;
         ">
-
-          ${distributions.map(
-            ([name, range]) => {
-
-              const active =
-                currentRank.startsWith(
-                  name
-                );
-
-              return `
-
-                <div style="
-                  min-height:38px;
-
-                  display:flex;
-
-                  justify-content:space-between;
-
-                  align-items:center;
-
-                  gap:12px;
-
-                  padding:7px 9px;
-
-                  border-radius:9px;
-
-                  background:${
-                    active
-                      ? "rgba(124,92,255,.10)"
-                      : "transparent"
-                  };
-                ">
-
-                  <strong style="
-                    color:${
-                      active
-                        ? "#c9bdff"
-                        : "#b4bbc7"
-                    };
-
-                    font-size:.85rem;
-                  ">
-                    ${name}
-                  </strong>
-
-
-                  <span style="
-                    color:${
-                      active
-                        ? "#a99bdb"
-                        : "#778191"
-                    };
-
-                    font-size:.8rem;
-
-                    white-space:nowrap;
-                  ">
-                    ${range}
-                  </span>
-
-                </div>
-
-              `;
-
-            }
-          ).join("")}
-
+          今月
+          ${Math.floor(monthlyMinutes / 60)}時間
+          ${monthlyMinutes % 60}分
         </div>
+      </section>
 
-      </div>
+      ${
+        data.lastSeasonRank
+          ? `
+            <section style="
+              padding:15px;
+              border-radius:14px;
+              border:1px solid #263247;
+              background:#0b1019;
+              line-height:1.7;
+            ">
+              <div style="
+                color:#788599;
+                font-size:.75rem;
+              ">
+                前シーズン
+              </div>
 
+              <strong>
+                ${data.lastSeasonRank}
+              </strong>
+
+              <div style="
+                color:#96a2b4;
+                font-size:.85rem;
+              ">
+                XP +${Number(
+                  data.lastSeasonRewardXp ?? 0
+                )}
+                /
+                コイン +${Number(
+                  data.lastSeasonRewardCoins ?? 0
+                )}
+              </div>
+            </section>
+          `
+          : ""
+      }
 
       ${mainBottomNav("rank")}
-
     `)
   );
 
-
-
-  // ========================================================
-  // RANK THEME - DIRECT FORCE
-  // ========================================================
-
-  const rankTheme =
-    currentRank
-      .split(" ")[0]
-      .toLowerCase();
-
-
-  const rankColors = {
-
-    bronze: {
-      rgb: "176,109,67",
-      accent: "#d08a57",
-    },
-
-    silver: {
-      rgb: "165,178,194",
-      accent: "#e0e6ed",
-    },
-
-    gold: {
-      rgb: "224,176,64",
-      accent: "#ffd166",
-    },
-
-    platinum: {
-      rgb: "107,205,215",
-      accent: "#baf2f4",
-    },
-
-    diamond: {
-      rgb: "70,160,255",
-      accent: "#82c8ff",
-    },
-
-    master: {
-      rgb: "214,70,110",
-      accent: "#ff7895",
-    },
-
-    grandmaster: {
-      rgb: "140,82,255",
-      accent: "#b596ff",
-    },
-
-    legend: {
-      rgb: "239,185,72",
-      accent: "#ffe08a",
-    },
-
-  };
-
-
-  const theme =
-    rankColors[rankTheme] ||
-    rankColors.bronze;
-
-
-  const rankMain =
-    document.querySelector(
-      "body > main"
-    );
-
-
-  const rankPage =
-    document.querySelector(
-      "body > main > section"
-    );
-
-
-  if (rankMain) {
-
-    rankMain.classList.add(
-      "rank-main-themed",
-      `rank-theme-${rankTheme}`
-    );
-
-
-    rankMain.style.setProperty(
-      "background",
-
-      `
-        radial-gradient(
-          circle at 50% 10%,
-          rgba(${theme.rgb}, .42),
-          rgba(${theme.rgb}, .20) 30%,
-          rgba(${theme.rgb}, .07) 52%,
-          #080b12 78%
-        )
-      `,
-
-      "important"
-    );
-
-  }
-
-
-  if (rankPage) {
-
-    rankPage.classList.add(
-      "rank-page-themed",
-      `rank-theme-${rankTheme}`
-    );
-
-
-    rankPage.style.setProperty(
-      "background",
-
-      `
-        linear-gradient(
-          155deg,
-          rgba(${theme.rgb}, .30) 0%,
-          rgba(${theme.rgb}, .13) 23%,
-          #111722 54%,
-          #0b0f17 100%
-        )
-      `,
-
-      "important"
-    );
-
-
-    rankPage.style.setProperty(
-      "border-color",
-      `rgba(${theme.rgb}, .40)`,
-      "important"
-    );
-
-
-    rankPage.style.setProperty(
-      "box-shadow",
-
-      `
-        0 0 42px
-        rgba(${theme.rgb}, .12)
-      `,
-
-      "important"
-    );
-
-
-    // ----------------------------
-    // 現在ランクカード
-    // ----------------------------
-
-    const cards =
-      rankPage.querySelectorAll(
-        ":scope > div"
-      );
-
-
-    if (cards[0]) {
-
-      cards[0].style.setProperty(
-        "background",
-
-        `
-          linear-gradient(
-            145deg,
-            rgba(${theme.rgb}, .31),
-            rgba(${theme.rgb}, .11) 48%,
-            #0b1018 100%
-          )
-        `,
-
-        "important"
-      );
-
-
-      cards[0].style.setProperty(
-        "border-color",
-        `rgba(${theme.rgb}, .38)`,
-        "important"
-      );
-
-    }
-
-
-    // ----------------------------
-    // NEXT RANK
-    // ----------------------------
-
-    if (cards[1]) {
-
-      cards[1].style.setProperty(
-        "background",
-
-        `
-          linear-gradient(
-            145deg,
-            rgba(${theme.rgb}, .14),
-            rgba(${theme.rgb}, .025) 55%,
-            #0b1018
-          )
-        `,
-
-        "important"
-      );
-
-
-      cards[1].style.setProperty(
-        "border-color",
-        `rgba(${theme.rgb}, .23)`,
-        "important"
-      );
-
-    }
-
-
-    // ----------------------------
-    // 分布表
-    // ----------------------------
-
-    if (cards[2]) {
-
-      cards[2].style.setProperty(
-        "background",
-
-        `
-          linear-gradient(
-            145deg,
-            rgba(${theme.rgb}, .10),
-            rgba(${theme.rgb}, .025) 55%,
-            #0b1018
-          )
-        `,
-
-        "important"
-      );
-
-
-      cards[2].style.setProperty(
-        "border-color",
-        `rgba(${theme.rgb}, .18)`,
-        "important"
-      );
-
-    }
-
-  }
-
-
   bindMainBottomNav(user);
-
 }
+
+
+
+
 
 
 // ============================================================
@@ -10270,1503 +8554,105 @@ async function showQuestBossMainPage(
 // PARTY + FRIENDS MAIN PAGE
 // ============================================================
 
-let partyFriendsActiveTab = "party";
-
-let partyViewTransitionRunning = false;
-
-
-
-function mountPartyFriendsTabs(user, tab = "party") {
-
-  const cardEl =
-    document.querySelector(
-      "body > main > section"
-    );
-
-  if (!cardEl) {
-    console.warn("party card not found");
-    return;
-  }
-
-
-  // 既存タブ削除
-  cardEl
-    .querySelector("#party-main-tabs")
-    ?.remove();
-
-
-  // タイトル
-  const title =
-    cardEl.querySelector("h1");
-
-  if (title) {
-
-    if (tab === "friends") {
-      title.textContent = "フレンド";
-    }
-
-    else if (tab === "party") {
-      title.textContent = "パーティー";
-    }
-
-    else {
-      title.textContent = "申請";
-    }
-
-  }
-
-
-  // ============================
-  // 上部3タブ
-  // ============================
-
-  const tabs =
-    document.createElement("div");
-
-  tabs.id = "party-main-tabs";
-
-  tabs.innerHTML = `
-    <button
-      type="button"
-      data-party-tab="friends"
-      class="${tab === "friends" ? "active" : ""}"
-    >
-      フレンド
-    </button>
-
-    <button
-      type="button"
-      data-party-tab="party"
-      class="${tab === "party" ? "active" : ""}"
-    >
-      パーティー
-    </button>
-
-    <button
-      type="button"
-      data-party-tab="requests"
-      class="${tab === "requests" ? "active" : ""}"
-    >
-      申請
-    </button>
-  `;
-
-
-  if (title) {
-    title.insertAdjacentElement(
-      "afterend",
-      tabs
-    );
-  }
-
-  else {
-    cardEl.prepend(tabs);
-  }
-
-
-  // ============================
-  // フレンド / 申請を分離
-  // ============================
-
-  if (
-    tab === "friends" ||
-    tab === "requests"
-  ) {
-
-    const searchInput =
-      document.getElementById(
-        "friend-search-id"
-      );
-
-    const searchBlock =
-      searchInput?.parentElement;
-
-    const searchResult =
-      document.getElementById(
-        "friend-search-result"
-      );
-
-    const friendList =
-      document.getElementById(
-        "friend-list"
-      );
-
-    const friendListBlock =
-      friendList?.parentElement;
-
-    const requestList =
-      document.getElementById(
-        "incoming-friend-requests"
-      );
-
-    const requestBlock =
-      requestList?.parentElement;
-
-    const message =
-      document.getElementById(
-        "friend-message"
-      );
-
-    const openParty =
-      document.getElementById(
-        "open-party-btn"
-      );
-
-    const back =
-      document.getElementById(
-        "friend-back-btn"
-      );
-
-
-    if (tab === "friends") {
-
-      if (searchBlock)
-        searchBlock.style.display = "grid";
-
-      if (searchResult)
-        searchResult.style.display = "block";
-
-      if (friendListBlock)
-        friendListBlock.style.display = "grid";
-
-      if (requestBlock)
-        requestBlock.style.display = "none";
-
-      if (message)
-        message.style.display = "block";
-
-    }
-
-
-    if (tab === "requests") {
-
-      if (searchBlock)
-        searchBlock.style.display = "none";
-
-      if (searchResult)
-        searchResult.style.display = "none";
-
-      if (friendListBlock)
-        friendListBlock.style.display = "none";
-
-      if (requestBlock)
-        requestBlock.style.display = "grid";
-
-      if (message)
-        message.style.display = "none";
-
-    }
-
-
-    // 上部タブがあるので不要
-    if (openParty)
-      openParty.style.display = "none";
-
-    if (back)
-      back.style.display = "none";
-
-  }
-
-
-  // ============================
-  // タブクリック
-  // ============================
-
-  tabs
-    .querySelectorAll(
-      "[data-party-tab]"
-    )
-    .forEach(button => {
-
-      button.onclick = async () => {
-
-        const next =
-          button.dataset.partyTab;
-
-        if (!next || next === tab) {
-          return;
-        }
-
-        /*
-          フレンド ⇄ 申請は元々同じ
-          showFriendsPage のDOMを使っている。
-
-          既に両方の内容が存在するなら
-          Firestoreを再取得せず即切替する。
-        */
-        const isFriendSide =
-          tab === "friends" ||
-          tab === "requests";
-
-        const nextIsFriendSide =
-          next === "friends" ||
-          next === "requests";
-
-
-        if (
-          isFriendSide &&
-          nextIsFriendSide &&
-          document.getElementById("friend-list") &&
-          document.getElementById(
-            "incoming-friend-requests"
-          )
-        ) {
-
-          partyFriendsActiveTab =
-            next;
-
-          mountPartyFriendsTabs(
-            user,
-            next
-          );
-
-          return;
-        }
-
-
-        await showPartyFriendsMainPage(
-          user,
-          next
-        );
-
-      };
-
-    });
-
-
-  currentMainTab = "party";
-
-  mountClassicNavigation(user);
-  updateClassicNavigationActive();
-
-}
-
-
-
 async function showPartyFriendsMainPage(
   user,
   tab = "party"
 ) {
 
-  /*
-    前画面を残したまま、
-    次画面のDOMが完成してから切り替える。
-
-    再帰防止のため、
-    View Transition内部では通常描画する。
-  */
-  if (
-    !partyViewTransitionRunning &&
-    typeof document.startViewTransition === "function" &&
-    document.querySelector("body > main")
-  ) {
-
-    partyViewTransitionRunning = true;
-
-    try {
-
-      const transition =
-        document.startViewTransition(
-          async () => {
-
-            await showPartyFriendsMainPage(
-              user,
-              tab
-            );
-
-          }
-        );
-
-
-      await transition.updateCallbackDone;
-
-    } finally {
-
-      partyViewTransitionRunning = false;
-
-    }
-
-
-    return;
-
-  }
-
-
-
-  if (
-    ![
-      "friends",
-      "party",
-      "requests",
-    ].includes(tab)
-  ) {
-    tab = "party";
-  }
-
-
-  partyFriendsActiveTab = tab;
   currentMainTab = "party";
-  classicNavUser = user;
+
+  if (
+    typeof classicNavUser !== "undefined"
+  ) {
+    classicNavUser = user;
+  }
 
 
-  if (tab === "party") {
+  if (tab === "friends") {
+
+    await showFriendsPage(user);
+
+  } else {
 
     await showPartyPage(user);
 
   }
 
-  else {
 
-    await showFriendsPage(user);
-
+  if (
+    typeof mountClassicNavigation === "function"
+  ) {
+    mountClassicNavigation(user);
   }
 
 
-  mountPartyFriendsTabs(
-    user,
-    tab
-  );
+  const app =
+    document.getElementById("app");
 
+
+  if (
+    app &&
+    typeof classicTabBar === "function"
+  ) {
+
+    app
+      .querySelector(
+        '[data-classic-tab-group="party"]'
+      )
+      ?.remove();
+
+
+    app.insertAdjacentHTML(
+      "afterbegin",
+
+      classicTabBar(
+        [
+          {
+            id: "party",
+            label: "👥 パーティー",
+          },
+          {
+            id: "friends",
+            label: "🤝 フレンド",
+          },
+        ],
+
+        tab,
+
+        "party"
+      )
+    );
+
+
+    app
+      .querySelectorAll(
+        '[data-classic-tab-group="party"] [data-classic-tab]'
+      )
+      .forEach(button => {
+
+        button.onclick =
+          async () => {
+
+            await showPartyFriendsMainPage(
+              user,
+              button.dataset.classicTab
+            );
+
+          };
+
+      });
+
+  }
 
 }
-
 
 // ============================================================
 // OTHER
 // ============================================================
 
-
-async function showLockerPage(user) {
-
-  const ref =
-    doc(db, "users", user.uid);
-
-  const snap =
-    await getDoc(ref);
-
-  if (!snap.exists()) {
-    throw new Error(
-      "ユーザーデータが見つかりません。"
-    );
-  }
-
-  const data =
-    snap.data();
-
-  const inventory =
-    data.inventory || {};
-
-  const queuedXpItem =
-    String(
-      data.queuedXpItem ?? ""
-    );
-
-  const xpItems =
-    Object.keys(
-      XP_ITEM_EFFECTS
-    );
-
-  const bossItems = [
-    "ボスLvアップ",
-    "ボスLvダウン",
-    "ランダム弱点追加",
-    "選択弱点追加",
-  ];
-
-
-  page(
-    card(`
-
-      <style>
-
-        .locker-header {
-          display:flex;
-          align-items:center;
-          gap:10px;
-        }
-
-        .locker-back {
-          min-height:38px;
-          padding:0 12px;
-
-          color:#abb4c2;
-          background:#0b1019;
-
-          border:
-            1px solid rgba(255,255,255,.09);
-
-          border-radius:10px;
-
-          font-weight:800;
-          cursor:pointer;
-        }
-
-        .locker-section {
-          display:grid;
-          gap:9px;
-        }
-
-        .locker-section-title {
-          font-size:.9rem;
-          font-weight:900;
-        }
-
-        .locker-reserved {
-          padding:12px 13px;
-
-          color:#929cab;
-          background:
-            rgba(124,92,255,.09);
-
-          border:
-            1px solid rgba(124,92,255,.18);
-
-          border-radius:12px;
-
-          font-size:.8rem;
-        }
-
-        .locker-reserved strong {
-          color:#c9bdff;
-        }
-
-        .locker-item {
-          padding:12px 13px;
-
-          display:grid;
-          grid-template-columns:
-            minmax(0,1fr) auto;
-
-          align-items:center;
-
-          gap:8px 12px;
-
-          background:#0b1019;
-
-          border:
-            1px solid rgba(255,255,255,.075);
-
-          border-radius:12px;
-        }
-
-        .locker-item-info {
-          min-width:0;
-          display:grid;
-          gap:3px;
-        }
-
-        .locker-item-name {
-          font-size:.84rem;
-          font-weight:850;
-        }
-
-        .locker-item-desc {
-          color:#7c8797;
-          font-size:.71rem;
-          line-height:1.4;
-        }
-
-        .locker-action {
-          min-width:82px;
-          min-height:36px;
-
-          padding:6px 9px;
-
-          color:#fff;
-
-          background:
-            rgba(124,92,255,.16);
-
-          border:
-            1px solid rgba(124,92,255,.24);
-
-          border-radius:9px;
-
-          font-size:.73rem;
-          font-weight:800;
-
-          cursor:pointer;
-        }
-
-        .locker-action.active {
-          color:#ffacb8;
-
-          background:
-            rgba(255,93,115,.07);
-
-          border-color:
-            rgba(255,93,115,.18);
-        }
-
-        .locker-action:disabled {
-          opacity:.3;
-          cursor:default;
-        }
-
-        .locker-note {
-          color:#747f90;
-          font-size:.72rem;
-          line-height:1.5;
-        }
-
-      </style>
-
-
-      <div class="locker-header">
-
-        <button
-          id="locker-back"
-          class="locker-back"
-          type="button"
-        >
-          ← その他
-        </button>
-
-        <h1 style="margin:0">
-          ロッカー
-        </h1>
-
-      </div>
-
-
-      <section class="locker-section">
-
-        <div class="locker-section-title">
-          ⚡ XPアイテム
-        </div>
-
-
-        <div class="locker-reserved">
-
-          次回使用：
-
-          <strong>
-            ${queuedXpItem || "なし"}
-          </strong>
-
-        </div>
-
-
-        ${xpItems.map(itemName => {
-
-          const count =
-            Number(
-              inventory[itemName] ?? 0
-            );
-
-          const selected =
-            queuedXpItem === itemName;
-
-          const effect =
-            XP_ITEM_EFFECTS[itemName];
-
-          const description =
-            effect.durationMinutes == null
-
-              ? `XP ${effect.multiplier}倍 / 次のタイマー全体`
-
-              : `XP ${effect.multiplier}倍 / ${effect.durationMinutes}分`;
-
-
-          return `
-
-            <div class="locker-item">
-
-              <div class="locker-item-info">
-
-                <div class="locker-item-name">
-                  ${itemName} ×${count}
-                </div>
-
-                <div class="locker-item-desc">
-                  ${description}
-                </div>
-
-              </div>
-
-
-              <button
-                type="button"
-
-                class="
-                  locker-action
-                  ${selected ? "active" : ""}
-                "
-
-                data-locker-xp="${itemName}"
-
-                ${
-                  count <= 0 && !selected
-                    ? "disabled"
-                    : ""
-                }
-              >
-                ${
-                  selected
-                    ? "予約解除"
-                    : "次回使用"
-                }
-              </button>
-
-            </div>
-
-          `;
-
-        }).join("")}
-
-      </section>
-
-
-      <section class="locker-section">
-
-        <div class="locker-section-title">
-          👑 ボスアイテム
-        </div>
-
-
-        <div class="locker-note">
-          ボスアイテムの効果はボス戦画面で適用します。
-        </div>
-
-
-        ${bossItems.map(itemName => {
-
-          const count =
-            Number(
-              inventory[itemName] ?? 0
-            );
-
-          return `
-
-            <div class="locker-item">
-
-              <div class="locker-item-info">
-
-                <div class="locker-item-name">
-                  ${itemName} ×${count}
-                </div>
-
-                <div class="locker-item-desc">
-                  ${
-                    count > 0
-                      ? "使用可能"
-                      : "未所持"
-                  }
-                </div>
-
-              </div>
-
-
-              <button
-                type="button"
-                class="locker-action locker-open-boss"
-                ${count <= 0 ? "disabled" : ""}
-              >
-                ボス戦へ
-              </button>
-
-            </div>
-
-          `;
-
-        }).join("")}
-
-      </section>
-
-
-      <p
-        id="locker-message"
-        style="
-          margin:0;
-          min-height:1.2em;
-          color:#9fd3a9;
-          font-size:.8rem;
-        "
-      ></p>
-
-    `)
-  );
-
-
-  $("locker-back").onclick =
-    async () => {
-
-      await showOtherPage(user);
-
-    };
-
-
-  document
-    .querySelectorAll(
-      "[data-locker-xp]"
-    )
-    .forEach(button => {
-
-      button.onclick =
-        async () => {
-
-          const itemName =
-            button.dataset.lockerXp;
-
-          try {
-
-            const latestSnap =
-              await getDoc(ref);
-
-            if (!latestSnap.exists()) {
-              throw new Error(
-                "ユーザーデータが見つかりません。"
-              );
-            }
-
-
-            const latest =
-              latestSnap.data();
-
-
-            const currentQueued =
-              String(
-                latest.queuedXpItem ?? ""
-              );
-
-
-            // 同じアイテムなら予約解除
-            if (
-              currentQueued === itemName
-            ) {
-
-              await setDoc(
-                ref,
-                {
-                  queuedXpItem: "",
-                  updatedAt:
-                    serverTimestamp(),
-                },
-                { merge:true }
-              );
-
-              await showLockerPage(user);
-              return;
-
-            }
-
-
-            const owned =
-              Number(
-                latest.inventory?.[
-                  itemName
-                ] ?? 0
-              );
-
-
-            if (owned <= 0) {
-              throw new Error(
-                "このアイテムを所持していません。"
-              );
-            }
-
-
-            await setDoc(
-              ref,
-              {
-                queuedXpItem:
-                  itemName,
-
-                updatedAt:
-                  serverTimestamp(),
-              },
-              { merge:true }
-            );
-
-
-            await showLockerPage(user);
-
-          }
-
-          catch (error) {
-
-            const message =
-              $("locker-message");
-
-            if (message) {
-
-              message.style.color =
-                "#ff8b8b";
-
-              message.textContent =
-                error?.message ||
-                "予約に失敗しました。";
-
-            }
-
-          }
-
-        };
-
-    });
-
-
-  document
-    .querySelectorAll(
-      ".locker-open-boss"
-    )
-    .forEach(button => {
-
-      button.onclick =
-        async () => {
-
-          await showQuestBossMainPage(
-            user,
-            "boss"
-          );
-
-        };
-
-    });
-
-}
-
-
-
-
-async function showProfilePage(user) {
-
-  const ref =
-    doc(db, "users", user.uid);
-
-  const snap =
-    await getDoc(ref);
-
-  if (!snap.exists()) {
-    throw new Error(
-      "ユーザーデータが見つかりません。"
-    );
-  }
-
-  const data =
-    snap.data();
-
-
-  const groups = [
-
-    {
-      name: "数学",
-      subjects: [
-        "数学IA",
-        "数学IIBC",
-        "数学III",
-      ],
-    },
-
-    {
-      name: "国語",
-      subjects: [
-        "現代文",
-        "古文",
-        "漢文",
-      ],
-    },
-
-    {
-      name: "地歴公民",
-      subjects: [
-        "日本史",
-        "世界史",
-        "地理",
-        "公共",
-        "倫理",
-        "政治・経済",
-      ],
-    },
-
-    {
-      name: "理科",
-      subjects: [
-        "物理",
-        "物理基礎",
-        "化学",
-        "化学基礎",
-        "生物",
-        "生物基礎",
-        "地学",
-        "地学基礎",
-      ],
-    },
-
-    {
-      name: "英語",
-      subjects: [
-        "英語",
-      ],
-    },
-
-    {
-      name: "情報",
-      subjects: [
-        "情報",
-      ],
-    },
-
-  ];
-
-
-  const selected =
-    new Set(
-      Array.isArray(data.selectedSubjects)
-        ? data.selectedSubjects
-        : []
-    );
-
-
-  let track =
-    String(data.track ?? "");
-
-
-  page(
-    card(`
-
-      <style>
-
-        .profile-header {
-          display:flex;
-          align-items:center;
-          gap:10px;
-        }
-
-        .profile-back {
-          min-height:38px;
-          padding:0 12px;
-
-          color:#aeb6c4;
-          background:#0b1019;
-
-          border:
-            1px solid rgba(255,255,255,.09);
-
-          border-radius:10px;
-
-          font-weight:800;
-          cursor:pointer;
-        }
-
-
-        .profile-box {
-          display:grid;
-          gap:10px;
-
-          padding:14px;
-
-          background:#0b1019;
-
-          border:
-            1px solid rgba(255,255,255,.08);
-
-          border-radius:14px;
-        }
-
-
-        .profile-label {
-          color:#858f9f;
-
-          font-size:.73rem;
-          font-weight:850;
-        }
-
-
-        .profile-input {
-          width:100%;
-          min-height:43px;
-
-          padding:9px 11px;
-
-          color:#f3f5f8;
-          background:#080c13;
-
-          border:
-            1px solid rgba(255,255,255,.10);
-
-          border-radius:10px;
-
-          outline:none;
-        }
-
-
-        .profile-id {
-          color:#a3abba;
-          font-size:.86rem;
-        }
-
-
-        .profile-track {
-          display:grid;
-          grid-template-columns:1fr 1fr;
-          gap:8px;
-        }
-
-
-        .profile-track-btn {
-          min-height:42px;
-
-          color:#7f8999;
-          background:#090d14;
-
-          border:
-            1px solid rgba(255,255,255,.08);
-
-          border-radius:10px;
-
-          font-weight:850;
-          cursor:pointer;
-        }
-
-
-        .profile-track-btn.active {
-          color:#fff;
-
-          background:
-            rgba(124,92,255,.17);
-
-          border-color:
-            rgba(124,92,255,.35);
-        }
-
-
-        .subject-group {
-          display:grid;
-          gap:7px;
-        }
-
-
-        .subject-group-title {
-          margin-top:4px;
-
-          color:#dce0e7;
-
-          font-size:.82rem;
-          font-weight:900;
-        }
-
-
-        .subject-grid {
-          display:grid;
-
-          grid-template-columns:
-            repeat(2,minmax(0,1fr));
-
-          gap:7px;
-        }
-
-
-        .subject-chip {
-          min-width:0;
-          min-height:39px;
-
-          padding:7px 6px;
-
-          color:#7d8797;
-          background:#090d14;
-
-          border:
-            1px solid rgba(255,255,255,.07);
-
-          border-radius:9px;
-
-          font-size:.75rem;
-          font-weight:800;
-
-          cursor:pointer;
-        }
-
-
-        .subject-chip.active {
-          color:#fff;
-
-          background:
-            rgba(124,92,255,.17);
-
-          border-color:
-            rgba(124,92,255,.35);
-        }
-
-
-        .subject-chip.active::after {
-          content:" ✓";
-          color:#baaaff;
-        }
-
-
-        .profile-count {
-          color:#788293;
-          font-size:.72rem;
-        }
-
-
-        .profile-save {
-          width:100%;
-          min-height:46px;
-
-          color:#fff;
-
-          background:
-            linear-gradient(
-              135deg,
-              #6248dd,
-              #8067f5
-            );
-
-          border:0;
-          border-radius:12px;
-
-          font-weight:900;
-          cursor:pointer;
-        }
-
-      </style>
-
-
-      <div class="profile-header">
-
-        <button
-          id="profile-back"
-          class="profile-back"
-          type="button"
-        >
-          ← その他
-        </button>
-
-        <h1 style="margin:0">
-          プロフィール
-        </h1>
-
-      </div>
-
-
-      <div class="profile-box">
-
-        <div class="profile-label">
-          表示名
-        </div>
-
-        <input
-          id="profile-name"
-          class="profile-input"
-          type="text"
-          maxlength="30"
-          value="${data.username ?? ""}"
-        >
-
-      </div>
-
-
-      <div class="profile-box">
-
-        <div class="profile-label">
-          ユーザーID
-        </div>
-
-        <div class="profile-id">
-          ${data.globalId ?? "-"}
-        </div>
-
-        <div style="
-          color:#687283;
-          font-size:.68rem;
-        ">
-          IDは変更できません
-        </div>
-
-      </div>
-
-
-      <div class="profile-box">
-
-        <div class="profile-label">
-          文理
-        </div>
-
-
-        <div class="profile-track">
-
-          <button
-            type="button"
-            class="
-              profile-track-btn
-              ${track === "文系" ? "active" : ""}
-            "
-            data-track="文系"
-          >
-            文系
-          </button>
-
-          <button
-            type="button"
-            class="
-              profile-track-btn
-              ${track === "理系" ? "active" : ""}
-            "
-            data-track="理系"
-          >
-            理系
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <div class="profile-box">
-
-        <div style="
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          gap:10px;
-        ">
-
-          <div class="profile-label">
-            受験教科
-          </div>
-
-          <div
-            id="profile-count"
-            class="profile-count"
-          >
-          </div>
-
-        </div>
-
-
-        ${groups.map(group => `
-
-          <div class="subject-group">
-
-            <div class="subject-group-title">
-              ${group.name}
-            </div>
-
-
-            <div class="subject-grid">
-
-              ${group.subjects.map(subject => `
-
-                <button
-                  type="button"
-                  class="
-                    subject-chip
-                    ${
-                      selected.has(subject)
-                        ? "active"
-                        : ""
-                    }
-                  "
-                  data-subject="${subject}"
-                >
-                  ${subject}
-                </button>
-
-              `).join("")}
-
-            </div>
-
-          </div>
-
-        `).join("")}
-
-      </div>
-
-
-      <button
-        id="profile-save"
-        class="profile-save"
-        type="button"
-      >
-        変更を保存
-      </button>
-
-
-      <p
-        id="profile-message"
-        style="
-          margin:0;
-          min-height:1.2em;
-          color:#9fd3a9;
-          font-size:.8rem;
-        "
-      ></p>
-
-    `)
-  );
-
-
-  function updateCount() {
-
-    $("profile-count").textContent =
-      `${selected.size}教科選択中`;
-
-  }
-
-
-  updateCount();
-
-
-  // 戻る
-  $("profile-back").onclick =
-    async () => {
-
-      await showOtherPage(user);
-
-    };
-
-
-  // 文理
-  document
-    .querySelectorAll("[data-track]")
-    .forEach(button => {
-
-      button.onclick = () => {
-
-        track =
-          button.dataset.track;
-
-        document
-          .querySelectorAll("[data-track]")
-          .forEach(el => {
-
-            el.classList.toggle(
-              "active",
-              el.dataset.track === track
-            );
-
-          });
-
-      };
-
-    });
-
-
-  // 教科
-  document
-    .querySelectorAll("[data-subject]")
-    .forEach(button => {
-
-      button.onclick = () => {
-
-        const subject =
-          button.dataset.subject;
-
-
-        if (selected.has(subject)) {
-
-          selected.delete(subject);
-
-          button.classList.remove(
-            "active"
-          );
-
-        } else {
-
-          selected.add(subject);
-
-          button.classList.add(
-            "active"
-          );
-
-        }
-
-
-        updateCount();
-
-      };
-
-    });
-
-
-  // 保存
-  $("profile-save").onclick =
-    async () => {
-
-      const message =
-        $("profile-message");
-
-      try {
-
-        message.textContent = "";
-        message.style.color =
-          "#9fd3a9";
-
-
-        const username =
-          $("profile-name")
-            .value
-            .trim();
-
-
-        if (!username) {
-          throw new Error(
-            "表示名を入力してください。"
-          );
-        }
-
-
-        if (!track) {
-          throw new Error(
-            "文系か理系を選択してください。"
-          );
-        }
-
-
-        if (selected.size === 0) {
-          throw new Error(
-            "教科を1つ以上選択してください。"
-          );
-        }
-
-
-        await setDoc(
-          ref,
-          {
-            username,
-            track,
-
-            selectedSubjects:
-              [...selected],
-
-            updatedAt:
-              serverTimestamp(),
-          },
-          {
-            merge:true,
-          }
-        );
-
-
-        await showOtherPage(user);
-
-      }
-
-      catch (error) {
-
-        message.style.color =
-          "#ff8b8b";
-
-        message.textContent =
-          error?.message ||
-          "保存に失敗しました。";
-
-      }
-
-    };
-
-}
-
-
 async function showOtherPage(user) {
-
-  const ref =
-    doc(db, "users", user.uid);
-
-  const snap =
-    await getDoc(ref);
+  const ref = doc(db, "users", user.uid);
+  const snap = await getDoc(ref);
 
   if (!snap.exists()) {
     throw new Error(
@@ -11774,248 +8660,11 @@ async function showOtherPage(user) {
     );
   }
 
-  const data =
-    snap.data();
-
+  const data = snap.data();
 
   page(
     card(`
-
-      <style>
-
-        .other-grid {
-          display:grid;
-          grid-template-columns:
-            repeat(2,minmax(0,1fr));
-          gap:12px;
-        }
-
-        .other-card {
-          min-width:0;
-          min-height:140px;
-
-          padding:18px 14px;
-
-          display:flex;
-          flex-direction:column;
-          align-items:flex-start;
-          justify-content:flex-end;
-          gap:5px;
-
-          text-align:left;
-
-          color:#f3f5f8;
-
-          background:
-            linear-gradient(
-              145deg,
-              #151b28,
-              #0e131c
-            );
-
-          border:
-            1px solid
-            rgba(255,255,255,.09);
-
-          border-radius:17px;
-
-          cursor:pointer;
-
-          transition:
-            transform .14s ease,
-            background .14s ease,
-            border-color .14s ease;
-        }
-
-        .other-card:hover {
-          transform:
-            translateY(-2px);
-
-          background:
-            linear-gradient(
-              145deg,
-              #1a2130,
-              #101620
-            );
-
-          border-color:
-            rgba(155,131,255,.28);
-        }
-
-        .other-card:active {
-          transform:
-            scale(.98);
-        }
-
-        .other-card-icon {
-          width:42px;
-          height:42px;
-
-          margin-bottom:auto;
-
-          display:grid;
-          place-items:center;
-
-          font-size:1.35rem;
-
-          background:
-            rgba(255,255,255,.055);
-
-          border:
-            1px solid
-            rgba(255,255,255,.07);
-
-          border-radius:12px;
-        }
-
-        .other-card-title {
-          font-size:.98rem;
-          font-weight:850;
-        }
-
-        .other-card-desc {
-          color:#7f8999;
-          font-size:.72rem;
-          line-height:1.35;
-        }
-
-        .other-logout {
-          width:100%;
-          min-height:44px;
-
-          margin-top:2px;
-
-          color:#ff7185;
-
-          background:
-            rgba(255,93,115,.055);
-
-          border:
-            1px solid
-            rgba(255,93,115,.16);
-
-          border-radius:12px;
-
-          font-weight:750;
-
-          cursor:pointer;
-        }
-
-        .other-modal-backdrop {
-          position:fixed;
-          inset:0;
-
-          z-index:100000;
-
-          display:none;
-          place-items:center;
-
-          padding:20px;
-
-          background:
-            rgba(0,0,0,.70);
-
-          backdrop-filter:
-            blur(8px);
-        }
-
-        .other-modal-backdrop.open {
-          display:grid;
-        }
-
-        .other-modal {
-          width:min(400px,100%);
-
-          padding:20px;
-
-          display:grid;
-          gap:15px;
-
-          background:#111722;
-
-          border:
-            1px solid
-            rgba(255,255,255,.12);
-
-          border-radius:18px;
-
-          box-shadow:
-            0 20px 60px
-            rgba(0,0,0,.45);
-        }
-
-        .other-modal-head {
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          gap:12px;
-        }
-
-        .other-modal-head h2 {
-          margin:0;
-          font-size:1.05rem;
-        }
-
-        .other-modal-close {
-          width:34px;
-          height:34px;
-
-          padding:0;
-
-          display:grid;
-          place-items:center;
-
-          color:#a8afbd;
-
-          background:
-            rgba(255,255,255,.055);
-
-          border:
-            1px solid
-            rgba(255,255,255,.08);
-
-          border-radius:10px;
-
-          cursor:pointer;
-        }
-
-        .other-modal-content {
-          display:grid;
-          gap:8px;
-        }
-
-        .other-info-row {
-          padding:11px 12px;
-
-          display:flex;
-          justify-content:space-between;
-          gap:12px;
-
-          background:#0b1019;
-
-          border:
-            1px solid
-            rgba(255,255,255,.07);
-
-          border-radius:11px;
-
-          font-size:.84rem;
-        }
-
-        .other-info-row span {
-          color:#7f8999;
-        }
-
-        .other-info-row strong {
-          text-align:right;
-          overflow-wrap:anywhere;
-        }
-
-      </style>
-
-
       <div>
-
         <div style="
           color:#768398;
           font-size:.72rem;
@@ -12025,292 +8674,89 @@ async function showOtherPage(user) {
           OTHER
         </div>
 
-        <h1 style="
-          margin:4px 0 0;
-        ">
+        <h1 style="margin:4px 0 0">
           その他
         </h1>
-
       </div>
 
-
-      <div class="other-grid">
+      <div style="
+        display:grid;
+        gap:9px;
+      ">
+        <button
+          id="other-profile"
+          style="${buttonStyle(true)}"
+        >
+          👤 プロフィール
+        </button>
 
         <button
           id="other-shop"
-          class="other-card"
-          type="button"
+          style="${buttonStyle(true)}"
         >
-
-          <div class="other-card-icon">
-            🛒
-          </div>
-
-          <div class="other-card-title">
-            ショップ
-          </div>
-
-          <div class="other-card-desc">
-            アイテムを購入
-          </div>
-
+          🛒 ショップ
         </button>
-
-
-        <button
-          id="other-titles"
-          class="other-card"
-          type="button"
-        >
-
-          <div class="other-card-icon">
-            🏷️
-          </div>
-
-          <div class="other-card-title">
-            称号
-          </div>
-
-          <div class="other-card-desc">
-            一覧・装備
-          </div>
-
-        </button>
-
 
         <button
           id="other-locker"
-          class="other-card"
-          type="button"
+          style="${buttonStyle(true)}"
         >
-
-          <div class="other-card-icon">
-            🎒
-          </div>
-
-          <div class="other-card-title">
-            ロッカー
-          </div>
-
-          <div class="other-card-desc">
-            所持品・使用
-          </div>
-
+          🎒 ロッカー
         </button>
-
 
         <button
-          id="other-profile"
-          class="other-card"
-          type="button"
+          id="other-titles"
+          style="${buttonStyle(true)}"
         >
-
-          <div class="other-card-icon">
-            👤
-          </div>
-
-          <div class="other-card-title">
-            プロフィール
-          </div>
-
-          <div class="other-card-desc">
-            ユーザー情報
-          </div>
-
+          🏷 称号一覧
         </button>
 
+        <button
+          id="other-settings"
+          style="${buttonStyle(false)}"
+        >
+          ⚙ 設定
+        </button>
       </div>
-
 
       <button
         id="other-logout"
-        class="other-logout"
-        type="button"
+        style="${buttonStyle(false)}"
       >
         ログアウト
       </button>
 
-
-      <div
-        id="other-modal-backdrop"
-        class="other-modal-backdrop"
-      >
-
-        <div class="other-modal">
-
-          <div class="other-modal-head">
-
-            <h2 id="other-modal-title">
-            </h2>
-
-            <button
-              id="other-modal-close"
-              class="other-modal-close"
-              type="button"
-            >
-              ✕
-            </button>
-
-          </div>
-
-          <div
-            id="other-modal-content"
-            class="other-modal-content"
-          >
-          </div>
-
-        </div>
-
-      </div>
-
-
       ${mainBottomNav("other")}
-
     `)
   );
 
-
-  // ========================================================
-  // MODAL
-  // ========================================================
-
-  const modal =
-    $("other-modal-backdrop");
-
-  const modalTitle =
-    $("other-modal-title");
-
-  const modalContent =
-    $("other-modal-content");
-
-
-  function openOtherModal(title) {
-
-    modalTitle.textContent =
-      title;
-
-    modalContent.innerHTML = "";
-
-    modal.classList.add("open");
-
-  }
-
-
-  function addInfoRow(label, value) {
-
-    const row =
-      document.createElement("div");
-
-    row.className =
-      "other-info-row";
-
-
-    const labelEl =
-      document.createElement("span");
-
-    labelEl.textContent =
-      label;
-
-
-    const valueEl =
-      document.createElement("strong");
-
-    valueEl.textContent =
-      String(value);
-
-
-    row.append(
-      labelEl,
-      valueEl
+  $("other-profile").onclick = () => {
+    alert(
+      `${data.username ?? "-"}\nID：${data.globalId ?? "-"}`
     );
-
-    modalContent.appendChild(row);
-
-  }
-
-
-  function closeOtherModal() {
-
-    modal.classList.remove("open");
-
-  }
-
-
-  $("other-modal-close").onclick =
-    closeOtherModal;
-
-
-  modal.onclick = event => {
-
-    if (event.target === modal) {
-      closeOtherModal();
-    }
-
   };
 
+  $("other-shop").onclick = async () => {
+    await showShopPage(user);
+  };
 
-  // ========================================================
-  // SHOP
-  // ========================================================
+  $("other-locker").onclick = async () => {
+    await showTitlesPage(user);
+  };
 
-  $("other-shop").onclick =
-    async () => {
+  $("other-titles").onclick = async () => {
+    await showTitlesPage(user);
+  };
 
-      await showShopPage(user);
+  $("other-settings").onclick = () => {
+    alert("設定画面はUI調整で仕上げます。");
+  };
 
-    };
-
-
-  // ========================================================
-  // TITLES
-  // ========================================================
-
-  $("other-titles").onclick =
-    async () => {
-
-      await showTitlesPage(user);
-
-    };
-
-
-  // ========================================================
-  // PROFILE
-  // ========================================================
-
-  $("other-profile").onclick =
-    async () => {
-
-      await showProfilePage(user);
-
-    };
-
-
-  // ========================================================
-  // LOCKER
-  // ========================================================
-
-  $("other-locker").onclick =
-    async () => {
-
-      await showLockerPage(user);
-
-    };
-
-
-  // ========================================================
-  // LOGOUT
-  // ========================================================
-
-  $("other-logout").onclick =
-    async () => {
-
-      await signOut(auth);
-
-    };
-
+  $("other-logout").onclick = async () => {
+    await signOut(auth);
+  };
 
   bindMainBottomNav(user);
-
 }
 
 
@@ -14357,7 +10803,7 @@ async function showPartyPage(user) {
         updatedAt: serverTimestamp(),
       });
 
-      await showPartyFriendsMainPage(user, "party");
+      await showPartyPage(user);
     };
   }
 
@@ -14445,7 +10891,7 @@ async function showPartyPage(user) {
         { merge: true }
       );
 
-      await showPartyFriendsMainPage(user, "party");
+      await showPartyPage(user);
     };
   }
 
@@ -14567,7 +11013,7 @@ async function showPartyPage(user) {
         { merge: true }
       );
 
-      await showPartyFriendsMainPage(user, "party");
+      await showPartyPage(user);
     };
   });
 
@@ -14582,7 +11028,7 @@ async function showPartyPage(user) {
         { merge: true }
       );
 
-      await showPartyFriendsMainPage(user, "party");
+      await showPartyPage(user);
     };
   });
 
@@ -14712,7 +11158,7 @@ async function showPartyPage(user) {
   }
 
   $("party-back-btn").onclick = async () => {
-    await showPartyFriendsMainPage(user, "friends");
+    await showFriendsPage(user);
   };
 }
 
@@ -14947,12 +11393,7 @@ async function showFriendsPage(user) {
         { merge: true }
       );
 
-      await showPartyFriendsMainPage(
-        user,
-        partyFriendsActiveTab === "requests"
-          ? "requests"
-          : "friends"
-      );
+      await showFriendsPage(user);
     };
   });
 
@@ -14969,18 +11410,13 @@ async function showFriendsPage(user) {
         { merge: true }
       );
 
-      await showPartyFriendsMainPage(
-        user,
-        partyFriendsActiveTab === "requests"
-          ? "requests"
-          : "friends"
-      );
+      await showFriendsPage(user);
     };
   });
 
 
   $("open-party-btn").onclick = async () => {
-    await showPartyFriendsMainPage(user, "party");
+    await showPartyPage(user);
   };
 
   $("friend-search-btn").onclick = async () => {
@@ -16303,81 +12739,9 @@ async function showTitlesPage(user) {
       };
     });
 
-  const titlesBackBtn =
-    $("titles-back-btn");
-
-  if (titlesBackBtn) {
-
-    titlesBackBtn.textContent =
-      "← その他";
-
-    const titlesCard =
-      document.querySelector(
-        "body > main > section"
-      );
-
-    if (titlesCard) {
-      titlesCard.prepend(
-        titlesBackBtn
-      );
-    }
-
-    titlesBackBtn.style.setProperty(
-      "position",
-      "sticky"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "top",
-      "0"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "z-index",
-      "50"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "width",
-      "fit-content"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "min-height",
-      "38px"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "padding",
-      "0 13px"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "background",
-      "#0b1019",
-      "important"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "border",
-      "1px solid rgba(255,255,255,.10)",
-      "important"
-    );
-
-    titlesBackBtn.style.setProperty(
-      "border-radius",
-      "10px",
-      "important"
-    );
-
-    titlesBackBtn.onclick =
-      async () => {
-
-        await showOtherPage(user);
-
-      };
-
-  }
+  $("titles-back-btn").onclick = async () => {
+    await showHome(user);
+  };
 }
 
 
@@ -16514,7 +12878,7 @@ const SHOP_ITEMS = [
   },
 ];
 
-async function showShopPage(user, activeTab = "xp") {
+async function showShopPage(user) {
   await checkAllTitles(user);
 
   const ref = doc(db, "users", user.uid);
@@ -16528,448 +12892,119 @@ async function showShopPage(user, activeTab = "xp") {
   const coins = Number(data.coins ?? 0);
   const inventory = data.inventory || {};
 
-  if (
-    !["xp", "boss", "titles"].includes(
-      activeTab
-    )
-  ) {
-    activeTab = "xp";
-  }
-
-  const xpShopItems =
-    SHOP_ITEMS.filter(
-      item =>
-        Boolean(
-          XP_ITEM_EFFECTS[item.name]
-        )
-    );
-
-  const bossShopItems =
-    SHOP_ITEMS.filter(
-      item =>
-        !XP_ITEM_EFFECTS[item.name]
-    );
-
-  const shopTitles =
-    ALL_TITLE_DEFS.filter(
-      title =>
-        title.category === "shop"
-    );
-
-  const ownedTitles =
-    Array.isArray(data.titles)
-      ? data.titles
-      : [];
-
-
-
   page(
     card(`
+      <h1 style="margin:0">ショップ</h1>
 
-      <style>
-
-        .shop-tabs {
-          display:grid;
-          grid-template-columns:
-            repeat(3,minmax(0,1fr));
-          gap:5px;
-
-          padding:4px;
-
-          background:#090d14;
-
-          border:
-            1px solid
-            rgba(255,255,255,.08);
-
-          border-radius:13px;
-        }
-
-        .shop-tab {
-          min-width:0;
-          min-height:40px;
-
-          padding:6px 3px;
-
-          color:#737d8e;
-
-          background:transparent;
-
-          border:0;
-          border-radius:9px;
-
-          font-size:.79rem;
-          font-weight:850;
-
-          cursor:pointer;
-        }
-
-        .shop-tab.active {
-          color:#fff;
-
-          background:
-            rgba(124,92,255,.18);
-
-          box-shadow:
-            inset 0 0 0 1px
-            rgba(124,92,255,.16);
-        }
-
-        .shop-coin-box {
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-
-          padding:12px 14px;
-
-          background:#0b1019;
-
-          border:
-            1px solid
-            rgba(255,255,255,.08);
-
-          border-radius:12px;
-
-          color:#8791a2;
-
-          font-size:.84rem;
-        }
-
-        .shop-coin-box strong {
-          color:#ffd166;
-          font-size:1rem;
-        }
-
-        .shop-list {
-          display:grid;
-          gap:9px;
-        }
-
-        .shop-product {
-          display:grid;
-
-          grid-template-columns:
-            minmax(0,1fr) auto;
-
-          align-items:center;
-
-          gap:9px 12px;
-
-          padding:13px 14px;
-
-          background:#0b1019;
-
-          border:
-            1px solid
-            rgba(255,255,255,.08);
-
-          border-radius:13px;
-        }
-
-        .shop-product-info {
-          min-width:0;
-
-          display:grid;
-          gap:4px;
-        }
-
-        .shop-product-name {
-          font-size:.9rem;
-          font-weight:850;
-        }
-
-        .shop-product-desc {
-          color:#7f8999;
-          font-size:.74rem;
-          line-height:1.4;
-        }
-
-        .shop-product-meta {
-          display:flex;
-          flex-wrap:wrap;
-          gap:4px 10px;
-
-          color:#9ca5b4;
-          font-size:.71rem;
-        }
-
-        .shop-buy {
-          min-width:72px;
-          min-height:38px;
-
-          padding:6px 10px;
-
-          color:#fff;
-
-          background:
-            rgba(124,92,255,.16);
-
-          border:
-            1px solid
-            rgba(124,92,255,.25);
-
-          border-radius:10px;
-
-          font-weight:800;
-
-          cursor:pointer;
-        }
-
-        .shop-buy:disabled {
-          opacity:.35;
-          cursor:default;
-        }
-
-      </style>
-
-
-      <h1 style="margin:0">
-        ショップ
-      </h1>
-
-
-      <div class="shop-coin-box">
-
-        <span>
-          所持コイン
-        </span>
-
-        <strong>
-          🪙 ${coins}
-        </strong>
-
+      <div style="
+        padding:12px 14px;
+        background:#0b1019;
+        border:1px solid #263247;
+        border-radius:12px;
+      ">
+        所持コイン：
+        <strong>${coins}</strong>
       </div>
 
+      <div style="display:grid;gap:12px">
+        ${SHOP_ITEMS.map((item) => `
+          <div style="
+            padding:16px;
+            background:#0b1019;
+            border:1px solid #263247;
+            border-radius:14px;
+            display:grid;
+            gap:8px;
+          ">
+            <strong>${item.name}</strong>
 
-      <div class="shop-tabs">
+            <div style="color:#9aa6ba;font-size:.9rem">
+              ${item.description}
+            </div>
 
-        <button
-          type="button"
-          class="shop-tab ${
-            activeTab === "xp"
-              ? "active"
-              : ""
-          }"
-          data-shop-tab="xp"
-        >
-          経験値
-        </button>
+            <div style="font-size:.9rem">
+              価格：${item.price}コイン
+            </div>
 
-        <button
-          type="button"
-          class="shop-tab ${
-            activeTab === "boss"
-              ? "active"
-              : ""
-          }"
-          data-shop-tab="boss"
-        >
-          ボス
-        </button>
+            <div style="font-size:.9rem">
+              所持：${Number(inventory[item.name] ?? 0)}個
+            </div>
 
-        <button
-          type="button"
-          class="shop-tab ${
-            activeTab === "titles"
-              ? "active"
-              : ""
-          }"
-          data-shop-tab="titles"
-        >
-          称号
-        </button>
-
+            <button
+              class="buy-item-btn"
+              data-item-id="${item.id}"
+              style="${buttonStyle(false)}"
+              ${coins < item.price ? "disabled" : ""}
+            >
+              購入
+            </button>
+          </div>
+        `).join("")}
       </div>
-
-
-      <div class="shop-list">
-
-        ${
-          activeTab === "titles"
-
-            ? shopTitles.map(
-                title => {
-
-                  const owned =
-                    ownedTitles.includes(
-                      title.name
-                    );
-
-                  return `
-
-                    <div class="shop-product">
-
-                      <div
-                        class="shop-product-info"
-                      >
-
-                        <div
-                          class="shop-product-name"
-                        >
-                          ${title.name}
-                        </div>
-
-                        <div
-                          class="shop-product-desc"
-                        >
-                          ショップ限定称号
-                        </div>
-
-                        <div
-                          class="shop-product-meta"
-                        >
-                          <span>
-                            ${title.rarity}
-                          </span>
-
-                          <span>
-                            🪙 ${title.price}
-                          </span>
-                        </div>
-
-                      </div>
-
-                      <button
-                        type="button"
-                        class="
-                          buy-title-btn
-                          shop-buy
-                        "
-                        data-title-id="${title.id}"
-                        ${owned ? "disabled" : ""}
-                      >
-                        ${
-                          owned
-                            ? "購入済"
-                            : "購入"
-                        }
-                      </button>
-
-                    </div>
-
-                  `;
-
-                }
-              ).join("")
-
-            : (
-                activeTab === "xp"
-                  ? xpShopItems
-                  : bossShopItems
-              )
-                .map(
-                  item => `
-
-                    <div class="shop-product">
-
-                      <div
-                        class="shop-product-info"
-                      >
-
-                        <div
-                          class="shop-product-name"
-                        >
-                          ${item.name}
-                        </div>
-
-                        <div
-                          class="shop-product-desc"
-                        >
-                          ${item.description}
-                        </div>
-
-                        <div
-                          class="shop-product-meta"
-                        >
-
-                          <span>
-                            🪙 ${item.price}
-                          </span>
-
-                          <span>
-                            所持
-                            ${Number(
-                              inventory[
-                                item.name
-                              ] ?? 0
-                            )}個
-                          </span>
-
-                        </div>
-
-                      </div>
-
-                      <button
-                        type="button"
-                        class="
-                          buy-item-btn
-                          shop-buy
-                        "
-                        data-item-id="${item.id}"
-                        ${
-                          coins < item.price
-                            ? "disabled"
-                            : ""
-                        }
-                      >
-                        購入
-                      </button>
-
-                    </div>
-
-                  `
-                )
-                .join("")
-        }
-
-      </div>
-
 
       <p
         id="shop-message"
-        style="
-          margin:0;
-          min-height:1.2em;
-          color:#9fd3a9;
-          font-size:.8rem;
-        "
+        style="margin:0;min-height:1.4em;color:#9fd3a9"
       ></p>
 
+      <section style="display:grid;gap:10px">
+        <h2 style="margin:10px 0 0">称号ショップ</h2>
+
+        ${
+          ALL_TITLE_DEFS
+            .filter(title => title.category === "shop")
+            .map(title => {
+              const ownedTitles =
+                Array.isArray(data.titles)
+                  ? data.titles
+                  : [];
+
+              const owned =
+                ownedTitles.includes(title.name);
+
+              return `
+                <div style="
+                  padding:14px;
+                  background:#0b1019;
+                  border:1px solid #263247;
+                  border-radius:12px;
+                  display:grid;
+                  gap:8px;
+                ">
+                  <div>
+                    <strong>${title.name}</strong>
+
+                    <div style="
+                      color:#9aa6ba;
+                      font-size:.85rem;
+                    ">
+                      ${title.rarity} / ${title.price}コイン
+                    </div>
+                  </div>
+
+                  <button
+                    class="buy-title-btn"
+                    data-title-id="${title.id}"
+                    ${owned ? "disabled" : ""}
+                    style="${buttonStyle(!owned)}"
+                  >
+                    ${owned ? "購入済み" : "購入"}
+                  </button>
+                </div>
+              `;
+            })
+            .join("")
+        }
+      </section>
 
       <button
         id="shop-back-btn"
         style="${buttonStyle(false)}"
       >
-        戻る
+        ホームへ戻る
       </button>
-
     `)
   );
-
-
-  document
-    .querySelectorAll(
-      "[data-shop-tab]"
-    )
-    .forEach(button => {
-
-      button.onclick =
-        async () => {
-
-          const next =
-            button.dataset.shopTab;
-
-          if (!next) return;
-
-          await showShopPage(
-            user,
-            next
-          );
-
-        };
-
-    });
-
 
   document.querySelectorAll(".buy-item-btn").forEach((button) => {
     button.onclick = async () => {
@@ -17791,6 +13826,23 @@ async function showTimerPage(user) {
         `).join("")}
       </select>
 
+      <select id="timer-xp-item" style="${fieldStyle()}">
+        <option value="">XPアイテムなし</option>
+
+        ${Object.keys(XP_ITEM_EFFECTS)
+          .filter(
+            itemName =>
+              Number(data.inventory?.[itemName] ?? 0) > 0
+          )
+          .map(itemName => `
+            <option value="${itemName}">
+              ${itemName}
+              ×${Number(data.inventory?.[itemName] ?? 0)}
+            </option>
+          `)
+          .join("")}
+      </select>
+
       <div
         id="timer-display"
         style="
@@ -17833,7 +13885,13 @@ async function showTimerPage(user) {
     $("timer-subject").value =
       timerState.subject;
 
+    if ($("timer-xp-item")) {
+      $("timer-xp-item").value =
+        timerState.xpItem || "";
+    }
+
     $("timer-subject").disabled = true;
+    $("timer-xp-item").disabled = true;
     $("timer-start").disabled = true;
     $("timer-pause").disabled = false;
     $("timer-end").disabled = false;
@@ -17866,70 +13924,15 @@ async function showTimerPage(user) {
     $("timer-error").textContent = "";
 
     timerState.subject = subject;
-
-    /*
-      XPアイテムはタイマーでは選ばない。
-      ロッカーで予約したアイテムを自動適用する。
-    */
-    const startSnap =
-      await getDoc(ref);
-
-    if (!startSnap.exists()) {
-      throw new Error(
-        "ユーザーデータが見つかりません。"
-      );
-    }
-
-    const startData =
-      startSnap.data();
-
-    const queuedXpItem =
-      String(
-        startData.queuedXpItem ?? ""
-      );
-
-    const queuedItemCount =
-      Number(
-        startData.inventory?.[
-          queuedXpItem
-        ] ?? 0
-      );
-
     timerState.xpItem =
-      (
-        queuedXpItem &&
-        XP_ITEM_EFFECTS[queuedXpItem] &&
-        queuedItemCount > 0
-      )
-        ? queuedXpItem
-        : "";
-
-    /*
-      「次のタイマー」の予約なので、
-      開始した時点で予約だけ解除する。
-
-      アイテム本体はまだ減らさない。
-      従来どおり勉強記録保存時に1個消費する。
-    */
-    if (timerState.xpItem) {
-
-      await setDoc(
-        ref,
-        {
-          queuedXpItem: "",
-          updatedAt:
-            serverTimestamp(),
-        },
-        { merge:true }
-      );
-
-    }
+      $("timer-xp-item")?.value || "";
 
     timerState.startedAt = Date.now();
     timerState.elapsedBeforePause = 0;
     timerState.paused = false;
 
     $("timer-subject").disabled = true;
+    $("timer-xp-item").disabled = true;
     $("timer-start").disabled = true;
     $("timer-pause").disabled = false;
     $("timer-end").disabled = false;
@@ -18741,505 +14744,3 @@ body:has(#quest-main-tabs) > main > section {
 }
 
 </style>
-
-<style id="party-three-tabs-direct-v1">
-
-#party-main-tabs {
-  width: 100%;
-
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0,1fr));
-
-  gap: 5px;
-  padding: 4px;
-
-  box-sizing: border-box;
-
-  background: #0b0e15;
-
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 13px;
-}
-
-#party-main-tabs button {
-  min-width: 0;
-
-  padding: 10px 4px;
-
-  border: 0;
-  border-radius: 9px;
-
-  background: transparent;
-
-  color: #737d8d;
-
-  font-size: .83rem;
-  font-weight: 800;
-
-  cursor: pointer;
-}
-
-#party-main-tabs button.active {
-  color: #fff;
-
-  background: rgba(124,92,255,.18);
-
-  box-shadow:
-    inset 0 0 0 1px
-    rgba(124,92,255,.16);
-}
-
-</style>
-
-
-<style id="rank-background-theme-strong-v1">
-
-/* 外側のランク色を強める */
-body > main.rank-main-themed {
-  background:
-    radial-gradient(
-      circle at 50% 12%,
-      rgba(var(--rank-rgb), .38),
-      rgba(var(--rank-rgb), .17) 28%,
-      rgba(var(--rank-rgb), .06) 52%,
-      transparent 72%
-    ),
-    #080b12 !important;
-}
-
-
-/* ページ本体もはっきり色付け */
-body > main
-> section.rank-page-themed {
-  background:
-    linear-gradient(
-      155deg,
-      rgba(var(--rank-rgb), .25),
-      rgba(var(--rank-rgb), .10) 28%,
-      #111722 55%,
-      #0d121b 100%
-    ) !important;
-
-  border-color:
-    rgba(var(--rank-rgb), .45) !important;
-
-  box-shadow:
-    0 0 32px
-    rgba(var(--rank-rgb), .12) !important;
-}
-
-
-/* 現在ランクのカードを一番強く */
-body > main
-> section.rank-page-themed
-> div:nth-of-type(1) {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--rank-rgb), .24),
-      rgba(var(--rank-rgb), .08) 45%,
-      #0c1119
-    ) !important;
-
-  border-color:
-    rgba(var(--rank-rgb), .38) !important;
-
-  box-shadow:
-    inset 0 0 24px
-    rgba(var(--rank-rgb), .07) !important;
-}
-
-
-/* 進捗・分布カードにも少しだけ色を乗せる */
-body > main
-> section.rank-page-themed
-> div:nth-of-type(2),
-
-body > main
-> section.rank-page-themed
-> div:nth-of-type(3) {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--rank-rgb), .09),
-      #0c1119 52%
-    ) !important;
-
-  border-color:
-    rgba(var(--rank-rgb), .20) !important;
-}
-
-</style>
-
-<style id="rank-theme-obvious-v1">
-
-/* =========================================================
-   RANK PAGE - CLEAR THEME
-========================================================= */
-
-
-/* 外側の背景 */
-body > main.rank-main-themed {
-  background:
-    radial-gradient(
-      circle at 50% 5%,
-      rgba(var(--rank-rgb), .65),
-      rgba(var(--rank-rgb), .30) 28%,
-      rgba(var(--rank-rgb), .12) 52%,
-      #080b12 78%
-    ) !important;
-}
-
-
-/* ランクページ本体 */
-body > main
-> section.rank-page-themed {
-
-  background:
-    linear-gradient(
-      160deg,
-      rgba(var(--rank-rgb), .42) 0%,
-      rgba(var(--rank-rgb), .22) 22%,
-      #111722 52%,
-      #0b0f17 100%
-    ) !important;
-
-  border:
-    1px solid
-    rgba(var(--rank-rgb), .65) !important;
-
-  box-shadow:
-    0 0 38px
-      rgba(var(--rank-rgb), .24),
-    inset 0 0 55px
-      rgba(var(--rank-rgb), .08) !important;
-}
-
-
-/* =========================================================
-   CURRENT RANK CARD
-========================================================= */
-
-body > main
-> section.rank-page-themed
-> div:nth-of-type(1) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--rank-rgb), .52),
-      rgba(var(--rank-rgb), .20) 45%,
-      #0b1018 100%
-    ) !important;
-
-  border-color:
-    rgba(var(--rank-rgb), .70) !important;
-
-  box-shadow:
-    inset 0 0 35px
-      rgba(var(--rank-rgb), .16),
-    0 8px 28px
-      rgba(0,0,0,.24) !important;
-}
-
-
-/* CURRENT RANK の文字 */
-body > main
-> section.rank-page-themed
-> div:nth-of-type(1)
-> div:nth-child(1) {
-
-  color:
-    rgba(var(--rank-rgb), .95) !important;
-}
-
-
-/* 実際のランク名 */
-body > main
-> section.rank-page-themed
-> div:nth-of-type(1)
-> div:nth-child(2) {
-
-  color:
-    var(--rank-accent) !important;
-
-  text-shadow:
-    0 0 18px
-      rgba(var(--rank-rgb), .40);
-}
-
-
-/* =========================================================
-   PROGRESS CARD
-========================================================= */
-
-body > main
-> section.rank-page-themed
-> div:nth-of-type(2) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--rank-rgb), .22),
-      rgba(var(--rank-rgb), .07) 55%,
-      #0b1018
-    ) !important;
-
-  border-color:
-    rgba(var(--rank-rgb), .38) !important;
-}
-
-
-/* パーセント表示 */
-body > main
-> section.rank-page-themed
-> div:nth-of-type(2)
-> div:first-child
-> span {
-
-  color:
-    var(--rank-accent) !important;
-}
-
-
-/* 進捗バー */
-body > main
-> section.rank-page-themed
-> div:nth-of-type(2)
-> div:nth-child(2)
-> div {
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(var(--rank-rgb), .80),
-      var(--rank-accent)
-    ) !important;
-
-  box-shadow:
-    0 0 12px
-      rgba(var(--rank-rgb), .35);
-}
-
-
-/* =========================================================
-   DISTRIBUTION
-========================================================= */
-
-body > main
-> section.rank-page-themed
-> div:nth-of-type(3) {
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--rank-rgb), .16),
-      rgba(var(--rank-rgb), .04) 50%,
-      #0b1018
-    ) !important;
-
-  border-color:
-    rgba(var(--rank-rgb), .28) !important;
-}
-
-</style>
-
-<style id="safe-intense-neon-v7b">
-
-/* =========================================================
-   SAFE INTENSE NEON
-   背景・枠線・グラデーションには触らない
-========================================================= */
-
-:root {
-  --safe-purple:#9b7cff;
-  --safe-cyan:#35d9ff;
-  --safe-pink:#ff5cac;
-  --safe-green:#45e0a3;
-  --safe-gold:#ffd35c;
-}
-
-
-/* ===== 見出し ===== */
-
-.screen-header h2,
-body > main > section h1 {
-  color:#f8f5ff !important;
-
-  text-shadow:
-    0 0 10px rgba(155,124,255,.38);
-}
-
-
-/* ===== HOME ===== */
-
-.home-player-title {
-  color:#c6b5ff !important;
-}
-
-.home-player-level strong {
-  color:#b89cff !important;
-
-  text-shadow:
-    0 0 12px rgba(155,124,255,.42);
-}
-
-.home-player-avatar {
-  color:#d8ccff !important;
-}
-
-.home-xp-fill {
-  background:#8f6fff !important;
-
-  box-shadow:
-    0 0 10px rgba(143,111,255,.45) !important;
-}
-
-.home-study-time {
-  color:#ddf9ff !important;
-
-  text-shadow:
-    0 0 13px rgba(53,217,255,.30);
-}
-
-
-/* ===== QUEST ===== */
-
-#quest-main-tabs button.active {
-  color:#fff !important;
-  background-color:rgba(155,124,255,.28) !important;
-
-  text-shadow:
-    0 0 8px rgba(155,124,255,.40);
-
-  box-shadow:none !important;
-}
-
-
-/* ===== PARTY ===== */
-
-#party-main-tabs button.active {
-  color:#fff !important;
-  background-color:rgba(53,217,255,.20) !important;
-
-  text-shadow:
-    0 0 8px rgba(53,217,255,.35);
-
-  box-shadow:none !important;
-}
-
-
-/* ===== SHOP ===== */
-
-.shop-tab.active {
-  color:#fff !important;
-  background-color:rgba(155,124,255,.30) !important;
-
-  box-shadow:none !important;
-}
-
-.shop-buy {
-  background:#7658e8 !important;
-}
-
-
-/* ===== LOCKER ===== */
-
-.locker-action {
-  background:#7257db !important;
-}
-
-.locker-reserved strong {
-  color:#cbbcff !important;
-}
-
-
-/* ===== PROFILE ===== */
-
-.subject-chip.active {
-  color:#fff !important;
-
-  background-color:
-    rgba(155,124,255,.30) !important;
-
-  box-shadow:none !important;
-}
-
-.profile-track-btn.active {
-  color:#fff !important;
-
-  background-color:
-    rgba(53,217,255,.20) !important;
-
-  box-shadow:none !important;
-}
-
-.profile-save {
-  background:#7658e8 !important;
-}
-
-
-/* ===== OTHER ===== */
-
-.other-card:nth-child(1) .other-card-icon {
-  color:var(--safe-cyan) !important;
-  background-color:rgba(53,217,255,.14) !important;
-}
-
-.other-card:nth-child(2) .other-card-icon {
-  color:var(--safe-purple) !important;
-  background-color:rgba(155,124,255,.16) !important;
-}
-
-.other-card:nth-child(3) .other-card-icon {
-  color:var(--safe-green) !important;
-  background-color:rgba(69,224,163,.13) !important;
-}
-
-.other-card:nth-child(4) .other-card-icon {
-  color:var(--safe-gold) !important;
-  background-color:rgba(255,211,92,.13) !important;
-}
-
-
-/* ===== 軽量操作感 ===== */
-
-body > main > section button {
-  transition:
-    transform 90ms ease,
-    filter 90ms ease !important;
-}
-
-@media (hover:hover) {
-  body > main > section button:not(:disabled):hover {
-    filter:
-      brightness(1.10)
-      saturate(1.15);
-  }
-}
-
-body > main > section button:not(:disabled):active {
-  transform:scale(.985);
-}
-
-
-/* ===== ページ切替 ===== */
-
-body > main > section {
-  animation:
-    safeFadeIn
-    140ms ease-out both;
-}
-
-@keyframes safeFadeIn {
-  from {
-    opacity:.55;
-  }
-
-  to {
-    opacity:1;
-  }
-}
-
-</style>
-

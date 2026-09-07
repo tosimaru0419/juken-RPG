@@ -1,0 +1,523 @@
+===== REGISTER SUBJECT UI =====
+        </div>
+
+
+        <!-- DISPLAY NAME -->
+
+        <div class="form-group">
+
+          <label for="register-display-name">
+            表示名
+          </label>
+
+          <input
+            type="text"
+            id="register-display-name"
+            maxlength="30"
+            placeholder="ゲーム内で表示される名前"
+            required
+          >
+
+        </div>
+
+
+        <!-- COURSE -->
+
+        <fieldset>
+
+          <legend>
+            文理
+          </legend>
+
+          <div class="choice-group">
+
+            <label>
+              <input
+                type="radio"
+                name="course"
+                value="science"
+              >
+              理系
+            </label>
+
+            <label>
+              <input
+                type="radio"
+                name="course"
+                value="humanities"
+              >
+              文系
+            </label>
+
+            <label>
+              <input
+                type="radio"
+                name="course"
+                value="undecided"
+              >
+              未定
+            </label>
+
+          </div>
+
+        </fieldset>
+
+
+        <!-- SUBJECTS -->
+
+        <fieldset>
+
+          <legend>
+            受験教科
+          </legend>
+
+          <p class="field-description">
+            使用する教科を選択してください。
+          </p>
+
+
+          <div id="subject-selection">
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="japanese"
+              >
+              国語
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="math"
+              >
+              数学
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="english"
+              >
+              英語
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="physics"
+              >
+              物理
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="chemistry"
+              >
+              化学
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="biology"
+              >
+              生物
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="earth-science"
+              >
+              地学
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="biology-basic"
+              >
+              生物基礎
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="earth-science-basic"
+              >
+              地学基礎
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="geography"
+              >
+              地理
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="japanese-history"
+              >
+              日本史
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                name="subjects"
+                value="world-history"
+              >
+              世界史
+            </label>
+
+
+            <label>
+
+===== SETTINGS SUBJECT UI =====
+          </h3>
+
+
+          <!-- DISPLAY NAME -->
+
+          <form id="display-name-form">
+
+            <h4>
+              表示名変更
+            </h4>
+
+            <input
+              type="text"
+              id="settings-display-name"
+              maxlength="30"
+              required
+            >
+
+            <p
+              id="display-name-error"
+              class="error-message"
+            ></p>
+
+            <button type="submit">
+              表示名を変更
+            </button>
+
+          </form>
+
+
+          <!-- SUBJECT -->
+
+          <form id="subject-settings-form">
+
+            <h4>
+              受験教科
+            </h4>
+
+            <p class="field-description">
+              登録する教科を変更できます。
+            </p>
+
+
+            <div id="settings-subject-selection">
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="japanese"
+                >
+                国語
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="math"
+                >
+                数学
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="english"
+                >
+                英語
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="physics"
+                >
+                物理
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="chemistry"
+                >
+                化学
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="biology"
+                >
+                生物
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="earth-science"
+                >
+                地学
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="biology-basic"
+                >
+                生物基礎
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="earth-science-basic"
+                >
+                地学基礎
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="geography"
+                >
+                地理
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="japanese-history"
+                >
+                日本史
+              </label>
+
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="settings-subjects"
+                  value="world-history"
+                >
+                世界史
+              </label>
+
+
+
+===== SUBJECT SAVE LOGIC =====
+      >
+
+      <input
+        id="register-password"
+        type="password"
+        placeholder="パスワード"
+        style="${fieldStyle()}"
+      >
+
+      <input
+        id="register-password2"
+        type="password"
+        placeholder="パスワード確認"
+        style="${fieldStyle()}"
+      >
+
+      <div style="display:grid;gap:8px">
+        <strong>文理選択</strong>
+
+        <label>
+          <input
+            type="radio"
+            name="track"
+            value="文系"
+          >
+          文系
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="track"
+            value="理系"
+          >
+          理系
+        </label>
+      </div>
+
+      <div style="display:grid;gap:8px">
+        <strong>選択科目</strong>
+
+        <div style="
+          max-height:280px;
+          overflow:auto;
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:8px;
+        ">
+          ${subjectHtml}
+        </div>
+      </div>
+
+      <button id="register-btn" style="${buttonStyle(true)}">
+        登録する
+      </button>
+
+      <button id="back-login-btn" style="${buttonStyle(false)}">
+        戻る
+      </button>
+
+      <p
+        id="register-error"
+        style="margin:0;min-height:1.4em;color:#ff8b8b"
+      ></p>
+    `)
+  );
+
+  $("back-login-btn").onclick = showAuth;
+
+  $("register-btn").onclick = async () => {
+    const username = $("register-name").value.trim();
+    const id = normalizeId($("register-id").value);
+    const password = $("register-password").value;
+    const password2 = $("register-password2").value;
+
+    const track =
+      document.querySelector('input[name="track"]:checked')
+        ?.value || "";
+
+    const selectedSubjects = [
+      ...document.querySelectorAll(
+        ".subject-checkbox:checked"
+      ),
+    ].map((el) => el.value);
+
+    try {
+      $("register-error").textContent = "";
+
+      if (!username) {
+        throw new Error("ユーザー名を入力してください。");
+      }
+
+      if (!validId(id)) {
+        throw new Error(
+          "IDは4〜20文字の半角英数字・_・-で入力してください。"
+        );
+      }
+
+      if (password.length < 6) {
+        throw new Error("パスワードは6文字以上です。");
+      }
+
+      if (password !== password2) {
+        throw new Error("パスワードが一致していません。");
+      }
+
+      if (!track) {
+        throw new Error("文系か理系を選択してください。");
+      }
+
+      if (selectedSubjects.length === 0) {
+        throw new Error("科目を1つ以上選択してください。");
+      }
+
+      const credential =
+        await createUserWithEmailAndPassword(
+          auth,
+          emailFromId(id),
+          password
+        );
+
+      await setDoc(
+        doc(db, "users", credential.user.uid),
+        {
+          username,
+          globalId: id,
+          track,
+          selectedSubjects,
+
+          level: 1,
+          xp: 0,
+          coins: 0,
+
+          totalStudyMinutes: 0,
+
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+        }
+      );
+    } catch (error) {
+      $("register-error").textContent =
+        error?.code === "auth/email-already-in-use"
+          ? "このユーザーIDはすでに使われています。"
+          : error?.message || "登録に失敗しました。";
+    }
+  };
+}
+
+// ============================================================
+// MAIN UI / BOTTOM NAV
+// ============================================================
