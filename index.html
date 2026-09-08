@@ -7076,6 +7076,264 @@ body > main > section:has(#login-btn) h1 {
 
 </style>
 
+
+
+
+
+
+
+
+
+
+
+<style id="ascend-extreme-performance-v1">
+
+/* ============================================================
+   ASCEND EXTREME PERFORMANCE MODE
+
+   PC / MOBILE 共通
+   描画速度・タップ反応 最優先
+============================================================ */
+
+
+/* ------------------------------------------------------------
+   タップ
+------------------------------------------------------------ */
+
+button,
+a,
+input,
+select,
+textarea,
+[role="button"] {
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+
+/* ------------------------------------------------------------
+   全画面アニメーション停止
+------------------------------------------------------------ */
+
+body > main *,
+body > main *::before,
+body > main *::after,
+#main-navigation,
+#main-navigation *,
+#main-navigation *::before,
+#main-navigation *::after {
+
+  animation: none !important;
+  transition: none !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   GPU負荷の高い影を全停止
+------------------------------------------------------------ */
+
+body > main *,
+body > main *::before,
+body > main *::after,
+#main-navigation,
+#main-navigation *,
+#main-navigation *::before,
+#main-navigation *::after {
+
+  box-shadow: none !important;
+  text-shadow: none !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   blur / filter / backdrop-filter 全停止
+------------------------------------------------------------ */
+
+body > main *,
+body > main *::before,
+body > main *::after,
+#main-navigation,
+#main-navigation *,
+#main-navigation *::before,
+#main-navigation *::after {
+
+  filter: none !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   背景描画を最小化
+
+   radial-gradientも停止
+------------------------------------------------------------ */
+
+body > main,
+body > main.rank-main-themed,
+body > main:not(.rank-main-themed) {
+
+  background: #080b12 !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   メインカード
+------------------------------------------------------------ */
+
+body > main > section {
+
+  animation: none !important;
+
+  scroll-behavior: auto !important;
+
+  overscroll-behavior:
+    contain !important;
+
+  contain:
+    paint !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   ボタン
+
+   動く演出は完全停止
+------------------------------------------------------------ */
+
+button {
+
+  transform: none !important;
+
+}
+
+
+/*
+  押した瞬間だけ視覚反応
+  transition無しなので即座に反応
+*/
+
+button:active,
+a:active,
+#main-navigation button:active,
+.classic-tab-navigation button:active {
+
+  opacity: .65 !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   下部ナビ
+------------------------------------------------------------ */
+
+#main-navigation {
+
+  box-shadow: none !important;
+
+  background:
+    #0b0e15 !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   タブ
+------------------------------------------------------------ */
+
+.classic-tab-navigation,
+.classic-tab-navigation button {
+
+  box-shadow: none !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   発光バッジ
+------------------------------------------------------------ */
+
+.quest-complete-badge,
+.boss-defeated-badge,
+.quest-subject-name,
+.main-screen-english {
+
+  box-shadow: none !important;
+  text-shadow: none !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   画像
+------------------------------------------------------------ */
+
+body > main img {
+
+  filter: none !important;
+
+  box-shadow: none !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   スクロール
+------------------------------------------------------------ */
+
+html,
+body,
+body > main,
+body > main > section {
+
+  scroll-behavior:
+    auto !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   hover演出無効
+------------------------------------------------------------ */
+
+@media (hover: hover) {
+
+  body > main button:hover,
+  body > main a:hover {
+
+    transform: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+
+  }
+
+}
+
+
+/* ------------------------------------------------------------
+   モバイルではさらにタッチ優先
+------------------------------------------------------------ */
+
+@media (pointer: coarse) {
+
+  button,
+  a,
+  [role="button"] {
+
+    cursor: default !important;
+
+  }
+
+}
+
+</style>
+
 </head>
 
 
@@ -9713,6 +9971,90 @@ async function showQuestBossMainPage(
 
 
   // ========================================================
+  // DAILY ⇄ WEEKLY FAST SWITCH
+  // ========================================================
+
+  const cachedDaily =
+    document.getElementById(
+      "quest-daily-content"
+    );
+
+  const cachedWeekly =
+    document.getElementById(
+      "quest-weekly-content"
+    );
+
+  const cachedQuestTabs =
+    document.getElementById(
+      "quest-main-tabs"
+    );
+
+  /*
+    DAILY / WEEKLY のDOMが既にある場合は
+    Firestoreを一切読まず表示だけ変更する
+  */
+  if (
+    (
+      tab === "daily" ||
+      tab === "weekly"
+    ) &&
+    cachedDaily &&
+    cachedWeekly &&
+    cachedQuestTabs
+  ) {
+
+    cachedDaily.style.display =
+      tab === "daily"
+        ? "grid"
+        : "none";
+
+    cachedWeekly.style.display =
+      tab === "weekly"
+        ? "grid"
+        : "none";
+
+
+    const currentCard =
+      document.querySelector(
+        "body > main > section"
+      );
+
+    const currentTitle =
+      currentCard?.querySelector(
+        ":scope > h1"
+      );
+
+    if (currentTitle) {
+
+      currentTitle.textContent =
+        tab === "daily"
+          ? "デイリークエスト"
+          : "ウィークリークエスト";
+
+    }
+
+
+    cachedQuestTabs
+      .querySelectorAll(
+        "[data-quest-tab]"
+      )
+      .forEach(button => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.questTab === tab
+        );
+
+      });
+
+
+    updateClassicNavigationActive();
+
+    return;
+  }
+
+
+  // ========================================================
   // BOSS
   // ========================================================
 
@@ -11506,22 +11848,11 @@ async function showProfilePage(user) {
 
 async function showOtherPage(user) {
 
-  const ref =
-    doc(db, "users", user.uid);
-
-  const snap =
-    await getDoc(ref);
-
-  if (!snap.exists()) {
-    throw new Error(
-      "ユーザーデータが見つかりません。"
-    );
-  }
-
-  const data =
-    snap.data();
-
-
+  /*
+    その他メニュー自体は
+    ユーザーデータを必要としないため
+    Firestore通信なしで即描画
+  */
   page(
     card(`
 
@@ -12101,6 +12432,69 @@ async function updateLoginStats(user, suppliedData = null) {
 }
 
 
+
+let ascendHomeMaintenancePromise = null;
+let ascendHomeMaintenanceLastRun = 0;
+
+function scheduleHomeMaintenance(user, data) {
+
+  const now = Date.now();
+
+  /*
+    30秒以内の連打では再通信しない
+  */
+  if (
+    ascendHomeMaintenancePromise ||
+    now - ascendHomeMaintenanceLastRun < 30000
+  ) {
+    return;
+  }
+
+  ascendHomeMaintenanceLastRun = now;
+
+  /*
+    まずHOMEを描画させ、
+    通信は次のイベントループで開始
+  */
+  setTimeout(() => {
+
+    if (ascendHomeMaintenancePromise) {
+      return;
+    }
+
+    ascendHomeMaintenancePromise =
+      (async () => {
+
+        await updateLoginStats(
+          user,
+          data
+        );
+
+        await checkAllTitles(
+          user
+        );
+
+      })()
+      .catch(error => {
+
+        console.error(
+          "HOME background maintenance failed:",
+          error
+        );
+
+      })
+      .finally(() => {
+
+        ascendHomeMaintenancePromise =
+          null;
+
+      });
+
+  }, 0);
+
+}
+
+
 async function showHome(user) {
   const ref = doc(db, "users", user.uid);
   const snap = await getDoc(ref);
@@ -12234,16 +12628,14 @@ async function showHome(user) {
     };
   }
 
-  await updateLoginStats(user, data);
-  await checkAllTitles(user);
-
-  // 称号などの更新後を再取得
-  const latestSnap =
-    await getDoc(ref);
-
-  if (latestSnap.exists()) {
-    data = latestSnap.data();
-  }
+  /*
+    HOME表示を通信で止めない。
+    ログイン統計・称号判定はバックグラウンド処理。
+  */
+  scheduleHomeMaintenance(
+    user,
+    data
+  );
 
   const totalXp =
     Number(data.xp ?? 0);
@@ -14573,10 +14965,42 @@ async function showPartyPage(user) {
 
     const cards = [];
 
-    for (const uid of friendUids) {
-      if (myParty.memberUids?.includes(uid)) continue;
+    const inviteableFriendUids =
+      [...friendUids].filter(
+        uid =>
+          !myParty.memberUids
+            ?.includes(uid)
+      );
 
-      const friendSnap = await getDoc(doc(db, "users", uid));
+    /*
+      フレンド情報を直列ではなく
+      一斉に取得
+    */
+    const friendSnaps =
+      await Promise.all(
+        inviteableFriendUids.map(
+          uid =>
+            getDoc(
+              doc(
+                db,
+                "users",
+                uid
+              )
+            )
+        )
+      );
+
+    for (
+      let index = 0;
+      index < inviteableFriendUids.length;
+      index++
+    ) {
+
+      const uid =
+        inviteableFriendUids[index];
+
+      const friendSnap =
+        friendSnaps[index];
 
       if (!friendSnap.exists()) continue;
 
@@ -17880,14 +18304,25 @@ async function showManualStudyPage(user) {
 
 
 async function showTimerPage(user) {
-  const restoredTimer =
-    await loadActiveTimer(user);
+
+  const ref =
+    doc(db, "users", user.uid);
+
+  /*
+    タイマー状態とユーザー情報を
+    同時にFirebaseへ問い合わせる
+  */
+  const [
+    restoredTimer,
+    snap,
+  ] = await Promise.all([
+    loadActiveTimer(user),
+    getDoc(ref),
+  ]);
 
   if (restoredTimer) {
     timerState = restoredTimer;
   }
-  const ref = doc(db, "users", user.uid);
-  const snap = await getDoc(ref);
 
   if (!snap.exists()) {
     throw new Error("ユーザーデータが見つかりません。");
