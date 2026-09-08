@@ -3895,7 +3895,7 @@ body:has(#party-main-tabs)
 body:has(#party-main-tabs)
 > main
 > section
-> div:not(#party-main-tabs):not(#friend-search-result) {
+> div:not(#party-main-tabs):not(#friend-search-result):not(.main-screen-english) {
 
   min-width: 0 !important;
 
@@ -4298,7 +4298,7 @@ body:has(
   body:has(#party-main-tabs)
   > main
   > section
-  > div:not(#party-main-tabs):not(#friend-search-result) {
+  > div:not(#party-main-tabs):not(#friend-search-result):not(.main-screen-english) {
 
     padding: 14px !important;
 
@@ -6813,6 +6813,33 @@ body > main.ascend-first-enter {
 </style>
 
 
+
+<style id="main-screen-english-labels-v1">
+
+.main-screen-english {
+  margin:0 0 4px !important;
+
+  color:#768398 !important;
+
+  font-size:.68rem !important;
+  line-height:1 !important;
+
+  font-weight:800 !important;
+
+  letter-spacing:.14em !important;
+
+  text-shadow:none !important;
+}
+
+.screen-header .main-screen-english {
+  margin-bottom:5px !important;
+}
+
+</style>
+
+
+
+
 </head>
 
 
@@ -8938,9 +8965,119 @@ function ensureClassicNavigationStyle() {
 // CLASSIC NAV RENDER
 // ============================================================
 
+
+function mountMainScreenEnglishLabel() {
+
+  const labels = {
+    home: "HOME",
+    study: "STUDY",
+    quest: "QUEST",
+    party: "PARTY",
+    rank: "RANK",
+    other: "OTHERS",
+  };
+
+
+  const label =
+    labels[currentMainTab];
+
+  if (!label) {
+    return;
+  }
+
+
+  const card =
+    document.querySelector(
+      "body > main > section"
+    );
+
+  if (!card) {
+    return;
+  }
+
+
+  const title =
+    card.querySelector(
+      ".screen-header h2, :scope > h1, h1"
+    );
+
+  if (!title) {
+    return;
+  }
+
+
+  /*
+    その他画面には既に
+    OTHER の表記があるので再利用する
+  */
+
+  const previous =
+    title.previousElementSibling;
+
+  const previousText =
+    previous?.textContent
+      ?.trim()
+      ?.toUpperCase();
+
+
+  if (
+    previous &&
+    [
+      "OTHER",
+      "OTHERS",
+      "HOME",
+      "STUDY",
+      "QUEST",
+      "PARTY",
+      "RANK",
+    ].includes(previousText)
+  ) {
+
+    previous.textContent =
+      label;
+
+    previous.classList.add(
+      "main-screen-english"
+    );
+
+    return;
+  }
+
+
+  card
+    .querySelectorAll(
+      ".main-screen-english"
+    )
+    .forEach(element => {
+      element.remove();
+    });
+
+
+  const element =
+    document.createElement(
+      "div"
+    );
+
+  element.className =
+    "main-screen-english";
+
+  element.textContent =
+    label;
+
+
+  title.insertAdjacentElement(
+    "beforebegin",
+    element
+  );
+
+}
+
+
 function mountClassicNavigation(user) {
 
   classicNavUser = user;
+
+  mountMainScreenEnglishLabel();
 
   ensureClassicNavigationStyle();
 
