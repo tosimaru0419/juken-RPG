@@ -6840,6 +6840,120 @@ body > main.ascend-first-enter {
 
 
 
+
+<style id="party-atomic-render-v1">
+
+body > main > section.party-page-preparing {
+  opacity:0 !important;
+  animation:none !important;
+  pointer-events:none !important;
+}
+
+</style>
+
+
+
+
+
+<style id="main-title-spacing-home-standard-v2">
+
+/*
+  HOME / OTHERS の見た目を基準にする。
+
+  card() の section は gap:16px なので、
+  直下に置かれた英語ラベルだけ -11px 補正
+  → 実質 約5px の間隔になる。
+*/
+body > main > section > .main-screen-english {
+  margin:0 0 -11px !important;
+}
+
+/* 日本語タイトル側の余白差も消す */
+body > main > section > .main-screen-english + h1,
+body > main > section > .main-screen-english + h2 {
+  margin-top:0 !important;
+}
+
+/* HOMEは今の完成形をそのまま維持 */
+.screen-header .main-screen-english {
+  margin:0 0 5px !important;
+}
+
+/* OTHER内の既存ヘッダーも触らない */
+.main-screen-english:not(
+  body > main > section > .main-screen-english
+) {
+  margin-bottom:5px !important;
+}
+
+</style>
+
+
+<style id="quest-boss-clear-status-v1">
+
+.quest-status-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  min-width:0;
+}
+
+.quest-complete-badge {
+  flex:0 0 auto;
+
+  padding:4px 9px;
+
+  color:#75e4b5;
+  background:rgba(66,211,146,.10);
+
+  border:
+    1px solid rgba(66,211,146,.28);
+
+  border-radius:999px;
+
+  font-size:.68rem;
+  font-weight:900;
+
+  letter-spacing:.04em;
+
+  box-shadow:
+    0 0 10px rgba(66,211,146,.14);
+}
+
+
+/* ボス討伐 */
+
+.boss-defeated-badge {
+  position:absolute;
+  top:12px;
+  right:12px;
+
+  z-index:20;
+
+  padding:5px 10px;
+
+  color:#ffd166;
+
+  background:
+    rgba(255,209,102,.11);
+
+  border:
+    1px solid rgba(255,209,102,.30);
+
+  border-radius:999px;
+
+  font-size:.7rem;
+  font-weight:900;
+
+  letter-spacing:.05em;
+
+  box-shadow:
+    0 0 12px rgba(255,209,102,.18);
+}
+
+</style>
+
 </head>
 
 
@@ -10123,6 +10237,19 @@ async function showPartyFriendsMainPage(
   );
 
 
+  if (tab === "party") {
+
+    document
+      .querySelector(
+        "body > main > section"
+      )
+      ?.classList.remove(
+        "party-page-preparing"
+      );
+
+  }
+
+
 }
 
 
@@ -12863,6 +12990,16 @@ async function showBossPage(user) {
         "
       >
 
+        ${
+          Number(boss.currentHp) <= 0
+            ? `
+              <div class="boss-defeated-badge">
+                ✓ 討伐済み
+              </div>
+            `
+            : ""
+        }
+
         <div class="boss-stage">
 
           <div class="boss-aura"></div>
@@ -13814,28 +13951,46 @@ async function getMyParty(user) {
 }
 
 async function showPartyPage(user) {
-  await checkAllTitles(user);
-  const myRef = doc(db, "users", user.uid);
-  const mySnap = await getDoc(myRef);
+  // パーティー表示時は称号全チェックを待たない
+  const myRef =
+    doc(db, "users", user.uid);
+
+  const inviteQuery =
+    query(
+      collection(db, "partyInvites"),
+      where("toUid", "==", user.uid)
+    );
+
+  /*
+    初期表示に必要な3通信を同時実行
+  */
+  const [
+    mySnap,
+    myParty,
+    inviteSnap,
+  ] = await Promise.all([
+    getDoc(myRef),
+    getMyParty(user),
+    getDocs(inviteQuery),
+  ]);
 
   if (!mySnap.exists()) {
-    throw new Error("ユーザーデータが見つかりません。");
+    throw new Error(
+      "ユーザーデータが見つかりません。"
+    );
   }
 
-  const myData = mySnap.data();
-  const myParty = await getMyParty(user);
-  const cycle = getPartyCycleInfo();
+  const myData =
+    mySnap.data();
 
-  const inviteQuery = query(
-    collection(db, "partyInvites"),
-    where("toUid", "==", user.uid)
-  );
+  const cycle =
+    getPartyCycleInfo();
 
-  const inviteSnap = await getDocs(inviteQuery);
-
-  const pendingInvites = inviteSnap.docs.filter(
-    d => d.data().status === "pending"
-  );
+  const pendingInvites =
+    inviteSnap.docs.filter(
+      d =>
+        d.data().status === "pending"
+    );
 
   page(
     card(`
@@ -13959,7 +14114,27 @@ async function showPartyPage(user) {
     `)
   );
 
+  /*
+    page()で消えた下部ナビだけ
+    パーティー内容の完成を待たず即復元する
+  */
+  mountClassicNavigation(user);
+  updateClassicNavigationActive();
+
   const messageEl = $("party-message");
+
+  /*
+    メンバー・招待・フレンド一覧が
+    完成するまで画面を描画させない
+  */
+  const partyPreparingCard =
+    document.querySelector(
+      "body > main > section"
+    );
+
+  partyPreparingCard?.classList.add(
+    "party-page-preparing"
+  );
 
   // ------------------------------
   // パーティー作成
@@ -13991,33 +14166,64 @@ async function showPartyPage(user) {
   // ------------------------------
 
   if (myParty && $("party-members")) {
-    const cards = [];
 
-    for (const uid of myParty.memberUids || []) {
-      const memberSnap = await getDoc(doc(db, "users", uid));
+    const memberUids =
+      myParty.memberUids || [];
 
-      if (!memberSnap.exists()) continue;
 
-      const member = memberSnap.data();
+    /*
+      メンバー情報を1人ずつ待たず、
+      全員分を同時に取得
+    */
 
-      cards.push(`
-        <div style="
-          padding:8px 10px;
-          background:#111722;
-          border-radius:10px;
-          margin-top:6px;
-        ">
-          ${member.username ?? "ユーザー"}
-          ${
-            uid === myParty.leaderUid
-              ? '<span style="color:#ffd166">（リーダー）</span>'
-              : ""
+    const memberSnaps =
+      await Promise.all(
+        memberUids.map(uid =>
+          getDoc(
+            doc(db, "users", uid)
+          )
+        )
+      );
+
+
+    const cards =
+      memberSnaps
+        .map((memberSnap, index) => {
+
+          if (!memberSnap.exists()) {
+            return "";
           }
-        </div>
-      `);
-    }
 
-    $("party-members").innerHTML = cards.join("");
+          const uid =
+            memberUids[index];
+
+          const member =
+            memberSnap.data();
+
+
+          return `
+            <div style="
+              padding:8px 10px;
+              background:#111722;
+              border-radius:10px;
+              margin-top:6px;
+            ">
+              ${member.username ?? "ユーザー"}
+              ${
+                uid === myParty.leaderUid
+                  ? '<span style="color:#ffd166">（リーダー）</span>'
+                  : ""
+              }
+            </div>
+          `;
+
+        })
+        .filter(Boolean);
+
+
+    $("party-members").innerHTML =
+      cards.join("");
+
   }
 
 
@@ -17138,12 +17344,26 @@ async function showQuestPage(user) {
               display:grid;
               gap:7px;
             ">
-              <div style="
-                color:${quest.rare ? "#ffd166" : "#9aa6ba"};
-                font-size:.82rem;
-                font-weight:${quest.rare ? "700" : "400"};
-              ">
-                ${quest.rare ? "RARE QUEST" : `DAILY ${index + 1}`}
+              <div class="quest-status-row">
+
+                <div style="
+                  color:${quest.rare ? "#ffd166" : "#9aa6ba"};
+                  font-size:.82rem;
+                  font-weight:${quest.rare ? "700" : "400"};
+                ">
+                  ${quest.rare ? "RARE QUEST" : `DAILY ${index + 1}`}
+                </div>
+
+                ${
+                  quest.completed
+                    ? `
+                      <span class="quest-complete-badge">
+                        ✓ 達成
+                      </span>
+                    `
+                    : ""
+                }
+
               </div>
 
               <strong style="font-size:1.05rem">
@@ -17196,8 +17416,22 @@ async function showQuestPage(user) {
           gap:8px;
         "
       >
-        <div style="color:#9aa6ba;font-size:.82rem">
-          WEEKLY
+        <div class="quest-status-row">
+
+          <div style="color:#9aa6ba;font-size:.82rem">
+            WEEKLY
+          </div>
+
+          ${
+            data.weeklyQuestCompleted
+              ? `
+                <span class="quest-complete-badge">
+                  ✓ 達成
+                </span>
+              `
+              : ""
+          }
+
         </div>
 
         <strong style="font-size:1.05rem">
