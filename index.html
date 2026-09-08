@@ -6215,6 +6215,21 @@ body > main > section:has(#login-btn) #login-btn {
 
 </style>
 
+
+<style id="quest-subject-neon-color-v1">
+
+.quest-subject-name {
+  color:#55eaff;
+
+  font-weight:900;
+
+  text-shadow:
+    0 0 6px rgba(85,234,255,.70),
+    0 0 14px rgba(85,234,255,.25);
+}
+
+</style>
+
 </head>
 
 
@@ -15928,6 +15943,143 @@ function chooseWeightedSubject(data) {
   return randomItem(weightedPool);
 }
 
+
+const LEGACY_QUEST_SUBJECT_JA = {
+  "math": "数学",
+  "mathematics": "数学",
+
+  "math ia": "数学IA",
+  "mathematics ia": "数学IA",
+
+  "math iibc": "数学IIBC",
+  "math ii b c": "数学IIBC",
+  "mathematics iibc": "数学IIBC",
+
+  "math iii": "数学III",
+  "mathematics iii": "数学III",
+
+  "japanese": "国語",
+  "japanese language": "国語",
+  "modern japanese": "現代文",
+  "classical japanese": "古文",
+  "classical chinese": "漢文",
+  "kanbun": "漢文",
+
+  "japanese history": "日本史",
+  "world history": "世界史",
+  "geography": "地理",
+
+  "social studies": "地歴公民",
+
+  "science": "理科",
+
+  "chemistry": "化学",
+  "basic chemistry": "化学基礎",
+
+  "physics": "物理",
+  "basic physics": "物理基礎",
+
+  "biology": "生物",
+  "basic biology": "生物基礎",
+
+  "earth science": "地学",
+  "basic earth science": "地学基礎",
+
+  "politics and economics": "政治・経済",
+  "politics & economics": "政治・経済",
+  "ethics": "倫理",
+  "civics": "公共",
+  "public": "公共",
+
+  "english": "英語",
+
+  "information": "情報",
+  "informatics": "情報",
+};
+
+
+function legacyQuestSubjectKey(value) {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/[._+\-]+/g, " ")
+    .replace(/\s+/g, " ");
+}
+
+
+function displayQuestSubjectName(subject) {
+  if (!subject) return "";
+
+  const raw =
+    String(subject).trim();
+
+  const key =
+    legacyQuestSubjectKey(raw);
+
+  return (
+    LEGACY_QUEST_SUBJECT_JA[key] ||
+    raw
+  );
+}
+
+
+function questSubjectSystem(subject) {
+  const ja =
+    displayQuestSubjectName(subject);
+
+  if (
+    [
+      "数学",
+      "国語",
+      "地歴公民",
+      "理科",
+      "英語",
+    ].includes(ja)
+  ) {
+    return ja;
+  }
+
+  return (
+    SUBJECT_BOSS_SYSTEM[ja] ||
+    ""
+  );
+}
+
+
+function questSubjectMatches(
+  questSubject,
+  studiedSubject
+) {
+  if (!questSubject) return true;
+
+  const questJa =
+    displayQuestSubjectName(
+      questSubject
+    );
+
+  const studiedJa =
+    displayQuestSubjectName(
+      studiedSubject
+    );
+
+  if (questJa === studiedJa) {
+    return true;
+  }
+
+  const questSystem =
+    questSubjectSystem(questJa);
+
+  const studiedSystem =
+    questSubjectSystem(studiedJa);
+
+  return Boolean(
+    questSystem &&
+    studiedSystem &&
+    questSystem === studiedSystem
+  );
+}
+
+
 function createDailyQuest(data, index) {
   const minutes = randomItem(DAILY_QUEST_MINUTES);
 
@@ -16056,7 +16208,7 @@ async function showQuestPage(user) {
                   quest.rare
                     ? `${quest.minutes / 60}時間勉強する`
                     : quest.subject
-                      ? `${quest.subject}を${quest.minutes}分勉強`
+                      ? `<span class="quest-subject-name">${displayQuestSubjectName(quest.subject)}</span>を${quest.minutes}分勉強`
                       : `${quest.minutes}分勉強`
                 }
               </strong>
@@ -16743,7 +16895,7 @@ async function showTimerPage(user) {
 
               const subjectMatches =
                 !quest.subject ||
-                quest.subject === timerState.subject;
+                questSubjectMatches(quest.subject, timerState.subject);
 
               if (!subjectMatches) return quest;
 
