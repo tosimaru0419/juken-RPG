@@ -18,6 +18,15 @@
 
   <link rel="stylesheet" href="style.css">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap"
+  rel="stylesheet"
+>
+
+
 
 <style id="juken-rpg-dark-fantasy-theme">
 
@@ -6950,6 +6959,119 @@ body > main > section > .main-screen-english + h2 {
 
   box-shadow:
     0 0 12px rgba(255,209,102,.18);
+}
+
+</style>
+
+
+<style id="ascend-font-system-v1">
+
+/* =========================================
+   BASE / JAPANESE
+========================================= */
+
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family:
+    "Noto Sans JP",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif !important;
+}
+
+
+/* =========================================
+   SYSTEM / GAME UI
+========================================= */
+
+.main-screen-english,
+
+.ascend-boot-status,
+.ascend-boot-loading-text,
+.ascend-boot-system,
+
+.home-xp-row,
+.home-rank-progress,
+
+#main-navigation .nav-label,
+
+#quest-main-tabs,
+#party-main-tabs,
+
+.quest-complete-badge,
+.boss-defeated-badge {
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif !important;
+
+}
+
+
+/* 英語ラベルはRajdhaniの良さを強める */
+
+.main-screen-english {
+  font-weight:700 !important;
+  letter-spacing:.18em !important;
+}
+
+
+/* XP / RANK / 数字系 */
+
+.home-xp-row,
+.home-rank-progress {
+  font-weight:700;
+}
+
+
+/* =========================================
+   ASCEND LOGO
+========================================= */
+
+.ascend-boot-logo {
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    sans-serif !important;
+
+  font-weight:800 !important;
+  letter-spacing:.08em !important;
+}
+
+
+/*
+  ログイン画面のASCENDタイトルも
+  Orbitronへ変更
+*/
+
+body > main > section:has(#login-btn) h1 {
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    sans-serif !important;
+
+  font-weight:800 !important;
+  letter-spacing:.07em !important;
+}
+
+
+/* =========================================
+   NUMBER FEEL
+========================================= */
+
+.home-xp-row,
+.home-rank-progress,
+#timer-display {
+
+  font-variant-numeric:
+    tabular-nums;
+
 }
 
 </style>
