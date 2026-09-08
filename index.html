@@ -6233,25 +6233,351 @@ body > main > section:has(#login-btn) #login-btn {
 
 
 
+
+<style id="ascend-boot-screen-v2">
+
+#boot-screen {
+  position:fixed;
+  inset:0;
+
+  display:grid;
+  place-items:center;
+
+  padding:24px;
+  box-sizing:border-box;
+
+  background:
+    radial-gradient(
+      circle at 25% 20%,
+      rgba(124,92,255,.22),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 78% 80%,
+      rgba(53,217,255,.12),
+      transparent 38%
+    ),
+    #070a11;
+
+  color:#fff;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+
+  z-index:999999;
+}
+
+
+.ascend-boot-inner {
+  width:min(360px,100%);
+
+  display:grid;
+
+  gap:18px;
+
+  text-align:center;
+}
+
+
+/* ===== STATUS ===== */
+
+.ascend-boot-status {
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:8px;
+
+  color:#7f899b;
+
+  font-size:9px;
+  font-weight:900;
+
+  letter-spacing:.22em;
+}
+
+
+.ascend-boot-dot {
+  width:6px;
+  height:6px;
+
+  border-radius:999px;
+
+  background:#59f0b5;
+
+  box-shadow:
+    0 0 6px rgba(89,240,181,.95),
+    0 0 14px rgba(89,240,181,.40);
+
+  animation:
+    ascendBootDot
+    1.3s ease-in-out infinite;
+}
+
+
+/* ===== LOGO ===== */
+
+.ascend-boot-logo {
+  margin:0;
+
+  color:#fff;
+
+  font-size:46px;
+  line-height:1;
+
+  font-weight:950;
+
+  letter-spacing:.18em;
+
+  text-indent:.18em;
+
+  text-shadow:
+    0 0 5px rgba(255,255,255,.45),
+    0 0 12px rgba(183,156,255,.95),
+    0 0 28px rgba(124,92,255,.60),
+    0 0 48px rgba(124,92,255,.22);
+
+  animation:
+    ascendBootLogo
+    1.8s ease-in-out infinite;
+}
+
+
+.ascend-boot-copy {
+  margin-top:-6px;
+
+  color:#aeb6c8;
+
+  font-size:12px;
+  font-weight:700;
+
+  letter-spacing:.18em;
+}
+
+
+/* ===== LOADING ===== */
+
+.ascend-boot-loading {
+  display:grid;
+
+  gap:8px;
+
+  margin-top:4px;
+}
+
+
+.ascend-boot-track {
+  width:100%;
+  height:3px;
+
+  overflow:hidden;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.07);
+}
+
+
+.ascend-boot-bar {
+  width:38%;
+  height:100%;
+
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7658e8,
+      #b79cff,
+      #55ecff
+    );
+
+  box-shadow:
+    0 0 10px rgba(155,124,255,.70);
+
+  animation:
+    ascendBootLoad
+    1.25s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+
+.ascend-boot-loading-text {
+  color:#687386;
+
+  font-size:8px;
+  font-weight:850;
+
+  letter-spacing:.17em;
+}
+
+
+/* ===== SYSTEMS ===== */
+
+.ascend-boot-systems {
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+
+  gap:6px;
+
+  margin-top:2px;
+}
+
+
+.ascend-boot-system {
+  padding:7px 2px;
+
+  border:
+    1px solid rgba(255,255,255,.06);
+
+  border-radius:7px;
+
+  background:
+    rgba(9,13,21,.68);
+
+  color:#707b8e;
+
+  font-size:7px;
+  font-weight:900;
+
+  letter-spacing:.08em;
+}
+
+
+.ascend-boot-system:nth-child(1) {
+  color:#bbaaff;
+}
+
+.ascend-boot-system:nth-child(2) {
+  color:#67dcff;
+}
+
+.ascend-boot-system:nth-child(3) {
+  color:#72e3ad;
+}
+
+.ascend-boot-system:nth-child(4) {
+  color:#ffd876;
+}
+
+
+/* ===== ANIMATION ===== */
+
+@keyframes ascendBootLoad {
+
+  0% {
+    transform:translateX(-110%);
+  }
+
+  100% {
+    transform:translateX(290%);
+  }
+
+}
+
+
+@keyframes ascendBootLogo {
+
+  0%,
+  100% {
+    opacity:.88;
+  }
+
+  50% {
+    opacity:1;
+  }
+
+}
+
+
+@keyframes ascendBootDot {
+
+  0%,
+  100% {
+    opacity:.45;
+  }
+
+  50% {
+    opacity:1;
+  }
+
+}
+
+
+@media (prefers-reduced-motion:reduce) {
+
+  .ascend-boot-logo,
+  .ascend-boot-dot,
+  .ascend-boot-bar {
+    animation:none;
+  }
+
+}
+
+</style>
+
 </head>
 
 
 
 <body>
 
-<div
-  id="boot-screen"
-  style="
-    min-height:100vh;
-    display:grid;
-    place-items:center;
-    background:#080b12;
-    color:#9b83ff;
-    font-family:system-ui,sans-serif;
-    font-weight:800;
-  "
->
-  ASCEND 起動中...
+<div id="boot-screen">
+
+  <div class="ascend-boot-inner">
+
+    <div class="ascend-boot-status">
+      <span class="ascend-boot-dot"></span>
+      SYSTEM INITIALIZING
+    </div>
+
+    <h1 class="ascend-boot-logo">
+      ASCEND
+    </h1>
+
+    <div class="ascend-boot-copy">
+      受験を、攻略する。
+    </div>
+
+    <div class="ascend-boot-loading">
+
+      <div class="ascend-boot-track">
+        <div class="ascend-boot-bar"></div>
+      </div>
+
+      <div class="ascend-boot-loading-text">
+        INITIALIZING CORE SYSTEMS...
+      </div>
+
+    </div>
+
+    <div class="ascend-boot-systems">
+
+      <div class="ascend-boot-system">
+        XP
+      </div>
+
+      <div class="ascend-boot-system">
+        QUEST
+      </div>
+
+      <div class="ascend-boot-system">
+        RANK
+      </div>
+
+      <div class="ascend-boot-system">
+        BOSS
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
 
 <script>
