@@ -4931,6 +4931,190 @@ body > main > section textarea:focus {
 
 </style>
 
+
+<style id="fixed-page-internal-scroll-v1">
+
+/* =========================================================
+   FIXED PAGE + INTERNAL SCROLL
+========================================================= */
+
+html,
+body {
+  width:100%;
+  height:100%;
+  overflow:hidden !important;
+}
+
+
+/* 外側のページは画面サイズで固定 */
+body > main {
+  width:100%;
+  height:100dvh !important;
+  min-height:100dvh !important;
+  max-height:100dvh !important;
+
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+
+  padding:16px !important;
+}
+
+
+/* 中のカードだけスクロール */
+body > main > section {
+  width:min(460px,100%) !important;
+
+  max-height:calc(100dvh - 32px) !important;
+  min-height:0 !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  box-sizing:border-box !important;
+
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
+
+/* =========================================================
+   MAIN PAGES
+   下ナビ64px分を避ける
+========================================================= */
+
+body:has(#main-navigation) > main {
+  padding:
+    12px
+    12px
+    76px
+    !important;
+
+  place-items:start center !important;
+}
+
+
+body:has(#main-navigation) > main > section {
+  height:calc(100dvh - 88px) !important;
+  min-height:calc(100dvh - 88px) !important;
+  max-height:calc(100dvh - 88px) !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+}
+
+
+/* スクロールバーを少し控えめに */
+body > main > section::-webkit-scrollbar {
+  width:5px;
+}
+
+body > main > section::-webkit-scrollbar-thumb {
+  background:rgba(255,255,255,.13);
+  border-radius:999px;
+}
+
+body > main > section::-webkit-scrollbar-track {
+  background:transparent;
+}
+
+</style>
+
+
+<style id="hard-fixed-page-scroll-v2">
+
+/* =========================================
+   OUTER PAGE — 完全固定
+========================================= */
+
+html {
+  width:100%;
+  height:100%;
+  overflow:hidden !important;
+  overscroll-behavior:none !important;
+}
+
+body {
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100% !important;
+  height:100% !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  overflow:hidden !important;
+  overscroll-behavior:none !important;
+}
+
+
+/* main自体も絶対に動かさない */
+body > main {
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100% !important;
+  height:100dvh !important;
+  min-height:0 !important;
+  max-height:none !important;
+
+  margin:0 !important;
+  padding:16px !important;
+
+  box-sizing:border-box !important;
+
+  overflow:hidden !important;
+
+  display:grid !important;
+  place-items:center !important;
+}
+
+
+/* =========================================
+   INNER CARD — ここだけスクロール
+========================================= */
+
+body > main > section {
+  width:min(460px,100%) !important;
+
+  max-height:calc(100dvh - 32px) !important;
+  min-height:0 !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  box-sizing:border-box !important;
+
+  overscroll-behavior-y:contain !important;
+  -webkit-overflow-scrolling:touch;
+}
+
+
+/* =========================================
+   MAIN NAVIGATION PAGES
+========================================= */
+
+body:has(#main-navigation) > main {
+  padding:
+    12px
+    12px
+    76px
+    !important;
+
+  place-items:start center !important;
+}
+
+body:has(#main-navigation) > main > section {
+  height:calc(100dvh - 88px) !important;
+  min-height:calc(100dvh - 88px) !important;
+  max-height:calc(100dvh - 88px) !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+}
+
+</style>
+
 </head>
 
 
