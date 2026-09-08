@@ -6521,6 +6521,298 @@ body > main > section:has(#login-btn) #login-btn {
 
 </style>
 
+
+<style id="ascend-boot-transition-v1">
+
+/* 起動画面 → ASCEND本体 */
+
+#boot-screen {
+  opacity:1;
+
+  transition:
+    opacity 420ms cubic-bezier(.22,1,.36,1);
+}
+
+#boot-screen.ascend-boot-exit {
+  opacity:0;
+
+  pointer-events:none;
+}
+
+
+/* 初回に表示されるゲーム画面だけ */
+
+body > main.ascend-first-enter {
+  animation:
+    ascendFirstGameEnter
+    460ms
+    70ms
+    cubic-bezier(.16,1,.3,1)
+    both !important;
+}
+
+
+@keyframes ascendFirstGameEnter {
+
+  from {
+    opacity:.10;
+  }
+
+  to {
+    opacity:1;
+  }
+
+}
+
+
+@media (prefers-reduced-motion:reduce) {
+
+  #boot-screen,
+  body > main.ascend-first-enter {
+    transition:none !important;
+    animation:none !important;
+  }
+
+}
+
+</style>
+
+
+
+<style id="home-rank-progress-v1">
+
+.home-rank-progress {
+  margin-top:16px;
+}
+
+
+/* XPバーと同じ情報行 */
+
+.home-rank-progress-top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+
+  margin-bottom:8px;
+
+  color:var(--text-sub);
+
+  font-size:11px;
+  font-weight:700;
+}
+
+
+.home-rank-progress-label {
+  display:block;
+  min-width:0;
+}
+
+
+.home-rank-progress-label span {
+  color:var(--text-sub);
+
+  font-size:11px;
+  font-weight:700;
+
+  letter-spacing:0;
+}
+
+
+.home-rank-progress-label strong {
+  display:none;
+}
+
+
+.home-rank-progress-percent {
+  color:var(--text-sub);
+
+  font-size:11px;
+  font-weight:700;
+
+  text-shadow:none;
+}
+
+
+/* BAR */
+
+.home-rank-track {
+  width:100%;
+  height:12px;
+
+  padding:2px;
+
+  overflow:hidden;
+
+  box-sizing:border-box;
+
+  background:
+    rgba(0,0,0,.42);
+
+  border-radius:999px;
+}
+
+
+.home-rank-fill {
+  height:100%;
+
+  border-radius:inherit;
+
+  transition:
+    width .7s cubic-bezier(.16,1,.3,1);
+}
+
+
+/* 残り時間 */
+
+.home-rank-remaining {
+  margin-top:6px;
+
+  color:#737e90;
+
+  font-size:9px;
+  font-weight:700;
+
+  text-align:right;
+}
+
+
+/* ==========================================
+   RANK COLORS
+========================================== */
+
+
+/* BRONZE */
+
+.home-rank-bronze .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #8f542d,
+      #cd7f32,
+      #e9a05c
+    );
+
+  box-shadow:
+    0 0 12px rgba(205,127,50,.55);
+}
+
+
+/* SILVER */
+
+.home-rank-silver .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #8993a3,
+      #c8d0dc,
+      #f1f5fa
+    );
+
+  box-shadow:
+    0 0 12px rgba(205,216,232,.45);
+}
+
+
+/* GOLD */
+
+.home-rank-gold .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #b88620,
+      #ffd35c,
+      #fff0a0
+    );
+
+  box-shadow:
+    0 0 13px rgba(255,211,92,.58);
+}
+
+
+/* PLATINUM */
+
+.home-rank-platinum .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #32a9bc,
+      #55eaff,
+      #b6f8ff
+    );
+
+  box-shadow:
+    0 0 14px rgba(85,234,255,.55);
+}
+
+
+/* DIAMOND */
+
+.home-rank-diamond .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #377de8,
+      #65b9ff,
+      #9fe7ff
+    );
+
+  box-shadow:
+    0 0 14px rgba(101,185,255,.58);
+}
+
+
+/* MASTER */
+
+.home-rank-master .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #6848da,
+      #b79cff,
+      #d6c7ff
+    );
+
+  box-shadow:
+    0 0 15px rgba(183,156,255,.62);
+}
+
+
+/* GRANDMASTER */
+
+.home-rank-grandmaster .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #b73582,
+      #ff5cac,
+      #ff9ed0
+    );
+
+  box-shadow:
+    0 0 15px rgba(255,92,172,.62);
+}
+
+
+/* LEGEND */
+
+.home-rank-legend .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #8d64ff,
+      #d99cff,
+      #ffd35c
+    );
+
+  box-shadow:
+    0 0 9px rgba(183,156,255,.65),
+    0 0 18px rgba(255,211,92,.30);
+}
+
+</style>
+
+
 </head>
 
 
@@ -6769,7 +7061,25 @@ function calculateLevelFromTotalXp(totalXp) {
 }
 
 function page(content) {
-  document.body.innerHTML = `
+
+  /*
+    初回だけ boot-screen を残したまま
+    次画面を裏側に生成する
+  */
+
+  const boot =
+    document.getElementById(
+      "boot-screen"
+    );
+
+  const bootHtml =
+    boot
+      ? boot.outerHTML
+      : "";
+
+
+  const nextPage =
+    `
     <main style="
       min-height:100vh;
       display:grid;
@@ -6782,6 +7092,62 @@ function page(content) {
       ${content}
     </main>
   `;
+
+
+  document.body.innerHTML =
+    nextPage + bootHtml;
+
+
+  /*
+    起動画面が存在した場合だけ
+    クロスフェード
+  */
+
+  if (bootHtml) {
+
+    const nextMain =
+      document.querySelector(
+        "body > main"
+      );
+
+    const nextBoot =
+      document.getElementById(
+        "boot-screen"
+      );
+
+
+    if (nextMain) {
+      nextMain.classList.add(
+        "ascend-first-enter"
+      );
+    }
+
+
+    requestAnimationFrame(() => {
+
+      requestAnimationFrame(() => {
+
+        nextBoot?.classList.add(
+          "ascend-boot-exit"
+        );
+
+      });
+
+    });
+
+
+    setTimeout(() => {
+
+      nextBoot?.remove();
+
+      nextMain?.classList.remove(
+        "ascend-first-enter"
+      );
+
+    }, 520);
+
+  }
+
 }
 
 function card(content) {
@@ -11545,6 +11911,88 @@ async function showHome(user) {
           )
         );
 
+
+  // HOME ランク進捗
+  const homeRankSteps =
+    [...RANK_THRESHOLDS]
+      .reverse()
+      .map(([name, minutes]) => ({
+        name,
+        minutes,
+      }));
+
+  let homeRankIndex =
+    homeRankSteps.findIndex(
+      step =>
+        step.name === rank
+    );
+
+  if (homeRankIndex < 0) {
+    homeRankIndex = 0;
+  }
+
+  const homeCurrentRank =
+    homeRankSteps[
+      homeRankIndex
+    ];
+
+  const homeNextRank =
+    homeRankSteps[
+      homeRankIndex + 1
+    ] ?? null;
+
+  let homeRankProgress = 100;
+  let homeRankRemaining = 0;
+
+  if (homeNextRank) {
+
+    const range =
+      homeNextRank.minutes -
+      homeCurrentRank.minutes;
+
+    const gained =
+      monthlyStudyMinutes -
+      homeCurrentRank.minutes;
+
+    homeRankProgress =
+      Math.max(
+        0,
+        Math.min(
+          100,
+          gained / range * 100
+        )
+      );
+
+    homeRankRemaining =
+      Math.max(
+        0,
+        homeNextRank.minutes -
+        monthlyStudyMinutes
+      );
+
+  }
+
+  const homeRankRemainHours =
+    Math.floor(
+      homeRankRemaining / 60
+    );
+
+  const homeRankRemainMinutes =
+    homeRankRemaining % 60;
+
+  const homeRankRemainText =
+    homeNextRank
+      ? (
+          homeRankRemainHours > 0
+            ? `次まであと ${homeRankRemainHours}時間${
+                homeRankRemainMinutes
+                  ? `${homeRankRemainMinutes}分`
+                  : ""
+              }`
+            : `次まであと ${homeRankRemainMinutes}分`
+        )
+      : "最高ランク到達";
+
   const selectedSubjects =
     Array.isArray(data.selectedSubjects)
       ? data.selectedSubjects
@@ -11655,6 +12103,54 @@ async function showHome(user) {
                 "
               ></div>
 
+            </div>
+
+          </div>
+
+
+
+          <div
+            class="
+              home-rank-progress
+              home-rank-${homeCurrentRank.name.split(" ")[0].toLowerCase()}
+            "
+          >
+
+            <div class="home-rank-progress-top">
+
+              <div class="home-rank-progress-label">
+
+                <span>
+                  RANK
+                </span>
+
+              </div>
+
+              <div class="home-rank-progress-percent">
+                ${
+                  homeNextRank
+                    ? `${homeCurrentRank.name} → ${homeNextRank.name}　${Math.round(homeRankProgress)}%`
+                    : "Legend　MAX"
+                }
+              </div>
+
+            </div>
+
+
+            <div class="home-rank-track">
+
+              <div
+                class="home-rank-fill"
+                style="
+                  width:${homeRankProgress}%;
+                "
+              ></div>
+
+            </div>
+
+
+            <div class="home-rank-remaining">
+              ${homeRankRemainText}
             </div>
 
           </div>
