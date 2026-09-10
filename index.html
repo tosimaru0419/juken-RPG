@@ -8422,6 +8422,866 @@ article.party-cycle-premium
 
 <!-- ASCEND APP ICON END -->
 
+
+<style id="ascend-home-hud-v2">
+
+/* =========================================================
+   ASCEND HOME HUD V2
+   visual only / no layout architecture changes
+========================================================= */
+
+#home-player-status {
+  padding:18px !important;
+
+  background:
+    radial-gradient(
+      circle at 92% 6%,
+      rgba(169,140,255,.17),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 5% 100%,
+      rgba(66,229,255,.07),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      #111723 0%,
+      #0a0f18 60%,
+      #090d14 100%
+    ) !important;
+
+  border:
+    1px solid rgba(169,140,255,.17) !important;
+
+  box-shadow:
+    0 12px 32px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.045) !important;
+}
+
+
+/* PLAYER */
+
+.home-player-top {
+  gap:14px !important;
+}
+
+.home-player-avatar {
+  border:
+    1px solid rgba(169,140,255,.24) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(169,140,255,.19),
+      rgba(66,229,255,.07)
+    ) !important;
+
+  box-shadow:
+    inset 0 0 18px rgba(169,140,255,.08),
+    0 0 18px rgba(169,140,255,.07) !important;
+}
+
+.home-player-name {
+  color:#f5f7fb !important;
+
+  font-weight:900 !important;
+  letter-spacing:.01em !important;
+}
+
+.home-player-title {
+  color:#b7a8ff !important;
+
+  font-weight:750 !important;
+}
+
+.home-player-id {
+  color:#687488 !important;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif !important;
+
+  font-weight:700 !important;
+  letter-spacing:.05em !important;
+}
+
+
+/* LEVEL */
+
+.home-player-level {
+  min-width:62px !important;
+
+  padding-left:12px !important;
+
+  border-left:
+    1px solid rgba(255,255,255,.07) !important;
+}
+
+.home-player-level small {
+  color:#6f7a8d !important;
+
+  font-family:
+    "Rajdhani",
+    sans-serif !important;
+
+  font-size:.63rem !important;
+  font-weight:800 !important;
+
+  letter-spacing:.14em !important;
+}
+
+.home-player-level strong {
+  color:#b8a8ff !important;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif !important;
+
+  font-weight:800 !important;
+
+  text-shadow:
+    0 0 9px rgba(169,140,255,.25) !important;
+}
+
+
+/* XP */
+
+.home-xp-section {
+  margin-top:18px !important;
+
+  padding-top:14px !important;
+
+  border-top:
+    1px solid rgba(255,255,255,.065) !important;
+}
+
+.home-xp-row {
+  margin-bottom:7px !important;
+
+  color:#8994a7 !important;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif !important;
+
+  font-size:.74rem !important;
+  font-weight:800 !important;
+
+  letter-spacing:.05em !important;
+}
+
+
+/* RANK */
+
+.home-rank-progress {
+  color:#8994a7 !important;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif !important;
+
+  font-size:.74rem !important;
+  font-weight:800 !important;
+}
+
+
+/* SUMMARY HUD */
+
+.home-summary-grid {
+  margin-top:15px !important;
+
+  gap:7px !important;
+}
+
+.home-summary-item {
+  min-width:0 !important;
+
+  padding:10px 8px !important;
+
+  border-radius:10px !important;
+
+  background:
+    rgba(5,9,15,.42) !important;
+
+  border:
+    1px solid rgba(255,255,255,.055) !important;
+}
+
+.home-summary-item > span:first-child {
+  display:block !important;
+
+  margin-bottom:3px !important;
+
+  color:#697589 !important;
+
+  font-family:
+    "Rajdhani",
+    sans-serif !important;
+
+  font-size:.61rem !important;
+  font-weight:800 !important;
+
+  letter-spacing:.10em !important;
+}
+
+.home-summary-item > strong,
+.home-summary-item > span:last-child {
+  color:#e8ebf1 !important;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif !important;
+
+  font-variant-numeric:
+    tabular-nums !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width:500px) {
+
+  #home-player-status {
+    padding:16px !important;
+  }
+
+  .home-player-level {
+    min-width:56px !important;
+    padding-left:9px !important;
+  }
+
+  .home-summary-grid {
+    gap:6px !important;
+  }
+
+  .home-summary-item {
+    padding:9px 7px !important;
+  }
+
+}
+
+</style>
+
+
+
+<style id="ascend-home-ui-v3">
+
+/* =========================================================
+   ASCEND HOME UI v3
+   HOME ONLY / STRUCTURE SAFE
+========================================================= */
+
+
+/* ===== PLAYER STATUS ===== */
+
+#home-player-status {
+  position: relative;
+
+  padding: 21px !important;
+
+  background:
+    radial-gradient(
+      circle at 92% 0%,
+      rgba(124, 92, 255, .13),
+      transparent 36%
+    ),
+    linear-gradient(
+      155deg,
+      rgba(20, 24, 37, .98),
+      rgba(12, 15, 23, .98)
+    ) !important;
+
+  border:
+    1px solid rgba(255,255,255,.09) !important;
+}
+
+
+#home-player-status::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 22px;
+  right: 22px;
+
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(124,92,255,.75),
+      rgba(53,201,255,.55),
+      transparent
+    );
+
+  opacity: .85;
+}
+
+
+/* ===== AVATAR ===== */
+
+#home-player-status .home-player-avatar {
+  width: 56px;
+  height: 56px;
+
+  flex-basis: 56px;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124,92,255,.20),
+      rgba(124,92,255,.06)
+    );
+
+  border:
+    1px solid rgba(155,131,255,.24);
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.07);
+
+  font-size: 25px;
+}
+
+
+/* ===== PLAYER NAME ===== */
+
+#home-player-status .home-player-name {
+  font-family:
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 19px;
+
+  font-weight: 900;
+
+  letter-spacing: -.02em;
+}
+
+
+#home-player-status .home-player-title {
+  display: inline-block;
+
+  margin-top: 5px;
+
+  padding: 3px 7px;
+
+  border-radius: 6px;
+
+  color: #b9aaff;
+
+  background:
+    rgba(124,92,255,.09);
+
+  border:
+    1px solid rgba(124,92,255,.13);
+
+  font-size: 10px;
+
+  font-weight: 800;
+}
+
+
+#home-player-status .home-player-id {
+  margin-top: 6px;
+
+  color: rgba(168,175,189,.55);
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 10px;
+
+  letter-spacing: .06em;
+}
+
+
+/* ===== LEVEL ===== */
+
+#home-player-status .home-player-level small {
+  color: rgba(168,175,189,.55);
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 9px;
+
+  letter-spacing: .18em;
+}
+
+
+#home-player-status .home-player-level strong {
+  color: #c1b5ff;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 31px;
+
+  font-weight: 700;
+
+  letter-spacing: -.04em;
+
+  text-shadow: none;
+}
+
+
+/* ===== XP ===== */
+
+#home-player-status .home-xp-section {
+  margin-top: 19px;
+}
+
+
+#home-player-status .home-xp-row {
+  margin-bottom: 7px;
+
+  color: rgba(168,175,189,.72);
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 11px;
+
+  letter-spacing: .03em;
+}
+
+
+#home-player-status .home-xp-track {
+  height: 9px;
+
+  padding: 2px;
+
+  background:
+    rgba(0,0,0,.48);
+
+  border:
+    1px solid rgba(255,255,255,.045);
+}
+
+
+#home-player-status .home-xp-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #7557f6,
+      #9c86ff,
+      #4bc8ff
+    );
+
+  box-shadow: none;
+}
+
+
+/* ===== SUMMARY ===== */
+
+#home-player-status .home-summary-grid {
+  margin-top: 18px;
+
+  padding-top: 15px;
+
+  gap: 0;
+
+  border-top:
+    1px solid rgba(255,255,255,.065);
+}
+
+
+#home-player-status .home-summary-item {
+  padding: 4px 8px;
+}
+
+
+#home-player-status .home-summary-item + .home-summary-item {
+  border-left:
+    1px solid rgba(255,255,255,.055);
+}
+
+
+#home-player-status .home-summary-item span {
+  margin-bottom: 5px;
+
+  color: rgba(168,175,189,.52);
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: .05em;
+}
+
+
+#home-player-status .home-summary-item strong {
+  color: #f4f5f8;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+
+#home-player-status .home-summary-item.coin strong {
+  color: #ffd166;
+}
+
+
+/* =========================================================
+   TODAY STUDY
+========================================================= */
+
+#home-study-status {
+  position: relative;
+
+  padding: 21px !important;
+
+  text-align: left !important;
+
+  background:
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(53,201,255,.065),
+      transparent 42%
+    ),
+    linear-gradient(
+      155deg,
+      rgba(17,23,33,.98),
+      rgba(11,15,22,.98)
+    ) !important;
+
+  border:
+    1px solid rgba(255,255,255,.085) !important;
+}
+
+
+#home-study-status::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 22px;
+
+  width: 72px;
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #35c9ff,
+      rgba(53,201,255,0)
+    );
+}
+
+
+#home-study-status .home-section-title {
+  margin-bottom: 8px;
+
+  color: rgba(168,175,189,.65);
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: .08em;
+}
+
+
+#home-study-status .home-study-time {
+  margin:
+    2px 0
+    18px;
+
+  color: #f4f9fc;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:
+    clamp(38px, 10vw, 55px);
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing: -.025em;
+
+  text-shadow: none;
+}
+
+
+#home-study-status .classic-primary-button {
+  min-height: 48px;
+
+  border:
+    1px solid rgba(155,131,255,.22);
+
+  border-radius:
+    11px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7659f3,
+      #6347da
+    );
+
+  box-shadow:
+    0 6px 18px rgba(75,55,160,.16);
+
+  font-family:
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 13px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   QUICK MENU
+========================================================= */
+
+.home-quick-grid {
+  gap: 9px !important;
+}
+
+
+.home-quick-grid .home-menu-card {
+  position: relative;
+
+  min-height: 105px;
+
+  padding: 16px;
+
+  gap: 4px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.037),
+      rgba(255,255,255,.012)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.072);
+
+  border-radius: 14px;
+
+  box-shadow: none;
+}
+
+
+.home-quick-grid .home-menu-card:hover {
+  transform:
+    translateY(-1px);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124,92,255,.075),
+      rgba(255,255,255,.018)
+    );
+
+  border-color:
+    rgba(124,92,255,.18);
+}
+
+
+.home-quick-grid .home-menu-icon {
+  margin-bottom: 5px;
+
+  font-size: 21px;
+
+  opacity: .92;
+}
+
+
+.home-quick-grid .home-menu-card strong {
+  color: #f0f2f6;
+
+  font-family:
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 13px;
+
+  font-weight: 800;
+}
+
+
+.home-quick-grid .home-menu-card small {
+  margin-top: 1px;
+
+  color: rgba(168,175,189,.50);
+
+  font-size: 9px;
+
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  #home-player-status,
+  #home-study-status {
+    padding: 17px !important;
+  }
+
+
+  #home-player-status::before {
+    left: 17px;
+    right: 17px;
+  }
+
+
+  #home-player-status .home-player-top {
+    gap: 12px;
+  }
+
+
+  #home-player-status .home-player-avatar {
+    width: 50px;
+    height: 50px;
+
+    flex-basis: 50px;
+
+    font-size: 22px;
+  }
+
+
+  #home-player-status .home-player-name {
+    font-size: 17px;
+  }
+
+
+  #home-player-status .home-player-level strong {
+    font-size: 28px;
+  }
+
+
+  #home-player-status .home-summary-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+
+  #home-player-status .home-summary-item {
+    padding: 9px 5px;
+  }
+
+
+  #home-player-status
+  .home-summary-item:nth-child(even) {
+    border-left:
+      1px solid rgba(255,255,255,.055);
+  }
+
+
+  #home-player-status
+  .home-summary-item:nth-child(n+3) {
+    border-top:
+      1px solid rgba(255,255,255,.055);
+  }
+
+
+  #home-study-status .home-study-time {
+    font-size:
+      clamp(39px, 12vw, 51px);
+  }
+
+
+  .home-quick-grid .home-menu-card {
+    min-height: 98px;
+
+    padding: 14px;
+  }
+
+}
+
+</style>
+
+
+<style id="ascend-rank-png-emblems">
+  .asc-rank-hero-emblem,
+  .asc-rank-ladder-emblem {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: visible !important;
+  }
+
+  .asc-rank-emblem {
+    display: block;
+    width: auto !important;
+    height: auto !important;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center center;
+    margin: 0 auto;
+    user-select: none;
+    -webkit-user-drag: none;
+    transform: translate(0, 0);
+  }
+
+  .asc-rank-emblem.hero {
+    max-width: 148px;
+    max-height: 148px;
+  }
+
+  .asc-rank-emblem.small {
+    max-width: 42px;
+    max-height: 42px;
+  }
+
+  @media (max-width: 600px) {
+    .asc-rank-emblem.hero {
+      max-width: 128px;
+      max-height: 128px;
+    }
+
+    .asc-rank-emblem.small {
+      max-width: 38px;
+      max-height: 38px;
+    }
+  }
+</style>
+
 </head>
 
 
@@ -9485,14 +10345,20 @@ async function showRankPage(user) {
     );
   }
 
-
   const data =
     snap.data();
 
 
+  // ==========================================================
+  // CURRENT DATA
+  // ==========================================================
+
   const monthlyMinutes =
-    Number(
-      data.monthlyStudyMinutes ?? 0
+    Math.max(
+      0,
+      Number(
+        data.monthlyStudyMinutes ?? 0
+      )
     );
 
 
@@ -9501,10 +10367,6 @@ async function showRankPage(user) {
       monthlyMinutes
     );
 
-
-  // ========================================================
-  // RANK STEPS
-  // ========================================================
 
   const rankSteps = [
 
@@ -9532,30 +10394,23 @@ async function showRankPage(user) {
     ["Grandmaster", 8400],
     ["Legend", 10200],
 
-  ].map(([name, minutes]) => ({
-    name,
-    minutes,
-  }));
+  ].map(
+    ([name, minutes]) => ({
+      name,
+      minutes,
+    })
+  );
 
 
-  let currentIndex = 0;
+  let currentIndex =
+    rankSteps.findIndex(
+      step =>
+        step.name === currentRank
+    );
 
 
-  for (
-    let i = 0;
-    i < rankSteps.length;
-    i++
-  ) {
-
-    if (
-      monthlyMinutes >=
-      rankSteps[i].minutes
-    ) {
-
-      currentIndex = i;
-
-    }
-
+  if (currentIndex < 0) {
+    currentIndex = 0;
   }
 
 
@@ -9570,7 +10425,6 @@ async function showRankPage(user) {
 
 
   let progress = 100;
-
   let remaining = 0;
 
 
@@ -9606,319 +10460,1867 @@ async function showRankPage(user) {
   }
 
 
-  const monthHours =
-    Math.floor(
-      monthlyMinutes / 60
-    );
+  function formatTime(minutes) {
+
+    const safe =
+      Math.max(
+        0,
+        Number(minutes || 0)
+      );
+
+    const hours =
+      Math.floor(
+        safe / 60
+      );
+
+    const mins =
+      safe % 60;
 
 
-  const monthMins =
-    monthlyMinutes % 60;
+    if (!mins) {
+      return `${hours}h`;
+    }
 
 
-  const remainHours =
-    Math.floor(
-      remaining / 60
-    );
+    if (!hours) {
+      return `${mins}m`;
+    }
 
 
-  const remainMins =
-    remaining % 60;
+    return `${hours}h ${mins}m`;
+
+  }
 
 
-  const remainText =
+  const remainingText =
     nextStep
       ? (
-          remainHours > 0
-            ? `あと ${remainHours}時間${
-                remainMins
-                  ? `${remainMins}分`
-                  : ""
-              }`
-            : `あと ${remainMins}分`
+          remaining >= 60
+            ? `あと ${formatTime(remaining)}`
+            : `あと ${remaining}分`
         )
       : "最高ランク到達";
 
 
-  const distributions = [
+  const now =
+    new Date();
 
-    ["Bronze", "0〜8時間"],
-    ["Silver", "8〜22時間"],
-    ["Gold", "22〜42時間"],
-    ["Platinum", "42〜68時間"],
-    ["Diamond", "68〜110時間"],
-    ["Master", "110〜140時間"],
-    ["Grandmaster", "140〜170時間"],
-    ["Legend", "170時間〜"],
 
-  ];
+  const seasonLabel =
+    `${now.getFullYear()}.${String(
+      now.getMonth() + 1
+    ).padStart(2, "0")}`;
 
+
+  // ==========================================================
+  // RANK VISUAL DATA
+  // ==========================================================
+
+  const rankThemes = {
+
+    bronze: {
+      rgb: "191,116,72",
+      primary: "#d69668",
+      secondary: "#75442f",
+      light: "#f0bb91",
+    },
+
+    silver: {
+      rgb: "192,204,226",
+      primary: "#eef3ff",
+      secondary: "#67748c",
+      light: "#ffffff",
+    },
+
+    gold: {
+      rgb: "235,181,64",
+      primary: "#ffd76a",
+      secondary: "#9f6418",
+      light: "#fff0aa",
+    },
+
+    platinum: {
+      rgb: "91,215,239",
+      primary: "#91efff",
+      secondary: "#57728d",
+      light: "#e6fcff",
+    },
+
+    diamond: {
+      rgb: "55,177,255",
+      primary: "#55ddff",
+      secondary: "#355cff",
+      light: "#e5fbff",
+    },
+
+    master: {
+      rgb: "166,87,255",
+      primary: "#bc79ff",
+      secondary: "#561b99",
+      light: "#f0d5ff",
+    },
+
+    grandmaster: {
+      rgb: "255,61,104",
+      primary: "#ff557d",
+      secondary: "#7b173d",
+      light: "#ffc0cf",
+    },
+
+    legend: {
+      rgb: "240,196,92",
+      primary: "#ffe39a",
+      secondary: "#7e56ff",
+      light: "#ffffff",
+    },
+
+  };
+
+
+  function getRankFamily(
+    rankName
+  ) {
+
+    return String(
+      rankName || "Bronze"
+    )
+      .split(" ")[0]
+      .toLowerCase();
+
+  }
+
+
+  function getRankStage(
+    rankName
+  ) {
+
+    if (
+      rankName.endsWith(
+        " III"
+      )
+    ) {
+      return 1;
+    }
+
+
+    if (
+      rankName.endsWith(
+        " II"
+      )
+    ) {
+      return 2;
+    }
+
+
+    if (
+      rankName.endsWith(
+        " I"
+      )
+    ) {
+      return 3;
+    }
+
+
+    return 3;
+
+  }
+
+
+  let emblemSerial = 0;
+
+
+  function rankEmblemSvg(rankName, sizeClass = "") {
+
+    const rankFiles = {
+      "Bronze III": "bronze-iii.png",
+      "Bronze II": "bronze-ii.png",
+      "Bronze I": "bronze-i.png",
+
+      "Silver III": "silver-iii.png",
+      "Silver II": "silver-ii.png",
+      "Silver I": "silver-i.png",
+
+      "Gold III": "gold-iii.png",
+      "Gold II": "gold-ii.png",
+      "Gold I": "gold-i.png",
+
+      "Platinum III": "platinum-iii.png",
+      "Platinum II": "platinum-ii.png",
+      "Platinum I": "platinum-i.png",
+
+      "Diamond III": "diamond-iii.png",
+      "Diamond II": "diamond-ii.png",
+      "Diamond I": "diamond-i.png",
+
+      "Master": "master.png",
+      "Grandmaster": "grandmaster.png",
+      "Legend": "legend.png"
+    };
+
+    const file =
+      rankFiles[rankName] ||
+      "bronze-iii.png";
+
+    const family =
+      getRankFamily(rankName);
+
+    return `
+      <img
+        class="
+          asc-rank-emblem
+          asc-rank-emblem-${family}
+          ${sizeClass}
+        "
+        src="./assets/ranks/${file}?v=rank-tight-20260911"
+        alt="${rankName}"
+        draggable="false"
+        loading="eager"
+      >
+    `;
+  }
+
+
+  const currentFamily =
+    getRankFamily(
+      currentRank
+    );
+
+
+  const currentTheme =
+    rankThemes[
+      currentFamily
+    ] || rankThemes.bronze;
+
+
+  // ==========================================================
+  // LADDER
+  // ==========================================================
+
+  const ladderHtml =
+    rankSteps
+      .map(
+        (step, index) => {
+
+          const family =
+            getRankFamily(
+              step.name
+            );
+
+
+          const state =
+            index < currentIndex
+              ? "complete"
+              : index === currentIndex
+                ? "current"
+                : "locked";
+
+
+          const eliteDivider =
+            index === 15
+              ? `
+                <div
+                  class="
+                    asc-rank-elite-divider
+                  "
+                >
+                  <span>
+                    ELITE TIERS
+                  </span>
+
+                  <strong>
+                    ここからは、別格。
+                  </strong>
+                </div>
+              `
+              : "";
+
+
+          return `
+
+            ${eliteDivider}
+
+            <div
+              class="
+                asc-rank-ladder-row
+                asc-rank-${family}
+                ${state}
+              "
+            >
+
+              <div
+                class="
+                  asc-rank-ladder-emblem
+                "
+              >
+                ${rankEmblemSvg(
+                  step.name,
+                  "small"
+                )}
+              </div>
+
+
+              <div
+                class="
+                  asc-rank-ladder-info
+                "
+              >
+
+                <strong>
+                  ${step.name}
+                </strong>
+
+                <span>
+                  ${
+                    step.minutes === 0
+                      ? "START"
+                      : `${step.minutes / 60} HOURS`
+                  }
+                </span>
+
+              </div>
+
+
+              <div
+                class="
+                  asc-rank-ladder-state
+                "
+              >
+
+                ${
+                  state === "complete"
+                    ? "✓"
+                    : state === "current"
+                      ? "CURRENT"
+                      : "◇"
+                }
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  // ==========================================================
+  // PAGE
+  // ==========================================================
 
   page(
     card(`
 
-      <h1 style="
-        margin:0;
-      ">
-        ランク
-      </h1>
+      <style id="ascend-rank-page-v2">
 
+        /* ===============================================
+           ASCEND RANK PAGE v2
+           RANK PAGE ONLY
+        =============================================== */
 
-      <!-- CURRENT RANK -->
+        body:has(#asc-rank-page-v2)
+        > main
+        > section {
 
-      <div style="
-        padding:26px 18px;
-
-        text-align:center;
-
-        background:
-          linear-gradient(
-            145deg,
-            #121722,
-            #0c1119
-          );
-
-        border:
-          1px solid
-          rgba(255,255,255,.09);
-
-        border-radius:18px;
-      ">
-
-        <div style="
-          color:#747e90;
-
-          font-size:.68rem;
-
-          font-weight:800;
-
-          letter-spacing:.14em;
-        ">
-          CURRENT RANK
-        </div>
-
-
-        <div style="
-          margin-top:7px;
-
-          font-size:2.2rem;
-
-          line-height:1.05;
-
-          font-weight:950;
-
-          color:#f4f5f8;
-        ">
-          ${currentRank}
-        </div>
-
-
-        <div style="
-          margin-top:11px;
-
-          color:#919aab;
-
-          font-size:.9rem;
-        ">
-          今月 ${monthHours}時間${monthMins}分
-        </div>
-
-      </div>
-
-
-      <!-- NEXT RANK -->
-
-      <div style="
-        padding:17px;
-
-        background:#0c1119;
-
-        border:
-          1px solid
-          rgba(255,255,255,.08);
-
-        border-radius:15px;
-      ">
-
-        <div style="
-          display:flex;
-
-          justify-content:space-between;
-
-          align-items:center;
-
-          gap:12px;
-        ">
-
-          <strong style="
-            font-size:.87rem;
-          ">
-            ${
-              nextStep
-                ? `${currentStep.name} → ${nextStep.name}`
-                : "Legend"
-            }
-          </strong>
-
-
-          <span style="
-            color:#9b83ff;
-
-            font-size:.82rem;
-
-            font-weight:850;
-          ">
-            ${Math.round(progress)}%
-          </span>
-
-        </div>
-
-
-        <div style="
-          width:100%;
-
-          height:10px;
-
-          margin-top:12px;
-
-          overflow:hidden;
+          padding:
+            18px !important;
 
           background:
-            rgba(255,255,255,.065);
+            #0b0f17 !important;
 
-          border-radius:999px;
-        ">
+          border:
+            1px solid
+            rgba(255,255,255,.075)
+            !important;
 
-          <div style="
-            width:${progress}%;
+          box-shadow:
+            none !important;
 
-            height:100%;
+        }
 
-            background:
-              linear-gradient(
-                90deg,
-                #5940d8,
-                #9b83ff
+
+        #asc-rank-page-v2 {
+
+          --rank-rgb:
+            ${currentTheme.rgb};
+
+          --rank-primary:
+            ${currentTheme.primary};
+
+          --rank-secondary:
+            ${currentTheme.secondary};
+
+          --rank-light:
+            ${currentTheme.light};
+
+          display:
+            grid;
+
+          gap:
+            14px;
+
+          font-family:
+            "Noto Sans JP",
+            sans-serif;
+
+        }
+
+
+        /* ===============================================
+           HEADER
+        =============================================== */
+
+        .asc-rank-header {
+
+          padding:
+            3px 2px 5px;
+
+        }
+
+
+        .asc-rank-header
+        .main-screen-english {
+
+          margin-bottom:
+            2px;
+
+          color:
+            rgba(
+              var(--rank-rgb),
+              .88
+            );
+
+          font-family:
+            "Rajdhani",
+            sans-serif;
+
+          font-size:
+            11px;
+
+          font-weight:
+            700;
+
+          letter-spacing:
+            .22em;
+
+        }
+
+
+        .asc-rank-header h1 {
+
+          margin:
+            0;
+
+          color:
+            #f7f8fb;
+
+          font-size:
+            27px;
+
+          font-weight:
+            900;
+
+          letter-spacing:
+            -.035em;
+
+        }
+
+
+        .asc-rank-header p {
+
+          margin:
+            6px 0 0;
+
+          color:
+            #747e8f;
+
+          font-size:
+            11px;
+
+          line-height:
+            1.6;
+
+        }
+
+
+        /* ===============================================
+           HERO
+        =============================================== */
+
+        .asc-rank-hero {
+
+          position:
+            relative;
+
+          overflow:
+            hidden;
+
+          padding:
+            24px 18px 20px;
+
+          text-align:
+            center;
+
+          background:
+
+            radial-gradient(
+              circle at 50% 20%,
+              rgba(
+                var(--rank-rgb),
+                .19
+              ),
+              transparent 44%
+            ),
+
+            linear-gradient(
+              155deg,
+              #121722,
+              #0b0f17
+            );
+
+          border:
+            1px solid
+            rgba(
+              var(--rank-rgb),
+              .24
+            );
+
+          border-radius:
+            18px;
+
+        }
+
+
+        .asc-rank-hero::before {
+
+          content:
+            "";
+
+          position:
+            absolute;
+
+          top:
+            0;
+
+          left:
+            22%;
+
+          right:
+            22%;
+
+          height:
+            2px;
+
+          background:
+            linear-gradient(
+              90deg,
+              transparent,
+              var(--rank-primary),
+              transparent
+            );
+
+        }
+
+
+        .asc-rank-current-label {
+
+          color:
+            rgba(
+              var(--rank-rgb),
+              .82
+            );
+
+          font-family:
+            "Rajdhani",
+            sans-serif;
+
+          font-size:
+            10px;
+
+          font-weight:
+            700;
+
+          letter-spacing:
+            .22em;
+
+        }
+
+
+        .asc-rank-hero-emblem {
+
+          width:
+            148px;
+
+          height:
+            148px;
+
+          display:
+            grid;
+
+          place-items:
+            center;
+
+          margin:
+            10px auto 3px;
+
+        }
+
+
+        .asc-rank-emblem {
+
+          width:
+            100%;
+
+          height:
+            100%;
+
+          display:
+            block;
+
+        }
+
+
+        .asc-rank-hero-name {
+
+          margin-top:
+            2px;
+
+          color:
+            var(--rank-light);
+
+          font-family:
+            "Rajdhani",
+            "Noto Sans JP",
+            sans-serif;
+
+          font-size:
+            31px;
+
+          line-height:
+            1;
+
+          font-weight:
+            700;
+
+          letter-spacing:
+            .02em;
+
+          text-transform:
+            uppercase;
+
+        }
+
+
+        .asc-rank-season-time {
+
+          margin-top:
+            10px;
+
+          color:
+            #9da5b3;
+
+          font-size:
+            12px;
+
+        }
+
+
+        .asc-rank-season-time strong {
+
+          margin-left:
+            5px;
+
+          color:
+            #f4f6fa;
+
+          font-family:
+            "Rajdhani",
+            sans-serif;
+
+          font-size:
+            18px;
+
+          font-weight:
+            700;
+
+        }
+
+
+        /* ===============================================
+           PROGRESS
+        =============================================== */
+
+        .asc-rank-progress-card {
+
+          padding:
+            16px;
+
+          background:
+            linear-gradient(
+              145deg,
+              rgba(
+                var(--rank-rgb),
+                .075
+              ),
+              rgba(
+                255,
+                255,
+                255,
+                .018
+              )
+            );
+
+          border:
+            1px solid
+            rgba(
+              var(--rank-rgb),
+              .15
+            );
+
+          border-radius:
+            15px;
+
+        }
+
+
+        .asc-rank-progress-head {
+
+          display:
+            flex;
+
+          align-items:
+            flex-end;
+
+          justify-content:
+            space-between;
+
+          gap:
+            12px;
+
+        }
+
+
+        .asc-rank-progress-title span {
+
+          display:
+            block;
+
+          margin-bottom:
+            3px;
+
+          color:
+            #677181;
+
+          font-family:
+            "Rajdhani",
+            sans-serif;
+
+          font-size:
+            9px;
+
+          font-weight:
+            700;
+
+          letter-spacing:
+            .16em;
+
+        }
+
+
+        .asc-rank-progress-title strong {
+
+          display:
+            block;
+
+          color:
+            #e9ecf2;
+
+          font-family:
+            "Rajdhani",
+            sans-serif;
+
+          font-size:
+            16px;
+
+          font-weight:
+            700;
+
+        }
+
+
+        .asc-rank-progress-value {
+
+          color:
+            var(--rank-primary);
+
+          font-family:
+            "Rajdhani",
+            sans-serif;
+
+          font-size:
+            24px;
+
+          font-weight:
+            700;
+
+        }
+
+
+        .asc-rank-track {
+
+          height:
+            9px;
+
+          margin-top:
+            14px;
+
+          overflow:
+            hidden;
+
+          background:
+            rgba(
+              0,
+              0,
+              0,
+              .45
+            );
+
+          border:
+            1px solid
+            rgba(
+              255,
+              255,
+              255,
+              .045
+            );
+
+          border-radius:
+            999px;
+
+        }
+
+
+        .asc-rank-fill {
+
+          height:
+            100%;
+
+          width:
+            ${progress}%;
+
+          background:
+            linear-gradient(
+              90deg,
+              var(--rank-secondary),
+              var(--rank-primary),
+              var(--rank-light)
+            );
+
+          border-radius:
+            inherit;
+
+        }
+
+
+        .asc-rank-progress-foot {
+
+          display:
+            flex;
+
+          align-items:
+            center;
+
+          justify-content:
+            space-between;
+
+          gap:
+            12px;
+
+          margin-top:
+            9px;
+
+          color:
+            #717b8b;
+
+          font-size:
+            10px;
+
+        }
+
+
+        .asc-rank-progress-foot
+        strong {
+
+          color:
+            #aeb5c1;
+
+          font-weight:
+            800;
+
+        }
+
+
+        /* ===============================================
+           SEASON STATUS
+        =============================================== */
+
+        .asc-rank-season-grid {
+
+          display:
+            grid;
+
+          grid-template-columns:
+            repeat(
+              3,
+              minmax(0,1fr)
+            );
+
+          overflow:
+            hidden;
+
+          background:
+            rgba(
+              255,
+              255,
+              255,
+              .018
+            );
+
+          border:
+            1px solid
+            rgba(
+              255,
+              255,
+              255,
+              .065
+            );
+
+          border-radius:
+            14px;
+
+        }
+
+
+        .asc-rank-season-stat {
+
+          min-width:
+            0;
+
+          padding:
+            13px 7px;
+
+          text-align:
+            center;
+
+        }
+
+
+        .asc-rank-season-stat
+        + .asc-rank-season-stat {
+
+          border-left:
+            1px solid
+            rgba(
+              255,
+              255,
+              255,
+              .055
+            );
+
+        }
+
+
+        .asc-rank-season-stat span {
+
+          display:
+            block;
+
+          margin-bottom:
+            4px;
+
+          color:
+            #687282;
+
+          font-family:
+            "Rajdhani",
+            sans-serif;
+
+          font-size:
+            8px;
+
+          font-weight:
+            700;
+
+          letter-spacing:
+            .12em;
+
+        }
+
+
+        .asc-rank-season-stat strong {
+
+          display:
+            block;
+
+          overflow:
+            hidden;
+
+          color:
+            #e5e8ee;
+
+          font-size:
+            11px;
+
+          font-weight:
+            800;
+
+          text-overflow:
+            ellipsis;
+
+          white-space:
+            nowrap;
+
+        }
+
+
+        /* ===============================================
+           LADDER
+        =============================================== */
+
+        .asc-rank-ladder {
+
+          display:
+            grid;
+
+          gap:
+            7px;
+
+          padding-top:
+            5px;
+
+        }
+
+
+        .asc-rank-ladder-heading {
+
+          display:
+            flex;
+
+          align-items:
+            flex-end;
+
+          justify-content:
+            space-between;
+
+          gap:
+            10px;
+
+          margin:
+            4px 2px 5px;
+
+        }
+
+
+        .asc-rank-ladder-heading
+        div {
+
+          color:
+            #f1f3f7;
+
+          font-size:
+            14px;
+
+          font-weight:
+            900;
+
+        }
+
+
+        .asc-rank-ladder-heading
+        span {
+
+          color:
+            #646e7e;
+
+          font-family:
+            "Rajdhani",
+            sans-serif;
+
+          font-size:
+            9px;
+
+          letter-spacing:
+            .13em;
+
+        }
+
+
+        .asc-rank-ladder-row {
+
+          min-height:
+            64px;
+
+          display:
+            grid;
+
+          grid-template-columns:
+            48px
+            minmax(0,1fr)
+            auto;
+
+          align-items:
+            center;
+
+          gap:
+            11px;
+
+          padding:
+            8px 11px;
+
+          background:
+            rgba(
+              255,
+              255,
+              255,
+              .018
+            );
+
+          border:
+            1px solid
+            rgba(
+              255,
+              255,
+              255,
+              .06
+            );
+
+          border-radius:
+            13px;
+
+        }
+
+
+        .asc-rank-ladder-row.complete {
+
+          opacity:
+            .70;
+
+        }
+
+
+        .asc-rank-ladder-row.locked {
+
+          opacity:
+            .34;
+
+        }
+
+
+        .asc-rank-ladder-row.current {
+
+          background:
+            linear-gradient(
+              135deg,
+              rgba(
+                var(--rank-rgb),
+                .14
+              ),
+              rgba(
+                255,
+                255,
+                255,
+                .018
+              )
+            );
+
+          border-color:
+            rgba(
+              var(--rank-rgb),
+              .32
+            );
+
+        }
+
+
+        .asc-rank-ladder-emblem {
+
+          width:
+            44px;
+
+          height:
+            44px;
+
+          display:
+            grid;
+
+          place-items:
+            center;
+
+        }
+
+
+        .asc-rank-emblem.small {
+
+          width:
+            42px;
+
+          height:
+            42px;
+
+        }
+
+
+        .asc-rank-ladder-info {
+
+          min-width:
+            0;
+
+        }
+
+
+        .asc-rank-ladder-info
+        strong {
+
+          display:
+            block;
+
+          color:
+            #e7eaf0;
+
+          font-family:
+            "Rajdhani",
+            sans-serif;
+
+          font-size:
+            14px;
+
+          font-weight:
+            700;
+
+          letter-spacing:
+            .02em;
+
+        }
+
+
+        .asc-rank-ladder-info
+        span {
+
+          display:
+            block;
+
+          margin-top:
+            2px;
+
+          color:
+            #687282;
+
+          font-family:
+            "Rajdhani",
+            sans-serif;
+
+          font-size:
+            9px;
+
+          font-weight:
+            700;
+
+          letter-spacing:
+            .09em;
+
+        }
+
+
+        .asc-rank-ladder-state {
+
+          color:
+            #687282;
+
+          font-family:
+            "Rajdhani",
+            sans-serif;
+
+          font-size:
+            9px;
+
+          font-weight:
+            700;
+
+          letter-spacing:
+            .08em;
+
+        }
+
+
+        .asc-rank-ladder-row.current
+        .asc-rank-ladder-state {
+
+          color:
+            var(--rank-primary);
+
+        }
+
+
+        /* ===============================================
+           ELITE
+        =============================================== */
+
+        .asc-rank-elite-divider {
+
+          position:
+            relative;
+
+          margin:
+            16px 0 8px;
+
+          padding:
+            17px 10px;
+
+          text-align:
+            center;
+
+          background:
+            linear-gradient(
+              90deg,
+              transparent,
+              rgba(
+                155,
+                92,
+                255,
+                .08
+              ),
+              transparent
+            );
+
+          border-top:
+            1px solid
+            rgba(
+              181,
+              120,
+              255,
+              .18
+            );
+
+          border-bottom:
+            1px solid
+            rgba(
+              181,
+              120,
+              255,
+              .10
+            );
+
+        }
+
+
+        .asc-rank-elite-divider
+        span {
+
+          display:
+            block;
+
+          color:
+            #b88cff;
+
+          font-family:
+            "Rajdhani",
+            sans-serif;
+
+          font-size:
+            10px;
+
+          font-weight:
+            700;
+
+          letter-spacing:
+            .28em;
+
+        }
+
+
+        .asc-rank-elite-divider
+        strong {
+
+          display:
+            block;
+
+          margin-top:
+            3px;
+
+          color:
+            #777f8e;
+
+          font-size:
+            9px;
+
+          font-weight:
+            700;
+
+        }
+
+
+        /* ===============================================
+           FAMILY CURRENT COLORS
+        =============================================== */
+
+        .asc-rank-bronze.current {
+          --row-rgb:191,116,72;
+        }
+
+        .asc-rank-silver.current {
+          --row-rgb:192,204,226;
+        }
+
+        .asc-rank-gold.current {
+          --row-rgb:235,181,64;
+        }
+
+        .asc-rank-platinum.current {
+          --row-rgb:91,215,239;
+        }
+
+        .asc-rank-diamond.current {
+          --row-rgb:55,177,255;
+        }
+
+        .asc-rank-master.current {
+          --row-rgb:166,87,255;
+        }
+
+        .asc-rank-grandmaster.current {
+          --row-rgb:255,61,104;
+        }
+
+        .asc-rank-legend.current {
+          --row-rgb:240,196,92;
+        }
+
+
+        /* ===============================================
+           MOBILE
+        =============================================== */
+
+        @media (
+          max-width:
+          600px
+        ) {
+
+          body:has(#asc-rank-page-v2)
+          > main
+          > section {
+
+            padding:
+              14px !important;
+
+          }
+
+
+          #asc-rank-page-v2 {
+
+            gap:
+              12px;
+
+          }
+
+
+          .asc-rank-hero {
+
+            padding:
+              21px 14px 18px;
+
+          }
+
+
+          .asc-rank-hero-emblem {
+
+            width:
+              128px;
+
+            height:
+              128px;
+
+          }
+
+
+          .asc-rank-hero-name {
+
+            font-size:
+              27px;
+
+          }
+
+
+          .asc-rank-season-grid {
+
+            grid-template-columns:
+              repeat(
+                3,
+                minmax(0,1fr)
               );
 
-            border-radius:inherit;
-          ">
+          }
+
+
+          .asc-rank-season-stat {
+
+            padding:
+              11px 5px;
+
+          }
+
+
+          .asc-rank-season-stat
+          strong {
+
+            font-size:
+              9px;
+
+          }
+
+
+          .asc-rank-ladder-row {
+
+            min-height:
+              60px;
+
+            grid-template-columns:
+              44px
+              minmax(0,1fr)
+              auto;
+
+            gap:
+              9px;
+
+            padding:
+              7px 9px;
+
+          }
+
+
+          .asc-rank-ladder-emblem {
+
+            width:
+              40px;
+
+            height:
+              40px;
+
+          }
+
+
+          .asc-rank-emblem.small {
+
+            width:
+              38px;
+
+            height:
+              38px;
+
+          }
+
+        }
+
+
+        @media (
+          prefers-reduced-motion:
+          reduce
+        ) {
+
+          #asc-rank-page-v2,
+          #asc-rank-page-v2 * {
+
+            animation:
+              none !important;
+
+            transition:
+              none !important;
+
+          }
+
+        }
+
+      </style>
+
+
+      <div
+        id="asc-rank-page-v2"
+      >
+
+
+        <!-- ===========================================
+             HEADER
+        ============================================ -->
+
+        <header
+          class="asc-rank-header"
+        >
+
+          <div
+            class="main-screen-english"
+          >
+            RANK
           </div>
 
-        </div>
+          <h1>
+            ランク
+          </h1>
+
+          <p>
+            積み上げた時間が、
+            次のランクを開く。
+          </p>
+
+        </header>
 
 
-        <div style="
-          margin-top:9px;
+        <!-- ===========================================
+             CURRENT RANK
+        ============================================ -->
 
-          color:#8d96a6;
+        <section
+          class="asc-rank-hero"
+        >
 
-          font-size:.82rem;
-        ">
-          ${remainText}
-        </div>
-
-      </div>
-
-
-      <!-- DISTRIBUTION -->
-
-      <div style="
-        padding:17px;
-
-        background:#0c1119;
-
-        border:
-          1px solid
-          rgba(255,255,255,.08);
-
-        border-radius:15px;
-      ">
-
-        <strong style="
-          display:block;
-
-          margin-bottom:10px;
-
-          font-size:.94rem;
-        ">
-          ランク分布の目安
-        </strong>
+          <div
+            class="
+              asc-rank-current-label
+            "
+          >
+            CURRENT RANK
+          </div>
 
 
-        <div style="
-          display:grid;
+          <div
+            class="
+              asc-rank-hero-emblem
+            "
+          >
 
-          gap:3px;
-        ">
+            ${rankEmblemSvg(
+              currentRank,
+              "hero"
+            )}
 
-          ${distributions.map(
-            ([name, range]) => {
-
-              const active =
-                currentRank.startsWith(
-                  name
-                );
-
-              return `
-
-                <div style="
-                  min-height:38px;
-
-                  display:flex;
-
-                  justify-content:space-between;
-
-                  align-items:center;
-
-                  gap:12px;
-
-                  padding:7px 9px;
-
-                  border-radius:9px;
-
-                  background:${
-                    active
-                      ? "rgba(124,92,255,.10)"
-                      : "transparent"
-                  };
-                ">
-
-                  <strong style="
-                    color:${
-                      active
-                        ? "#c9bdff"
-                        : "#b4bbc7"
-                    };
-
-                    font-size:.85rem;
-                  ">
-                    ${name}
-                  </strong>
+          </div>
 
 
-                  <span style="
-                    color:${
-                      active
-                        ? "#a99bdb"
-                        : "#778191"
-                    };
+          <div
+            class="
+              asc-rank-hero-name
+            "
+          >
+            ${currentRank}
+          </div>
 
-                    font-size:.8rem;
 
-                    white-space:nowrap;
-                  ">
-                    ${range}
-                  </span>
+          <div
+            class="
+              asc-rank-season-time
+            "
+          >
+            THIS SEASON
 
-                </div>
+            <strong>
+              ${formatTime(
+                monthlyMinutes
+              )}
+            </strong>
 
-              `;
+          </div>
 
-            }
-          ).join("")}
+        </section>
 
-        </div>
+
+        <!-- ===========================================
+             NEXT RANK
+        ============================================ -->
+
+        <section
+          class="
+            asc-rank-progress-card
+          "
+        >
+
+          <div
+            class="
+              asc-rank-progress-head
+            "
+          >
+
+            <div
+              class="
+                asc-rank-progress-title
+              "
+            >
+
+              <span>
+                NEXT RANK
+              </span>
+
+              <strong>
+                ${
+                  nextStep
+                    ? nextStep.name
+                    : "LEGEND"
+                }
+              </strong>
+
+            </div>
+
+
+            <div
+              class="
+                asc-rank-progress-value
+              "
+            >
+              ${
+                nextStep
+                  ? `${Math.round(
+                      progress
+                    )}%`
+                  : "MAX"
+              }
+            </div>
+
+          </div>
+
+
+          <div
+            class="asc-rank-track"
+          >
+
+            <div
+              class="asc-rank-fill"
+            ></div>
+
+          </div>
+
+
+          <div
+            class="
+              asc-rank-progress-foot
+            "
+          >
+
+            <span>
+              ${
+                nextStep
+                  ? `${formatTime(
+                      monthlyMinutes
+                    )} / ${formatTime(
+                      nextStep.minutes
+                    )}`
+                  : formatTime(
+                      monthlyMinutes
+                    )
+              }
+            </span>
+
+            <strong>
+              ${remainingText}
+            </strong>
+
+          </div>
+
+        </section>
+
+
+        <!-- ===========================================
+             SEASON STATUS
+        ============================================ -->
+
+        <section
+          class="
+            asc-rank-season-grid
+          "
+        >
+
+          <div
+            class="
+              asc-rank-season-stat
+            "
+          >
+
+            <span>
+              SEASON
+            </span>
+
+            <strong>
+              ${seasonLabel}
+            </strong>
+
+          </div>
+
+
+          <div
+            class="
+              asc-rank-season-stat
+            "
+          >
+
+            <span>
+              CURRENT
+            </span>
+
+            <strong>
+              ${currentRank}
+            </strong>
+
+          </div>
+
+
+          <div
+            class="
+              asc-rank-season-stat
+            "
+          >
+
+            <span>
+              LAST SEASON
+            </span>
+
+            <strong>
+              ${
+                data.lastSeasonRank ||
+                "—"
+              }
+            </strong>
+
+          </div>
+
+        </section>
+
+
+        <!-- ===========================================
+             LADDER
+        ============================================ -->
+
+        <section
+          class="asc-rank-ladder"
+        >
+
+          <div
+            class="
+              asc-rank-ladder-heading
+            "
+          >
+
+            <div>
+              RANK LADDER
+            </div>
+
+            <span>
+              18 TIERS
+            </span>
+
+          </div>
+
+
+          ${ladderHtml}
+
+        </section>
+
 
       </div>
 
@@ -9929,66 +12331,9 @@ async function showRankPage(user) {
   );
 
 
-
-  // ========================================================
-  // RANK THEME - DIRECT FORCE
-  // ========================================================
-
-  const rankTheme =
-    currentRank
-      .split(" ")[0]
-      .toLowerCase();
-
-
-  const rankColors = {
-
-    bronze: {
-      rgb: "176,109,67",
-      accent: "#d08a57",
-    },
-
-    silver: {
-      rgb: "165,178,194",
-      accent: "#e0e6ed",
-    },
-
-    gold: {
-      rgb: "224,176,64",
-      accent: "#ffd166",
-    },
-
-    platinum: {
-      rgb: "107,205,215",
-      accent: "#baf2f4",
-    },
-
-    diamond: {
-      rgb: "70,160,255",
-      accent: "#82c8ff",
-    },
-
-    master: {
-      rgb: "214,70,110",
-      accent: "#ff7895",
-    },
-
-    grandmaster: {
-      rgb: "140,82,255",
-      accent: "#b596ff",
-    },
-
-    legend: {
-      rgb: "239,185,72",
-      accent: "#ffe08a",
-    },
-
-  };
-
-
-  const theme =
-    rankColors[rankTheme] ||
-    rankColors.bronze;
-
+  // ==========================================================
+  // PAGE-LOCAL THEME
+  // ==========================================================
 
   const rankMain =
     document.querySelector(
@@ -9996,7 +12341,7 @@ async function showRankPage(user) {
     );
 
 
-  const rankPage =
+  const rankShell =
     document.querySelector(
       "body > main > section"
     );
@@ -10005,171 +12350,37 @@ async function showRankPage(user) {
   if (rankMain) {
 
     rankMain.classList.add(
-      "rank-main-themed",
-      `rank-theme-${rankTheme}`
+      "asc-rank-main-v2"
     );
 
 
     rankMain.style.setProperty(
+
       "background",
 
       `
         radial-gradient(
-          circle at 50% 10%,
-          rgba(${theme.rgb}, .42),
-          rgba(${theme.rgb}, .20) 30%,
-          rgba(${theme.rgb}, .07) 52%,
-          #080b12 78%
+          circle at 50% 4%,
+          rgba(
+            ${currentTheme.rgb},
+            .12
+          ),
+          #080b12 43%
         )
       `,
 
       "important"
+
     );
 
   }
 
 
-  if (rankPage) {
+  if (rankShell) {
 
-    rankPage.classList.add(
-      "rank-page-themed",
-      `rank-theme-${rankTheme}`
+    rankShell.classList.add(
+      "asc-rank-shell-v2"
     );
-
-
-    rankPage.style.setProperty(
-      "background",
-
-      `
-        linear-gradient(
-          155deg,
-          rgba(${theme.rgb}, .30) 0%,
-          rgba(${theme.rgb}, .13) 23%,
-          #111722 54%,
-          #0b0f17 100%
-        )
-      `,
-
-      "important"
-    );
-
-
-    rankPage.style.setProperty(
-      "border-color",
-      `rgba(${theme.rgb}, .40)`,
-      "important"
-    );
-
-
-    rankPage.style.setProperty(
-      "box-shadow",
-
-      `
-        0 0 42px
-        rgba(${theme.rgb}, .12)
-      `,
-
-      "important"
-    );
-
-
-    // ----------------------------
-    // 現在ランクカード
-    // ----------------------------
-
-    const cards =
-      rankPage.querySelectorAll(
-        ":scope > div"
-      );
-
-
-    if (cards[0]) {
-
-      cards[0].style.setProperty(
-        "background",
-
-        `
-          linear-gradient(
-            145deg,
-            rgba(${theme.rgb}, .31),
-            rgba(${theme.rgb}, .11) 48%,
-            #0b1018 100%
-          )
-        `,
-
-        "important"
-      );
-
-
-      cards[0].style.setProperty(
-        "border-color",
-        `rgba(${theme.rgb}, .38)`,
-        "important"
-      );
-
-    }
-
-
-    // ----------------------------
-    // NEXT RANK
-    // ----------------------------
-
-    if (cards[1]) {
-
-      cards[1].style.setProperty(
-        "background",
-
-        `
-          linear-gradient(
-            145deg,
-            rgba(${theme.rgb}, .14),
-            rgba(${theme.rgb}, .025) 55%,
-            #0b1018
-          )
-        `,
-
-        "important"
-      );
-
-
-      cards[1].style.setProperty(
-        "border-color",
-        `rgba(${theme.rgb}, .23)`,
-        "important"
-      );
-
-    }
-
-
-    // ----------------------------
-    // 分布表
-    // ----------------------------
-
-    if (cards[2]) {
-
-      cards[2].style.setProperty(
-        "background",
-
-        `
-          linear-gradient(
-            145deg,
-            rgba(${theme.rgb}, .10),
-            rgba(${theme.rgb}, .025) 55%,
-            #0b1018
-          )
-        `,
-
-        "important"
-      );
-
-
-      cards[2].style.setProperty(
-        "border-color",
-        `rgba(${theme.rgb}, .18)`,
-        "important"
-      );
-
-    }
 
   }
 
@@ -10177,6 +12388,7 @@ async function showRankPage(user) {
   bindMainBottomNav(user);
 
 }
+
 
 
 // ============================================================
