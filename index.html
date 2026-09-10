@@ -449,7 +449,7 @@ button {
 #persistent-top-tabs {
   position: sticky !important;
 
-  top: 0 !important;
+  top: -12px !important;
 
   z-index: 80 !important;
 
@@ -1600,7 +1600,7 @@ button {
 #persistent-top-tabs {
   position: sticky !important;
 
-  top: 0 !important;
+  top: -10px !important;
 
   z-index: 80 !important;
 
@@ -1683,7 +1683,7 @@ button {
   position: fixed !important;
 
   left: 0 !important;
-  right: 0 !important;
+  right: 102px !important;
   bottom: 0 !important;
 
   transform:
@@ -1967,7 +1967,7 @@ button {
   position: fixed !important;
 
   left: 0 !important;
-  right: 0 !important;
+  right: 100px !important;
   bottom: 0 !important;
 
   top: auto !important;
@@ -3804,8 +3804,8 @@ body:has(#main-navigation):not(:has(.boss-battle-card)):not(:has(#boss-back-btn)
   }
 
   .study-main-choice-icon {
-    width: 48px;
-    height: 48px;
+    width: 80px;
+    height: 80px;
 
     font-size: 23px;
   }
@@ -9279,6 +9279,80 @@ article.party-cycle-premium
       max-width: 38px;
       max-height: 38px;
     }
+  }
+</style>
+
+
+<style id="ascend-home-rank-emblem-v1">
+
+  #home-player-status .home-player-name {
+    position: relative !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    padding-right: 104px !important;
+
+    overflow: visible !important;
+  }
+
+  #home-player-status .home-player-name-text {
+    display: block;
+
+    min-width: 0;
+    flex: 1 1 auto;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #home-player-status .home-player-rank-emblem {
+    position: absolute !important;
+
+    right: 0 !important;
+    top: 0 !important;
+
+    width: 96px !important;
+    height: 96px !important;
+
+    max-width: none !important;
+    max-height: none !important;
+
+    object-fit: contain;
+    object-position: center;
+
+    user-select: none;
+    -webkit-user-drag: none;
+
+    pointer-events: none;
+  }
+
+  @media (max-width: 600px) {
+
+    #home-player-status .home-player-name {
+      padding-right: 96px !important;
+    }
+
+    #home-player-status .home-player-rank-emblem {
+      width: 88px !important;
+      height: 88px !important;
+
+      top: 0 !important;
+      right: 0 !important;
+    }
+
+  }
+
+</style>
+
+
+<style id="ascend-home-rank-force-position">
+  #home-player-status img.home-player-rank-emblem {
+    transform: translate(-90px, -13px) !important;
   }
 </style>
 
@@ -16361,7 +16435,43 @@ async function showHome(user) {
             <div class="home-player-info">
 
               <div class="home-player-name">
-                ${data.username ?? "-"}
+
+                <span class="home-player-name-text">
+                  ${data.username ?? "-"}
+                </span>
+
+                <img
+                  class="home-player-rank-emblem"
+                  src="./assets/ranks/${({
+                    "Bronze III": "bronze-iii.png",
+                    "Bronze II": "bronze-ii.png",
+                    "Bronze I": "bronze-i.png",
+
+                    "Silver III": "silver-iii.png",
+                    "Silver II": "silver-ii.png",
+                    "Silver I": "silver-i.png",
+
+                    "Gold III": "gold-iii.png",
+                    "Gold II": "gold-ii.png",
+                    "Gold I": "gold-i.png",
+
+                    "Platinum III": "platinum-iii.png",
+                    "Platinum II": "platinum-ii.png",
+                    "Platinum I": "platinum-i.png",
+
+                    "Diamond III": "diamond-iii.png",
+                    "Diamond II": "diamond-ii.png",
+                    "Diamond I": "diamond-i.png",
+
+                    "Master": "master.png",
+                    "Grandmaster": "grandmaster.png",
+                    "Legend": "legend.png"
+                  })[rank] || "bronze-iii.png"}?v=home-rank-v1"
+                  alt="${rank}"
+                  title="${rank}"
+                  draggable="false"
+                >
+
               </div>
 
               <div class="home-player-title">
