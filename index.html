@@ -11887,6 +11887,83 @@ body.study-link-room-mode-v1
 })();
 </script>
 
+
+<style id="ascend-mobile-study-home-final">
+
+#home-player-status .home-player-name{
+  padding-right:0!important;
+}
+
+#home-player-status .home-player-rank-emblem{
+  display:none!important;
+}
+
+@media (max-width:600px){
+
+  .study-main-menu{
+    width:100%!important;
+    min-width:0!important;
+    gap:10px!important;
+  }
+
+  .study-main-choice{
+    width:100%!important;
+    min-width:0!important;
+    min-height:88px!important;
+    grid-template-columns:46px minmax(0,1fr) 18px!important;
+    gap:12px!important;
+    padding:14px 15px!important;
+    box-sizing:border-box!important;
+  }
+
+  .study-main-choice-icon{
+    width:46px!important;
+    height:46px!important;
+    min-width:46px!important;
+    min-height:46px!important;
+    max-width:46px!important;
+    max-height:46px!important;
+    padding:0!important;
+    margin:0!important;
+    display:grid!important;
+    place-items:center!important;
+    font-size:23px!important;
+    line-height:1!important;
+    border-radius:12px!important;
+    box-sizing:border-box!important;
+  }
+
+  .study-main-choice-text{
+    min-width:0!important;
+  }
+
+  .study-main-choice-text strong{
+    font-size:17px!important;
+    line-height:1.2!important;
+    white-space:nowrap!important;
+  }
+
+  .study-main-choice-text span{
+    font-size:13px!important;
+    line-height:1.35!important;
+  }
+
+  .study-main-choice-arrow{
+    width:18px!important;
+    font-size:27px!important;
+  }
+
+  #study-link-card-v2{
+    width:100%!important;
+    max-width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+}
+
+</style>
+
 </head>
 
 
@@ -25261,37 +25338,7 @@ const xpPercent =
                   ${data.username ?? "-"}
                 </span>
 
-                <img
-                  class="home-player-rank-emblem"
-                  src="./assets/ranks/${({
-                    "Bronze III": "bronze-iii.png",
-                    "Bronze II": "bronze-ii.png",
-                    "Bronze I": "bronze-i.png",
-
-                    "Silver III": "silver-iii.png",
-                    "Silver II": "silver-ii.png",
-                    "Silver I": "silver-i.png",
-
-                    "Gold III": "gold-iii.png",
-                    "Gold II": "gold-ii.png",
-                    "Gold I": "gold-i.png",
-
-                    "Platinum III": "platinum-iii.png",
-                    "Platinum II": "platinum-ii.png",
-                    "Platinum I": "platinum-i.png",
-
-                    "Diamond III": "diamond-iii.png",
-                    "Diamond II": "diamond-ii.png",
-                    "Diamond I": "diamond-i.png",
-
-                    "Master": "master.png",
-                    "Grandmaster": "grandmaster.png",
-                    "Legend": "legend.png"
-                  })[rank] || "bronze-iii.png"}?v=home-rank-v1"
-                  alt="${rank}"
-                  title="${rank}"
-                  draggable="false"
-                >
+                
 
               </div>
 
