@@ -41,6 +41,112 @@ service cloud.firestore {
       allow read, write: if signedIn();
     }
 
+    // ========================================================
+    // STUDY LINK
+    // ========================================================
+
+    match /studyLinkInvites/{inviteId} {
+
+      allow read:
+
+        if signedIn()
+
+        && (
+
+          resource.data.toUid == request.auth.uid ||
+
+          resource.data.fromUid == request.auth.uid
+
+        );
+
+
+      allow create:
+
+        if signedIn()
+
+        && request.resource.data.fromUid == request.auth.uid
+
+        && request.resource.data.toUid is string
+
+        && request.resource.data.roomCode is string
+
+        && exists(
+
+          /databases/$(database)/documents/studyLinkRooms/$(request.resource.data.roomCode)/members/$(request.auth.uid)
+
+        );
+
+
+      allow update:
+
+        if signedIn()
+
+        && request.resource.data.fromUid == request.auth.uid
+
+        && request.resource.data.toUid == resource.data.toUid
+
+        && request.resource.data.roomCode == resource.data.roomCode
+
+        && exists(
+
+          /databases/$(database)/documents/studyLinkRooms/$(request.resource.data.roomCode)/members/$(request.auth.uid)
+
+        );
+
+
+      allow delete:
+
+        if signedIn()
+
+        && (
+
+          resource.data.toUid == request.auth.uid ||
+
+          resource.data.fromUid == request.auth.uid
+
+        );
+
+    }
+
+
+    match /studyLinkRooms/{roomCode} {
+
+      // ログインユーザーならROOMを読める
+      allow read:
+        if signedIn();
+
+      // ログインユーザーならROOM作成可能
+      allow create:
+        if signedIn();
+
+      // ROOM更新はログインユーザー
+      // BOOST等は後でより厳しくする
+      allow update:
+        if signedIn();
+
+      // ROOM削除は作成者のみ
+      allow delete:
+        if signedIn()
+        && resource.data.createdBy == request.auth.uid;
+
+
+      match /members/{uid} {
+
+        // ROOM参加者一覧はログインユーザーが読める
+        allow read:
+          if signedIn();
+
+        // 自分のmember documentだけ操作可能
+        allow create, update, delete:
+          if signedIn()
+          && request.auth.uid == uid;
+
+      }
+
+    }
+
+
+
     match /config/{document=**} {
       allow read: if signedIn();
       allow write: if false;

@@ -9356,6 +9356,2537 @@ article.party-cycle-premium
   }
 </style>
 
+
+<style id="ascend-friend-rank-emblem-v1">
+
+  .friend-card-rank-value {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 5px !important;
+
+    overflow: visible !important;
+  }
+
+  .friend-card-rank-emblem {
+    display: block;
+
+    width: 36px;
+    height: 36px;
+
+    flex: 0 0 36px;
+
+    object-fit: contain;
+    object-position: center;
+
+    user-select: none;
+    -webkit-user-drag: none;
+
+    pointer-events: none;
+  }
+
+  .friend-card-rank-value > span {
+    min-width: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 600px) {
+
+    .friend-card-rank-emblem {
+      width: 32px;
+      height: 32px;
+
+      flex-basis: 32px;
+    }
+
+    .friend-card-rank-value {
+      gap: 3px !important;
+    }
+
+  }
+
+</style>
+
+
+<style id="ascend-study-link-force-v2">
+
+#study-link-card-v2 {
+  margin-top: 16px;
+  padding: 18px;
+
+  border: 1px solid rgba(124,92,255,.24);
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,23,34,.97),
+      rgba(11,14,22,.97)
+    );
+}
+
+.study-link-v2-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.study-link-v2-kicker {
+  color:#9b83ff;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.16em;
+}
+
+.study-link-v2-title {
+  margin:2px 0 0;
+
+  color:#f4f5fa;
+
+  font-size:20px;
+  font-weight:900;
+}
+
+.study-link-v2-chip {
+  padding:5px 9px;
+
+  border:
+    1px solid rgba(124,92,255,.23);
+
+  border-radius:999px;
+
+  color:#b9aaff;
+  background:rgba(124,92,255,.07);
+
+  font-family:"Rajdhani",sans-serif;
+
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.14em;
+}
+
+.study-link-v2-desc {
+  margin:9px 0 15px;
+
+  color:#858e9e;
+
+  font-size:12px;
+  line-height:1.6;
+}
+
+#study-link-v2-create {
+  width:100%;
+  min-height:46px;
+
+  color:#fff !important;
+
+  border:
+    1px solid rgba(124,92,255,.34) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7355ef,
+      #5940d8
+    ) !important;
+
+  font-weight:800 !important;
+  letter-spacing:.08em;
+}
+
+.study-link-v2-or {
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  margin:13px 0;
+
+  color:#596272;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.15em;
+}
+
+.study-link-v2-or::before,
+.study-link-v2-or::after {
+  content:"";
+  height:1px;
+  flex:1;
+  background:rgba(255,255,255,.07);
+}
+
+.study-link-v2-join-row {
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    auto;
+
+  gap:8px;
+}
+
+#study-link-v2-code {
+  text-align:center;
+  text-transform:uppercase;
+
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    monospace !important;
+
+  font-weight:800 !important;
+  letter-spacing:.14em;
+}
+
+#study-link-v2-join {
+  min-width:92px;
+
+  color:#e8eaf1 !important;
+
+  border:
+    1px solid rgba(255,255,255,.1) !important;
+
+  background:
+    rgba(255,255,255,.045) !important;
+
+  font-weight:800 !important;
+}
+
+.study-link-v2-active {
+  padding:14px;
+
+  border:
+    1px solid rgba(66,211,146,.17);
+
+  border-radius:13px;
+
+  background:
+    rgba(66,211,146,.035);
+}
+
+.study-link-v2-connected {
+  display:flex;
+  align-items:center;
+  gap:7px;
+
+  margin-bottom:10px;
+
+  color:#75e4b5;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.13em;
+}
+
+.study-link-v2-dot {
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:#42d392;
+}
+
+.study-link-v2-label {
+  color:#626c7d;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.16em;
+}
+
+#study-link-v2-room-code {
+  margin-top:2px;
+
+  color:#f3f5ff;
+
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    monospace;
+
+  font-size:28px;
+  font-weight:800;
+  letter-spacing:.14em;
+}
+
+.study-link-v2-actions {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+
+  gap:8px;
+
+  margin-top:13px;
+}
+
+.study-link-v2-actions button {
+  min-height:40px;
+
+  color:#cbd0da !important;
+
+  border:
+    1px solid rgba(255,255,255,.09) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+
+  font-weight:800 !important;
+}
+
+#study-link-v2-leave {
+  color:#ff8496 !important;
+
+  border-color:
+    rgba(255,93,115,.16) !important;
+}
+
+#study-link-v2-status {
+  min-height:17px;
+
+  margin-top:9px;
+
+  color:#7d8798;
+
+  font-size:11px;
+
+  text-align:center;
+}
+
+#study-link-v2-status.success {
+  color:#75e4b5;
+}
+
+#study-link-v2-status.error {
+  color:#ff8496;
+}
+
+
+
+/* ===== LOBBY FINAL DIRECT ===== */
+
+#study-link-v2-lobby{
+  display:grid!important;
+  gap:9px!important;
+  padding:12px!important;
+  margin-top:8px!important;
+  box-sizing:border-box!important;
+
+  border:1px solid rgba(255,255,255,.075)!important;
+  border-radius:14px!important;
+  background:#0a0f17!important;
+}
+
+#study-link-v2-create{
+  width:100%!important;
+  height:44px!important;
+
+  border:1px solid rgba(125,105,255,.32)!important;
+  border-radius:10px!important;
+
+  background:rgba(125,105,255,.10)!important;
+  color:#cec7ff!important;
+
+  font-family:"Rajdhani",sans-serif!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  letter-spacing:.12em!important;
+
+  box-shadow:0 0 14px rgba(125,105,255,.07)!important;
+}
+
+.study-link-v2-or{
+  display:flex!important;
+  align-items:center!important;
+  gap:9px!important;
+
+  margin:1px 0!important;
+
+  color:#535e70!important;
+  font-size:8px!important;
+  letter-spacing:.18em!important;
+}
+
+.study-link-v2-or::before,
+.study-link-v2-or::after{
+  content:""!important;
+  flex:1!important;
+  height:1px!important;
+  background:rgba(255,255,255,.06)!important;
+}
+
+.study-link-v2-join-row{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 74px!important;
+  gap:7px!important;
+
+  width:100%!important;
+  min-width:0!important;
+}
+
+#study-link-v2-code{
+  width:100%!important;
+  min-width:0!important;
+  height:38px!important;
+  box-sizing:border-box!important;
+
+  padding:0 10px!important;
+
+  border:1px solid rgba(255,255,255,.08)!important;
+  border-radius:9px!important;
+
+  background:#070b11!important;
+  color:#f2efff!important;
+
+  font-family:"Rajdhani",sans-serif!important;
+  font-size:14px!important;
+  font-weight:700!important;
+  letter-spacing:.14em!important;
+
+  outline:none!important;
+}
+
+#study-link-v2-code:focus{
+  border-color:rgba(125,105,255,.38)!important;
+  box-shadow:0 0 10px rgba(125,105,255,.08)!important;
+}
+
+#study-link-v2-join{
+  width:74px!important;
+  min-width:74px!important;
+  height:38px!important;
+  padding:0!important;
+
+  border:1px solid rgba(255,255,255,.09)!important;
+  border-radius:9px!important;
+
+  background:rgba(255,255,255,.035)!important;
+  color:#abb5c5!important;
+
+  font-family:"Rajdhani",sans-serif!important;
+  font-size:10px!important;
+  font-weight:800!important;
+  letter-spacing:.09em!important;
+}
+
+</style>
+
+
+<style id="ascend-study-link-members-v1">
+
+.study-link-v2-members-wrap {
+  margin-top: 16px;
+  padding-top: 14px;
+
+  border-top:
+    1px solid rgba(255,255,255,.07);
+}
+
+.study-link-v2-members-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:9px;
+}
+
+.study-link-v2-members-label {
+  color:#747e90;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:10px;
+  font-weight:800;
+
+  letter-spacing:.15em;
+}
+
+#study-link-v2-member-count {
+  color:#9b83ff;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:11px;
+  font-weight:800;
+}
+
+#study-link-v2-members {
+  display:grid;
+  gap:7px;
+}
+
+.study-link-v2-member {
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    auto;
+
+  align-items:center;
+  gap:12px;
+
+  min-height:48px;
+
+  padding:9px 11px;
+
+  border:
+    1px solid rgba(255,255,255,.065);
+
+  border-radius:11px;
+
+  background:
+    rgba(255,255,255,.025);
+}
+
+.study-link-v2-member-main {
+  min-width:0;
+}
+
+.study-link-v2-member-name {
+  overflow:hidden;
+
+  color:#eef0f5;
+
+  font-size:13px;
+  font-weight:800;
+
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.study-link-v2-you {
+  margin-left:6px;
+
+  color:#9b83ff;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:9px;
+  font-weight:800;
+
+  letter-spacing:.12em;
+}
+
+.study-link-v2-member-sub {
+  margin-top:2px;
+
+  color:#626c7c;
+
+  font-size:10px;
+}
+
+.study-link-v2-member-state {
+  min-width:58px;
+
+  padding:5px 8px;
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  border-radius:999px;
+
+  color:#818b9b;
+
+  background:
+    rgba(255,255,255,.035);
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:10px;
+  font-weight:800;
+
+  text-align:center;
+  letter-spacing:.08em;
+}
+
+.study-link-v2-member-state.studying {
+  color:#75e4b5;
+
+  border-color:
+    rgba(66,211,146,.18);
+
+  background:
+    rgba(66,211,146,.055);
+}
+
+.study-link-v2-member-state.paused {
+  color:#ffd166;
+
+  border-color:
+    rgba(255,209,102,.17);
+
+  background:
+    rgba(255,209,102,.045);
+}
+
+.study-link-v2-members-empty {
+  padding:12px;
+
+  color:#687283;
+
+  font-size:11px;
+  text-align:center;
+}
+
+</style>
+
+
+<style id="ascend-study-link-room-mode-v1">
+
+/* =========================================================
+   STUDY LINK / ROOM MODE
+========================================================= */
+
+body.study-link-room-mode-v1 {
+  overflow: hidden !important;
+}
+
+
+/* ASCEND navigation is unavailable while in a room */
+body.study-link-room-mode-v1
+#persistent-bottom-nav,
+
+body.study-link-room-mode-v1
+#persistent-top-tabs {
+  display: none !important;
+}
+
+
+/* STUDY LINK becomes the whole application */
+body.study-link-room-mode-v1
+#study-link-card-v2 {
+  position: fixed !important;
+
+  inset: 0 !important;
+
+  z-index: 25000 !important;
+
+  width: 100% !important;
+  max-width: none !important;
+
+  height: 100dvh !important;
+
+  margin: 0 !important;
+
+  padding:
+    max(
+      18px,
+      env(safe-area-inset-top)
+    )
+    max(
+      18px,
+      env(safe-area-inset-right)
+    )
+    max(
+      24px,
+      env(safe-area-inset-bottom)
+    )
+    max(
+      18px,
+      env(safe-area-inset-left)
+    ) !important;
+
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+
+  background:
+    radial-gradient(
+      circle at 85% 5%,
+      rgba(124,92,255,.16),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 10% 80%,
+      rgba(53,201,255,.06),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      #0d1018,
+      #080a10
+    ) !important;
+
+  box-shadow: none !important;
+}
+
+
+/* inner width */
+body.study-link-room-mode-v1
+#study-link-card-v2 > * {
+  width:
+    min(
+      100%,
+      760px
+    );
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* =========================================================
+   ROOM MODE HEADER
+========================================================= */
+
+.study-link-room-mode-header-v1 {
+  display: none;
+}
+
+
+body.study-link-room-mode-v1
+.study-link-room-mode-header-v1 {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  margin-bottom: 26px !important;
+
+  padding-bottom: 14px;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.07);
+}
+
+
+.study-link-room-mode-brand-v1 {
+  min-width: 0;
+}
+
+
+.study-link-room-mode-app-v1 {
+  color: #f4f5fb;
+
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 17px;
+  font-weight: 800;
+
+  letter-spacing: .08em;
+}
+
+
+.study-link-room-mode-path-v1 {
+  margin-top: 2px;
+
+  color: #7f899a;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: .15em;
+}
+
+
+.study-link-room-mode-state-v1 {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding:
+    6px 10px;
+
+  border:
+    1px solid rgba(66,211,146,.18);
+
+  border-radius:
+    999px;
+
+  color:
+    #75e4b5;
+
+  background:
+    rgba(66,211,146,.055);
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .11em;
+
+  white-space:
+    nowrap;
+}
+
+
+.study-link-room-mode-state-v1::before {
+  content: "";
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    #42d392;
+}
+
+
+/* =========================================================
+   ORIGINAL STUDY LINK HEADER ADJUSTMENT
+========================================================= */
+
+body.study-link-room-mode-v1
+.study-link-v2-head {
+  margin-top: 0;
+}
+
+
+body.study-link-room-mode-v1
+.study-link-v2-kicker {
+  color:
+    #9b83ff;
+
+  font-size:
+    13px;
+}
+
+
+body.study-link-room-mode-v1
+.study-link-v2-title {
+  font-size:
+    clamp(
+      24px,
+      5vw,
+      34px
+    );
+}
+
+
+body.study-link-room-mode-v1
+.study-link-v2-desc {
+  margin-top:
+    10px;
+
+  margin-bottom:
+    22px;
+
+  font-size:
+    13px;
+
+  color:
+    #8993a5;
+}
+
+
+/* =========================================================
+   ROOM CONTENT
+========================================================= */
+
+body.study-link-room-mode-v1
+.study-link-v2-active {
+  margin-top:
+    18px;
+
+  padding:
+    18px;
+
+  border:
+    1px solid rgba(124,92,255,.13);
+
+  border-radius:
+    16px;
+
+  background:
+    rgba(255,255,255,.025);
+}
+
+
+body.study-link-room-mode-v1
+#study-link-v2-room-code {
+  margin-top:
+    4px;
+
+  font-size:
+    clamp(
+      28px,
+      7vw,
+      40px
+    );
+
+  letter-spacing:
+    .16em;
+}
+
+
+/* LEAVE must always remain obvious */
+body.study-link-room-mode-v1
+#study-link-v2-leave {
+  color:
+    #ff8a9b !important;
+
+  border-color:
+    rgba(255,93,115,.22) !important;
+
+  background:
+    rgba(255,93,115,.045) !important;
+}
+
+
+/* =========================================================
+   DEV NOTE
+   Normal STUDY buttons remain behind the room shell.
+   They cannot be interacted with.
+========================================================= */
+
+body.study-link-room-mode-v1
+.study-main-menu {
+  pointer-events:
+    none !important;
+}
+
+
+@media (max-width: 600px) {
+
+  body.study-link-room-mode-v1
+  #study-link-card-v2 {
+    padding:
+      max(
+        14px,
+        env(safe-area-inset-top)
+      )
+      14px
+      max(
+        20px,
+        env(safe-area-inset-bottom)
+      ) !important;
+  }
+
+
+  body.study-link-room-mode-v1
+  .study-link-room-mode-header-v1 {
+    margin-bottom:
+      20px !important;
+  }
+
+
+  .study-link-room-mode-app-v1 {
+    font-size:
+      15px;
+  }
+
+}
+
+</style>
+
+
+
+
+<style id="ascend-study-link-room-timer-v1">
+
+#study-link-room-timer-v1{
+  margin:7px 0!important;
+  padding:12px!important;
+
+  border:1px solid rgba(255,255,255,.075)!important;
+  border-radius:14px!important;
+
+  background:#0a0f17!important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 8px 22px rgba(0,0,0,.18)!important;
+}
+
+.study-link-room-timer-label-v1{
+  margin-bottom:5px!important;
+
+  color:#647083!important;
+  font-size:8px!important;
+  font-weight:800!important;
+  letter-spacing:.18em!important;
+}
+
+#study-link-room-subject-v1{
+  width:100%!important;
+  height:33px!important;
+
+  padding:0 10px!important;
+
+  border:1px solid rgba(255,255,255,.07)!important;
+  border-radius:8px!important;
+
+  background:#070b11!important;
+  color:#cbd5e1!important;
+
+  font-size:10px!important;
+  font-weight:600!important;
+
+  outline:none!important;
+}
+
+#study-link-room-subject-v1:focus{
+  border-color:rgba(125,105,255,.28)!important;
+}
+
+
+/* CLOCK = 主役 */
+
+#study-link-room-clock-v1{
+  margin:12px 0 3px!important;
+  padding:20px 0 15px!important;
+
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+
+  color:#f4f2ff!important;
+
+  font-family:Rajdhani,sans-serif!important;
+  font-size:72px!important;
+  font-weight:600!important;
+  font-variant-numeric:tabular-nums!important;
+
+  line-height:.92!important;
+  letter-spacing:.065em!important;
+  text-align:center!important;
+
+  text-shadow:
+    0 0 8px rgba(125,105,255,.30),
+    0 0 24px rgba(125,105,255,.13)!important;
+}
+
+
+/* 時計下の細いアクセント */
+
+#study-link-room-clock-v1::after{
+  content:"";
+
+  display:block;
+
+  width:34px;
+  height:1px;
+
+  margin:10px auto 0;
+
+  background:rgba(125,105,255,.48);
+
+  box-shadow:
+    0 0 8px rgba(125,105,255,.22);
+}
+
+
+#study-link-room-timer-state-v1{
+  margin:6px 0 9px!important;
+
+  color:#536073!important;
+
+  font-size:8px!important;
+  font-weight:800!important;
+  letter-spacing:.20em!important;
+
+  text-align:center!important;
+}
+
+
+/* BUTTONS */
+
+.study-link-room-timer-buttons-v1{
+  display:grid!important;
+  grid-template-columns:1.25fr 1fr 1fr!important;
+  gap:6px!important;
+}
+
+.study-link-room-timer-buttons-v1 button{
+  height:32px!important;
+  min-height:32px!important;
+
+  padding:0 8px!important;
+
+  border-radius:8px!important;
+
+  font-size:9px!important;
+  font-weight:800!important;
+  letter-spacing:.09em!important;
+
+  box-shadow:none!important;
+}
+
+
+/* STARTだけアクセント */
+
+#study-link-room-start-v1{
+  border:1px solid rgba(125,105,255,.24)!important;
+
+  background:rgba(125,105,255,.075)!important;
+
+  color:#c7bdff!important;
+}
+
+
+/* PAUSE */
+
+#study-link-room-pause-v1{
+  border:1px solid rgba(255,255,255,.075)!important;
+
+  background:rgba(255,255,255,.025)!important;
+
+  color:#9aa6b6!important;
+}
+
+
+/* FINISH */
+
+#study-link-room-finish-v1{
+  border:1px solid rgba(255,255,255,.055)!important;
+
+  background:transparent!important;
+
+  color:#6f7b8c!important;
+}
+
+</style>
+
+
+
+
+<style id="ascend-study-link-active-status-v1">
+
+#study-link-status-panel-v1 {
+  margin: 18px 0;
+  padding: 16px 18px;
+
+  border:
+    1px solid rgba(255,255,255,.075);
+
+  border-radius: 15px;
+
+  background:
+    rgba(255,255,255,.022);
+}
+
+
+.study-link-status-head-v1 {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 13px;
+}
+
+
+.study-link-status-label-v1 {
+  color: #7d8799;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: .15em;
+}
+
+
+#study-link-status-state-v1 {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: #929bad;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: .09em;
+}
+
+
+.study-link-status-dot-v1 {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #5b6475;
+}
+
+
+#study-link-status-panel-v1.active {
+  border-color:
+    rgba(66,211,146,.18);
+
+  background:
+    rgba(66,211,146,.035);
+}
+
+
+#study-link-status-panel-v1.active
+#study-link-status-state-v1 {
+  color: #75e4b5;
+}
+
+
+#study-link-status-panel-v1.active
+.study-link-status-dot-v1 {
+  background: #42d392;
+}
+
+
+.study-link-status-count-v1 {
+  margin-bottom: 12px;
+
+  color: #747f92;
+
+  font-size: 11px;
+}
+
+
+.study-link-status-count-v1 strong {
+  color: #f3f5f8;
+}
+
+
+.study-link-status-bonuses-v1 {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0,1fr)
+    );
+
+  gap: 8px;
+}
+
+
+.study-link-status-bonus-v1 {
+  padding: 10px 8px;
+
+  border:
+    1px solid rgba(255,255,255,.06);
+
+  border-radius: 10px;
+
+  background:
+    rgba(0,0,0,.13);
+
+  text-align: center;
+}
+
+
+.study-link-status-bonus-name-v1 {
+  color: #717b8d;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: .08em;
+}
+
+
+.study-link-status-bonus-value-v1 {
+  margin-top: 2px;
+
+  color: #eff2f7;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+
+.study-link-status-wait-v1 {
+  color: #7f899c;
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+
+#study-link-status-personal-v1 {
+  margin-top: 11px;
+
+  padding-top: 10px;
+
+  border-top:
+    1px solid rgba(255,255,255,.055);
+
+  color: #788295;
+
+  font-size: 10px;
+}
+
+
+#study-link-status-personal-v1.eligible {
+  color: #75e4b5;
+}
+
+
+@media (max-width:600px) {
+
+  .study-link-status-bonuses-v1 {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0,1fr)
+      );
+  }
+
+}
+
+</style>
+
+
+<style id="study-link-room-tabs-v2-css">
+
+#sl-focus-v2,#sl-room-v2{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+#study-link-room-tabs-v2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:4px;
+  margin:0 0 10px;
+  padding:4px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  background:#080c13;
+}
+
+#study-link-room-tabs-v2 label{
+  padding:10px;
+  text-align:center;
+  border-radius:9px;
+  color:#70798c;
+  font:700 12px Rajdhani,sans-serif;
+  letter-spacing:.1em;
+  cursor:pointer;
+}
+
+#sl-focus-v2:checked ~ #study-link-room-tabs-v2 label[for="sl-focus-v2"],
+#sl-room-v2:checked ~ #study-link-room-tabs-v2 label[for="sl-room-v2"]{
+  color:#00f3ff;
+  background:rgba(0,243,255,.09);
+  box-shadow:inset 0 0 0 1px rgba(0,243,255,.18);
+}
+
+/* FOCUSではROOM情報を隠す */
+#sl-focus-v2:checked ~ .study-link-v2-connected,
+#sl-focus-v2:checked ~ .study-link-v2-label,
+#sl-focus-v2:checked ~ #study-link-v2-room-code,
+#sl-focus-v2:checked ~ .study-link-v2-actions,
+#sl-focus-v2:checked ~ #study-link-boost-fund-v1{
+  display:none!important;
+}
+
+/* ROOMではタイマーを隠す */
+#sl-room-v2:checked ~ #study-link-room-timer-v1{
+  display:none!important;
+}
+
+/* ROOMではLINK STATUSも隠す */
+#study-link-card-v2:has(#sl-room-v2:checked) #study-link-v2-status{
+  display:none!important;
+}
+
+</style>
+
+
+<style id="study-link-room-compact-final">
+
+/* 外側はスクロールさせない */
+body.study-link-room-mode-v1 > main > section{
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+}
+
+/* ROOMだけがスクロール担当 */
+body.study-link-room-mode-v1 #study-link-card-v2{
+  position:fixed!important;
+  inset:0!important;
+
+  width:auto!important;
+  height:auto!important;
+  max-width:none!important;
+  max-height:none!important;
+
+  padding:10px 16px 22px!important;
+  box-sizing:border-box!important;
+
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior-y:contain!important;
+}
+
+/* 中身の横幅も少し小さく */
+body.study-link-room-mode-v1 #study-link-card-v2 > *{
+  width:min(100%,500px)!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+
+/* メインパネル */
+body.study-link-room-mode-v1 #study-link-v2-active{
+  padding:9px!important;
+  border-radius:13px!important;
+}
+
+/* ROOM / FOCUS */
+body.study-link-room-mode-v1 #study-link-room-tabs-v2{
+  margin-bottom:7px!important;
+  padding:3px!important;
+}
+
+body.study-link-room-mode-v1 #study-link-room-tabs-v2 label{
+  padding:7px 5px!important;
+  font-size:11px!important;
+}
+
+/* ROOM CODE */
+body.study-link-room-mode-v1 #study-link-v2-room-code{
+  margin:2px 0 6px!important;
+  font-size:22px!important;
+  line-height:1!important;
+}
+
+/* TIMER */
+body.study-link-room-mode-v1 #study-link-room-timer-v1{
+  margin:5px 0!important;
+  padding:8px!important;
+  border-radius:12px!important;
+}
+
+body.study-link-room-mode-v1 #study-link-room-subject-v1{
+  min-height:32px!important;
+  height:32px!important;
+  font-size:11px!important;
+}
+
+body.study-link-room-mode-v1 #study-link-room-clock-v1{
+  padding:8px 0!important;
+  font-size:30px!important;
+}
+
+body.study-link-room-mode-v1 #study-link-room-timer-state-v1{
+  margin:2px 0!important;
+  font-size:10px!important;
+}
+
+body.study-link-room-mode-v1 .study-link-room-timer-buttons-v1{
+  gap:5px!important;
+}
+
+body.study-link-room-mode-v1 .study-link-room-timer-buttons-v1 button{
+  min-height:32px!important;
+  padding:5px 7px!important;
+  font-size:10px!important;
+}
+
+/* MEMBERS */
+body.study-link-room-mode-v1 .study-link-v2-members-wrap{
+  margin-top:6px!important;
+  padding:8px!important;
+}
+
+body.study-link-room-mode-v1 .study-link-v2-members-head{
+  margin-bottom:5px!important;
+}
+
+body.study-link-room-mode-v1 #study-link-v2-members{
+  gap:5px!important;
+  font-size:11px!important;
+}
+
+/* COPY / LEAVE */
+body.study-link-room-mode-v1 .study-link-v2-actions{
+  gap:6px!important;
+  margin-top:6px!important;
+}
+
+body.study-link-room-mode-v1 .study-link-v2-actions button{
+  min-height:32px!important;
+  padding:5px 8px!important;
+  font-size:10px!important;
+}
+
+/* BOOST */
+body.study-link-room-mode-v1 #study-link-boost-fund-v1{
+  margin-top:6px!important;
+}
+
+body.study-link-room-mode-v1 #study-link-boost-fund-v1 > div{
+  padding:10px!important;
+  gap:8px!important;
+  border-radius:12px!important;
+}
+
+body.study-link-room-mode-v1 #study-link-boost-fund-v1 button,
+body.study-link-room-mode-v1 #study-link-boost-fund-v1 input{
+  min-height:30px!important;
+  padding:4px 7px!important;
+  font-size:10px!important;
+}
+
+/* STATUS */
+body.study-link-room-mode-v1 #study-link-v2-status{
+  margin:5px auto!important;
+  font-size:10px!important;
+}
+
+</style>
+
+
+<style id="ascend-link-fund-final">
+
+/* =========================================
+   ASCEND — LINK FUND
+========================================= */
+
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1{
+  margin-top:8px!important;
+}
+
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 > div{
+  padding:11px!important;
+  gap:8px!important;
+
+  border:1px solid rgba(0,243,255,.22)!important;
+  border-radius:13px!important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12,19,30,.97),
+      rgba(7,11,18,.98)
+    )!important;
+
+  box-shadow:
+    inset 0 0 22px rgba(0,243,255,.025),
+    0 0 18px rgba(0,243,255,.05)!important;
+}
+
+
+/* BOOST I/II/III FUND */
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 [data-boost-title]{
+  color:#f5f8ff!important;
+
+  font-size:12px!important;
+  font-weight:800!important;
+  letter-spacing:.12em!important;
+
+  text-shadow:
+    0 0 12px rgba(0,243,255,.12)!important;
+}
+
+
+/* ACTIVE / OFF */
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 [data-boost-active]{
+  margin-top:2px!important;
+
+  color:#00f3ff!important;
+  opacity:.82!important;
+
+  font-size:10px!important;
+  font-weight:700!important;
+  letter-spacing:.06em!important;
+}
+
+
+/* YOUR COINS */
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 [data-boost-coins]{
+  color:#8d98aa!important;
+  opacity:1!important;
+
+  font-size:10px!important;
+  font-weight:600!important;
+}
+
+
+/* 1,000 / 3,000 COINS */
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 [data-boost-progress]{
+  margin-bottom:5px!important;
+
+  color:#b7c2d4!important;
+
+  font-size:10px!important;
+  font-weight:700!important;
+  letter-spacing:.04em!important;
+}
+
+
+/* GAUGE TRACK */
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 div:has(> [data-boost-fill]){
+  height:7px!important;
+
+  overflow:hidden!important;
+
+  border-radius:999px!important;
+
+  background:
+    rgba(255,255,255,.07)!important;
+
+  box-shadow:
+    inset 0 0 5px rgba(0,0,0,.45)!important;
+}
+
+
+/* GAUGE FILL */
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 [data-boost-fill]{
+  height:100%!important;
+
+  border-radius:999px!important;
+
+  background:
+    linear-gradient(
+      90deg,
+      #00bcd4,
+      #00f3ff,
+      #79fbff
+    )!important;
+
+  box-shadow:
+    0 0 12px rgba(0,243,255,.55)!important;
+
+  transition:
+    width .25s ease!important;
+}
+
+
+/* INPUT */
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 [data-boost-input]{
+  min-height:30px!important;
+
+  padding:4px 7px!important;
+
+  border:
+    1px solid rgba(0,243,255,.15)!important;
+
+  border-radius:8px!important;
+
+  background:#080d15!important;
+  color:#fff!important;
+
+  font-size:10px!important;
+  text-align:center!important;
+
+  outline:none!important;
+}
+
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 [data-boost-input]:focus{
+  border-color:
+    rgba(0,243,255,.5)!important;
+
+  box-shadow:
+    0 0 10px rgba(0,243,255,.10)!important;
+}
+
+
+/* FUND BUTTONS */
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 button{
+  min-height:29px!important;
+
+  padding:4px 7px!important;
+
+  border:
+    1px solid rgba(0,243,255,.16)!important;
+
+  border-radius:8px!important;
+
+  background:
+    rgba(0,243,255,.05)!important;
+
+  color:#bffcff!important;
+
+  font-size:10px!important;
+  font-weight:700!important;
+  letter-spacing:.04em!important;
+
+  box-shadow:none!important;
+}
+
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 button:hover{
+  border-color:
+    rgba(0,243,255,.4)!important;
+
+  background:
+    rgba(0,243,255,.11)!important;
+
+  box-shadow:
+    0 0 10px rgba(0,243,255,.07)!important;
+}
+
+</style>
+
+
+<style id="study-link-friend-invite-v1-css">
+
+/* FOCUSでは招待UIを隠す */
+#sl-focus-v2:checked ~ #study-link-friend-invite-v1{
+  display:none!important;
+}
+
+/* ROOM FRIEND INVITE */
+#study-link-friend-invite-v1{
+  margin-top:7px;
+  padding:8px;
+
+  border:1px solid rgba(255,255,255,.075);
+  border-radius:11px;
+
+  background:rgba(8,12,19,.72);
+}
+
+#study-link-invite-toggle-v1{
+  width:100%;
+  height:32px;
+
+  border:1px solid rgba(125,105,255,.18);
+  border-radius:8px;
+
+  background:rgba(125,105,255,.055);
+  color:#bdb5ff;
+
+  font-family:Rajdhani,sans-serif;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.1em;
+}
+
+#study-link-invite-list-v1{
+  display:grid;
+  gap:5px;
+  margin-top:7px;
+}
+
+.study-link-invite-friend-v1{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:7px;
+  align-items:center;
+
+  padding:6px 7px;
+
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:8px;
+
+  background:rgba(255,255,255,.02);
+}
+
+.study-link-invite-friend-v1 strong{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+
+  color:#dce3ee;
+  font-size:11px;
+}
+
+.study-link-invite-friend-v1 button{
+  min-width:66px;
+  height:27px;
+
+  border:1px solid rgba(125,105,255,.19);
+  border-radius:7px;
+
+  background:rgba(125,105,255,.06);
+  color:#bfb7ff;
+
+  font-size:9px;
+  font-weight:800;
+}
+
+.study-link-invite-friend-v1 button:disabled{
+  opacity:.48;
+}
+
+
+/* INCOMING INVITES */
+
+#study-link-incoming-invites-v1{
+  display:grid;
+  gap:6px;
+
+  margin-top:4px;
+  padding-top:9px;
+
+  border-top:1px solid rgba(255,255,255,.06);
+}
+
+.study-link-incoming-title-v1{
+  color:#737f91;
+
+  font-family:Rajdhani,sans-serif;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.15em;
+}
+
+.study-link-incoming-card-v1{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  gap:5px;
+  align-items:center;
+
+  padding:7px;
+
+  border:1px solid rgba(125,105,255,.14);
+  border-radius:9px;
+
+  background:rgba(125,105,255,.035);
+}
+
+.study-link-incoming-user-v1{
+  min-width:0;
+}
+
+.study-link-incoming-user-v1 strong{
+  display:block;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+
+  color:#e4e1ff;
+  font-size:10px;
+}
+
+.study-link-incoming-user-v1 span{
+  color:#667286;
+  font-size:8px;
+}
+
+.study-link-incoming-card-v1 button{
+  height:27px;
+  padding:0 7px;
+
+  border-radius:7px;
+
+  font-size:8px;
+  font-weight:800;
+}
+
+.study-link-incoming-join-v1{
+  border:1px solid rgba(125,105,255,.28);
+  background:rgba(125,105,255,.10);
+  color:#c9c3ff;
+}
+
+.study-link-incoming-decline-v1{
+  border:1px solid rgba(255,255,255,.07);
+  background:transparent;
+  color:#697587;
+}
+
+</style>
+
+
+<style id="ascend-ranked-entry-v1-css">
+
+#asc-ranked-entry-v1{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:12px;
+  align-items:center;
+
+  padding:12px 13px;
+
+  border:
+    1px solid
+    rgba(var(--ranked-entry-rgb),.15);
+
+  border-radius:13px;
+
+  background:#0a0f17;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+.asc-ranked-entry-copy{
+  display:grid;
+  gap:2px;
+  min-width:0;
+}
+
+.asc-ranked-entry-copy > span{
+  color:
+    rgba(var(--ranked-entry-rgb),.72);
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.17em;
+}
+
+.asc-ranked-entry-copy > strong{
+  color:#eef2f8;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:14px;
+  font-weight:800;
+  letter-spacing:.06em;
+}
+
+.asc-ranked-entry-copy > small{
+  color:#667286;
+  font-size:9px;
+}
+
+#asc-ranked-enter-v1{
+  height:34px;
+  padding:0 14px;
+
+  border:
+    1px solid
+    rgba(var(--ranked-entry-rgb),.28);
+
+  border-radius:9px;
+
+  background:
+    rgba(var(--ranked-entry-rgb),.07);
+
+  color:
+    rgb(var(--ranked-entry-rgb));
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.11em;
+}
+
+.asc-ranked-entry-active{
+  padding:5px 8px;
+
+  border:
+    1px solid
+    rgba(var(--ranked-entry-rgb),.20);
+
+  border-radius:999px;
+
+  color:
+    rgb(var(--ranked-entry-rgb));
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.14em;
+}
+
+</style>
+
+
+
+
+
+<style id="asc-leaderboard-scope-tabs-v1-css">
+.asc-leaderboard-scope-tabs-v1{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+  margin:12px 0;
+  padding:4px;
+  border:1px solid rgba(255,255,255,.065);
+  border-radius:11px;
+  background:#080c13;
+}
+
+.asc-leaderboard-scope-tab-v1{
+  height:34px;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  color:#667287;
+  font-family:"Rajdhani",sans-serif;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.13em;
+  cursor:pointer;
+}
+
+.asc-leaderboard-scope-tab-v1.active{
+  color:#f2f4ff;
+  background:rgba(var(--rank-rgb),.10);
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--rank-rgb),.18);
+}
+
+.asc-leaderboard-panel-v1[hidden]{
+  display:none!important;
+}
+</style>
+
+
+<style id="asc-friends-leaderboard-v1-css">
+
+.asc-lb-list-v1{
+  display:grid;
+  gap:7px;
+}
+
+.asc-lb-row-v1{
+  display:grid;
+  grid-template-columns:
+    30px
+    34px
+    minmax(0,1fr)
+    auto;
+
+  gap:9px;
+  align-items:center;
+
+  min-height:58px;
+  padding:8px 10px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.065);
+
+  border-radius:11px;
+
+  background:#090d14;
+}
+
+.asc-lb-position-v1{
+  color:#78849a;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:15px;
+  font-weight:800;
+  text-align:center;
+}
+
+.asc-lb-emblem-v1{
+  width:30px;
+  height:30px;
+  object-fit:contain;
+}
+
+.asc-lb-player-v1{
+  min-width:0;
+}
+
+.asc-lb-player-v1 strong{
+  display:flex;
+  gap:6px;
+  align-items:center;
+
+  overflow:hidden;
+
+  color:#eef2fb;
+  font-size:12px;
+
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.asc-lb-player-v1 strong span{
+  flex:none;
+
+  padding:2px 5px;
+
+  border-radius:5px;
+
+  background:
+    rgba(
+      var(--rank-rgb),
+      .13
+    );
+
+  color:
+    rgb(
+      var(--rank-rgb)
+    );
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:7px;
+  letter-spacing:.1em;
+}
+
+.asc-lb-player-v1 small{
+  display:block;
+
+  margin-top:2px;
+
+  color:#69758a;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.04em;
+}
+
+.asc-lb-time-v1{
+  color:#e9edf8;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:12px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+
+/* TOP 3 */
+
+.asc-lb-row-v1.top-1{
+  border-color:
+    rgba(255,215,117,.30);
+
+  box-shadow:
+    inset 0 0 18px
+    rgba(255,215,117,.035);
+}
+
+.asc-lb-row-v1.top-1
+.asc-lb-position-v1{
+  color:#ffdc78;
+}
+
+.asc-lb-row-v1.top-2
+.asc-lb-position-v1{
+  color:#c9d6e9;
+}
+
+.asc-lb-row-v1.top-3
+.asc-lb-position-v1{
+  color:#d49a7d;
+}
+
+
+/* YOU */
+
+.asc-lb-row-v1.is-you{
+  border-color:
+    rgba(
+      var(--rank-rgb),
+      .25
+    );
+}
+
+</style>
+
+
+<style id="asc-global-leaderboard-v1-css">
+
+.asc-lb-global-head-v1{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  margin:2px 2px 9px;
+
+  color:#687489;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+
+.asc-lb-global-head-v1 strong{
+  color:#aeb8ca;
+  font-size:9px;
+}
+
+
+/* CURRENT / NEXT / GAP */
+
+.asc-lb-next-v1{
+  display:grid;
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:5px;
+
+  margin-bottom:10px;
+  padding:8px;
+
+  border:
+    1px solid
+    rgba(
+      var(--rank-rgb),
+      .15
+    );
+
+  border-radius:10px;
+
+  background:
+    rgba(
+      var(--rank-rgb),
+      .035
+    );
+}
+
+.asc-lb-next-v1 span{
+  display:grid;
+  gap:1px;
+
+  color:#657187;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:.1em;
+}
+
+.asc-lb-next-v1 strong{
+  color:#eef2fb;
+  font-size:12px;
+  letter-spacing:.03em;
+}
+
+
+/* TOP100外の自分 */
+
+.asc-lb-outside-label-v1{
+  margin:14px 2px 6px;
+
+  color:
+    rgb(var(--rank-rgb));
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.14em;
+}
+
+.asc-lb-row-v1.outside-top-v1{
+  border-color:
+    rgba(
+      var(--rank-rgb),
+      .32
+    );
+}
+
+</style>
+
+
+<style id="asc-ranked-top3-crowns-v1">
+
+/* =========================================
+   ASCEND PREMIUM TOP 3
+========================================= */
+
+.asc-lb-row-v1.top-1,
+.asc-lb-row-v1.top-2,
+.asc-lb-row-v1.top-3{
+  position:relative;
+}
+
+/* 上端の極細メタルライン */
+.asc-lb-row-v1.top-1::before,
+.asc-lb-row-v1.top-2::before,
+.asc-lb-row-v1.top-3::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:12px;
+  right:12px;
+  height:1px;
+  pointer-events:none;
+}
+
+.asc-lb-row-v1.top-1::before{
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,220,120,.85),
+      rgba(255,250,220,.95),
+      rgba(255,220,120,.85),
+      transparent
+    );
+}
+
+.asc-lb-row-v1.top-2::before{
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(205,220,238,.75),
+      rgba(255,255,255,.90),
+      rgba(205,220,238,.75),
+      transparent
+    );
+}
+
+.asc-lb-row-v1.top-3::before{
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(201,139,114,.72),
+      rgba(245,205,185,.85),
+      rgba(201,139,114,.72),
+      transparent
+    );
+}
+
+
+/* 王冠スペース */
+.asc-lb-crown-slot-v2{
+  height:15px;
+  display:flex;
+  align-items:flex-end;
+  margin-bottom:1px;
+}
+
+.asc-lb-crown-v2{
+  width:25px;
+  height:17px;
+  overflow:visible;
+}
+
+
+/* GOLD */
+.asc-lb-crown-v2.crown-gold{
+  filter:
+    drop-shadow(
+      0 1px 1px
+      rgba(0,0,0,.55)
+    )
+    drop-shadow(
+      0 0 4px
+      rgba(245,211,107,.28)
+    );
+}
+
+
+/* SILVER */
+.asc-lb-crown-v2.crown-silver{
+  filter:
+    drop-shadow(
+      0 1px 1px
+      rgba(0,0,0,.55)
+    )
+    drop-shadow(
+      0 0 3px
+      rgba(210,225,240,.20)
+    );
+}
+
+
+/* ROSE COPPER */
+.asc-lb-crown-v2.crown-bronze{
+  filter:
+    drop-shadow(
+      0 1px 1px
+      rgba(0,0,0,.55)
+    )
+    drop-shadow(
+      0 0 3px
+      rgba(201,139,114,.20)
+    );
+}
+
+
+/* TOP1だけ少しだけ格上 */
+.asc-lb-row-v1.top-1{
+  border-color:
+    rgba(246,211,107,.32);
+
+  box-shadow:
+    inset 0 0 20px
+    rgba(246,211,107,.035);
+}
+
+
+/* 順位数字 */
+.asc-lb-row-v1.top-1
+.asc-lb-position-v1{
+  color:#f4d36c;
+}
+
+.asc-lb-row-v1.top-2
+.asc-lb-position-v1{
+  color:#d9e3f0;
+}
+
+.asc-lb-row-v1.top-3
+.asc-lb-position-v1{
+  color:#c98b72;
+}
+
+</style>
+
+
+<script id="ascend-auto-update-v1">
+(() => {
+  const IS_STANDALONE =
+    window.matchMedia?.("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+
+  if (!IS_STANDALONE) return;
+
+  const KEY = "ascend_latest_html_hash_v1";
+
+  function hashText(text) {
+    let h = 2166136261;
+
+    for (let i = 0; i < text.length; i++) {
+      h ^= text.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+
+    return (h >>> 0).toString(16);
+  }
+
+  async function checkAscendUpdate() {
+    try {
+      const url =
+        new URL("./index.html", location.href);
+
+      url.searchParams.set(
+        "__ascend_check",
+        Date.now().toString()
+      );
+
+      const response =
+        await fetch(url.href, {
+          cache: "no-store"
+        });
+
+      if (!response.ok) return;
+
+      const html =
+        await response.text();
+
+      const latestHash =
+        hashText(html);
+
+      const previousHash =
+        localStorage.getItem(KEY);
+
+      if (!previousHash) {
+        localStorage.setItem(
+          KEY,
+          latestHash
+        );
+        return;
+      }
+
+      if (previousHash === latestHash) {
+        return;
+      }
+
+      localStorage.setItem(
+        KEY,
+        latestHash
+      );
+
+      const reloadUrl =
+        new URL("./", location.href);
+
+      reloadUrl.searchParams.set(
+        "__ascend_version",
+        latestHash
+      );
+
+      location.replace(
+        reloadUrl.href
+      );
+
+    } catch (error) {
+      console.warn(
+        "ASCEND UPDATE CHECK:",
+        error
+      );
+    }
+  }
+
+  window.addEventListener(
+    "pageshow",
+    () => {
+      setTimeout(
+        checkAscendUpdate,
+        800
+      );
+    },
+    { once: true }
+  );
+})();
+</script>
+
 </head>
 
 
@@ -9452,6 +11983,7 @@ import {
   query,
   where,
   getDocs,
+  runTransaction,
   serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
@@ -10340,6 +12872,20 @@ async function showQuestBossHubPage(user) {
   };
 
   bindMainBottomNav(user);
+
+  const rankedHomeCardV1 =
+    document.getElementById("home-player-status");
+
+  if (rankedHomeCardV1) {
+    rankedHomeCardV1.style.outline =
+      "4px solid lime";
+
+    rankedHomeCardV1.dataset.rankedActive =
+      homeRankedActiveV1 ? "1" : "0";
+
+    rankedHomeCardV1.dataset.rankedFamily =
+      homeRankedFamilyV1;
+  }
 }
 
 
@@ -10405,6 +12951,38 @@ async function showPartyFriendsHubPage(user) {
 // RANK PAGE
 // ============================================================
 
+
+function getCurrentRankedSeasonKeyV1() {
+  const now = new Date();
+
+  return `${now.getFullYear()}-${String(
+    now.getMonth() + 1
+  ).padStart(2,"0")}`;
+}
+
+function getRankedCardFamilyV1(rankName) {
+  return String(
+    rankName || "Bronze"
+  )
+    .split(" ")[0]
+    .toLowerCase();
+}
+
+function getRankedCardRgbV1(family) {
+  const colors = {
+    bronze: "201,139,114",
+    silver: "190,207,230",
+    gold: "242,201,106",
+    platinum: "126,225,220",
+    diamond: "91,193,255",
+    master: "157,110,255",
+    grandmaster: "255,77,132",
+    legend: "255,215,117"
+  };
+  return colors[String(family || "").toLowerCase()] || "125,105,255";
+}
+
+
 async function showRankPage(user) {
 
   const ref =
@@ -10436,9 +13014,19 @@ async function showRankPage(user) {
     );
 
 
+  const rankMonthlyMinutes =
+    monthlyMinutes +
+    Math.max(
+      0,
+      Number(
+        data.monthlyStudyLinkBonusMinutes ?? 0
+      )
+    );
+
+
   const currentRank =
     calculateRank(
-      monthlyMinutes
+      rankMonthlyMinutes
     );
 
 
@@ -10510,7 +13098,7 @@ async function showRankPage(user) {
 
 
     const gained =
-      monthlyMinutes -
+      rankMonthlyMinutes -
       currentStep.minutes;
 
 
@@ -10528,7 +13116,7 @@ async function showRankPage(user) {
       Math.max(
         0,
         nextStep.minutes -
-        monthlyMinutes
+        rankMonthlyMinutes
       );
 
   }
@@ -10584,6 +13172,509 @@ async function showRankPage(user) {
     `${now.getFullYear()}.${String(
       now.getMonth() + 1
     ).padStart(2, "0")}`;
+
+
+
+  const rankedSeasonKeyV1 =
+    getCurrentRankedSeasonKeyV1();
+
+  const rankedEnteredV1 =
+    String(
+      data.rankedSeason ?? ""
+    ) === rankedSeasonKeyV1;
+
+  // ==========================================================
+  // FRIENDS RANKED LEADERBOARD
+  // ==========================================================
+
+  const escapeRankedHtmlV1 = value =>
+    String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;");
+
+
+  const getRankedScoreV1 = userData => {
+
+    const stored =
+      Number(
+        userData.rankedScoreMinutes
+      );
+
+    if (Number.isFinite(stored)) {
+      return Math.max(0, stored);
+    }
+
+    return (
+      Math.max(
+        0,
+        Number(
+          userData.monthlyStudyMinutes ?? 0
+        )
+      )
+      +
+      Math.max(
+        0,
+        Number(
+          userData.monthlyStudyLinkBonusMinutes ?? 0
+        )
+      )
+    );
+  };
+
+
+  const formatRankedTimeV1 = minutes => {
+
+    const total =
+      Math.max(
+        0,
+        Math.floor(
+          Number(minutes ?? 0)
+        )
+      );
+
+    const hours =
+      Math.floor(total / 60);
+
+    const mins =
+      total % 60;
+
+    return hours > 0
+      ? `${hours}h ${mins}m`
+      : `${mins}m`;
+  };
+
+
+  const rankedEmblemFileV1 = rankName => ({
+
+    "Bronze III": "bronze-iii.png",
+    "Bronze II": "bronze-ii.png",
+    "Bronze I": "bronze-i.png",
+
+    "Silver III": "silver-iii.png",
+    "Silver II": "silver-ii.png",
+    "Silver I": "silver-i.png",
+
+    "Gold III": "gold-iii.png",
+    "Gold II": "gold-ii.png",
+    "Gold I": "gold-i.png",
+
+    "Platinum III": "platinum-iii.png",
+    "Platinum II": "platinum-ii.png",
+    "Platinum I": "platinum-i.png",
+
+    "Diamond III": "diamond-iii.png",
+    "Diamond II": "diamond-ii.png",
+    "Diamond I": "diamond-i.png",
+
+    "Master": "master.png",
+    "Grandmaster": "grandmaster.png",
+    "Legend": "legend.png"
+
+  })[rankName] || "bronze-iii.png";
+
+
+  const rankedCrownSvgV2 = (
+    position,
+    key
+  ) => {
+
+    if (position < 1 || position > 3) {
+      return "";
+    }
+
+    const palettes = {
+      1: {
+        a:"#fff8d6",
+        b:"#f5d56d",
+        c:"#ad7415",
+        d:"#ffe9a0",
+        e:"#8d5b0c",
+        stroke:"#f4d36c",
+        glow:"gold"
+      },
+      2: {
+        a:"#ffffff",
+        b:"#dbe7f2",
+        c:"#879aaf",
+        d:"#f1f7fc",
+        e:"#64778c",
+        stroke:"#cbd8e6",
+        glow:"silver"
+      },
+      3: {
+        a:"#f5d4c4",
+        b:"#d79a7d",
+        c:"#995a45",
+        d:"#edb99e",
+        e:"#744132",
+        stroke:"#c98b72",
+        glow:"bronze"
+      }
+    };
+
+    const c =
+      palettes[position];
+
+    const safeKey =
+      String(key ?? "x")
+        .replace(
+          /[^a-zA-Z0-9_-]/g,
+          ""
+        );
+
+    const gradientId =
+      `ascCrown${position}${safeKey}`;
+
+    return `
+      <div class="asc-lb-crown-slot-v2">
+        <svg
+          class="asc-lb-crown-v2 crown-${c.glow}"
+          viewBox="0 0 36 24"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient
+              id="${gradientId}"
+              x1="0"
+              y1="0"
+              x2="1"
+              y2="1"
+            >
+              <stop offset="0%" stop-color="${c.a}"/>
+              <stop offset="25%" stop-color="${c.b}"/>
+              <stop offset="52%" stop-color="${c.c}"/>
+              <stop offset="78%" stop-color="${c.d}"/>
+              <stop offset="100%" stop-color="${c.e}"/>
+            </linearGradient>
+          </defs>
+
+          <path
+            d="
+              M3 7
+              L10 12
+              L13 5
+              L18 1.8
+              L23 5
+              L26 12
+              L33 7
+              L30 19
+              L6 19
+              Z
+            "
+            fill="url(#${gradientId})"
+            stroke="${c.stroke}"
+            stroke-width=".75"
+            stroke-linejoin="round"
+          />
+
+          <path
+            d="M7 16.2 H29"
+            fill="none"
+            stroke="rgba(255,255,255,.58)"
+            stroke-width=".8"
+          />
+
+          <path
+            d="M7 18.3 H29"
+            fill="none"
+            stroke="rgba(0,0,0,.28)"
+            stroke-width="1"
+          />
+
+          <path
+            d="
+              M18 5.1
+              L19.3 6.8
+              L18 8.5
+              L16.7 6.8
+              Z
+            "
+            fill="rgba(255,255,255,.78)"
+          />
+        </svg>
+      </div>
+    `;
+  };
+
+
+  const rankedFriendUidsV1 =
+    new Set();
+
+
+  const [
+    rankedFriendsAV1,
+    rankedFriendsBV1
+  ] =
+    await Promise.all([
+
+      getDocs(
+        query(
+          collection(db, "friends"),
+          where(
+            "userA",
+            "==",
+            user.uid
+          )
+        )
+      ),
+
+      getDocs(
+        query(
+          collection(db, "friends"),
+          where(
+            "userB",
+            "==",
+            user.uid
+          )
+        )
+      )
+
+    ]);
+
+
+  rankedFriendsAV1.forEach(friendDoc => {
+
+    const friend =
+      friendDoc.data();
+
+    if (friend.userB) {
+      rankedFriendUidsV1.add(
+        friend.userB
+      );
+    }
+
+  });
+
+
+  rankedFriendsBV1.forEach(friendDoc => {
+
+    const friend =
+      friendDoc.data();
+
+    if (friend.userA) {
+      rankedFriendUidsV1.add(
+        friend.userA
+      );
+    }
+
+  });
+
+
+  const rankedFriendsRowsV1 =
+    [];
+
+
+  if (rankedEnteredV1) {
+
+    const ownScore =
+      getRankedScoreV1(data);
+
+    rankedFriendsRowsV1.push({
+
+      uid:
+        user.uid,
+
+      username:
+        data.username ??
+        "YOU",
+
+      score:
+        ownScore,
+
+      rank:
+        calculateRank(
+          ownScore
+        ),
+
+      level:
+        calculateLevelFromTotalXp(
+          Number(
+            data.xp ?? 0
+          )
+        ).level,
+
+      isYou:
+        true
+
+    });
+
+  }
+
+
+  const rankedFriendSnapsV1 =
+    await Promise.all(
+
+      [...rankedFriendUidsV1]
+        .map(uid =>
+          getDoc(
+            doc(
+              db,
+              "users",
+              uid
+            )
+          )
+        )
+
+    );
+
+
+  rankedFriendSnapsV1.forEach(
+    friendSnap => {
+
+      if (!friendSnap.exists()) {
+        return;
+      }
+
+      const friendData =
+        friendSnap.data();
+
+
+      if (
+        String(
+          friendData.rankedSeason ?? ""
+        ) !== rankedSeasonKeyV1
+      ) {
+        return;
+      }
+
+
+      const score =
+        getRankedScoreV1(
+          friendData
+        );
+
+
+      rankedFriendsRowsV1.push({
+
+        uid:
+          friendSnap.id,
+
+        username:
+          friendData.username ??
+          "ユーザー",
+
+        score,
+
+        rank:
+          calculateRank(score),
+
+        level:
+          calculateLevelFromTotalXp(
+            Number(
+              friendData.xp ?? 0
+            )
+          ).level,
+
+        isYou:
+          false
+
+      });
+
+    }
+  );
+
+
+  rankedFriendsRowsV1.sort(
+    (a, b) =>
+      b.score - a.score ||
+      String(a.username)
+        .localeCompare(
+          String(b.username),
+          "ja"
+        )
+  );
+
+
+  const friendsLeaderboardHtmlV1 =
+    rankedFriendsRowsV1.length
+
+      ? rankedFriendsRowsV1
+          .map(
+            (
+              row,
+              index
+            ) => {
+
+              const position =
+                index + 1;
+
+              return `
+                <div
+                  class="
+                    asc-lb-row-v1
+                    ${
+                      position <= 3
+                        ? `top-${position}`
+                        : ""
+                    }
+                    ${
+                      row.isYou
+                        ? "is-you"
+                        : ""
+                    }
+                  "
+                >
+
+                  <div class="asc-lb-position-v1">
+                    ${position}
+                  </div>
+
+                  <img
+                    class="asc-lb-emblem-v1"
+                    src="./assets/ranks/${
+                      rankedEmblemFileV1(
+                        row.rank
+                      )
+                    }"
+                    alt=""
+                  >
+
+                  <div class="asc-lb-player-v1">
+
+                    ${rankedCrownSvgV2(position, `f-${row.uid}`)}
+
+                    <strong>
+                      ${escapeRankedHtmlV1(
+                        row.username
+                      )}
+
+                      ${
+                        row.isYou
+                          ? `<span>YOU</span>`
+                          : ""
+                      }
+                    </strong>
+
+                    <small>
+                      ${row.rank}
+                      · Lv.${row.level}
+                    </small>
+
+                  </div>
+
+                  <div class="asc-lb-time-v1">
+                    ${formatRankedTimeV1(
+                      row.score
+                    )}
+                  </div>
+
+                </div>
+              `;
+
+            }
+          )
+          .join("")
+
+      : `
+          <div class="asc-leaderboard-empty-v1">
+            <div>
+              <strong>NO RANKED PLAYERS</strong>
+              今月参加中のフレンドはいません。
+            </div>
+          </div>
+        `;
 
 
   // ==========================================================
@@ -12117,9 +15208,188 @@ async function showRankPage(user) {
       </style>
 
 
+      <style id="asc-rank-tabs-v1-css">
+        .asc-rank-tabs-v1{
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:5px;
+          padding:4px;
+          margin-bottom:16px;
+          border:1px solid rgba(255,255,255,.07);
+          border-radius:12px;
+          background:#080c13;
+        }
+
+        .asc-rank-tab-v1{
+          height:38px;
+          border:0;
+          border-radius:9px;
+          background:transparent;
+          color:#657084;
+          font-family:"Rajdhani",sans-serif;
+          font-size:11px;
+          font-weight:800;
+          letter-spacing:.12em;
+          cursor:pointer;
+        }
+
+        .asc-rank-tab-v1.active{
+          color:#f3f5ff;
+          background:rgba(var(--rank-rgb),.11);
+          box-shadow:
+            inset 0 0 0 1px rgba(var(--rank-rgb),.20);
+        }
+
+        #asc-rank-leaderboard-v1{
+          display:none;
+        }
+
+        #asc-rank-page-v2.show-leaderboard-v1
+          > :not(.asc-rank-tabs-v1):not(#asc-rank-leaderboard-v1){
+          display:none!important;
+        }
+
+        #asc-rank-page-v2.show-leaderboard-v1
+          #asc-rank-leaderboard-v1{
+          display:block;
+        }
+
+        .asc-leaderboard-empty-v1{
+          min-height:280px;
+          display:grid;
+          place-items:center;
+          text-align:center;
+          border:1px solid rgba(255,255,255,.07);
+          border-radius:14px;
+          background:#090d14;
+          color:#778296;
+        }
+
+        .asc-leaderboard-empty-v1 strong{
+          display:block;
+          margin-bottom:5px;
+          color:#eef1fa;
+          font-family:"Rajdhani",sans-serif;
+          font-size:18px;
+          letter-spacing:.08em;
+        }
+      </style>
+
+
       <div
         id="asc-rank-page-v2"
       >
+
+        <div class="asc-rank-tabs-v1">
+          <button
+            id="asc-rank-tab-rank-v1"
+            class="asc-rank-tab-v1 active"
+            type="button"
+          >
+            RANK
+          </button>
+
+          <button
+            id="asc-rank-tab-leaderboard-v1"
+            class="asc-rank-tab-v1"
+            type="button"
+          >
+            LEADERBOARD
+          </button>
+        </div>
+
+
+        <section id="asc-rank-leaderboard-v1">
+
+        <section
+          id="asc-ranked-entry-v1"
+          style="--ranked-entry-rgb:${currentTheme.rgb}"
+        >
+
+          <div class="asc-ranked-entry-copy">
+
+            <span>RANKED SEASON</span>
+
+            <strong>
+              ${
+                rankedEnteredV1
+                  ? "ENTRY ACTIVE"
+                  : "ENTER RANKED"
+              }
+            </strong>
+
+            <small>
+              ${
+                rankedEnteredV1
+                  ? `SEASON ${rankedSeasonKeyV1}`
+                  : "ランキングに参加してランクカード演出を解放"
+              }
+            </small>
+
+          </div>
+
+          ${
+            rankedEnteredV1
+              ? `
+                <div class="asc-ranked-entry-active">
+                  RANKED
+                </div>
+              `
+              : `
+                <button
+                  type="button"
+                  id="asc-ranked-enter-v1"
+                >
+                  ENTER
+                </button>
+              `
+          }
+
+        </section>
+
+          <div class="asc-leaderboard-scope-tabs-v1">
+            <button
+              id="asc-lb-friends-tab-v1"
+              class="asc-leaderboard-scope-tab-v1 active"
+              type="button"
+            >
+              FRIENDS
+            </button>
+
+            <button
+              id="asc-lb-global-tab-v1"
+              class="asc-leaderboard-scope-tab-v1"
+              type="button"
+            >
+              GLOBAL
+            </button>
+          </div>
+
+          <div
+            id="asc-lb-friends-panel-v1"
+            class="asc-leaderboard-panel-v1"
+          >
+            <div class="asc-lb-list-v1">
+              ${friendsLeaderboardHtmlV1}
+            </div>
+          </div>
+
+          <div
+            id="asc-lb-global-panel-v1"
+            class="asc-leaderboard-panel-v1"
+            hidden
+          >
+            <div id="asc-lb-global-list-v1">
+              <div class="asc-leaderboard-empty-v1">
+                <div>
+                  <strong>GLOBAL</strong>
+                  LOADING...
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
 
 
         <!-- ===========================================
@@ -12204,6 +15474,9 @@ async function showRankPage(user) {
           </div>
 
         </section>
+
+
+
 
 
         <!-- ===========================================
@@ -12403,6 +15676,422 @@ async function showRankPage(user) {
 
     `)
   );
+
+
+  const rankPageV1 =
+    document.getElementById("asc-rank-page-v2");
+
+  const rankTabV1 =
+    document.getElementById("asc-rank-tab-rank-v1");
+
+  const leaderboardTabV1 =
+    document.getElementById("asc-rank-tab-leaderboard-v1");
+
+  if (rankPageV1 && rankTabV1 && leaderboardTabV1) {
+
+    rankTabV1.onclick = () => {
+      rankPageV1.classList.remove(
+        "show-leaderboard-v1"
+      );
+
+      rankTabV1.classList.add("active");
+      leaderboardTabV1.classList.remove("active");
+    };
+
+    leaderboardTabV1.onclick = () => {
+      rankPageV1.classList.add(
+        "show-leaderboard-v1"
+      );
+
+      leaderboardTabV1.classList.add("active");
+      rankTabV1.classList.remove("active");
+    };
+  }
+
+
+  const lbFriendsTabV1 =
+    document.getElementById("asc-lb-friends-tab-v1");
+
+  const lbGlobalTabV1 =
+    document.getElementById("asc-lb-global-tab-v1");
+
+  const lbFriendsPanelV1 =
+    document.getElementById("asc-lb-friends-panel-v1");
+
+  const lbGlobalPanelV1 =
+    document.getElementById("asc-lb-global-panel-v1");
+
+  if (
+    lbFriendsTabV1 &&
+    lbGlobalTabV1 &&
+    lbFriendsPanelV1 &&
+    lbGlobalPanelV1
+  ) {
+    lbFriendsTabV1.onclick = () => {
+      lbFriendsTabV1.classList.add("active");
+      lbGlobalTabV1.classList.remove("active");
+      lbFriendsPanelV1.hidden = false;
+      lbGlobalPanelV1.hidden = true;
+    };
+
+    lbGlobalTabV1.onclick = () => {
+      lbGlobalTabV1.classList.add("active");
+      lbFriendsTabV1.classList.remove("active");
+      lbGlobalPanelV1.hidden = false;
+      lbFriendsPanelV1.hidden = true;
+    };
+  }
+
+
+  // ==========================================================
+  // GLOBAL RANKED LEADERBOARD
+  // ==========================================================
+
+  const globalLeaderboardV1 =
+    document.getElementById(
+      "asc-lb-global-list-v1"
+    );
+
+  if (globalLeaderboardV1) {
+
+    try {
+
+      const globalSnapV1 =
+        await getDocs(
+          query(
+            collection(db, "users"),
+            where(
+              "rankedSeason",
+              "==",
+              rankedSeasonKeyV1
+            )
+          )
+        );
+
+
+      const globalRowsV1 = [];
+
+
+      globalSnapV1.forEach(userDoc => {
+
+        const userData =
+          userDoc.data();
+
+
+        if (
+          String(
+            userData.rankedVisibility ??
+            "global"
+          ) !== "global"
+        ) {
+          return;
+        }
+
+
+        const score =
+          getRankedScoreV1(
+            userData
+          );
+
+
+        globalRowsV1.push({
+
+          uid:
+            userDoc.id,
+
+          username:
+            userData.username ??
+            "ユーザー",
+
+          score,
+
+          rank:
+            calculateRank(score),
+
+          level:
+            calculateLevelFromTotalXp(
+              Number(
+                userData.xp ?? 0
+              )
+            ).level,
+
+          isYou:
+            userDoc.id === user.uid
+
+        });
+
+      });
+
+
+      globalRowsV1.sort(
+        (a, b) =>
+          b.score - a.score ||
+          String(a.username)
+            .localeCompare(
+              String(b.username),
+              "ja"
+            )
+      );
+
+
+      const ownGlobalIndexV1 =
+        globalRowsV1.findIndex(
+          row => row.uid === user.uid
+        );
+
+
+      const ownGlobalPositionV1 =
+        ownGlobalIndexV1 >= 0
+          ? ownGlobalIndexV1 + 1
+          : null;
+
+
+      let nextGlobalHtmlV1 = "";
+
+
+      if (ownGlobalIndexV1 === 0) {
+
+        nextGlobalHtmlV1 = "";
+
+      }
+
+      else if (ownGlobalIndexV1 > 0) {
+
+        const you =
+          globalRowsV1[
+            ownGlobalIndexV1
+          ];
+
+        const next =
+          globalRowsV1[
+            ownGlobalIndexV1 - 1
+          ];
+
+        const difference =
+          Math.max(
+            0,
+            next.score - you.score
+          );
+
+
+        nextGlobalHtmlV1 = `
+          <div class="asc-lb-next-v1">
+
+            <span>
+              CURRENT
+              <strong>
+                #${ownGlobalPositionV1}
+              </strong>
+            </span>
+
+            <span>
+              NEXT
+              <strong>
+                #${ownGlobalPositionV1 - 1}
+              </strong>
+            </span>
+
+            <span>
+              GAP
+              <strong>
+                ${formatRankedTimeV1(
+                  difference
+                )}
+              </strong>
+            </span>
+
+          </div>
+        `;
+
+      }
+
+
+      const renderGlobalRowV1 =
+        (row, index, outside = false) => {
+
+          const position =
+            index + 1;
+
+          return `
+            <div
+              class="
+                asc-lb-row-v1
+                ${
+                  position <= 3
+                    ? `top-${position}`
+                    : ""
+                }
+                ${
+                  row.isYou
+                    ? "is-you"
+                    : ""
+                }
+                ${
+                  outside
+                    ? "outside-top-v1"
+                    : ""
+                }
+              "
+            >
+
+              <div class="asc-lb-position-v1">
+                ${position}
+              </div>
+
+              <img
+                class="asc-lb-emblem-v1"
+                src="./assets/ranks/${
+                  rankedEmblemFileV1(
+                    row.rank
+                  )
+                }"
+                alt=""
+              >
+
+              <div class="asc-lb-player-v1">
+
+                ${rankedCrownSvgV2(position, `g-${row.uid}`)}
+
+                    <strong>
+                  ${escapeRankedHtmlV1(
+                    row.username
+                  )}
+
+                  ${
+                    row.isYou
+                      ? `<span>YOU</span>`
+                      : ""
+                  }
+                </strong>
+
+                <small>
+                  ${row.rank}
+                  · Lv.${row.level}
+                </small>
+
+              </div>
+
+              <div class="asc-lb-time-v1">
+                ${formatRankedTimeV1(
+                  row.score
+                )}
+              </div>
+
+            </div>
+          `;
+
+        };
+
+
+      const top100V1 =
+        globalRowsV1.slice(
+          0,
+          100
+        );
+
+
+      let globalHtmlV1 =
+        `
+          <div class="asc-lb-global-head-v1">
+            <span>GLOBAL RANKING</span>
+            <strong>
+              ${globalRowsV1.length}
+              PLAYERS
+            </strong>
+          </div>
+
+          ${nextGlobalHtmlV1}
+
+          <div class="asc-lb-list-v1">
+        `;
+
+
+      if (top100V1.length) {
+
+        globalHtmlV1 +=
+          top100V1
+            .map(
+              (
+                row,
+                index
+              ) =>
+                renderGlobalRowV1(
+                  row,
+                  index
+                )
+            )
+            .join("");
+
+      }
+
+      else {
+
+        globalHtmlV1 += `
+          <div class="asc-leaderboard-empty-v1">
+            <div>
+              <strong>NO PLAYERS</strong>
+              今月の参加者はまだいません。
+            </div>
+          </div>
+        `;
+
+      }
+
+
+      globalHtmlV1 +=
+        `</div>`;
+
+
+      // TOP100外なら自分だけ別枠表示
+      if (
+        ownGlobalIndexV1 >= 100
+      ) {
+
+        globalHtmlV1 += `
+          <div class="asc-lb-outside-label-v1">
+            YOUR POSITION
+          </div>
+
+          <div class="asc-lb-list-v1">
+            ${
+              renderGlobalRowV1(
+                globalRowsV1[
+                  ownGlobalIndexV1
+                ],
+                ownGlobalIndexV1,
+                true
+              )
+            }
+          </div>
+        `;
+
+      }
+
+
+      globalLeaderboardV1.innerHTML =
+        globalHtmlV1;
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "GLOBAL LEADERBOARD:",
+        error
+      );
+
+      globalLeaderboardV1.innerHTML = `
+        <div class="asc-leaderboard-empty-v1">
+          <div>
+            <strong>LOAD ERROR</strong>
+            GLOBALランキングを取得できませんでした。
+          </div>
+        </div>
+      `;
+
+    }
+
+  }
 
 
   // ==========================================================
@@ -13037,6 +16726,88 @@ function mountClassicNavigation(user) {
 }
 
 
+
+// ============================================================
+// RANKED ENTRY
+// ============================================================
+
+document.addEventListener(
+  "click",
+  async event => {
+
+    const button =
+      event.target.closest(
+        "#asc-ranked-enter-v1"
+      );
+
+    if (!button) {
+      return;
+    }
+
+
+    const user =
+      auth.currentUser;
+
+    if (!user) {
+      return;
+    }
+
+
+    button.disabled = true;
+    button.textContent =
+      "ENTERING...";
+
+
+    try {
+
+      await setDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        ),
+        {
+          rankedSeason:
+            getCurrentRankedSeasonKeyV1(),
+
+          rankedVisibility:
+            "global",
+
+          rankedEnteredAt:
+            serverTimestamp(),
+
+          updatedAt:
+            serverTimestamp()
+        },
+        {
+          merge:true
+        }
+      );
+
+
+      await showRankPage(
+        user
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "RANKED ENTRY:",
+        error
+      );
+
+      button.disabled = false;
+      button.textContent =
+        "ENTER";
+
+    }
+
+  }
+);
+
+
 // ============================================================
 // ACTIVE NAV
 // ============================================================
@@ -13067,6 +16838,68 @@ function updateClassicNavigationActive() {
       );
 
     });
+
+  const rankedEnterButtonV1 =
+    document.getElementById(
+      "asc-ranked-enter-v1"
+    );
+
+  if (rankedEnterButtonV1) {
+
+    rankedEnterButtonV1.onclick =
+      async () => {
+
+        rankedEnterButtonV1.disabled =
+          true;
+
+        rankedEnterButtonV1.textContent =
+          "ENTERING...";
+
+        try {
+
+          await setDoc(
+            ref,
+            {
+              rankedSeason:
+                rankedSeasonKeyV1,
+
+              rankedVisibility:
+                "global",
+
+              rankedEnteredAt:
+                serverTimestamp(),
+
+              updatedAt:
+                serverTimestamp()
+            },
+            {
+              merge:true
+            }
+          );
+
+          await showRankPage(
+            user
+          );
+
+        }
+
+        catch (error) {
+
+          console.error(error);
+
+          rankedEnterButtonV1.disabled =
+            false;
+
+          rankedEnterButtonV1.textContent =
+            "ENTER";
+
+        }
+
+      };
+
+  }
+
+
 }
 
 
@@ -13236,6 +17069,4923 @@ function removePersistentUi() {
 // STUDY MAIN PAGE
 // ============================================================
 
+
+// ============================================================
+// STUDY LINK v2
+// FORCE DOM MOUNT
+// ============================================================
+
+const STUDY_LINK_V2_CHARS =
+  "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+
+function normalizeStudyLinkV2Code(value) {
+
+  return String(value || "")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "")
+    .slice(0, 6);
+
+}
+
+
+function generateStudyLinkV2Code() {
+
+  let code = "";
+
+  for (let i = 0; i < 6; i++) {
+
+    code +=
+      STUDY_LINK_V2_CHARS[
+        Math.floor(
+          Math.random() *
+          STUDY_LINK_V2_CHARS.length
+        )
+      ];
+
+  }
+
+  return code;
+
+}
+
+
+function studyLinkV2RoomRef(code) {
+
+  return doc(
+    db,
+    "studyLinkRooms",
+    code
+  );
+
+}
+
+
+function studyLinkV2MemberRef(
+  code,
+  uid
+) {
+
+  return doc(
+    db,
+    "studyLinkRooms",
+    code,
+    "members",
+    uid
+  );
+
+}
+
+
+async function getStudyLinkV2User(user) {
+
+  const ref =
+    doc(
+      db,
+      "users",
+      user.uid
+    );
+
+  const snap =
+    await getDoc(ref);
+
+  return {
+    ref,
+    data:
+      snap.exists()
+        ? snap.data()
+        : {}
+  };
+
+}
+
+
+
+async function renderStudyLinkMembersV2(
+  code,
+  user
+) {
+
+  const container =
+    document.getElementById(
+      "study-link-v2-members"
+    );
+
+  const count =
+    document.getElementById(
+      "study-link-v2-member-count"
+    );
+
+
+  if (!container || !count) {
+    return;
+  }
+
+
+  try {
+
+    const snap =
+      await getDocs(
+        collection(
+          db,
+          "studyLinkRooms",
+          code,
+          "members"
+        )
+      );
+
+
+    const members =
+      snap.docs.map(
+        d => ({
+          id:d.id,
+          ...d.data()
+        })
+      );
+
+
+    members.sort(
+      (a,b) => {
+
+        if (
+          a.id === user.uid &&
+          b.id !== user.uid
+        ) {
+          return -1;
+        }
+
+        if (
+          b.id === user.uid &&
+          a.id !== user.uid
+        ) {
+          return 1;
+        }
+
+        return String(
+          a.username || ""
+        ).localeCompare(
+          String(
+            b.username || ""
+          ),
+          "ja"
+        );
+
+      }
+    );
+
+
+    count.textContent =
+      String(members.length);
+
+
+    if (!members.length) {
+
+      container.innerHTML = `
+        <div class="study-link-v2-members-empty">
+          メンバーはいません
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      members.map(member => {
+
+        const name =
+          String(
+            member.username ||
+            "PLAYER"
+          );
+
+        const isYou =
+          member.id === user.uid;
+
+        const state =
+          String(
+            member.state ||
+            "idle"
+          ).toLowerCase();
+
+        let stateLabel =
+          "IDLE";
+
+        let stateClass =
+          "";
+
+        let detail =
+          "待機中";
+
+
+        if (state === "studying") {
+
+          stateLabel =
+            "STUDYING";
+
+          stateClass =
+            "studying";
+
+          detail =
+            member.subject
+              ? String(member.subject)
+              : "勉強中";
+
+        }
+
+        else if (state === "paused") {
+
+          stateLabel =
+            "PAUSED";
+
+          stateClass =
+            "paused";
+
+          detail =
+            member.subject
+              ? String(member.subject)
+              : "一時停止中";
+
+        }
+
+
+        const safeName =
+          name
+            .replaceAll("&","&amp;")
+            .replaceAll("<","&lt;")
+            .replaceAll(">","&gt;")
+            .replaceAll('"',"&quot;")
+            .replaceAll("'","&#039;");
+
+        const safeDetail =
+          detail
+            .replaceAll("&","&amp;")
+            .replaceAll("<","&lt;")
+            .replaceAll(">","&gt;")
+            .replaceAll('"',"&quot;")
+            .replaceAll("'","&#039;");
+
+
+        return `
+
+          <div class="study-link-v2-member">
+
+            <div class="study-link-v2-member-main">
+
+              <div class="study-link-v2-member-name">
+
+                ${safeName}
+
+                ${
+                  isYou
+                    ? '<span class="study-link-v2-you">YOU</span>'
+                    : ''
+                }
+
+              </div>
+
+              <div class="study-link-v2-member-sub">
+                ${safeDetail}
+              </div>
+
+            </div>
+
+
+            <div
+              class="
+                study-link-v2-member-state
+                ${stateClass}
+              "
+            >
+              ${stateLabel}
+            </div>
+
+          </div>
+
+        `;
+
+      }).join("");
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "STUDY LINK members:",
+      error
+    );
+
+    container.innerHTML = `
+      <div class="study-link-v2-members-empty">
+        メンバーを取得できませんでした
+      </div>
+    `;
+
+  }
+
+}
+
+
+
+
+// ============================================================
+// STUDY LINK
+// FULL SCREEN ROOM MODE v1
+// ============================================================
+
+let studyLinkRoomModeRedirectingV1 = false;
+
+
+function enableStudyLinkRoomModeV1(
+  code = ""
+) {
+
+  document.body.classList.add(
+    "study-link-room-mode-v1"
+  );
+
+
+  const card =
+    document.getElementById(
+      "study-link-card-v2"
+    );
+
+
+  if (!card) {
+    return;
+  }
+
+
+  let header =
+    document.getElementById(
+      "study-link-room-mode-header-v1"
+    );
+
+
+  if (!header) {
+
+    header =
+      document.createElement(
+        "div"
+      );
+
+    header.id =
+      "study-link-room-mode-header-v1";
+
+    header.className =
+      "study-link-room-mode-header-v1";
+
+    header.innerHTML = `
+
+      <div class="study-link-room-mode-brand-v1">
+
+        <div class="study-link-room-mode-app-v1">
+          ASCEND
+        </div>
+
+        <div class="study-link-room-mode-path-v1">
+          STUDY LINK / FOCUS ROOM
+        </div>
+
+      </div>
+
+
+      <div class="study-link-room-mode-state-v1">
+        ROOM MODE
+      </div>
+
+    `;
+
+
+    card.prepend(
+      header
+    );
+
+  }
+
+}
+
+
+function disableStudyLinkRoomModeV1() {
+
+  document.body.classList.remove(
+    "study-link-room-mode-v1"
+  );
+
+}
+
+
+async function restoreStudyLinkRoomModeV1(
+  user
+) {
+
+  if (
+    !user ||
+    studyLinkRoomModeRedirectingV1
+  ) {
+
+    return;
+
+  }
+
+
+  try {
+
+    const userSnap =
+      await getDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        )
+      );
+
+
+    if (!userSnap.exists()) {
+      return;
+    }
+
+
+    const data =
+      userSnap.data();
+
+
+    const code =
+      normalizeStudyLinkV2Code(
+        data.studyLinkRoomCode ||
+        ""
+      );
+
+
+    if (!code) {
+
+      disableStudyLinkRoomModeV1();
+
+      return;
+
+    }
+
+
+    const roomSnap =
+      await getDoc(
+        studyLinkV2RoomRef(
+          code
+        )
+      );
+
+
+    if (
+      !roomSnap.exists() ||
+      roomSnap.data().active === false
+    ) {
+
+      await setDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        ),
+        {
+          studyLinkRoomCode:""
+        },
+        {
+          merge:true
+        }
+      );
+
+
+      disableStudyLinkRoomModeV1();
+
+      return;
+
+    }
+
+
+    const existingRoomCard =
+      document.getElementById(
+        "study-link-card-v2"
+      );
+
+
+    if (existingRoomCard) {
+
+      enableStudyLinkRoomModeV1(
+        code
+      );
+
+      return;
+
+    }
+
+
+    studyLinkRoomModeRedirectingV1 =
+      true;
+
+
+    await showStudyMainPage(
+      user
+    );
+
+
+    enableStudyLinkRoomModeV1(
+      code
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "STUDY LINK room restore:",
+      error
+    );
+
+  }
+
+  finally {
+
+    studyLinkRoomModeRedirectingV1 =
+      false;
+
+  }
+
+}
+
+
+
+
+// ============================================================
+// STUDY LINK
+// ROOM TIMER v1
+// ============================================================
+
+let studyLinkRoomTimerIntervalV1 = null;
+
+
+function stopStudyLinkRoomTimerIntervalV1() {
+
+  if (!studyLinkRoomTimerIntervalV1) {
+    return;
+  }
+
+  clearInterval(
+    studyLinkRoomTimerIntervalV1
+  );
+
+  studyLinkRoomTimerIntervalV1 =
+    null;
+
+}
+
+
+function startStudyLinkRoomTimerIntervalV1() {
+
+  stopStudyLinkRoomTimerIntervalV1();
+
+
+  const update = () => {
+
+    const display =
+      document.getElementById(
+        "study-link-room-clock-v1"
+      );
+
+
+    if (!display) {
+
+      stopStudyLinkRoomTimerIntervalV1();
+
+      return;
+
+    }
+
+
+    display.textContent =
+      formatTimer(
+        currentElapsedMs()
+      );
+
+  };
+
+
+  update();
+
+
+  studyLinkRoomTimerIntervalV1 =
+    setInterval(
+      update,
+      500
+    );
+
+}
+
+
+function escapeStudyLinkRoomTimerHtmlV1(
+  value
+) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+async function syncStudyLinkRoomTimerMemberV1(
+  user,
+  code
+) {
+
+  if (!code) {
+    return;
+  }
+
+
+  let state =
+    "idle";
+
+
+  if (timerState.subject) {
+
+    state =
+      timerState.paused
+        ? "paused"
+        : "studying";
+
+  }
+
+
+  try {
+
+    await setDoc(
+      studyLinkV2MemberRef(
+        code,
+        user.uid
+      ),
+      {
+        state,
+
+        subject:
+          timerState.subject || "",
+
+        startedAt:
+          timerState.startedAt,
+
+        elapsedBeforePause:
+          Number(
+            timerState.elapsedBeforePause ||
+            0
+          ),
+
+        paused:
+          Boolean(
+            timerState.paused
+          ),
+
+        updatedAt:
+          serverTimestamp()
+      },
+      {
+        merge:true
+      }
+    );
+
+  }
+
+  catch (error) {
+
+    console.warn(
+      "STUDY LINK timer member sync:",
+      error
+    );
+
+  }
+
+}
+
+
+async function returnAfterStudyLinkTimerV1(
+  user
+) {
+
+  const userSnap =
+    await getDoc(
+      doc(
+        db,
+        "users",
+        user.uid
+      )
+    );
+
+
+  const code =
+    userSnap.exists()
+      ? normalizeStudyLinkV2Code(
+          userSnap.data().studyLinkRoomCode ||
+          ""
+        )
+      : "";
+
+
+  if (code) {
+
+    await showStudyMainPage(
+      user
+    );
+
+    return;
+
+  }
+
+
+  disableStudyLinkRoomModeV1();
+
+  await showHome(
+    user
+  );
+
+}
+
+
+async function mountStudyLinkRoomTimerV1(
+  user,
+  code
+) {
+
+  const active =
+    document.getElementById(
+      "study-link-v2-active"
+    );
+
+
+  if (!active) {
+
+    console.warn(
+      "STUDY LINK ROOM TIMER: active panel not found"
+    );
+
+    return;
+
+  }
+
+
+  let box =
+    document.getElementById(
+      "study-link-room-timer-v1"
+    );
+
+
+  if (!box) {
+
+    box =
+      document.createElement(
+        "div"
+      );
+
+    box.id =
+      "study-link-room-timer-v1";
+
+
+    const members =
+      active.querySelector(
+        ".study-link-v2-members-wrap"
+      );
+
+
+    if (members) {
+
+      active.insertBefore(
+        box,
+        members
+      );
+
+    }
+
+    else {
+
+      active.appendChild(
+        box
+      );
+
+    }
+
+  }
+
+
+  const userRef =
+    doc(
+      db,
+      "users",
+      user.uid
+    );
+
+
+  const results =
+    await Promise.all([
+      getDoc(userRef),
+      loadActiveTimer(user)
+    ]);
+
+
+  const userSnap =
+    results[0];
+
+  const restoredTimer =
+    results[1];
+
+
+  if (!userSnap.exists()) {
+
+    box.innerHTML =
+      "ユーザーデータを取得できませんでした。";
+
+    return;
+
+  }
+
+
+  if (
+    restoredTimer &&
+    !timerState.subject
+  ) {
+
+    timerState =
+      restoredTimer;
+
+  }
+
+
+  const userData =
+    userSnap.data();
+
+
+  const subjects =
+    Array.isArray(
+      userData.selectedSubjects
+    )
+      ? userData.selectedSubjects
+      : [];
+
+
+  const subjectOptions =
+    subjects.map(
+      subject => {
+
+        const safe =
+          escapeStudyLinkRoomTimerHtmlV1(
+            subject
+          );
+
+        return `
+          <option value="${safe}">
+            ${safe}
+          </option>
+        `;
+
+      }
+    ).join("");
+
+
+  box.innerHTML = `
+
+    <div class="study-link-room-timer-label-v1">
+      SUBJECT
+    </div>
+
+
+    <select id="study-link-room-subject-v1">
+
+      <option value="">
+        教科を選択
+      </option>
+
+      ${subjectOptions}
+
+    </select>
+
+
+    <div id="study-link-room-clock-v1">
+      ${formatTimer(currentElapsedMs())}
+    </div>
+
+
+    <div id="study-link-room-timer-state-v1">
+
+      <span
+        class="study-link-room-timer-dot-v1"
+      ></span>
+
+      <span id="study-link-room-timer-state-text-v1">
+        IDLE
+      </span>
+
+    </div>
+
+
+    <div class="study-link-room-timer-buttons-v1">
+
+      <button
+        type="button"
+        id="study-link-room-start-v1"
+      >
+        START
+      </button>
+
+
+      <button
+        type="button"
+        id="study-link-room-pause-v1"
+        disabled
+      >
+        PAUSE
+      </button>
+
+
+      <button
+        type="button"
+        id="study-link-room-finish-v1"
+        disabled
+      >
+        FINISH
+      </button>
+
+    </div>
+
+
+    <div id="study-link-room-timer-error-v1"></div>
+
+  `;
+
+
+  const subjectEl =
+    document.getElementById(
+      "study-link-room-subject-v1"
+    );
+
+  const startEl =
+    document.getElementById(
+      "study-link-room-start-v1"
+    );
+
+  const pauseEl =
+    document.getElementById(
+      "study-link-room-pause-v1"
+    );
+
+  const finishEl =
+    document.getElementById(
+      "study-link-room-finish-v1"
+    );
+
+  const stateEl =
+    document.getElementById(
+      "study-link-room-timer-state-v1"
+    );
+
+  const stateText =
+    document.getElementById(
+      "study-link-room-timer-state-text-v1"
+    );
+
+  const errorEl =
+    document.getElementById(
+      "study-link-room-timer-error-v1"
+    );
+
+
+  function renderControls() {
+
+    const hasTimer =
+      Boolean(
+        timerState.subject
+      );
+
+
+    if (!hasTimer) {
+
+      subjectEl.disabled =
+        false;
+
+      startEl.disabled =
+        false;
+
+      pauseEl.disabled =
+        true;
+
+      finishEl.disabled =
+        true;
+
+      pauseEl.textContent =
+        "PAUSE";
+
+      stateEl.className =
+        "";
+
+      stateText.textContent =
+        "IDLE";
+
+      return;
+
+    }
+
+
+    subjectEl.value =
+      timerState.subject;
+
+    subjectEl.disabled =
+      true;
+
+    startEl.disabled =
+      true;
+
+    pauseEl.disabled =
+      false;
+
+    finishEl.disabled =
+      false;
+
+
+    if (timerState.paused) {
+
+      pauseEl.textContent =
+        "RESUME";
+
+      stateEl.className =
+        "paused";
+
+      stateText.textContent =
+        "PAUSED";
+
+    }
+
+    else {
+
+      pauseEl.textContent =
+        "PAUSE";
+
+      stateEl.className =
+        "studying";
+
+      stateText.textContent =
+        "STUDYING";
+
+    }
+
+  }
+
+
+  renderControls();
+
+  startStudyLinkRoomTimerIntervalV1();
+
+
+  await syncStudyLinkRoomTimerMemberV1(
+    user,
+    code
+  );
+
+
+  // ==========================================================
+  // START
+  // ==========================================================
+
+  startEl.onclick =
+    async () => {
+
+      const subject =
+        subjectEl.value;
+
+
+      if (!subject) {
+
+        errorEl.textContent =
+          "教科を選択してください。";
+
+        return;
+
+      }
+
+
+      errorEl.textContent =
+        "";
+
+      startEl.disabled =
+        true;
+
+
+      try {
+
+        const freshSnap =
+          await getDoc(
+            userRef
+          );
+
+
+        if (!freshSnap.exists()) {
+
+          throw new Error(
+            "ユーザーデータが見つかりません。"
+          );
+
+        }
+
+
+        const fresh =
+          freshSnap.data();
+
+
+        const queuedXpItem =
+          String(
+            fresh.queuedXpItem ??
+            ""
+          );
+
+
+        const queuedItemCount =
+          Number(
+            fresh.inventory?.[
+              queuedXpItem
+            ] ?? 0
+          );
+
+
+        timerState.subject =
+          subject;
+
+
+        timerState.xpItem =
+          (
+            queuedXpItem &&
+            XP_ITEM_EFFECTS[
+              queuedXpItem
+            ] &&
+            queuedItemCount > 0
+          )
+            ? queuedXpItem
+            : "";
+
+
+        if (timerState.xpItem) {
+
+          await setDoc(
+            userRef,
+            {
+              queuedXpItem:"",
+              updatedAt:
+                serverTimestamp()
+            },
+            {
+              merge:true
+            }
+          );
+
+        }
+
+
+        timerState.startedAt =
+          Date.now();
+
+        timerState.elapsedBeforePause =
+          0;
+
+        timerState.paused =
+          false;
+
+
+        timerState.studyLinkRankEligibleMs =
+          0;
+
+        timerState.studyLinkRankEligibleStartedAt =
+          null;
+
+
+        await saveActiveTimer(
+          user
+        );
+
+
+        await syncStudyLinkRoomTimerMemberV1(
+          user,
+          code
+        );
+
+
+        await refreshStudyLinkStatusV1(
+          user,
+          code
+        );
+
+
+        renderControls();
+
+        startStudyLinkRoomTimerIntervalV1();
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "ROOM TIMER START:",
+          error
+        );
+
+
+        errorEl.textContent =
+          error?.message ||
+          "タイマーを開始できませんでした.";
+
+
+        if (!timerState.subject) {
+
+          startEl.disabled =
+            false;
+
+        }
+
+      }
+
+    };
+
+
+  // ==========================================================
+  // PAUSE / RESUME
+  // ==========================================================
+
+  pauseEl.onclick =
+    async () => {
+
+      if (!timerState.subject) {
+        return;
+      }
+
+
+      errorEl.textContent =
+        "";
+
+
+      try {
+
+        if (!timerState.paused) {
+
+          await setStudyLinkEligibilityV1(
+            user,
+            false
+          );
+
+        }
+
+
+        if (timerState.paused) {
+
+          timerState.startedAt =
+            Date.now();
+
+          timerState.paused =
+            false;
+
+        }
+
+        else {
+
+          timerState.elapsedBeforePause =
+            currentElapsedMs();
+
+          timerState.startedAt =
+            null;
+
+          timerState.paused =
+            true;
+
+        }
+
+
+        await saveActiveTimer(
+          user
+        );
+
+
+        await syncStudyLinkRoomTimerMemberV1(
+          user,
+          code
+        );
+
+
+        await refreshStudyLinkStatusV1(
+          user,
+          code
+        );
+
+
+        renderControls();
+
+        startStudyLinkRoomTimerIntervalV1();
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "ROOM TIMER PAUSE:",
+          error
+        );
+
+
+        errorEl.textContent =
+          error?.message ||
+          "タイマー状態を変更できませんでした。";
+
+      }
+
+    };
+
+
+  // ==========================================================
+  // FINISH
+  // ==========================================================
+
+  finishEl.onclick =
+    async () => {
+
+      if (!timerState.subject) {
+        return;
+      }
+
+
+      finishEl.disabled =
+        true;
+
+      pauseEl.disabled =
+        true;
+
+      errorEl.textContent =
+        "";
+
+
+      try {
+
+        await setStudyLinkEligibilityV1(
+          user,
+          false
+        );
+
+
+        const elapsedMs =
+          currentElapsedMs();
+
+
+        timerState.elapsedBeforePause =
+          elapsedMs;
+
+        timerState.startedAt =
+          null;
+
+        timerState.paused =
+          true;
+
+
+        await saveActiveTimer(
+          user
+        );
+
+
+        await syncStudyLinkRoomTimerMemberV1(
+          user,
+          code
+        );
+
+
+        stopStudyLinkRoomTimerIntervalV1();
+
+
+        /*
+          保存ロジックは新造せず、
+          既存タイマーへ状態を渡す。
+        */
+        disableStudyLinkRoomModeV1();
+
+
+        await showTimerPage(
+          user
+        );
+
+
+        const endButton =
+          document.getElementById(
+            "timer-end"
+          );
+
+
+        if (!endButton) {
+
+          throw new Error(
+            "既存タイマー終了処理が見つかりません。"
+          );
+
+        }
+
+
+        endButton.disabled =
+          false;
+
+        endButton.click();
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "ROOM TIMER FINISH:",
+          error
+        );
+
+
+        await showStudyMainPage(
+          user
+        );
+
+      }
+
+    };
+
+}
+
+
+
+
+// ============================================================
+// STUDY LINK
+// LINK ACTIVE STATUS v1
+// 表示判定のみ。報酬倍率はまだ適用しない。
+// ============================================================
+
+let studyLinkStatusIntervalV1 = null;
+
+let studyLinkStatusRoomV1 = "";
+
+
+function stopStudyLinkStatusPollingV1() {
+
+  if (studyLinkStatusIntervalV1) {
+
+    clearInterval(
+      studyLinkStatusIntervalV1
+    );
+
+    studyLinkStatusIntervalV1 =
+      null;
+
+  }
+
+
+  studyLinkStatusRoomV1 =
+    "";
+
+}
+
+
+
+// ============================================================
+// STUDY LINK
+// LINK ACTIVE TIME TRACKER v1
+//
+// この段階では時間を測るだけ。
+// RANK / XP / GOLD / BOSSにはまだ反映しない。
+// ============================================================
+
+function normalizeStudyLinkBoostLevelV1(
+  value
+) {
+
+  return Math.max(
+    0,
+    Math.min(
+      3,
+      Math.floor(
+        Number(
+          value || 0
+        )
+      )
+    )
+  );
+
+}
+
+
+function getStudyLinkEligibleTimeMsByBoostV1() {
+
+  const source =
+    timerState.studyLinkEligibleMsByBoost ||
+    {};
+
+
+  const result = {
+    0: Math.max(
+      0,
+      Number(source[0] ?? 0)
+    ),
+
+    1: Math.max(
+      0,
+      Number(source[1] ?? 0)
+    ),
+
+    2: Math.max(
+      0,
+      Number(source[2] ?? 0)
+    ),
+
+    3: Math.max(
+      0,
+      Number(source[3] ?? 0)
+    ),
+  };
+
+
+  const startedAt =
+    Number(
+      timerState.studyLinkRankEligibleStartedAt ||
+      0
+    );
+
+
+  if (startedAt > 0) {
+
+    const level =
+      normalizeStudyLinkBoostLevelV1(
+        timerState.studyLinkEligibleBoostLevel
+      );
+
+
+    result[level] +=
+      Math.max(
+        0,
+        Date.now() -
+        startedAt
+      );
+
+  }
+
+
+  return result;
+
+}
+
+
+function getStudyLinkEligibleTimeMsV1() {
+
+  let total =
+    Math.max(
+      0,
+      Number(
+        timerState.studyLinkRankEligibleMs ||
+        0
+      )
+    );
+
+
+  const startedAt =
+    Number(
+      timerState.studyLinkRankEligibleStartedAt ||
+      0
+    );
+
+
+  if (startedAt > 0) {
+
+    total +=
+      Math.max(
+        0,
+        Date.now() - startedAt
+      );
+
+  }
+
+
+  return total;
+
+}
+
+
+async function setStudyLinkBoostTrackingLevelV1(
+  user,
+  nextLevel
+) {
+
+  nextLevel =
+    normalizeStudyLinkBoostLevelV1(
+      nextLevel
+    );
+
+
+  const previousCurrentLevel =
+    normalizeStudyLinkBoostLevelV1(
+      timerState.studyLinkCurrentBoostLevel
+    );
+
+
+  const startedAt =
+    Number(
+      timerState.studyLinkRankEligibleStartedAt ||
+      0
+    );
+
+
+  timerState.studyLinkCurrentBoostLevel =
+    nextLevel;
+
+
+  if (startedAt > 0) {
+
+    const previousEligibleLevel =
+      normalizeStudyLinkBoostLevelV1(
+        timerState.studyLinkEligibleBoostLevel
+      );
+
+
+    if (
+      previousEligibleLevel !==
+      nextLevel
+    ) {
+
+      const now =
+        Date.now();
+
+
+      const elapsed =
+        Math.max(
+          0,
+          now -
+          startedAt
+        );
+
+
+      timerState.studyLinkRankEligibleMs =
+        Math.max(
+          0,
+          Number(
+            timerState.studyLinkRankEligibleMs ||
+            0
+          )
+        ) +
+        elapsed;
+
+
+      const buckets = {
+        0: Math.max(
+          0,
+          Number(
+            timerState.studyLinkEligibleMsByBoost?.[0] ?? 0
+          )
+        ),
+
+        1: Math.max(
+          0,
+          Number(
+            timerState.studyLinkEligibleMsByBoost?.[1] ?? 0
+          )
+        ),
+
+        2: Math.max(
+          0,
+          Number(
+            timerState.studyLinkEligibleMsByBoost?.[2] ?? 0
+          )
+        ),
+
+        3: Math.max(
+          0,
+          Number(
+            timerState.studyLinkEligibleMsByBoost?.[3] ?? 0
+          )
+        ),
+      };
+
+
+      buckets[
+        previousEligibleLevel
+      ] +=
+        elapsed;
+
+
+      timerState.studyLinkEligibleMsByBoost =
+        buckets;
+
+
+      timerState.studyLinkRankEligibleStartedAt =
+        now;
+
+
+      timerState.studyLinkEligibleBoostLevel =
+        nextLevel;
+
+
+      await saveActiveTimer(
+        user
+      );
+
+
+      return;
+
+    }
+
+  }
+
+
+  if (
+    previousCurrentLevel !==
+    nextLevel
+  ) {
+
+    await saveActiveTimer(
+      user
+    );
+
+  }
+
+}
+
+
+async function setStudyLinkEligibilityV1(
+  user,
+  eligible
+) {
+
+  eligible =
+    Boolean(
+      eligible &&
+      timerState.subject &&
+      !timerState.paused
+    );
+
+
+  const currentStart =
+    Number(
+      timerState.studyLinkRankEligibleStartedAt ||
+      0
+    );
+
+
+  // LINK START
+  if (
+    eligible &&
+    !currentStart
+  ) {
+
+    timerState.studyLinkEligibleBoostLevel =
+      normalizeStudyLinkBoostLevelV1(
+        timerState.studyLinkCurrentBoostLevel
+      );
+
+
+    timerState.studyLinkRankEligibleStartedAt =
+      Date.now();
+
+
+    await saveActiveTimer(
+      user
+    );
+
+
+    return;
+
+  }
+
+
+  // LINK END
+  if (
+    !eligible &&
+    currentStart
+  ) {
+
+    const elapsed =
+      Math.max(
+        0,
+        Date.now() -
+        currentStart
+      );
+
+
+    const level =
+      normalizeStudyLinkBoostLevelV1(
+        timerState.studyLinkEligibleBoostLevel
+      );
+
+
+    timerState.studyLinkRankEligibleMs =
+      Math.max(
+        0,
+        Number(
+          timerState.studyLinkRankEligibleMs ||
+          0
+        )
+      ) +
+      elapsed;
+
+
+    const buckets = {
+      0: Math.max(
+        0,
+        Number(
+          timerState.studyLinkEligibleMsByBoost?.[0] ?? 0
+        )
+      ),
+
+      1: Math.max(
+        0,
+        Number(
+          timerState.studyLinkEligibleMsByBoost?.[1] ?? 0
+        )
+      ),
+
+      2: Math.max(
+        0,
+        Number(
+          timerState.studyLinkEligibleMsByBoost?.[2] ?? 0
+        )
+      ),
+
+      3: Math.max(
+        0,
+        Number(
+          timerState.studyLinkEligibleMsByBoost?.[3] ?? 0
+        )
+      ),
+    };
+
+
+    buckets[level] +=
+      elapsed;
+
+
+    timerState.studyLinkEligibleMsByBoost =
+      buckets;
+
+
+    timerState.studyLinkRankEligibleStartedAt =
+      null;
+
+
+    timerState.studyLinkEligibleBoostLevel =
+      0;
+
+
+    await saveActiveTimer(
+      user
+    );
+
+  }
+
+}
+
+
+
+async function refreshStudyLinkStatusV1(
+  user,
+  code
+) {
+
+  const panel =
+    document.getElementById(
+      "study-link-status-panel-v1"
+    );
+
+
+  if (
+    !panel ||
+    !code
+  ) {
+
+    return;
+
+  }
+
+
+  try {
+
+    const snap =
+      await getDocs(
+        collection(
+          db,
+          "studyLinkRooms",
+          code,
+          "members"
+        )
+      );
+
+
+    const members =
+      snap.docs.map(
+        docSnap => ({
+          uid: docSnap.id,
+          ...docSnap.data()
+        })
+      );
+
+
+    const studyingMembers =
+      members.filter(
+        member =>
+          member.state === "studying"
+      );
+
+
+    const studyingCount =
+      studyingMembers.length;
+
+
+    const linkActive =
+      studyingCount >= 2;
+
+
+    const ownMember =
+      members.find(
+        member =>
+          member.uid === user.uid
+      );
+
+
+    const ownStudying =
+      ownMember?.state ===
+      "studying";
+
+
+    const personalEligible =
+      linkActive &&
+      ownStudying;
+
+
+    await setStudyLinkEligibilityV1(
+      user,
+      personalEligible
+    );
+
+
+    const state =
+      document.getElementById(
+        "study-link-status-state-v1"
+      );
+
+
+    const count =
+      document.getElementById(
+        "study-link-status-count-v1"
+      );
+
+
+    const detail =
+      document.getElementById(
+        "study-link-status-detail-v1"
+      );
+
+
+    const personal =
+      document.getElementById(
+        "study-link-status-personal-v1"
+      );
+
+
+    if (
+      !state ||
+      !count ||
+      !detail ||
+      !personal
+    ) {
+
+      return;
+
+    }
+
+
+    count.innerHTML = `
+      <strong>${studyingCount}</strong>
+      / ${members.length}
+      STUDYING
+    `;
+
+
+    if (linkActive) {
+
+      panel.classList.add(
+        "active"
+      );
+
+
+      state.innerHTML = `
+
+        <span class="study-link-status-dot-v1"></span>
+
+        LINK ACTIVE
+
+      `;
+
+
+      detail.innerHTML = `
+
+        <div class="study-link-status-bonuses-v1">
+
+          <div class="study-link-status-bonus-v1">
+
+            <div class="study-link-status-bonus-name-v1">
+              RANK
+            </div>
+
+            <div class="study-link-status-bonus-value-v1">
+              ×1.20
+            </div>
+
+          </div>
+
+
+          <div class="study-link-status-bonus-v1">
+
+            <div class="study-link-status-bonus-name-v1">
+              XP
+            </div>
+
+            <div class="study-link-status-bonus-value-v1">
+              ×1.10
+            </div>
+
+          </div>
+
+
+          <div class="study-link-status-bonus-v1">
+
+            <div class="study-link-status-bonus-name-v1">
+              GOLD
+            </div>
+
+            <div class="study-link-status-bonus-value-v1">
+              ×1.10
+            </div>
+
+          </div>
+
+
+          <div class="study-link-status-bonus-v1">
+
+            <div class="study-link-status-bonus-name-v1">
+              BOSS
+            </div>
+
+            <div class="study-link-status-bonus-value-v1">
+              ×1.15
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+
+      if (personalEligible) {
+
+        personal.className =
+          "eligible";
+
+        personal.textContent =
+          "● あなたのLINK BONUSは有効です";
+
+      }
+
+      else {
+
+        personal.className =
+          "";
+
+        personal.textContent =
+          "○ ROOMはLINK中ですが、あなたは現在PAUSEDです";
+
+      }
+
+    }
+
+    else {
+
+      panel.classList.remove(
+        "active"
+      );
+
+
+      state.innerHTML = `
+
+        <span class="study-link-status-dot-v1"></span>
+
+        WAITING
+
+      `;
+
+
+      const needed =
+        Math.max(
+          0,
+          2 - studyingCount
+        );
+
+
+      detail.innerHTML = `
+
+        <div class="study-link-status-wait-v1">
+
+          ${
+            needed === 1
+              ? "あと1人が勉強を開始するとLINKします。"
+              : "2人以上が勉強を開始するとLINKします。"
+          }
+
+        </div>
+
+      `;
+
+
+      personal.className =
+        "";
+
+      personal.textContent =
+        ownStudying
+          ? "パートナーの開始を待っています"
+          : "STARTするとLINK参加状態になります";
+
+    }
+
+  }
+
+  catch (error) {
+
+    console.warn(
+      "STUDY LINK status refresh:",
+      error
+    );
+
+  }
+
+}
+
+
+function startStudyLinkStatusPollingV1(
+  user,
+  code
+) {
+
+  if (
+    studyLinkStatusIntervalV1 &&
+    studyLinkStatusRoomV1 === code
+  ) {
+
+    refreshStudyLinkStatusV1(
+      user,
+      code
+    );
+
+    return;
+
+  }
+
+
+  stopStudyLinkStatusPollingV1();
+
+
+  studyLinkStatusRoomV1 =
+    code;
+
+
+  refreshStudyLinkStatusV1(
+    user,
+    code
+  );
+
+
+  studyLinkStatusIntervalV1 =
+    setInterval(
+      () => {
+
+        const panel =
+          document.getElementById(
+            "study-link-status-panel-v1"
+          );
+
+
+        if (!panel) {
+
+          stopStudyLinkStatusPollingV1();
+
+          return;
+
+        }
+
+
+        refreshStudyLinkStatusV1(
+          user,
+          code
+        );
+
+      },
+      1500
+    );
+
+}
+
+
+
+// ============================================================
+// STUDY LINK BOOST FUND v1
+//
+// pooled contribution system
+//
+// BOOST I   1,000 COINS
+// BOOST II  3,000 COINS
+// BOOST III 7,500 COINS
+//
+// Activation:
+//   target reached -> active for 60 minutes
+//
+// NOTE:
+//   Multipliers themselves are NOT applied here yet.
+// ============================================================
+
+const STUDY_LINK_BOOST_COSTS_V1 = {
+  1: 1000,
+  2: 3000,
+  3: 7500,
+};
+
+
+let studyLinkBoostFundIntervalV1 =
+  null;
+
+
+function stopStudyLinkBoostFundPollingV1() {
+
+  if (
+    studyLinkBoostFundIntervalV1
+  ) {
+
+    clearInterval(
+      studyLinkBoostFundIntervalV1
+    );
+
+    studyLinkBoostFundIntervalV1 =
+      null;
+
+  }
+
+}
+
+
+function getStudyLinkBoostStateV1(
+  roomData
+) {
+
+  const now =
+    Date.now();
+
+
+  const storedActiveLevel =
+    Math.max(
+      0,
+      Math.min(
+        3,
+        Number(
+          roomData?.boostActiveLevel ??
+          0
+        )
+      )
+    );
+
+
+  const activeUntil =
+    Math.max(
+      0,
+      Number(
+        roomData?.boostActiveUntil ??
+        0
+      )
+    );
+
+
+  const activeLevel =
+    normalizeStudyLinkBoostLevelV1(
+      roomData?.boostActiveLevel ?? 0
+    );
+
+
+  let targetLevel =
+    Number(
+      roomData?.boostTargetLevel ??
+      1
+    );
+
+
+  if (
+    ![1, 2, 3].includes(
+      targetLevel
+    )
+  ) {
+
+    targetLevel = 1;
+
+  }
+
+
+  const pool =
+    Math.max(
+      0,
+      Number(
+        roomData?.boostPool ??
+        0
+      )
+    );
+
+
+  const targetCost =
+    STUDY_LINK_BOOST_COSTS_V1[
+      targetLevel
+    ];
+
+
+  const remaining =
+    Math.max(
+      0,
+      targetCost - pool
+    );
+
+
+  return {
+    now,
+    activeLevel,
+    activeUntil,
+    targetLevel,
+    targetCost,
+    pool,
+    remaining,
+  };
+
+}
+
+
+function formatStudyLinkBoostTimeV1(
+  ms
+) {
+
+  const totalSeconds =
+    Math.max(
+      0,
+      Math.ceil(
+        Number(ms || 0) /
+        1000
+      )
+    );
+
+
+  const minutes =
+    Math.floor(
+      totalSeconds / 60
+    );
+
+
+  const seconds =
+    totalSeconds % 60;
+
+
+  return (
+    String(minutes) +
+    ":" +
+    String(seconds).padStart(
+      2,
+      "0"
+    )
+  );
+
+}
+
+
+async function contributeStudyLinkBoostV1(
+  user,
+  code,
+  requestedAmount
+) {
+
+  const normalizedCode =
+    normalizeStudyLinkV2Code(
+      code
+    );
+
+
+  const requested =
+    Math.floor(
+      Number(
+        requestedAmount || 0
+      )
+    );
+
+
+  if (!normalizedCode) {
+
+    throw new Error(
+      "ROOM CODEが無効です"
+    );
+
+  }
+
+
+  if (
+    !Number.isFinite(
+      requested
+    ) ||
+    requested <= 0
+  ) {
+
+    throw new Error(
+      "出資額を入力してください"
+    );
+
+  }
+
+
+  return await runTransaction(
+    db,
+    async (transaction) => {
+
+      const roomRef =
+        studyLinkV2RoomRef(
+          normalizedCode
+        );
+
+
+      const userRef =
+        doc(
+          db,
+          "users",
+          user.uid
+        );
+
+
+      // Firestore transaction:
+      // READ phase first
+      const roomSnap =
+        await transaction.get(
+          roomRef
+        );
+
+
+      const userSnap =
+        await transaction.get(
+          userRef
+        );
+
+
+      if (!roomSnap.exists()) {
+
+        throw new Error(
+          "ROOMが存在しません"
+        );
+
+      }
+
+
+      if (!userSnap.exists()) {
+
+        throw new Error(
+          "ユーザーデータがありません"
+        );
+
+      }
+
+
+      const roomData =
+        roomSnap.data();
+
+
+      const userData =
+        userSnap.data();
+
+
+      if (
+        roomData.active === false
+      ) {
+
+        throw new Error(
+          "このROOMは終了しています"
+        );
+
+      }
+
+
+      const ownRoomCode =
+        normalizeStudyLinkV2Code(
+          userData.studyLinkRoomCode ||
+          ""
+        );
+
+
+      if (
+        ownRoomCode !==
+        normalizedCode
+      ) {
+
+        throw new Error(
+          "このROOMのメンバーではありません"
+        );
+
+      }
+
+
+      const state =
+        getStudyLinkBoostStateV1(
+          roomData
+        );
+
+
+      const userCoins =
+        Math.max(
+          0,
+          Math.floor(
+            Number(
+              userData.coins ??
+              0
+            )
+          )
+        );
+
+
+      if (
+        state.remaining <= 0
+      ) {
+
+        throw new Error(
+          "BOOST FUNDはすでに満額です"
+        );
+
+      }
+
+
+      const amount =
+        Math.min(
+          requested,
+          state.remaining
+        );
+
+
+      if (
+        userCoins < amount
+      ) {
+
+        throw new Error(
+          "COINSが足りません"
+        );
+
+      }
+
+
+      const nextPool =
+        state.pool +
+        amount;
+
+
+      const activated =
+        nextPool >=
+        state.targetCost;
+
+
+      const roomUpdate = {
+
+        boostPool:
+          activated
+            ? 0
+            : nextPool,
+
+        boostTargetLevel:
+          activated
+            ? (
+                state.targetLevel < 3
+                  ? state.targetLevel + 1
+                  : 3
+              )
+            : state.targetLevel,
+
+        updatedAt:
+          serverTimestamp(),
+
+      };
+
+
+      if (activated) {
+
+        roomUpdate.boostActiveLevel =
+          state.targetLevel;
+
+        roomUpdate.boostActiveUntil = 0;
+
+        roomUpdate.boostActivatedBy =
+          user.uid;
+
+        roomUpdate.boostActivatedAt =
+          serverTimestamp();
+
+      }
+
+
+      transaction.set(
+        roomRef,
+        roomUpdate,
+        {
+          merge:true
+        }
+      );
+
+
+      transaction.set(
+        userRef,
+        {
+
+          coins:
+            userCoins -
+            amount,
+
+          lifetimeCoinsSpent:
+            Number(
+              userData.lifetimeCoinsSpent ??
+              0
+            ) +
+            amount,
+
+          updatedAt:
+            serverTimestamp(),
+
+        },
+        {
+          merge:true
+        }
+      );
+
+
+      return {
+
+        amount,
+
+        activated,
+
+        activatedLevel:
+          activated
+            ? state.targetLevel
+            : 0,
+
+      };
+
+    }
+  );
+
+}
+
+
+async function refreshStudyLinkBoostFundV1(
+  user,
+  code
+) {
+
+  const panel =
+    document.getElementById(
+      "study-link-boost-fund-v1"
+    );
+
+
+  if (!panel) {
+
+    stopStudyLinkBoostFundPollingV1();
+
+    return;
+
+  }
+
+
+  const roomRef =
+    studyLinkV2RoomRef(
+      code
+    );
+
+
+  const userRef =
+    doc(
+      db,
+      "users",
+      user.uid
+    );
+
+
+  const [
+    roomSnap,
+    userSnap
+  ] =
+    await Promise.all([
+      getDoc(roomRef),
+      getDoc(userRef),
+    ]);
+
+
+  if (
+    !roomSnap.exists() ||
+    !userSnap.exists()
+  ) {
+
+    return;
+
+  }
+
+
+  const roomData =
+    roomSnap.data();
+
+
+  const userData =
+    userSnap.data();
+
+
+  const state =
+    getStudyLinkBoostStateV1(
+      roomData
+    );
+
+
+  await setStudyLinkBoostTrackingLevelV1(
+    user,
+    state.activeLevel
+  );
+
+
+  const coins =
+    Math.max(
+      0,
+      Math.floor(
+        Number(
+          userData.coins ??
+          0
+        )
+      )
+    );
+
+
+  const title =
+    panel.querySelector(
+      "[data-boost-title]"
+    );
+
+
+  const activeText =
+    panel.querySelector(
+      "[data-boost-active]"
+    );
+
+
+  const progress =
+    panel.querySelector(
+      "[data-boost-progress]"
+    );
+
+
+  const fill =
+    panel.querySelector(
+      "[data-boost-fill]"
+    );
+
+
+  const coinsText =
+    panel.querySelector(
+      "[data-boost-coins]"
+    );
+
+
+  const input =
+    panel.querySelector(
+      "[data-boost-input]"
+    );
+
+
+  if (title) {
+
+    title.textContent =
+      `BOOST ${["","I","II","III"][state.targetLevel]} FUND`;
+
+  }
+
+
+  if (activeText) {
+
+    if (
+      state.activeLevel > 0
+    ) {
+
+      activeText.textContent =
+        `BOOST ${["","I","II","III"][state.activeLevel]} ACTIVE`;
+
+    }
+
+    else {
+
+      activeText.textContent =
+        "BOOST OFF";
+
+    }
+
+  }
+
+
+  if (progress) {
+
+    progress.textContent =
+      `${Math.floor(state.pool).toLocaleString()} / ${state.targetCost.toLocaleString()} COINS`;
+
+  }
+
+
+  if (fill) {
+
+    const percent =
+      Math.max(
+        0,
+        Math.min(
+          100,
+          (
+            state.pool /
+            state.targetCost
+          ) *
+          100
+        )
+      );
+
+
+    fill.style.width =
+      `${percent}%`;
+
+  }
+
+
+  if (coinsText) {
+
+    coinsText.textContent =
+      `YOUR COINS ${coins.toLocaleString()}`;
+
+  }
+
+
+  if (input) {
+
+    input.max =
+      String(
+        Math.max(
+          0,
+          Math.min(
+            coins,
+            state.remaining
+          )
+        )
+      );
+
+  }
+
+
+  panel.dataset.remaining =
+    String(
+      state.remaining
+    );
+
+
+  panel.dataset.coins =
+    String(
+      coins
+    );
+
+}
+
+
+async function mountStudyLinkBoostFundV1(
+  user,
+  code
+) {
+
+  const active =
+    document.getElementById(
+      "study-link-v2-active"
+    );
+
+
+  if (!active) {
+    return;
+  }
+
+
+  stopStudyLinkBoostFundPollingV1();
+
+
+  const existing =
+    document.getElementById(
+      "study-link-boost-fund-v1"
+    );
+
+
+  if (existing) {
+    existing.remove();
+  }
+
+
+  const panel =
+    document.createElement(
+      "section"
+    );
+
+
+  panel.id =
+    "study-link-boost-fund-v1";
+
+
+  panel.innerHTML = `
+    <div style="
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      padding:16px;
+      background:rgba(10,14,24,.86);
+      display:grid;
+      gap:12px;
+    ">
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        gap:12px;
+        align-items:flex-start;
+      ">
+
+        <div>
+          <div
+            data-boost-title
+            style="
+              font-weight:800;
+              letter-spacing:.08em;
+            "
+          >
+            BOOST FUND
+          </div>
+
+          <div
+            data-boost-active
+            style="
+              margin-top:4px;
+              font-size:.82rem;
+              opacity:.72;
+            "
+          >
+            BOOST OFF
+          </div>
+        </div>
+
+        <div
+          data-boost-coins
+          style="
+            font-size:.78rem;
+            opacity:.72;
+            white-space:nowrap;
+          "
+        >
+          YOUR COINS -
+        </div>
+
+      </div>
+
+
+      <div>
+
+        <div
+          data-boost-progress
+          style="
+            font-size:.88rem;
+            font-weight:700;
+            margin-bottom:7px;
+          "
+        >
+          0 / 1,000 COINS
+        </div>
+
+        <div style="
+          height:8px;
+          border-radius:999px;
+          overflow:hidden;
+          background:rgba(255,255,255,.08);
+        ">
+
+          <div
+            data-boost-fill
+            style="
+              height:100%;
+              width:0%;
+              background:currentColor;
+              transition:width .2s ease;
+            "
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <div style="
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:8px;
+      ">
+
+        <button
+          type="button"
+          data-boost-preset="100"
+        >
+          +100
+        </button>
+
+        <button
+          type="button"
+          data-boost-preset="500"
+        >
+          +500
+        </button>
+
+        <button
+          type="button"
+          data-boost-max
+        >
+          MAX
+        </button>
+
+      </div>
+
+
+      <div style="
+        display:grid;
+        grid-template-columns:minmax(0,1fr) 88px;
+        gap:6px;
+        width:100%;
+        min-width:0;
+        box-sizing:border-box;
+      ">
+
+        <input
+          type="number"
+          min="1"
+          step="1"
+          inputmode="numeric"
+          placeholder="COINS"
+          data-boost-input
+          style="width:100%;min-width:0;max-width:100%;box-sizing:border-box;"
+        >
+
+        <button
+          type="button"
+          data-boost-submit
+          style="width:88px;min-width:0;box-sizing:border-box;font-size:9px;"
+        >
+          CONTRIBUTE
+        </button>
+
+      </div>
+
+
+      <div
+        data-boost-message
+        style="
+          min-height:1.2em;
+          font-size:.8rem;
+          opacity:.76;
+        "
+      ></div>
+
+    </div>
+  `;
+
+
+  const members =
+    active.querySelector(
+      ".study-link-v2-members-wrap"
+    );
+
+
+  if (members) {
+
+    active.insertBefore(
+      panel,
+      members
+    );
+
+  }
+
+  else {
+
+    active.appendChild(
+      panel
+    );
+
+  }
+
+
+  const input =
+    panel.querySelector(
+      "[data-boost-input]"
+    );
+
+
+  const submit =
+    panel.querySelector(
+      "[data-boost-submit]"
+    );
+
+
+  const message =
+    panel.querySelector(
+      "[data-boost-message]"
+    );
+
+
+  panel
+    .querySelectorAll(
+      "[data-boost-preset]"
+    )
+    .forEach(
+      button => {
+
+        button.onclick = () => {
+
+          if (!input) return;
+
+          const requested =
+            Number(
+              button.dataset.boostPreset ||
+              0
+            );
+
+
+          const remaining =
+            Number(
+              panel.dataset.remaining ||
+              0
+            );
+
+
+          input.value =
+            String(
+              Math.min(
+                requested,
+                remaining
+              )
+            );
+
+        };
+
+      }
+    );
+
+
+  const maxButton =
+    panel.querySelector(
+      "[data-boost-max]"
+    );
+
+
+  if (maxButton) {
+
+    maxButton.onclick = () => {
+
+      if (!input) return;
+
+
+      const remaining =
+        Number(
+          panel.dataset.remaining ||
+          0
+        );
+
+
+      const coins =
+        Number(
+          panel.dataset.coins ||
+          0
+        );
+
+
+      input.value =
+        String(
+          Math.max(
+            0,
+            Math.min(
+              remaining,
+              coins
+            )
+          )
+        );
+
+    };
+
+  }
+
+
+  if (submit) {
+
+    submit.onclick =
+      async () => {
+
+        const amount =
+          Number(
+            input?.value ||
+            0
+          );
+
+
+        submit.disabled =
+          true;
+
+
+        if (message) {
+
+          message.textContent =
+            "PROCESSING...";
+
+        }
+
+
+        try {
+
+          const result =
+            await contributeStudyLinkBoostV1(
+              user,
+              code,
+              amount
+            );
+
+
+          if (input) {
+
+            input.value =
+              "";
+
+          }
+
+
+          if (message) {
+
+            if (
+              result.activated
+            ) {
+
+              message.textContent =
+                `BOOST ${["","I","II","III"][result.activatedLevel]} ACTIVATED`;
+
+            }
+
+            else {
+
+              message.textContent =
+                `${result.amount.toLocaleString()} COINS CONTRIBUTED`;
+
+            }
+
+          }
+
+
+          await refreshStudyLinkBoostFundV1(
+            user,
+            code
+          );
+
+        }
+
+        catch (error) {
+
+          console.error(
+            error
+          );
+
+
+          if (message) {
+
+            message.textContent =
+              error?.message ||
+              "出資に失敗しました";
+
+          }
+
+        }
+
+        finally {
+
+          submit.disabled =
+            false;
+
+        }
+
+      };
+
+  }
+
+
+  await refreshStudyLinkBoostFundV1(
+    user,
+    code
+  );
+
+
+  studyLinkBoostFundIntervalV1 =
+    setInterval(
+      async () => {
+
+        try {
+
+          await refreshStudyLinkBoostFundV1(
+            user,
+            code
+          );
+
+        }
+
+        catch (error) {
+
+          console.warn(
+            error
+          );
+
+        }
+
+      },
+      1000
+    );
+
+}
+
+
+async function mountStudyLinkStatusV1(
+  user,
+  code
+) {
+
+  const active =
+    document.getElementById(
+      "study-link-v2-active"
+    );
+
+
+  if (!active) {
+    return;
+  }
+
+
+  let panel =
+    document.getElementById(
+      "study-link-status-panel-v1"
+    );
+
+
+  if (!panel) {
+
+    panel =
+      document.createElement(
+        "div"
+      );
+
+    panel.id =
+      "study-link-status-panel-v1";
+
+
+    panel.innerHTML = `
+
+      <div class="study-link-status-head-v1">
+
+        <div class="study-link-status-label-v1">
+          LINK STATUS
+        </div>
+
+
+        <div id="study-link-status-state-v1">
+
+          <span class="study-link-status-dot-v1"></span>
+
+          WAITING
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="study-link-status-count-v1"
+        class="study-link-status-count-v1"
+      >
+        0 / 0 STUDYING
+      </div>
+
+
+      <div id="study-link-status-detail-v1">
+
+        <div class="study-link-status-wait-v1">
+          2人以上が勉強を開始するとLINKします。
+        </div>
+
+      </div>
+
+
+      <div id="study-link-status-personal-v1">
+        STARTするとLINK参加状態になります
+      </div>
+
+    `;
+
+
+    const timer =
+      document.getElementById(
+        "study-link-room-timer-v1"
+      );
+
+
+    const members =
+      active.querySelector(
+        ".study-link-v2-members-wrap"
+      );
+
+
+    if (
+      timer &&
+      timer.nextSibling
+    ) {
+
+      active.insertBefore(
+        panel,
+        timer.nextSibling
+      );
+
+    }
+
+    else if (members) {
+
+      active.insertBefore(
+        panel,
+        members
+      );
+
+    }
+
+    else {
+
+      active.appendChild(
+        panel
+      );
+
+    }
+
+  }
+
+
+  startStudyLinkStatusPollingV1(
+    user,
+    code
+  );
+
+}
+
+
+
+async function mountStudyLinkPanelV2(user) {
+
+  const menu =
+    document.querySelector(
+      ".study-main-menu"
+    );
+
+  if (!menu) {
+
+    console.warn(
+      "STUDY LINK: study-main-menu not found"
+    );
+
+    return;
+
+  }
+
+
+  let card =
+    document.getElementById(
+      "study-link-card-v2"
+    );
+
+
+  if (!card) {
+
+    card =
+      document.createElement(
+        "section"
+      );
+
+    card.id =
+      "study-link-card-v2";
+
+    card.innerHTML = `
+
+      <div class="study-link-v2-head">
+
+        <div>
+
+          <div class="study-link-v2-kicker">
+            STUDY LINK
+          </div>
+
+          <h2 class="study-link-v2-title">
+            一緒に勉強する
+          </h2>
+
+        </div>
+
+        <div class="study-link-v2-chip">
+          ROOM
+        </div>
+
+      </div>
+
+
+      <p class="study-link-v2-desc">
+        ルームコードを共有して、
+        友達と同じルームで勉強できます。
+      </p>
+
+
+      <div id="study-link-v2-lobby">
+
+        <button
+          type="button"
+          id="study-link-v2-create"
+        >
+          CREATE ROOM
+        </button>
+
+
+        <div class="study-link-v2-or">
+          OR JOIN
+        </div>
+
+
+        <div class="study-link-v2-join-row">
+
+          <input
+            id="study-link-v2-code"
+            maxlength="6"
+            autocomplete="off"
+            placeholder="ROOM CODE"
+          >
+
+          <button
+            type="button"
+            id="study-link-v2-join"
+          >
+            JOIN
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="study-link-v2-active"
+        class="study-link-v2-active hidden"
+      >
+
+        <input id="sl-focus-v2" name="sl-tab-v2" type="radio" checked>
+        <input id="sl-room-v2" name="sl-tab-v2" type="radio">
+
+        <div id="study-link-room-tabs-v2">
+          <label for="sl-room-v2">ROOM</label>
+          <label for="sl-focus-v2">FOCUS</label>
+        </div>
+
+
+        <div class="study-link-v2-connected">
+
+          <span class="study-link-v2-dot"></span>
+
+          CONNECTED
+
+        </div>
+
+
+        <div class="study-link-v2-label">
+          ROOM CODE
+        </div>
+
+
+        <div id="study-link-v2-room-code">
+          ------
+        </div>
+
+        <div class="study-link-v2-members-wrap">
+
+          <div class="study-link-v2-members-head">
+
+            <div class="study-link-v2-members-label">
+              MEMBERS
+            </div>
+
+            <div id="study-link-v2-member-count">
+              0
+            </div>
+
+          </div>
+
+          <div id="study-link-v2-members">
+
+            <div class="study-link-v2-members-empty">
+              Loading...
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="study-link-v2-actions">
+
+          <button
+            type="button"
+            id="study-link-v2-copy"
+          >
+            COPY CODE
+          </button>
+
+          <button
+            type="button"
+            id="study-link-v2-leave"
+          >
+            LEAVE
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div id="study-link-v2-status"></div>
+
+    `;
+
+
+    menu.insertAdjacentElement(
+      "afterend",
+      card
+    );
+
+  }
+
+
+  const lobby =
+    document.getElementById(
+      "study-link-v2-lobby"
+    );
+
+  const active =
+    document.getElementById(
+      "study-link-v2-active"
+    );
+
+  const create =
+    document.getElementById(
+      "study-link-v2-create"
+    );
+
+  const join =
+    document.getElementById(
+      "study-link-v2-join"
+    );
+
+  const input =
+    document.getElementById(
+      "study-link-v2-code"
+    );
+
+  const roomCode =
+    document.getElementById(
+      "study-link-v2-room-code"
+    );
+
+  const copy =
+    document.getElementById(
+      "study-link-v2-copy"
+    );
+
+  const leave =
+    document.getElementById(
+      "study-link-v2-leave"
+    );
+
+  const status =
+    document.getElementById(
+      "study-link-v2-status"
+    );
+
+
+  const setStatus = (
+    message = "",
+    type = ""
+  ) => {
+
+    status.textContent =
+      message;
+
+    status.className =
+      type;
+
+  };
+
+
+
+  const escapeStudyLinkInviteHtmlV1 =
+    value =>
+      String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+
+  async function renderStudyLinkFriendInvitesV1(
+    code
+  ) {
+
+    let panel =
+      document.getElementById(
+        "study-link-friend-invite-v1"
+      );
+
+
+    if (!panel) {
+
+      panel =
+        document.createElement(
+          "section"
+        );
+
+      panel.id =
+        "study-link-friend-invite-v1";
+
+
+      const actions =
+        active.querySelector(
+          ".study-link-v2-actions"
+        );
+
+
+      if (actions) {
+
+        active.insertBefore(
+          panel,
+          actions
+        );
+
+      }
+
+      else {
+
+        active.appendChild(
+          panel
+        );
+
+      }
+
+    }
+
+
+    panel.innerHTML = `
+      <button
+        type="button"
+        id="study-link-invite-toggle-v1"
+      >
+        INVITE FRIENDS
+      </button>
+
+      <div
+        id="study-link-invite-list-v1"
+        hidden
+      >
+        <div style="
+          color:#667286;
+          font-size:10px;
+        ">
+          Loading...
+        </div>
+      </div>
+    `;
+
+
+    const toggle =
+      panel.querySelector(
+        "#study-link-invite-toggle-v1"
+      );
+
+
+    const list =
+      panel.querySelector(
+        "#study-link-invite-list-v1"
+      );
+
+
+    toggle.onclick =
+      () => {
+
+        list.hidden =
+          !list.hidden;
+
+      };
+
+
+    try {
+
+      const friendshipQueryA =
+        query(
+          collection(
+            db,
+            "friends"
+          ),
+          where(
+            "userA",
+            "==",
+            user.uid
+          )
+        );
+
+
+      const friendshipQueryB =
+        query(
+          collection(
+            db,
+            "friends"
+          ),
+          where(
+            "userB",
+            "==",
+            user.uid
+          )
+        );
+
+
+      const [
+        friendSnapA,
+        friendSnapB,
+        memberSnap
+      ] =
+        await Promise.all([
+          getDocs(
+            friendshipQueryA
+          ),
+          getDocs(
+            friendshipQueryB
+          ),
+          getDocs(
+            collection(
+              db,
+              "studyLinkRooms",
+              code,
+              "members"
+            )
+          )
+        ]);
+
+
+      const friendUids =
+        new Set();
+
+
+      friendSnapA.docs.forEach(
+        d => {
+
+          const data =
+            d.data();
+
+          if (data.userB) {
+            friendUids.add(
+              data.userB
+            );
+          }
+
+        }
+      );
+
+
+      friendSnapB.docs.forEach(
+        d => {
+
+          const data =
+            d.data();
+
+          if (data.userA) {
+            friendUids.add(
+              data.userA
+            );
+          }
+
+        }
+      );
+
+
+      const memberUids =
+        new Set(
+          memberSnap.docs.map(
+            d => d.id
+          )
+        );
+
+
+      if (!friendUids.size) {
+
+        list.innerHTML = `
+          <div style="
+            color:#667286;
+            font-size:10px;
+          ">
+            フレンドがいません
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      const friends =
+        await Promise.all(
+          [...friendUids].map(
+            async uid => {
+
+              const snap =
+                await getDoc(
+                  doc(
+                    db,
+                    "users",
+                    uid
+                  )
+                );
+
+
+              if (!snap.exists()) {
+                return null;
+              }
+
+
+              return {
+                uid,
+                data:
+                  snap.data()
+              };
+
+            }
+          )
+        );
+
+
+      list.innerHTML =
+        friends
+          .filter(Boolean)
+          .map(
+            friend => {
+
+              const inRoom =
+                memberUids.has(
+                  friend.uid
+                );
+
+
+              return `
+                <div
+                  class="study-link-invite-friend-v1"
+                >
+                  <strong>
+                    ${escapeStudyLinkInviteHtmlV1(
+                      friend.data.username ??
+                      friend.data.displayName ??
+                      "ユーザー"
+                    )}
+                  </strong>
+
+                  <button
+                    type="button"
+                    data-study-link-invite="${friend.uid}"
+                    ${inRoom ? "disabled" : ""}
+                  >
+                    ${inRoom ? "IN ROOM" : "INVITE"}
+                  </button>
+                </div>
+              `;
+
+            }
+          )
+          .join("");
+
+
+      const own =
+        await getStudyLinkV2User(
+          user
+        );
+
+
+      const fromUsername =
+        String(
+          own.data.username ??
+          own.data.displayName ??
+          "PLAYER"
+        );
+
+
+      list
+        .querySelectorAll(
+          "[data-study-link-invite]"
+        )
+        .forEach(
+          button => {
+
+            button.onclick =
+              async () => {
+
+                const toUid =
+                  button.dataset
+                    .studyLinkInvite;
+
+
+                button.disabled =
+                  true;
+
+                button.textContent =
+                  "SENDING";
+
+
+                try {
+
+                  await setDoc(
+                    doc(
+                      db,
+                      "studyLinkInvites",
+                      `${code}_${toUid}`
+                    ),
+                    {
+                      roomCode:code,
+                      fromUid:user.uid,
+                      fromUsername,
+                      toUid,
+                      createdAt:
+                        serverTimestamp()
+                    },
+                    {
+                      merge:true
+                    }
+                  );
+
+
+                  button.textContent =
+                    "SENT";
+
+                }
+
+                catch (error) {
+
+                  console.error(
+                    error
+                  );
+
+                  button.disabled =
+                    false;
+
+                  button.textContent =
+                    "INVITE";
+
+                  setStatus(
+                    "招待の送信に失敗しました",
+                    "error"
+                  );
+
+                }
+
+              };
+
+          }
+        );
+
+    }
+
+    catch (error) {
+
+      console.error(
+        error
+      );
+
+      list.innerHTML = `
+        <div style="
+          color:#ff8b8b;
+          font-size:10px;
+        ">
+          フレンドを読み込めません
+        </div>
+      `;
+
+    }
+
+  }
+
+
+  async function renderStudyLinkIncomingInvitesV1() {
+
+    let panel =
+      document.getElementById(
+        "study-link-incoming-invites-v1"
+      );
+
+
+    if (!panel) {
+
+      panel =
+        document.createElement(
+          "section"
+        );
+
+      panel.id =
+        "study-link-incoming-invites-v1";
+
+      lobby.appendChild(
+        panel
+      );
+
+    }
+
+
+    try {
+
+      const inviteQuery =
+        query(
+          collection(
+            db,
+            "studyLinkInvites"
+          ),
+          where(
+            "toUid",
+            "==",
+            user.uid
+          )
+        );
+
+
+      const inviteSnap =
+        await getDocs(
+          inviteQuery
+        );
+
+
+      if (!inviteSnap.size) {
+
+        panel.hidden =
+          true;
+
+        return;
+
+      }
+
+
+      panel.hidden =
+        false;
+
+
+      panel.innerHTML = `
+        <div
+          class="study-link-incoming-title-v1"
+        >
+          ROOM INVITES
+        </div>
+
+        ${
+          inviteSnap.docs.map(
+            inviteDoc => {
+
+              const invite =
+                inviteDoc.data();
+
+
+              return `
+                <div
+                  class="study-link-incoming-card-v1"
+                >
+
+                  <div
+                    class="study-link-incoming-user-v1"
+                  >
+                    <strong>
+                      ${escapeStudyLinkInviteHtmlV1(
+                        invite.fromUsername ??
+                        "PLAYER"
+                      )}
+                    </strong>
+
+                    <span>
+                      ROOM ${escapeStudyLinkInviteHtmlV1(
+                        invite.roomCode ??
+                        "------"
+                      )}
+                    </span>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="study-link-incoming-join-v1"
+                    data-study-link-join-invite="${invite.roomCode ?? ""}"
+                  >
+                    JOIN
+                  </button>
+
+                  <button
+                    type="button"
+                    class="study-link-incoming-decline-v1"
+                    data-study-link-decline-invite="${inviteDoc.id}"
+                  >
+                    ×
+                  </button>
+
+                </div>
+              `;
+
+            }
+          ).join("")
+        }
+      `;
+
+
+      panel
+        .querySelectorAll(
+          "[data-study-link-join-invite]"
+        )
+        .forEach(
+          button => {
+
+            button.onclick =
+              () => {
+
+                const code =
+                  normalizeStudyLinkV2Code(
+                    button.dataset
+                      .studyLinkJoinInvite ??
+                    ""
+                  );
+
+
+                input.value =
+                  code;
+
+
+                join.click();
+
+              };
+
+          }
+        );
+
+
+      panel
+        .querySelectorAll(
+          "[data-study-link-decline-invite]"
+        )
+        .forEach(
+          button => {
+
+            button.onclick =
+              async () => {
+
+                await deleteDoc(
+                  doc(
+                    db,
+                    "studyLinkInvites",
+                    button.dataset
+                      .studyLinkDeclineInvite
+                  )
+                );
+
+
+                await renderStudyLinkIncomingInvitesV1();
+
+              };
+
+          }
+        );
+
+    }
+
+    catch (error) {
+
+      console.warn(
+        "STUDY LINK INVITES:",
+        error
+      );
+
+      panel.hidden =
+        true;
+
+    }
+
+  }
+
+
+  async function render() {
+
+    const own =
+      await getStudyLinkV2User(
+        user
+      );
+
+    const code =
+      normalizeStudyLinkV2Code(
+        own.data.studyLinkRoomCode ||
+        ""
+      );
+
+
+    if (!code) {
+
+      stopStudyLinkStatusPollingV1();
+
+      disableStudyLinkRoomModeV1();
+
+      lobby.classList.remove(
+        "hidden"
+      );
+
+      active.classList.add(
+        "hidden"
+      );
+
+      roomCode.textContent =
+        "------";
+
+      await renderStudyLinkIncomingInvitesV1();
+
+      return;
+
+    }
+
+
+    const roomSnap =
+      await getDoc(
+        studyLinkV2RoomRef(code)
+      );
+
+
+    if (!roomSnap.exists()) {
+
+      await setDoc(
+        own.ref,
+        {
+          studyLinkRoomCode:""
+        },
+        {
+          merge:true
+        }
+      );
+
+      lobby.classList.remove(
+        "hidden"
+      );
+
+      active.classList.add(
+        "hidden"
+      );
+
+      await renderStudyLinkIncomingInvitesV1();
+
+      return;
+
+    }
+
+
+    lobby.classList.add(
+      "hidden"
+    );
+
+    active.classList.remove(
+      "hidden"
+    );
+
+    roomCode.textContent =
+      code;
+
+    enableStudyLinkRoomModeV1(
+      code
+    );
+
+    await mountStudyLinkRoomTimerV1(
+      user,
+      code
+    );
+
+    await mountStudyLinkStatusV1(
+      user,
+      code
+    );
+
+    await mountStudyLinkBoostFundV1(
+      user,
+      code
+    );
+
+    await renderStudyLinkMembersV2(
+      code,
+      user
+    );
+
+    await renderStudyLinkFriendInvitesV1(
+      code
+    );
+
+  }
+
+
+  input.oninput =
+    () => {
+
+      input.value =
+        normalizeStudyLinkV2Code(
+          input.value
+        );
+
+    };
+
+
+  create.onclick =
+    async () => {
+
+      create.disabled = true;
+
+      setStatus(
+        "ルーム作成中..."
+      );
+
+      try {
+
+        const own =
+          await getStudyLinkV2User(
+            user
+          );
+
+        let code = "";
+        let ref = null;
+
+
+        for (
+          let i = 0;
+          i < 12;
+          i++
+        ) {
+
+          const candidate =
+            generateStudyLinkV2Code();
+
+          const candidateRef =
+            studyLinkV2RoomRef(
+              candidate
+            );
+
+          const snap =
+            await getDoc(
+              candidateRef
+            );
+
+          if (!snap.exists()) {
+
+            code =
+              candidate;
+
+            ref =
+              candidateRef;
+
+            break;
+
+          }
+
+        }
+
+
+        if (!ref) {
+
+          throw new Error(
+            "ROOM CODEを作成できませんでした"
+          );
+
+        }
+
+
+        const username =
+          String(
+            own.data.username ||
+            own.data.displayName ||
+            "PLAYER"
+          );
+
+
+        await setDoc(
+          ref,
+          {
+            code,
+            createdBy:user.uid,
+            createdAt:
+              serverTimestamp(),
+
+            active:true,
+
+            boostPool:0,
+            boostTargetLevel:1,
+            boostActiveLevel:0,
+            boostActiveUntil:0
+          }
+        );
+
+
+        await setDoc(
+          studyLinkV2MemberRef(
+            code,
+            user.uid
+          ),
+          {
+            uid:user.uid,
+            username,
+            state:"idle",
+            joinedAt:
+              serverTimestamp()
+          }
+        );
+
+
+        await setDoc(
+          own.ref,
+          {
+            studyLinkRoomCode:code
+          },
+          {
+            merge:true
+          }
+        );
+
+
+        await render();
+
+        setStatus(
+          `ROOM ${code} を作成しました`,
+          "success"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+        setStatus(
+          error?.message ||
+          "ルーム作成に失敗しました",
+          "error"
+        );
+
+      }
+
+      finally {
+
+        create.disabled = false;
+
+      }
+
+    };
+
+
+  join.onclick =
+    async () => {
+
+      const code =
+        normalizeStudyLinkV2Code(
+          input.value
+        );
+
+
+      if (code.length !== 6) {
+
+        setStatus(
+          "6桁のROOM CODEを入力してください",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      join.disabled = true;
+
+
+      try {
+
+        const roomSnap =
+          await getDoc(
+            studyLinkV2RoomRef(
+              code
+            )
+          );
+
+
+        if (!roomSnap.exists()) {
+
+          throw new Error(
+            "ルームが見つかりません"
+          );
+
+        }
+
+
+        const own =
+          await getStudyLinkV2User(
+            user
+          );
+
+        const username =
+          String(
+            own.data.username ||
+            own.data.displayName ||
+            "PLAYER"
+          );
+
+
+        await setDoc(
+          studyLinkV2MemberRef(
+            code,
+            user.uid
+          ),
+          {
+            uid:user.uid,
+            username,
+            state:"idle",
+            joinedAt:
+              serverTimestamp()
+          },
+          {
+            merge:true
+          }
+        );
+
+
+        await setDoc(
+          own.ref,
+          {
+            studyLinkRoomCode:code
+          },
+          {
+            merge:true
+          }
+        );
+
+
+        try {
+
+          await deleteDoc(
+            doc(
+              db,
+              "studyLinkInvites",
+              `${code}_${user.uid}`
+            )
+          );
+
+        }
+
+        catch {}
+
+
+        await render();
+
+        setStatus(
+          `ROOM ${code} に参加しました`,
+          "success"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+        setStatus(
+          error?.message ||
+          "参加に失敗しました",
+          "error"
+        );
+
+      }
+
+      finally {
+
+        join.disabled = false;
+
+      }
+
+    };
+
+
+  input.onkeydown =
+    event => {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        join.click();
+
+      }
+
+    };
+
+
+  copy.onclick =
+    async () => {
+
+      const code =
+        roomCode.textContent.trim();
+
+      try {
+
+        await navigator.clipboard
+          .writeText(code);
+
+        setStatus(
+          "ROOM CODEをコピーしました",
+          "success"
+        );
+
+      }
+
+      catch {
+
+        setStatus(code);
+
+      }
+
+    };
+
+
+  leave.onclick =
+    async () => {
+
+      const code =
+        roomCode.textContent.trim();
+
+
+      try {
+
+        await deleteDoc(
+          studyLinkV2MemberRef(
+            code,
+            user.uid
+          )
+        );
+
+      }
+
+      catch (error) {
+
+        console.warn(error);
+
+      }
+
+
+      await setDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        ),
+        {
+          studyLinkRoomCode:""
+        },
+        {
+          merge:true
+        }
+      );
+
+
+      disableStudyLinkRoomModeV1();
+
+      await render();
+
+      await showStudyMainPage(
+        user
+      );
+
+    };
+
+
+  await render();
+
+
+  if (
+    window.__studyLinkInvitePollV1
+  ) {
+
+    clearInterval(
+      window.__studyLinkInvitePollV1
+    );
+
+  }
+
+
+  window.__studyLinkInvitePollV1 =
+    setInterval(
+      async () => {
+
+        const liveCard =
+          document.getElementById(
+            "study-link-card-v2"
+          );
+
+
+        if (
+          !liveCard ||
+          !liveCard.isConnected
+        ) {
+
+          clearInterval(
+            window.__studyLinkInvitePollV1
+          );
+
+          window.__studyLinkInvitePollV1 =
+            null;
+
+          return;
+
+        }
+
+
+        if (
+          !lobby.classList.contains(
+            "hidden"
+          )
+        ) {
+
+          await renderStudyLinkIncomingInvitesV1();
+
+        }
+
+      },
+      3000
+    );
+
+
+  const memberRefreshTimer =
+    setInterval(
+      async () => {
+
+        const card =
+          document.getElementById(
+            "study-link-card-v2"
+          );
+
+        if (!card) {
+
+          clearInterval(
+            memberRefreshTimer
+          );
+
+          return;
+
+        }
+
+
+        const code =
+          normalizeStudyLinkV2Code(
+            roomCode.textContent
+          );
+
+
+        if (
+          code &&
+          code !== "------"
+        ) {
+
+          await renderStudyLinkMembersV2(
+            code,
+            user
+          );
+
+        }
+
+      },
+      3000
+    );
+
+}
+
+
+
 async function showStudyMainPage(user) {
 
   currentMainTab = "study";
@@ -13325,6 +22075,8 @@ async function showStudyMainPage(user) {
 
   mountClassicNavigation(user);
   updateClassicNavigationActive();
+
+  await mountStudyLinkPanelV2(user);
 
 }
 
@@ -16168,7 +24920,19 @@ async function showHome(user) {
 
   if (data.rankSeasonKey !== currentSeasonKey) {
     const previousMinutes =
-      Number(data.monthlyStudyMinutes ?? 0);
+      Math.max(
+        0,
+        Number(
+          data.monthlyStudyMinutes ?? 0
+        )
+      )
+      +
+      Math.max(
+        0,
+        Number(
+          data.monthlyStudyLinkBonusMinutes ?? 0
+        )
+      );
 
     const previousRank =
       calculateRank(previousMinutes);
@@ -16202,6 +24966,7 @@ async function showHome(user) {
       ref,
       {
         monthlyStudyMinutes: 0,
+        monthlyStudyLinkBonusMinutes: 0,
         rankSeasonKey: currentSeasonKey,
 
         xp: newXp,
@@ -16235,6 +25000,7 @@ async function showHome(user) {
     data = {
       ...data,
       monthlyStudyMinutes: 0,
+      monthlyStudyLinkBonusMinutes: 0,
       rankSeasonKey: currentSeasonKey,
       xp: newXp,
       coins: newCoins,
@@ -16293,6 +25059,17 @@ async function showHome(user) {
   const monthlyStudyMinutes =
     Number(data.monthlyStudyMinutes ?? 0);
 
+
+  const homeRankMonthlyMinutes =
+    monthlyStudyMinutes +
+    Math.max(
+      0,
+      Number(
+        data.monthlyStudyLinkBonusMinutes ?? 0
+      )
+    );
+
+
   const todayStudyMinutes =
     data.dailyStudyDate === todayKey
       ? Number(data.todayStudyMinutes ?? 0)
@@ -16305,9 +25082,24 @@ async function showHome(user) {
     totalStudyMinutes % 60;
 
   const rank =
-    calculateRank(monthlyStudyMinutes);
+    calculateRank(
+      homeRankMonthlyMinutes
+    );
 
-  const xpPercent =
+  
+
+  const homeRankedActiveV1 =
+    String(
+      data.rankedSeason ?? ""
+    ) ===
+    getCurrentRankedSeasonKeyV1();
+
+  const homeRankedFamilyV1 =
+    getRankedCardFamilyV1(
+      rank
+    );
+
+const xpPercent =
     level >= 100 || !neededXp
       ? 100
       : Math.min(
@@ -16358,7 +25150,7 @@ async function showHome(user) {
       homeCurrentRank.minutes;
 
     const gained =
-      monthlyStudyMinutes -
+      homeRankMonthlyMinutes -
       homeCurrentRank.minutes;
 
     homeRankProgress =
@@ -16374,7 +25166,7 @@ async function showHome(user) {
       Math.max(
         0,
         homeNextRank.minutes -
-        monthlyStudyMinutes
+        homeRankMonthlyMinutes
       );
 
   }
@@ -16424,8 +25216,37 @@ async function showHome(user) {
         <section
           id="home-player-status"
           class="rpg-section"
-        >
+          data-ranked-active="${homeRankedActiveV1 ? "1" : "0"}"
+          data-ranked-family="${homeRankedFamilyV1}"
+          style="${homeRankedActiveV1
+            ? homeRankedFamilyV1 === "legend"
+              ? `box-shadow:
+                  0 0 6px rgba(255,252,232,.92),
+                  0 0 15px rgba(255,225,135,.78),
+                  0 0 32px rgba(255,190,70,.52),
+                  0 0 54px rgba(196,120,255,.34),
+                  0 0 82px rgba(120,90,255,.18)!important;`
 
+              : homeRankedFamilyV1 === "grandmaster"
+                ? `box-shadow:
+                    0 0 7px rgba(255,190,215,.74),
+                    0 0 22px rgba(255,77,132,.52),
+                    0 0 46px rgba(190,70,255,.30),
+                    0 0 68px rgba(120,70,255,.14)!important;`
+
+                : homeRankedFamilyV1 === "master"
+                  ? `box-shadow:
+                      0 0 7px rgba(225,215,255,.68),
+                      0 0 22px rgba(157,110,255,.48),
+                      0 0 44px rgba(115,85,255,.27),
+                      0 0 66px rgba(80,70,220,.13)!important;`
+
+                  : `box-shadow:
+                      0 0 9px rgba(${getRankedCardRgbV1(homeRankedFamilyV1)},.48),
+                      0 0 26px rgba(${getRankedCardRgbV1(homeRankedFamilyV1)},.30),
+                      0 0 44px rgba(${getRankedCardRgbV1(homeRankedFamilyV1)},.15)!important;`
+            : ''}"
+        >
           <div class="home-player-top">
 
             <div class="home-player-avatar">
@@ -19411,8 +28232,18 @@ async function showFriendsPage(user) {
 
       const friendRank =
         calculateRank(
-          Number(
-            friendData.monthlyStudyMinutes ?? 0
+          Math.max(
+            0,
+            Number(
+              friendData.monthlyStudyMinutes ?? 0
+            )
+          )
+          +
+          Math.max(
+            0,
+            Number(
+              friendData.monthlyStudyLinkBonusMinutes ?? 0
+            )
           )
         );
 
@@ -19467,10 +28298,29 @@ async function showFriendsPage(user) {
         ).trim();
 
 
+      const friendRankedActiveV1 =
+        String(
+          friendData.rankedSeason ?? ""
+        ) ===
+        getCurrentRankedSeasonKeyV1();
+
+
+      const friendRankedClassV1 =
+        friendRankedActiveV1
+          ? (
+              `asc-ranked-card asc-ranked-${getRankedCardFamilyV1(
+                friendRank
+              )}`
+            )
+          : "";
+
+
       friendCards.push(`
         <div
           class="friend-card-rich"
           data-friend-uid="${uid}"
+          data-ranked-active="${friendRankedActiveV1 ? "1" : "0"}"
+          data-ranked-family="${getRankedCardFamilyV1(friendRank)}"
         >
 
           <div class="friend-card-rich-head">
@@ -19550,8 +28400,43 @@ async function showFriendsPage(user) {
                 RANK
               </span>
 
-              <strong class="friend-card-stat-value">
-                ${friendRank}
+              <strong class="friend-card-stat-value friend-card-rank-value">
+
+                <img
+                  class="friend-card-rank-emblem"
+                  src="./assets/ranks/${({
+                    "Bronze III": "bronze-iii.png",
+                    "Bronze II": "bronze-ii.png",
+                    "Bronze I": "bronze-i.png",
+
+                    "Silver III": "silver-iii.png",
+                    "Silver II": "silver-ii.png",
+                    "Silver I": "silver-i.png",
+
+                    "Gold III": "gold-iii.png",
+                    "Gold II": "gold-ii.png",
+                    "Gold I": "gold-i.png",
+
+                    "Platinum III": "platinum-iii.png",
+                    "Platinum II": "platinum-ii.png",
+                    "Platinum I": "platinum-i.png",
+
+                    "Diamond III": "diamond-iii.png",
+                    "Diamond II": "diamond-ii.png",
+                    "Diamond I": "diamond-i.png",
+
+                    "Master": "master.png",
+                    "Grandmaster": "grandmaster.png",
+                    "Legend": "legend.png"
+                  })[friendRank] || "bronze-iii.png"}?v=friend-rank-v1"
+                  alt="${friendRank}"
+                  draggable="false"
+                >
+
+                <span>
+                  ${friendRank}
+                </span>
+
               </strong>
 
             </div>
@@ -19937,16 +28822,16 @@ const ALL_TITLE_DEFS = [
   // 隠し称号 10
   // ==========================================================
 
-  { id:"hidden-01", name:"アリ得ない知識", category:"hidden", condition:"？？？" },
-  { id:"hidden-02", name:"廃人予備軍", category:"hidden", condition:"？？？" },
-  { id:"hidden-03", name:"限界突破者", category:"hidden", condition:"？？？" },
-  { id:"hidden-04", name:"一点突破", category:"hidden", condition:"？？？" },
-  { id:"hidden-05", name:"全知全能", category:"hidden", condition:"？？？" },
-  { id:"hidden-06", name:"クエストブレイカー", category:"hidden", condition:"？？？" },
-  { id:"hidden-07", name:"強欲なる者", category:"hidden", condition:"？？？" },
-  { id:"hidden-08", name:"逆張り勇者", category:"hidden", condition:"？？？" },
-  { id:"hidden-09", name:"錬金術師", category:"hidden", condition:"？？？" },
-  { id:"hidden-10", name:"幸運を掴みし者", category:"hidden", condition:"？？？" },
+  { id:"hidden-01", name:"アリ得ない知識", category:"hidden", condition:"★1以上またはLv.100到達 ＋ Legend到達 ＋ 5系統すべてのLv.10ボスを討伐" },
+  { id:"hidden-02", name:"廃人予備軍", category:"hidden", condition:"1日で10時間以上勉強する" },
+  { id:"hidden-03", name:"限界突破者", category:"hidden", condition:"1日で1000XP以上獲得する" },
+  { id:"hidden-04", name:"一点突破", category:"hidden", condition:"1つの教科を1日で5時間以上勉強する" },
+  { id:"hidden-05", name:"全知全能", category:"hidden", condition:"選択している全教科をLv.50以上にする" },
+  { id:"hidden-06", name:"クエストブレイカー", category:"hidden", condition:"その日のデイリークエスト3個をすべてクリアする" },
+  { id:"hidden-07", name:"強欲なる者", category:"hidden", condition:"1日のうちにXP・コイン・アイテムをすべて獲得する" },
+  { id:"hidden-08", name:"逆張り勇者", category:"hidden", condition:"その日の勉強時間の50%以上を、選択科目の中で最もLv.が低い教科に使う" },
+  { id:"hidden-09", name:"錬金術師", category:"hidden", condition:"累計100,000コイン以上使用する" },
+  { id:"hidden-10", name:"幸運を掴みし者", category:"hidden", condition:"直近3回のレアクエストがすべて180分クエストになる" },
 
 
   // ==========================================================
@@ -22424,6 +31309,69 @@ async function saveActiveTimer(user) {
       elapsedBeforePause:
         Number(timerState.elapsedBeforePause || 0),
       paused: Boolean(timerState.paused),
+
+      studyLinkRankEligibleMs:
+        Number(
+          timerState.studyLinkRankEligibleMs ||
+          0
+        ),
+
+      studyLinkRankEligibleStartedAt:
+        timerState.studyLinkRankEligibleStartedAt == null
+          ? null
+          : Number(
+              timerState.studyLinkRankEligibleStartedAt
+            ),
+
+      studyLinkEligibleMsByBoost: {
+        0: Math.max(
+          0,
+          Number(
+            timerState.studyLinkEligibleMsByBoost?.[0] ?? 0
+          )
+        ),
+        1: Math.max(
+          0,
+          Number(
+            timerState.studyLinkEligibleMsByBoost?.[1] ?? 0
+          )
+        ),
+        2: Math.max(
+          0,
+          Number(
+            timerState.studyLinkEligibleMsByBoost?.[2] ?? 0
+          )
+        ),
+        3: Math.max(
+          0,
+          Number(
+            timerState.studyLinkEligibleMsByBoost?.[3] ?? 0
+          )
+        ),
+      },
+
+      studyLinkEligibleBoostLevel:
+        Math.max(
+          0,
+          Math.min(
+            3,
+            Number(
+              timerState.studyLinkEligibleBoostLevel ?? 0
+            )
+          )
+        ),
+
+      studyLinkCurrentBoostLevel:
+        Math.max(
+          0,
+          Math.min(
+            3,
+            Number(
+              timerState.studyLinkCurrentBoostLevel ?? 0
+            )
+          )
+        ),
+
       updatedAt: serverTimestamp(),
     },
     { merge: true }
@@ -22460,6 +31408,85 @@ async function loadActiveTimer(user) {
     elapsedBeforePause:
       Number(data.elapsedBeforePause || 0),
     paused: Boolean(data.paused),
+
+    studyLinkRankEligibleMs:
+      Number(
+        data.studyLinkRankEligibleMs ||
+        0
+      ),
+
+    studyLinkRankEligibleStartedAt:
+      data.studyLinkRankEligibleStartedAt == null
+        ? null
+        : Number(
+            data.studyLinkRankEligibleStartedAt
+          ),
+
+    studyLinkEligibleMsByBoost:
+      (
+        data.studyLinkEligibleMsByBoost &&
+        typeof data.studyLinkEligibleMsByBoost === "object"
+      )
+        ? {
+            0: Math.max(
+              0,
+              Number(
+                data.studyLinkEligibleMsByBoost[0] ?? 0
+              )
+            ),
+            1: Math.max(
+              0,
+              Number(
+                data.studyLinkEligibleMsByBoost[1] ?? 0
+              )
+            ),
+            2: Math.max(
+              0,
+              Number(
+                data.studyLinkEligibleMsByBoost[2] ?? 0
+              )
+            ),
+            3: Math.max(
+              0,
+              Number(
+                data.studyLinkEligibleMsByBoost[3] ?? 0
+              )
+            ),
+          }
+        : {
+            0: Math.max(
+              0,
+              Number(
+                data.studyLinkRankEligibleMs ?? 0
+              )
+            ),
+            1: 0,
+            2: 0,
+            3: 0,
+          },
+
+    studyLinkEligibleBoostLevel:
+      Math.max(
+        0,
+        Math.min(
+          3,
+          Number(
+            data.studyLinkEligibleBoostLevel ?? 0
+          )
+        )
+      ),
+
+    studyLinkCurrentBoostLevel:
+      Math.max(
+        0,
+        Math.min(
+          3,
+          Number(
+            data.studyLinkCurrentBoostLevel ?? 0
+          )
+        )
+      ),
+
     intervalId: null,
   };
 }
@@ -22470,6 +31497,20 @@ let timerState = {
   startedAt: null,
   elapsedBeforePause: 0,
   paused: false,
+
+  studyLinkRankEligibleMs: 0,
+  studyLinkRankEligibleStartedAt: null,
+
+  studyLinkEligibleMsByBoost: {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+  },
+
+  studyLinkEligibleBoostLevel: 0,
+  studyLinkCurrentBoostLevel: 0,
+
   intervalId: null,
 };
 
@@ -22646,6 +31687,20 @@ async function showManualStudyPage(user) {
       elapsedBeforePause:
         minutes * 60 * 1000,
       paused: true,
+
+      studyLinkRankEligibleMs: 0,
+      studyLinkRankEligibleStartedAt: null,
+
+      studyLinkEligibleMsByBoost: {
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0,
+      },
+
+      studyLinkEligibleBoostLevel: 0,
+      studyLinkCurrentBoostLevel: 0,
+
       intervalId: null,
     };
 
@@ -22739,7 +31794,7 @@ async function showTimerPage(user) {
 
   $("timer-back").onclick = async () => {
     stopTimerInterval();
-    await showHome(user);
+    await returnAfterStudyLinkTimerV1(user);
   };
 
 
@@ -22916,10 +31971,24 @@ async function showTimerPage(user) {
         startedAt: null,
         elapsedBeforePause: 0,
         paused: false,
+
+        studyLinkRankEligibleMs: 0,
+        studyLinkRankEligibleStartedAt: null,
+
+        studyLinkEligibleMsByBoost: {
+          0: 0,
+          1: 0,
+          2: 0,
+          3: 0,
+        },
+
+        studyLinkEligibleBoostLevel: 0,
+        studyLinkCurrentBoostLevel: 0,
+
         intervalId: null,
       };
 
-      await showHome(user);
+      await returnAfterStudyLinkTimerV1(user);
     };
 
     $("timer-confirm").onclick = async () => {
@@ -22958,6 +32027,127 @@ async function showTimerPage(user) {
 
         const newMonthlyStudyMinutes =
           Number(current.monthlyStudyMinutes ?? 0) + totalMinutes;
+
+
+        // ============================================
+        // STUDY LINK RANK BONUS
+        //
+        // 実際の勉強時間はmonthlyStudyMinutesのまま。
+        // LINK ACTIVEだった時間の20%だけ別保存する。
+        // ============================================
+
+        const rankCreditedStudyMs =
+          Math.max(
+            0,
+            totalMinutes * 60 * 1000
+          );
+
+
+        // ============================================
+        // STUDY LINK RANK BONUS
+        //
+        // NORMAL    x1.20  -> +20%
+        // BOOST I   x1.30  -> +30%
+        // BOOST II  x1.40  -> +40%
+        // BOOST III x1.50  -> +50%
+        // ============================================
+
+        const studyLinkRankMsByBoost =
+          getStudyLinkEligibleTimeMsByBoostV1();
+
+
+        const rawStudyLinkRankEligibleMs =
+          [0, 1, 2, 3].reduce(
+            (sum, level) => {
+
+              return (
+                sum +
+                Math.max(
+                  0,
+                  Number(
+                    studyLinkRankMsByBoost[level] ??
+                    0
+                  )
+                )
+              );
+
+            },
+            0
+          );
+
+
+        // 保存される実勉強時間を超えないよう補正
+        const studyLinkRankTimeScale =
+          rawStudyLinkRankEligibleMs > 0
+            ? Math.min(
+                1,
+                rankCreditedStudyMs /
+                rawStudyLinkRankEligibleMs
+              )
+            : 0;
+
+
+        const studyLinkRankBonusRates = {
+          0: 0.20,
+          1: 0.30,
+          2: 0.40,
+          3: 0.50,
+        };
+
+
+        const studyLinkRankBonusMinutesThisSave =
+          Math.round(
+            (
+              [0, 1, 2, 3].reduce(
+                (
+                  bonus,
+                  level
+                ) => {
+
+                  const levelMs =
+                    Math.max(
+                      0,
+                      Number(
+                        studyLinkRankMsByBoost[level] ??
+                        0
+                      )
+                    ) *
+                    studyLinkRankTimeScale;
+
+
+                  return (
+                    bonus +
+                    (
+                      levelMs /
+                      60000 *
+                      studyLinkRankBonusRates[level]
+                    )
+                  );
+
+                },
+                0
+              )
+            ) *
+            10000
+          ) /
+          10000;
+
+
+        const newMonthlyStudyLinkBonusMinutes =
+          Math.max(
+            0,
+            Number(
+              current.monthlyStudyLinkBonusMinutes ??
+              0
+            )
+          ) +
+          studyLinkRankBonusMinutesThisSave;
+
+
+        const newRankedScoreMinutes =
+          newMonthlyStudyMinutes +
+          newMonthlyStudyLinkBonusMinutes;
+
 
         const newXp =
           Number(current.xp ?? 0) + totalMinutes;
@@ -23159,8 +32349,140 @@ async function showTimerPage(user) {
             timerState.xpItem
           );
 
+
+        // ============================================
+        // STUDY LINK XP BONUS
+        //
+        // LINK ACTIVEだった実勉強時間だけ +10%
+        // クエストXP / Weekly XPには掛けない。
+        //
+        // 端数XPはremainderとして次回へ繰り越す。
+        // ============================================
+
+        const xpCreditedStudyMs =
+          Math.max(
+            0,
+            totalMinutes * 60 * 1000
+          );
+
+
+        // ============================================
+        // STUDY LINK XP BONUS
+        //
+        // NORMAL    x1.10 -> +10%
+        // BOOST I   x1.15 -> +15%
+        // BOOST II  x1.20 -> +20%
+        // BOOST III x1.25 -> +25%
+        //
+        // クエストXP / Weekly XPには直接掛けない。
+        // 端数XPはremainderとして次回へ繰り越す。
+        // ============================================
+
+        const studyLinkXpMsByBoost =
+          getStudyLinkEligibleTimeMsByBoostV1();
+
+
+        const rawStudyLinkXpEligibleMs =
+          [0, 1, 2, 3].reduce(
+            (sum, level) => {
+
+              return (
+                sum +
+                Math.max(
+                  0,
+                  Number(
+                    studyLinkXpMsByBoost[level] ??
+                    0
+                  )
+                )
+              );
+
+            },
+            0
+          );
+
+
+        // tracker時間が保存される実勉強時間を
+        // 超えないように補正
+        const studyLinkXpTimeScale =
+          rawStudyLinkXpEligibleMs > 0
+            ? Math.min(
+                1,
+                xpCreditedStudyMs /
+                rawStudyLinkXpEligibleMs
+              )
+            : 0;
+
+
+        const studyLinkXpBonusRates = {
+          0: 0.10,
+          1: 0.15,
+          2: 0.20,
+          3: 0.25,
+        };
+
+
+        const previousStudyLinkXpRemainder =
+          Math.max(
+            0,
+            Number(
+              current.studyLinkXpRemainder ??
+              0
+            )
+          );
+
+
+        const weightedStudyLinkXpBonus =
+          [0, 1, 2, 3].reduce(
+            (
+              bonus,
+              level
+            ) => {
+
+              const levelMs =
+                Math.max(
+                  0,
+                  Number(
+                    studyLinkXpMsByBoost[level] ??
+                    0
+                  )
+                ) *
+                studyLinkXpTimeScale;
+
+
+              return (
+                bonus +
+                (
+                  levelMs /
+                  60000 *
+                  studyLinkXpBonusRates[level]
+                )
+              );
+
+            },
+            0
+          );
+
+
+        const rawStudyLinkXpBonus =
+          previousStudyLinkXpRemainder +
+          weightedStudyLinkXpBonus;
+
+
+        const studyLinkXpBonusThisSave =
+          Math.floor(
+            rawStudyLinkXpBonus
+          );
+
+
+        const newStudyLinkXpRemainder =
+          rawStudyLinkXpBonus -
+          studyLinkXpBonusThisSave;
+
+
         const baseXpThisSave =
           studyXpThisSave +
+          studyLinkXpBonusThisSave +
           questRewardXp +
           weeklyRewardXp;
 
@@ -23187,10 +32509,157 @@ async function showTimerPage(user) {
           xpFromThisSave +
           rareCompletionBonusXp;
 
-        const finalCoins =
-          Number(current.coins ?? 0) +
+        // ============================================
+        // STUDY COINS
+        //
+        // 通常勉強:
+        //   1分 = 5 COINS
+        //
+        // STUDY LINK:
+        //   LINK ACTIVE時間の勉強COINSを +10%
+        // ============================================
+
+        const studyCoinsThisSave =
+          Math.max(
+            0,
+            totalMinutes * 5
+          );
+
+
+        const coinCreditedStudyMs =
+          Math.max(
+            0,
+            totalMinutes * 60 * 1000
+          );
+
+
+        // ============================================
+        // STUDY LINK GOLD BONUS
+        //
+        // NORMAL    x1.10 -> +10%
+        // BOOST I   x1.15 -> +15%
+        // BOOST II  x1.20 -> +20%
+        // BOOST III x1.25 -> +25%
+        //
+        // 通常勉強:
+        //   1分 = 5 COINS
+        //
+        // 端数COINSはremainderとして次回へ繰り越す。
+        // ============================================
+
+        const studyLinkCoinMsByBoost =
+          getStudyLinkEligibleTimeMsByBoostV1();
+
+
+        const rawStudyLinkCoinEligibleMs =
+          [0, 1, 2, 3].reduce(
+            (sum, level) => {
+
+              return (
+                sum +
+                Math.max(
+                  0,
+                  Number(
+                    studyLinkCoinMsByBoost[level] ??
+                    0
+                  )
+                )
+              );
+
+            },
+            0
+          );
+
+
+        const studyLinkCoinTimeScale =
+          rawStudyLinkCoinEligibleMs > 0
+            ? Math.min(
+                1,
+                coinCreditedStudyMs /
+                rawStudyLinkCoinEligibleMs
+              )
+            : 0;
+
+
+        const studyLinkCoinBonusRates = {
+          0: 0.10,
+          1: 0.15,
+          2: 0.20,
+          3: 0.25,
+        };
+
+
+        const previousStudyLinkCoinRemainder =
+          Math.max(
+            0,
+            Number(
+              current.studyLinkCoinRemainder ??
+              0
+            )
+          );
+
+
+        const weightedStudyLinkCoinBonus =
+          [0, 1, 2, 3].reduce(
+            (
+              bonus,
+              level
+            ) => {
+
+              const levelMs =
+                Math.max(
+                  0,
+                  Number(
+                    studyLinkCoinMsByBoost[level] ??
+                    0
+                  )
+                ) *
+                studyLinkCoinTimeScale;
+
+
+              return (
+                bonus +
+                (
+                  levelMs /
+                  60000 *
+                  5 *
+                  studyLinkCoinBonusRates[level]
+                )
+              );
+
+            },
+            0
+          );
+
+
+        const rawStudyLinkCoinBonus =
+          previousStudyLinkCoinRemainder +
+          weightedStudyLinkCoinBonus;
+
+
+        const studyLinkCoinBonusThisSave =
+          Math.floor(
+            rawStudyLinkCoinBonus
+          );
+
+
+        const newStudyLinkCoinRemainder =
+          rawStudyLinkCoinBonus -
+          studyLinkCoinBonusThisSave;
+
+
+        const coinsEarnedThisSave =
+          studyCoinsThisSave +
+          studyLinkCoinBonusThisSave +
           questRewardCoins +
           weeklyRewardCoins;
+
+
+        const finalCoins =
+          Number(
+            current.coins ?? 0
+          ) +
+          coinsEarnedThisSave;
 
         // ============================================
         // 今日の勉強記録（JST）
@@ -23261,10 +32730,7 @@ async function showTimerPage(user) {
             ? current.todayEarnedCoinsFlag === true
             : false
           ) ||
-          (
-            questRewardCoins +
-            weeklyRewardCoins
-          ) > 0;
+          coinsEarnedThisSave > 0;
 
         const previousInventory =
           current.inventory || {};
@@ -23286,17 +32752,34 @@ async function showTimerPage(user) {
           userRef,
           {
             totalStudyMinutes: newStudyMinutes,
-            monthlyStudyMinutes: newMonthlyStudyMinutes,
+
+            monthlyStudyMinutes:
+              newMonthlyStudyMinutes,
+
+            monthlyStudyLinkBonusMinutes:
+              newMonthlyStudyLinkBonusMinutes,
+
+            rankedScoreMinutes:
+              newRankedScoreMinutes,
+
             xp: finalXp,
             coins: finalCoins,
 
             lifetimeCoinsEarned:
-              Number(current.lifetimeCoinsEarned ?? 0) +
-              questRewardCoins +
-              weeklyRewardCoins,
+              Number(
+                current.lifetimeCoinsEarned ?? 0
+              ) +
+              coinsEarnedThisSave,
+
+            studyLinkCoinRemainder:
+              newStudyLinkCoinRemainder,
 
             dailyXpDate: todayKey,
             dailyXpEarned: newDailyXpEarned,
+
+            studyLinkXpRemainder:
+              newStudyLinkXpRemainder,
+
             rareXpBoostActive,
 
             dailyStudyDate: todayKey,
@@ -23379,8 +32862,149 @@ async function showTimerPage(user) {
                 const damagePerMinute =
                   isWeakness ? 150 : 100;
 
+
+                // ============================================
+                // STUDY LINK BOSS BONUS
+                //
+                // BASE:
+                //   NORMAL   100 / min
+                //   WEAKNESS 150 / min
+                //
+                // LINK ACTIVE区間のみ +15%
+                // ============================================
+
+                const baseBossDamage =
+                  totalMinutes *
+                  damagePerMinute;
+
+
+                const bossCreditedStudyMs =
+                  Math.max(
+                    0,
+                    totalMinutes * 60 * 1000
+                  );
+
+
+                // ============================================
+                // STUDY LINK BOSS BONUS
+                //
+                // NORMAL    x1.15 -> +15%
+                // BOOST I   x1.25 -> +25%
+                // BOOST II  x1.35 -> +35%
+                // BOOST III x1.50 -> +50%
+                //
+                // damagePerMinute:
+                //   NORMAL   100 / min
+                //   WEAKNESS 150 / min
+                //
+                // 弱点倍率適用後のdamagePerMinuteへ
+                // LINK BONUSを掛ける。
+                // ============================================
+
+                const studyLinkBossMsByBoost =
+                  getStudyLinkEligibleTimeMsByBoostV1();
+
+
+                const rawStudyLinkBossEligibleMs =
+                  [0, 1, 2, 3].reduce(
+                    (sum, level) => {
+
+                      return (
+                        sum +
+                        Math.max(
+                          0,
+                          Number(
+                            studyLinkBossMsByBoost[level] ??
+                            0
+                          )
+                        )
+                      );
+
+                    },
+                    0
+                  );
+
+
+                const studyLinkBossTimeScale =
+                  rawStudyLinkBossEligibleMs > 0
+                    ? Math.min(
+                        1,
+                        bossCreditedStudyMs /
+                        rawStudyLinkBossEligibleMs
+                      )
+                    : 0;
+
+
+                const studyLinkBossBonusRates = {
+                  0: 0.15,
+                  1: 0.25,
+                  2: 0.35,
+                  3: 0.50,
+                };
+
+
+                const previousStudyLinkBossDamageRemainder =
+                  Math.max(
+                    0,
+                    Number(
+                      current.studyLinkBossDamageRemainder ??
+                      0
+                    )
+                  );
+
+
+                const weightedStudyLinkBossDamageBonus =
+                  [0, 1, 2, 3].reduce(
+                    (
+                      bonus,
+                      level
+                    ) => {
+
+                      const levelMs =
+                        Math.max(
+                          0,
+                          Number(
+                            studyLinkBossMsByBoost[level] ??
+                            0
+                          )
+                        ) *
+                        studyLinkBossTimeScale;
+
+
+                      return (
+                        bonus +
+                        (
+                          levelMs /
+                          60000 *
+                          damagePerMinute *
+                          studyLinkBossBonusRates[level]
+                        )
+                      );
+
+                    },
+                    0
+                  );
+
+
+                const rawStudyLinkBossDamageBonus =
+                  previousStudyLinkBossDamageRemainder +
+                  weightedStudyLinkBossDamageBonus;
+
+
+                const studyLinkBossDamageBonusThisSave =
+                  Math.floor(
+                    rawStudyLinkBossDamageBonus
+                  );
+
+
+                const newStudyLinkBossDamageRemainder =
+                  rawStudyLinkBossDamageBonus -
+                  studyLinkBossDamageBonusThisSave;
+
+
                 const damage =
-                  totalMinutes * damagePerMinute;
+                  baseBossDamage +
+                  studyLinkBossDamageBonusThisSave;
 
                 const oldHp =
                   Number(
@@ -23465,6 +33089,10 @@ async function showTimerPage(user) {
                     userRef,
                     {
                       bossStats,
+
+                      studyLinkBossDamageRemainder:
+                        newStudyLinkBossDamageRemainder,
+
                       updatedAt: serverTimestamp(),
                     },
                     { merge: true }
@@ -23485,10 +33113,24 @@ async function showTimerPage(user) {
           startedAt: null,
           elapsedBeforePause: 0,
           paused: false,
+
+          studyLinkRankEligibleMs: 0,
+          studyLinkRankEligibleStartedAt: null,
+
+          studyLinkEligibleMsByBoost: {
+            0: 0,
+            1: 0,
+            2: 0,
+            3: 0,
+          },
+
+          studyLinkEligibleBoostLevel: 0,
+          studyLinkCurrentBoostLevel: 0,
+
           intervalId: null,
         };
 
-        await showHome(user);
+        await returnAfterStudyLinkTimerV1(user);
       } catch (error) {
         $("confirm-error").textContent =
           error?.message || "保存に失敗しました。";
@@ -23842,7 +33484,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   try {
-    await showHome(user);
+    await returnAfterStudyLinkTimerV1(user);
   } catch (error) {
     page(
       card(`
@@ -23864,6 +33506,41 @@ onAuthStateChanged(auth, async (user) => {
     $("error-logout").onclick = () => signOut(auth);
   }
 });
+
+
+
+// ============================================================
+// STUDY LINK ROOM MODE
+// LOGIN / RELOAD RESTORE
+// ============================================================
+
+onAuthStateChanged(
+  auth,
+  user => {
+
+    if (!user) {
+
+      disableStudyLinkRoomModeV1();
+
+      return;
+
+    }
+
+
+    setTimeout(
+      () => {
+
+        restoreStudyLinkRoomModeV1(
+          user
+        );
+
+      },
+      450
+    );
+
+  }
+);
+
 
 </script>
 
@@ -24297,6 +33974,12 @@ document.addEventListener(
   enhanceAscendLogin();
 
 })();
+
+
+
+
+
+
 
 </script>
 
@@ -24916,4 +34599,245 @@ body > main > section {
 }
 
 </style>
+
+
+
+
+
+<style id="ascend-link-fund-blend">
+
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 > div{
+  border:1px solid rgba(255,255,255,.09)!important;
+  background:rgba(10,14,24,.72)!important;
+  box-shadow:none!important;
+  border-radius:12px!important;
+}
+
+/* タイトルも普通のROOM見出し寄り */
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 [data-boost-title]{
+  color:#e8edf5!important;
+  font-size:11px!important;
+  letter-spacing:.08em!important;
+  text-shadow:none!important;
+}
+
+/* ACTIVEだけシアン */
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 [data-boost-active]{
+  color:#00f3ff!important;
+  text-shadow:none!important;
+}
+
+/* ゲージも光らせすぎない */
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 [data-boost-fill]{
+  background:#00dfe8!important;
+  box-shadow:0 0 6px rgba(0,243,255,.22)!important;
+}
+
+/* ボタンも他UI寄り */
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 button{
+  background:rgba(255,255,255,.035)!important;
+  border-color:rgba(255,255,255,.09)!important;
+  color:#c7d0de!important;
+}
+
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 button:hover{
+  background:rgba(0,243,255,.06)!important;
+  border-color:rgba(0,243,255,.18)!important;
+  box-shadow:none!important;
+}
+
+</style>
+
+<style id="link-fund-overlap-fix">
+
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 input{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+}
+
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 div:has(> input){
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  gap:6px!important;
+  align-items:center!important;
+  width:100%!important;
+}
+
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 button{
+  white-space:nowrap!important;
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="ascend-ranked-card-effects-v1">
+
+/* =========================================
+   ASCEND RANKED CARD EFFECT v2
+   背景色は変えず、光だけランク色
+========================================= */
+
+#home-player-status[data-ranked-active="1"],
+#friend-list > .friend-card-rich[data-ranked-active="1"]{
+  --ranked-rgb:125,105,255;
+
+  position:relative!important;
+
+  border-color:
+    rgba(var(--ranked-rgb),.42)!important;
+
+  box-shadow:
+    0 0 7px rgba(var(--ranked-rgb),.20),
+    0 0 20px rgba(var(--ranked-rgb),.15),
+    inset 0 1px 0 rgba(var(--ranked-rgb),.28)!important;
+}
+
+
+/* 名前 */
+#home-player-status[data-ranked-active="1"]
+.home-player-name-text,
+
+#friend-list > .friend-card-rich[data-ranked-active="1"]
+.friend-card-rich-name{
+  color:
+    rgb(var(--ranked-rgb))!important;
+
+  text-shadow:
+    0 0 8px rgba(var(--ranked-rgb),.28)!important;
+}
+
+
+/* ===== RANK COLORS ===== */
+
+[data-ranked-active="1"][data-ranked-family="bronze"]{
+  --ranked-rgb:201,139,114;
+}
+
+[data-ranked-active="1"][data-ranked-family="silver"]{
+  --ranked-rgb:190,207,230;
+}
+
+[data-ranked-active="1"][data-ranked-family="gold"]{
+  --ranked-rgb:242,201,106;
+}
+
+[data-ranked-active="1"][data-ranked-family="platinum"]{
+  --ranked-rgb:126,225,220;
+}
+
+[data-ranked-active="1"][data-ranked-family="diamond"]{
+  --ranked-rgb:91,193,255;
+}
+
+[data-ranked-active="1"][data-ranked-family="master"]{
+  --ranked-rgb:157,110,255;
+}
+
+[data-ranked-active="1"][data-ranked-family="grandmaster"]{
+  --ranked-rgb:255,77,132;
+}
+
+[data-ranked-active="1"][data-ranked-family="legend"]{
+  --ranked-rgb:255,215,117;
+
+  box-shadow:
+    0 0 8px rgba(255,215,117,.24),
+    0 0 22px rgba(157,110,255,.18),
+    inset 0 1px 0 rgba(255,215,117,.34)!important;
+}
+
+</style>
+
+
+<style id="ranked-entry-click-fix">
+#asc-ranked-entry-v1,
+#asc-ranked-enter-v1{
+  position:relative!important;
+  z-index:50!important;
+  pointer-events:auto!important;
+}
+</style>
+
+
+
+
+
+<script id="ranked-dom-check">
+setTimeout(()=>{
+ const e=document.getElementById("home-player-status");
+ if(!e)return;
+ const d=document.createElement("div");
+ d.id="ranked-dom-result";
+ d.textContent=`RANKED=${e.dataset.rankedActive} / ${e.dataset.rankedFamily}`;
+ d.style="color:#0f0;font-size:10px;padding:4px";
+ e.prepend(d);
+},500);
+</script>
+<style id="ranked-data-test">
+#home-player-status[data-ranked-active="1"]{
+  outline:4px solid lime!important;
+}
+</style>
+<style id="ranked-inner-glow-v1">
+
+#home-player-status[data-ranked-active="1"],
+#friend-list > .friend-card-rich[data-ranked-active="1"]{
+  position:relative!important;
+
+  border-color:
+    rgba(var(--ranked-rgb),.38)!important;
+
+  box-shadow:
+    inset 0 0 10px rgba(var(--ranked-rgb),.10),
+    inset 0 0 28px rgba(var(--ranked-rgb),.07)!important;
+}
+
+#home-player-status[data-ranked-active="1"]::before,
+#friend-list > .friend-card-rich[data-ranked-active="1"]::before{
+  content:""!important;
+
+  position:absolute!important;
+  inset:1px!important;
+  z-index:0!important;
+
+  border:1px solid rgba(var(--ranked-rgb),.28)!important;
+  border-radius:inherit!important;
+
+  box-shadow:
+    inset 0 0 14px rgba(var(--ranked-rgb),.14)!important;
+
+  pointer-events:none!important;
+}
+
+#home-player-status[data-ranked-active="1"] > *,
+#friend-list > .friend-card-rich[data-ranked-active="1"] > *{
+  position:relative!important;
+  z-index:1!important;
+}
+
+</style>
+
+
 
