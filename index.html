@@ -11964,6 +11964,36 @@ body.study-link-room-mode-v1
 
 </style>
 
+
+<style id="asc-ranked-leave-v1-css">
+#asc-ranked-entry-v1{
+  grid-template-columns:minmax(0,1fr) auto auto;
+}
+
+.asc-ranked-leave-v1{
+  height:34px;
+  padding:0 10px;
+
+  border:1px solid rgba(255,90,110,.20);
+  border-radius:8px;
+
+  background:rgba(255,70,90,.055);
+
+  color:#c77b86;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.11em;
+
+  cursor:pointer;
+}
+
+.asc-ranked-leave-v1:active{
+  transform:scale(.97);
+}
+</style>
+
 </head>
 
 
@@ -15411,6 +15441,14 @@ async function showRankPage(user) {
                 <div class="asc-ranked-entry-active">
                   RANKED
                 </div>
+
+                <button
+                  type="button"
+                  id="asc-ranked-leave-v1"
+                  class="asc-ranked-leave-v1"
+                >
+                  LEAVE
+                </button>
               `
               : `
                 <button
@@ -16883,6 +16921,61 @@ document.addEventListener(
 
   }
 );
+
+
+
+document.addEventListener("click", async event => {
+
+  const button =
+    event.target.closest(
+      "#asc-ranked-leave-v1"
+    );
+
+  if (!button) return;
+
+  const user =
+    auth.currentUser;
+
+  if (!user) return;
+
+  const ok =
+    confirm(
+      "RANKEDから脱退しますか？\n勉強記録やランク自体は消えません。"
+    );
+
+  if (!ok) return;
+
+  button.disabled = true;
+  button.textContent = "LEAVING...";
+
+  try {
+
+    await setDoc(
+      doc(db, "users", user.uid),
+      {
+        rankedSeason: "",
+        rankedVisibility: "off",
+        rankedScoreMinutes: 0,
+        rankedLeftAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      },
+      { merge:true }
+    );
+
+    await showRankPage(user);
+
+  } catch(error) {
+
+    console.error(
+      "RANKED LEAVE:",
+      error
+    );
+
+    button.disabled = false;
+    button.textContent = "LEAVE";
+  }
+
+});
 
 
 // ============================================================
