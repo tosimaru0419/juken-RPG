@@ -11994,6 +11994,37 @@ body.study-link-room-mode-v1
 }
 </style>
 
+
+<style id="study-link-member-live-timer-v1">
+
+.study-link-v2-member-state{
+  display:grid;
+  justify-items:center;
+  gap:2px;
+}
+
+.study-link-v2-member-time-v1{
+  display:block;
+  color:#aeb8ca;
+  font-family:"Rajdhani",sans-serif;
+  font-size:10px;
+  font-weight:700;
+  line-height:1;
+  letter-spacing:.04em;
+}
+
+.study-link-v2-member-state.studying
+.study-link-v2-member-time-v1{
+  color:#9ef0ca;
+}
+
+.study-link-v2-member-state.paused
+.study-link-v2-member-time-v1{
+  color:#d9b969;
+}
+
+</style>
+
 </head>
 
 
@@ -17529,6 +17560,21 @@ async function renderStudyLinkMembersV2(
               "
             >
               ${stateLabel}
+
+              ${
+                state !== "idle"
+                  ? `
+                    <span
+                      class="study-link-v2-member-time-v1"
+                      data-base-ms="${Math.max(0, Number(member.elapsedBeforePause || 0))}"
+                      data-started-at="${Math.max(0, Number(member.startedAt || 0))}"
+                      data-running="${state === "studying" && member.paused !== true ? "1" : "0"}"
+                    >
+                      00:00:00
+                    </span>
+                  `
+                  : ""
+              }
             </div>
 
           </div>
@@ -34125,6 +34171,70 @@ document.addEventListener(
 
 
 
+
+
+<script id="study-link-member-live-timer-v1-js">
+(() => {
+
+  const format = ms => {
+    const sec =
+      Math.max(0, Math.floor(ms / 1000));
+
+    const h =
+      Math.floor(sec / 3600);
+
+    const m =
+      Math.floor((sec % 3600) / 60);
+
+    const s =
+      sec % 60;
+
+    return (
+      String(h).padStart(2,"0") + ":" +
+      String(m).padStart(2,"0") + ":" +
+      String(s).padStart(2,"0")
+    );
+  };
+
+  const update = () => {
+
+    document
+      .querySelectorAll(
+        ".study-link-v2-member-time-v1"
+      )
+      .forEach(el => {
+
+        const base =
+          Number(el.dataset.baseMs || 0);
+
+        const started =
+          Number(el.dataset.startedAt || 0);
+
+        const running =
+          el.dataset.running === "1";
+
+        const elapsed =
+          base +
+          (
+            running && started > 0
+              ? Math.max(0, Date.now() - started)
+              : 0
+          );
+
+        el.textContent =
+          format(elapsed);
+      });
+  };
+
+  update();
+
+  setInterval(
+    update,
+    1000
+  );
+
+})();
+</script>
 
 </body>
 </html>
