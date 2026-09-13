@@ -24072,6 +24072,11 @@ async function showLockerPage(user) {
 
 async function showProfilePage(user) {
 
+  // ルーム所属は維持したまま
+  // プロフィールではROOM MODEの画面固定だけ解除
+  disableStudyLinkRoomModeV1();
+
+
   const ref =
     doc(db, "users", user.uid);
 
