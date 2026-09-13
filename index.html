@@ -12076,6 +12076,62 @@ body.study-link-room-mode-v1
 
 </style>
 
+
+<style id="study-link-room-manual-v1-css">
+
+#study-link-room-manual-v1{
+  width:100%;
+  min-height:48px;
+
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:center;
+  gap:10px;
+
+  padding:9px 12px;
+  margin:0;
+
+  border:
+    1px solid
+    rgba(255,255,255,.075);
+
+  border-radius:11px;
+
+  background:#090e16;
+  color:#eef2f7;
+
+  text-align:left;
+}
+
+.study-link-room-manual-icon-v1{
+  font-size:17px;
+}
+
+.study-link-room-manual-copy-v1{
+  min-width:0;
+  display:grid;
+  gap:1px;
+}
+
+.study-link-room-manual-copy-v1 strong{
+  font-size:11px;
+  font-weight:850;
+}
+
+.study-link-room-manual-copy-v1 small{
+  color:#687588;
+  font-size:8px;
+  font-weight:700;
+}
+
+.study-link-room-manual-arrow-v1{
+  color:#657185;
+  font-size:20px;
+  line-height:1;
+}
+
+</style>
+
 </head>
 
 
@@ -17759,7 +17815,7 @@ function enableStudyLinkRoomModeV1(
         </div>
 
         <div class="study-link-room-mode-path-v1">
-          STUDY LINK / FOCUS ROOM
+          STUDY LINK / ROOM
         </div>
 
       </div>
@@ -20870,6 +20926,110 @@ async function mountStudyLinkStatusV1(
 
 
 
+
+function mountStudyLinkManualRecordV1(user) {
+
+  const active =
+    document.getElementById(
+      "study-link-v2-active"
+    );
+
+  if (!active) {
+    return;
+  }
+
+
+  let button =
+    document.getElementById(
+      "study-link-room-manual-v1"
+    );
+
+
+  if (!button) {
+
+    button =
+      document.createElement(
+        "button"
+      );
+
+    button.type =
+      "button";
+
+    button.id =
+      "study-link-room-manual-v1";
+
+    button.innerHTML = `
+      <span class="study-link-room-manual-icon-v1">
+        📝
+      </span>
+
+      <span class="study-link-room-manual-copy-v1">
+        <strong>事後記録</strong>
+        <small>終了済みの勉強を記録</small>
+      </span>
+
+      <span class="study-link-room-manual-arrow-v1">
+        ›
+      </span>
+    `;
+
+
+    const boost =
+      document.getElementById(
+        "study-link-boost-fund-v1"
+      );
+
+    const members =
+      active.querySelector(
+        ".study-link-v2-members-wrap"
+      );
+
+
+    if (boost) {
+
+      active.insertBefore(
+        button,
+        boost
+      );
+
+    }
+
+    else if (members) {
+
+      active.insertBefore(
+        button,
+        members
+      );
+
+    }
+
+    else {
+
+      active.appendChild(
+        button
+      );
+
+    }
+
+  }
+
+
+  button.onclick =
+    async () => {
+
+      await showManualStudyPage(
+        user
+      );
+
+      mountClassicNavigation(
+        user
+      );
+
+    };
+
+}
+
+
 async function mountStudyLinkPanelV2(user) {
 
   const menu =
@@ -20973,15 +21133,6 @@ async function mountStudyLinkPanelV2(user) {
         id="study-link-v2-active"
         class="study-link-v2-active hidden"
       >
-
-        <input id="sl-focus-v2" name="sl-tab-v2" type="radio" checked>
-        <input id="sl-room-v2" name="sl-tab-v2" type="radio">
-
-        <div id="study-link-room-tabs-v2">
-          <label for="sl-room-v2">ROOM</label>
-          <label for="sl-focus-v2">FOCUS</label>
-        </div>
-
 
         <div class="study-link-v2-connected">
 
@@ -21811,6 +21962,10 @@ async function mountStudyLinkPanelV2(user) {
     await mountStudyLinkBoostFundV1(
       user,
       code
+    );
+
+    mountStudyLinkManualRecordV1(
+      user
     );
 
     await renderStudyLinkMembersV2(
@@ -32048,9 +32203,32 @@ async function showManualStudyPage(user) {
     `)
   );
 
-  $("manual-study-back").onclick = async () => {
-    await showHome(user);
-  };
+  const manualStudyBack =
+    $("manual-study-back");
+
+  if (manualStudyBack) {
+
+    const manualRoomCode =
+      normalizeStudyLinkV2Code(
+        data.studyLinkRoomCode ||
+        ""
+      );
+
+    manualStudyBack.textContent =
+      manualRoomCode
+        ? "ルームへ戻る"
+        : "ホームへ戻る";
+
+    manualStudyBack.onclick =
+      async () => {
+
+        await returnAfterStudyLinkTimerV1(
+          user
+        );
+
+      };
+
+  }
 
   $("manual-study-next").onclick = async () => {
     const subject =
