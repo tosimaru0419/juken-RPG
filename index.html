@@ -12025,6 +12025,39 @@ body.study-link-room-mode-v1
 
 </style>
 
+
+<style id="study-link-member-timer-ui-fix-v2">
+
+.study-link-v2-member-status-wrap-v1{
+  display:grid;
+  justify-items:end;
+  gap:5px;
+}
+
+.study-link-v2-member-time-v1{
+  color:#8d98aa;
+  font-family:"Rajdhani",sans-serif;
+  font-size:12px;
+  font-weight:700;
+  line-height:1;
+  letter-spacing:.05em;
+  white-space:nowrap;
+}
+
+.study-link-v2-member-status-wrap-v1
+.study-link-v2-member-state.studying
++ .study-link-v2-member-time-v1{
+  color:#8eddbb;
+}
+
+.study-link-v2-member-status-wrap-v1
+.study-link-v2-member-state.paused
++ .study-link-v2-member-time-v1{
+  color:#c6aa68;
+}
+
+</style>
+
 </head>
 
 
@@ -17553,28 +17586,75 @@ async function renderStudyLinkMembersV2(
             </div>
 
 
-            <div
-              class="
-                study-link-v2-member-state
-                ${stateClass}
-              "
-            >
-              ${stateLabel}
+            <div class="study-link-v2-member-status-wrap-v1">
+
+              <div
+                class="
+                  study-link-v2-member-state
+                  ${stateClass}
+                "
+              >
+                ${stateLabel}
+              </div>
 
               ${
                 state !== "idle"
                   ? `
-                    <span
+                    <div
                       class="study-link-v2-member-time-v1"
                       data-base-ms="${Math.max(0, Number(member.elapsedBeforePause || 0))}"
                       data-started-at="${Math.max(0, Number(member.startedAt || 0))}"
                       data-running="${state === "studying" && member.paused !== true ? "1" : "0"}"
                     >
-                      00:00:00
-                    </span>
+                      ${(() => {
+                        const base =
+                          Math.max(
+                            0,
+                            Number(member.elapsedBeforePause || 0)
+                          );
+
+                        const started =
+                          Math.max(
+                            0,
+                            Number(member.startedAt || 0)
+                          );
+
+                        const running =
+                          state === "studying" &&
+                          member.paused !== true &&
+                          started > 0;
+
+                        const ms =
+                          base +
+                          (
+                            running
+                              ? Math.max(0, Date.now() - started)
+                              : 0
+                          );
+
+                        const sec =
+                          Math.floor(ms / 1000);
+
+                        const h =
+                          Math.floor(sec / 3600);
+
+                        const m =
+                          Math.floor((sec % 3600) / 60);
+
+                        const s =
+                          sec % 60;
+
+                        return (
+                          String(h).padStart(2,"0") + ":" +
+                          String(m).padStart(2,"0") + ":" +
+                          String(s).padStart(2,"0")
+                        );
+                      })()}
+                    </div>
                   `
                   : ""
               }
+
             </div>
 
           </div>
