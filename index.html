@@ -18224,11 +18224,9 @@ async function mountStudyLinkRoomTimerV1(
 
 
   const subjects =
-    Array.isArray(
+    normalizeSelectedSubjectsV1(
       userData.selectedSubjects
-    )
-      ? userData.selectedSubjects
-      : [];
+    );
 
 
   const subjectOptions =
@@ -23979,9 +23977,9 @@ async function showProfilePage(user) {
 
   const selected =
     new Set(
-      Array.isArray(data.selectedSubjects)
-        ? data.selectedSubjects
-        : []
+      normalizeSelectedSubjectsV1(
+        data.selectedSubjects
+      )
     );
 
 
@@ -31128,9 +31126,10 @@ function getRareQuestForToday() {
 }
 
 function chooseWeightedSubject(data) {
-  const subjects = Array.isArray(data.selectedSubjects)
-    ? data.selectedSubjects
-    : [];
+  const subjects =
+    normalizeSelectedSubjectsV1(
+      data.selectedSubjects
+    );
 
   if (!subjects.length) return null;
 
@@ -31152,6 +31151,42 @@ function chooseWeightedSubject(data) {
   }
 
   return randomItem(weightedPool);
+}
+
+
+
+function normalizeSelectedSubjectsV1(value) {
+
+  const subjects =
+    Array.isArray(value)
+      ? value
+      : [];
+
+  return [
+    ...new Set(
+      subjects
+        .map(subject => {
+
+          const raw =
+            String(subject ?? "").trim();
+
+          if (!raw) {
+            return "";
+          }
+
+          const key =
+            legacyQuestSubjectKey(raw);
+
+          return (
+            LEGACY_QUEST_SUBJECT_JA[key] ||
+            raw
+          );
+
+        })
+        .filter(Boolean)
+    )
+  ];
+
 }
 
 
@@ -32015,9 +32050,10 @@ async function showTimerPage(user) {
   }
 
   const data = snap.data();
-  const subjects = Array.isArray(data.selectedSubjects)
-    ? data.selectedSubjects
-    : [];
+  const subjects =
+    normalizeSelectedSubjectsV1(
+      data.selectedSubjects
+    );
 
   page(
     card(`
