@@ -32129,9 +32129,16 @@ async function showManualStudyPage(user) {
   const data = snap.data();
 
   const subjects =
-    Array.isArray(data.selectedSubjects)
-      ? data.selectedSubjects
-      : [];
+    [
+      ...new Set(
+        normalizeSelectedSubjectsV1(
+          data.selectedSubjects
+        ).filter(
+          subject =>
+            SUBJECTS.includes(subject)
+        )
+      )
+    ];
 
   page(
     card(`
