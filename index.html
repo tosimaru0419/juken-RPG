@@ -12030,12 +12030,16 @@ body.study-link-room-mode-v1
 
 .study-link-v2-member-status-wrap-v1{
   display:grid;
-  justify-items:end;
+  justify-items:center;
   gap:5px;
+  transform:translateX(-32px);
 }
 
 .study-link-v2-member-time-v1{
   color:#8d98aa;
+  min-width:64px;
+  text-align:right;
+  font-variant-numeric:tabular-nums;
   font-family:"Rajdhani",sans-serif;
   font-size:12px;
   font-weight:700;
@@ -32257,7 +32261,30 @@ async function showTimerPage(user) {
       await returnAfterStudyLinkTimerV1(user);
     };
 
+    let timerConfirmSaving = false;
+    let timerConfirmCommitted = false;
+
     $("timer-confirm").onclick = async () => {
+      const confirmButton = $("timer-confirm");
+      const cancelButton = $("timer-cancel");
+
+      if (
+        timerConfirmSaving ||
+        !confirmButton ||
+        confirmButton.disabled
+      ) {
+        return;
+      }
+
+      timerConfirmSaving = true;
+
+      confirmButton.disabled = true;
+      confirmButton.textContent = "保存中...";
+
+      if (cancelButton) {
+        cancelButton.disabled = true;
+      }
+
       try {
         $("confirm-error").textContent = "";
 
@@ -33396,10 +33423,25 @@ async function showTimerPage(user) {
           intervalId: null,
         };
 
+        timerConfirmCommitted = true;
+
         await returnAfterStudyLinkTimerV1(user);
       } catch (error) {
         $("confirm-error").textContent =
           error?.message || "保存に失敗しました。";
+
+        if (!timerConfirmCommitted) {
+          timerConfirmSaving = false;
+
+          if (confirmButton) {
+            confirmButton.disabled = false;
+            confirmButton.textContent = "この内容で保存";
+          }
+
+          if (cancelButton) {
+            cancelButton.disabled = false;
+          }
+        }
       }
     };
   };
@@ -34310,7 +34352,7 @@ document.addEventListener(
 
   setInterval(
     update,
-    1000
+    250
   );
 
 })();
