@@ -18224,9 +18224,16 @@ async function mountStudyLinkRoomTimerV1(
 
 
   const subjects =
-    normalizeSelectedSubjectsV1(
-      userData.selectedSubjects
-    );
+    [
+      ...new Set(
+        normalizeSelectedSubjectsV1(
+          userData.selectedSubjects
+        ).filter(
+          subject =>
+            SUBJECTS.includes(subject)
+        )
+      )
+    ];
 
 
   const subjectOptions =
@@ -31127,9 +31134,16 @@ function getRareQuestForToday() {
 
 function chooseWeightedSubject(data) {
   const subjects =
-    normalizeSelectedSubjectsV1(
-      data.selectedSubjects
-    );
+    [
+      ...new Set(
+        normalizeSelectedSubjectsV1(
+          data.selectedSubjects
+        ).filter(
+          subject =>
+            SUBJECTS.includes(subject)
+        )
+      )
+    ];
 
   if (!subjects.length) return null;
 
