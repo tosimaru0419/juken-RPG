@@ -25182,6 +25182,19 @@ function scheduleHomeMaintenance(user, data) {
 
 
 async function showHome(user) {
+
+  try {
+    await normalizeStoredSelectedSubjectsV1(
+      user
+    );
+  }
+  catch (error) {
+    console.warn(
+      "SUBJECT NORMALIZE FAILED:",
+      error
+    );
+  }
+
   const ref = doc(db, "users", user.uid);
   const snap = await getDoc(ref);
 
@@ -31201,6 +31214,72 @@ function normalizeSelectedSubjectsV1(value) {
     )
   ];
 
+}
+
+
+
+async function normalizeStoredSelectedSubjectsV1(user) {
+
+  if (!user?.uid) return;
+
+  const userRef =
+    doc(
+      db,
+      "users",
+      user.uid
+    );
+
+  const snap =
+    await getDoc(userRef);
+
+  if (!snap.exists()) return;
+
+  const data =
+    snap.data();
+
+  const original =
+    Array.isArray(data.selectedSubjects)
+      ? data.selectedSubjects
+      : [];
+
+  const normalized =
+    [
+      ...new Set(
+        normalizeSelectedSubjectsV1(
+          original
+        ).filter(
+          subject =>
+            SUBJECTS.includes(subject)
+        )
+      )
+    ];
+
+  const same =
+    original.length === normalized.length &&
+    original.every(
+      (subject, index) =>
+        subject === normalized[index]
+    );
+
+  if (same) return;
+
+  await setDoc(
+    userRef,
+    {
+      selectedSubjects: normalized,
+      updatedAt: serverTimestamp(),
+    },
+    {
+      merge: true
+    }
+  );
+
+  console.log(
+    "SUBJECT NORMALIZE:",
+    original,
+    "=>",
+    normalized
+  );
 }
 
 
