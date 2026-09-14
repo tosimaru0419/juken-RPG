@@ -12850,36 +12850,44 @@ html[data-asc-theme="light"]
 </style>
 
 
-<style id="ascend-light-clean-final-v19">
+<style id="ascend-light-clean-future-v4">
 
 /* =========================================================
-   ASCEND LIGHT — CLEAN FINAL V19
+   ASCEND LIGHT
+   CLEAN FUTURE V4
 
-   BASE   : WHITE / ICE
-   TEXT   : COOL GRAY / NAVY
-   MAIN   : CYAN
-   ACCENT : VIOLET
+   WHITE / ICE / CYAN / NAVY
 ========================================================= */
 
 html[data-asc-theme="light"] {
 
-  --clean-bg:#eaf4f6;
-  --clean-card:#f8fbfc;
-  --clean-inner:#eef7f8;
-  --clean-raised:#fcfefe;
+  /* page */
+  --asc-bg:#e7f2f5;
 
-  --clean-text:#405e68;
-  --clean-sub:#658089;
-  --clean-muted:#82969c;
+  /* recessed / tab background */
+  --asc-surface:#dbecef;
 
-  --clean-cyan:#00a6c6;
-  --clean-cyan-deep:#08758a;
-  --clean-cyan-soft:rgba(0,166,198,.18);
+  /* standard card */
+  --asc-card:#f4f9fa;
 
-  --clean-violet:#7163c8;
+  /* raised card */
+  --asc-raised:#fbfdfd;
 
-  --clean-border:rgba(24,137,159,.22);
-  --clean-border-strong:rgba(17,144,169,.32);
+  /* text */
+  --asc-text:#102f39;
+  --asc-text-sub:#395d68;
+  --asc-muted:#66818a;
+
+  /* border */
+  --asc-border:rgba(32,137,160,.20);
+  --asc-border-strong:rgba(25,128,151,.34);
+
+  /* cyan */
+  --future-cyan:#1595b2;
+  --future-cyan-deep:#0e6d83;
+  --future-cyan-soft:#d5eef3;
+  --future-cyan-line:#91cbd6;
+
 }
 
 
@@ -12887,198 +12895,54 @@ html[data-asc-theme="light"] {
    PAGE
 ========================================================= */
 
-html[data-asc-theme="light"],
 html[data-asc-theme="light"] body {
 
   background:
-    #eaf4f6 !important;
+    linear-gradient(
+      145deg,
+      #e5f1f4 0%,
+      #edf6f7 48%,
+      #e3f0f3 100%
+    ) !important;
 
   color:
-    var(--clean-text) !important;
+    var(--asc-text) !important;
 }
 
 
 /* =========================================================
-   NORMAL CARDS
+   STANDARD CARDS
 ========================================================= */
 
 html[data-asc-theme="light"] .card,
+
 html[data-asc-theme="light"] .rpg-section {
 
   background:
-    var(--clean-card) !important;
+    #f3f8f9 !important;
 
   color:
-    var(--clean-text) !important;
+    var(--asc-text) !important;
 
   border:
-    1px solid var(--clean-border) !important;
+    1px solid rgba(28,132,154,.25) !important;
 
   box-shadow:
-    0 3px 12px rgba(28,79,91,.045) !important;
+    0 4px 12px rgba(36,91,103,.06) !important;
 }
 
 
-/* important cards */
+/* =========================================================
+   IMPORTANT CARDS
+========================================================= */
 
 html[data-asc-theme="light"] #home-player-status,
+
 html[data-asc-theme="light"] #home-study-status,
-html[data-asc-theme="light"] #study-link-v2-active {
 
-  background:
-    var(--clean-raised) !important;
+html[data-asc-theme="light"] .study-main-choice,
 
-  border:
-    1px solid var(--clean-border-strong) !important;
-
-  border-top:
-    2px solid rgba(0,166,198,.58) !important;
-
-  box-shadow:
-    0 4px 13px rgba(26,82,95,.055) !important;
-}
-
-
-/* =========================================================
-   TEXT
-========================================================= */
-
-html[data-asc-theme="light"] h1,
-html[data-asc-theme="light"] h2,
-html[data-asc-theme="light"] h3,
-html[data-asc-theme="light"] strong {
-
-  color:
-    var(--clean-text);
-}
-
-
-html[data-asc-theme="light"] p {
-
-  color:
-    var(--clean-sub);
-}
-
-
-html[data-asc-theme="light"] .text-muted {
-
-  color:
-    var(--clean-muted) !important;
-}
-
-
-/* 発光を基本OFF */
-
-html[data-asc-theme="light"] * {
-
-  text-shadow:
-    none;
-}
-
-
-/* =========================================================
-   HOME
-========================================================= */
-
-html[data-asc-theme="light"]
-#home-player-status .home-player-name {
-
-  border:
-    0 !important;
-
-  padding-left:
-    0 !important;
-
-  box-shadow:
-    none !important;
-}
-
-
-html[data-asc-theme="light"]
-#home-player-status .home-player-name-text {
-
-  color:
-    #607a83 !important;
-
-  -webkit-text-fill-color:
-    #607a83 !important;
-
-  text-shadow:
-    0 0 7px rgba(0,166,198,.13) !important;
-}
-
-
-html[data-asc-theme="light"]
-#home-player-status .home-player-level {
-
-  border:
-    0 !important;
-
-  padding-left:
-    0 !important;
-
-  box-shadow:
-    none !important;
-}
-
-
-html[data-asc-theme="light"]
-#home-player-status .home-player-level > small {
-
-  color:
-    #899ba1 !important;
-
-  -webkit-text-fill-color:
-    #899ba1 !important;
-}
-
-
-html[data-asc-theme="light"]
-#home-player-status .home-player-level > strong {
-
-  color:
-    var(--clean-violet) !important;
-
-  -webkit-text-fill-color:
-    var(--clean-violet) !important;
-
-  text-shadow:
-    0 0 7px rgba(113,99,200,.12) !important;
-}
-
-
-html[data-asc-theme="light"]
-#home-study-status .home-study-time {
-
-  color:
-    #587780 !important;
-
-  -webkit-text-fill-color:
-    #587780 !important;
-
-  border:
-    0 !important;
-
-  padding-left:
-    0 !important;
-
-  box-shadow:
-    none !important;
-
-  text-shadow:
-    0 0 7px rgba(0,166,198,.14) !important;
-}
-
-
-/* =========================================================
-   INNER PANELS
-========================================================= */
-
-html[data-asc-theme="light"]
-.study-link-v2-members-wrap,
-
-html[data-asc-theme="light"]
-#study-link-status-panel-v1,
+html[data-asc-theme="light"] #study-link-v2-active,
 
 html[data-asc-theme="light"]
 #study-link-boost-fund-v1 > div,
@@ -13087,44 +12951,105 @@ html[data-asc-theme="light"]
 #study-link-friend-invite-v1 {
 
   background:
-    var(--clean-inner) !important;
+    #f9fcfc !important;
+
+  color:
+    var(--asc-text) !important;
 
   border:
-    1px solid var(--clean-border) !important;
+    1px solid rgba(20,139,164,.36) !important;
+
+  box-shadow:
+    0 5px 15px rgba(30,91,104,.07) !important;
+}
+
+
+/* thin cyan detail */
+
+html[data-asc-theme="light"] #home-player-status,
+
+html[data-asc-theme="light"] #home-study-status,
+
+html[data-asc-theme="light"] #study-link-v2-active {
+
+  border-top:
+    2px solid rgba(21,149,178,.52) !important;
+}
+
+
+/* =========================================================
+   HEADINGS / TEXT
+========================================================= */
+
+html[data-asc-theme="light"] h1,
+
+html[data-asc-theme="light"] h2,
+
+html[data-asc-theme="light"] h3,
+
+html[data-asc-theme="light"] strong {
+
+  color:
+    #102f39;
+}
+
+
+html[data-asc-theme="light"] p {
+
+  color:
+    #3d606a;
+}
+
+
+html[data-asc-theme="light"] .text-muted {
+
+  color:
+    #69828a !important;
+}
+
+
+/* =========================================================
+   STUDY CHOICES
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-main-choice {
+
+  background:
+    #f7fbfc !important;
+
+  border:
+    1px solid rgba(22,142,168,.30) !important;
+
+  color:
+    #15343e !important;
 
   box-shadow:
     none !important;
 }
 
 
-/* member cards */
-
 html[data-asc-theme="light"]
-.study-link-v2-member,
-
-html[data-asc-theme="light"]
-.study-link-v2-member-card,
-
-html[data-asc-theme="light"]
-#study-link-v2-members > div,
-
-html[data-asc-theme="light"]
-.study-link-invite-friend-v1,
-
-html[data-asc-theme="light"]
-.study-link-incoming-card-v1 {
+.study-main-choice:nth-child(1) {
 
   background:
-    var(--clean-raised) !important;
+    linear-gradient(
+      100deg,
+      rgba(21,149,178,.10),
+      #f7fbfc 28%
+    ) !important;
+}
 
-  color:
-    var(--clean-text) !important;
 
-  border:
-    1px solid rgba(24,137,159,.18) !important;
+html[data-asc-theme="light"]
+.study-main-choice:nth-child(2) {
 
-  box-shadow:
-    none !important;
+  background:
+    linear-gradient(
+      100deg,
+      rgba(21,149,178,.06),
+      #f7fbfc 28%
+    ) !important;
 }
 
 
@@ -13145,27 +13070,27 @@ html[data-asc-theme="light"]
 #study-link-room-tabs-v2 {
 
   background:
-    #e3eff1 !important;
+    #dcecef !important;
 
   border:
-    1px solid rgba(24,137,159,.20) !important;
+    1px solid rgba(25,128,151,.28) !important;
 
   box-shadow:
-    none !important;
+    inset 0 1px 2px rgba(32,84,96,.05) !important;
 }
 
 
 html[data-asc-theme="light"]
 #study-link-room-tabs-v2 label {
 
+  color:
+    #496a74 !important;
+
   background:
     transparent !important;
 
-  color:
-    var(--clean-sub) !important;
-
   border:
-    0 !important;
+    1px solid transparent !important;
 
   box-shadow:
     none !important;
@@ -13183,16 +13108,340 @@ html[data-asc-theme="light"]
 label[for="sl-room-v2"] {
 
   background:
-    #f8fcfd !important;
+    #f5fbfc !important;
 
   color:
-    var(--clean-cyan-deep) !important;
+    #0d748a !important;
 
-  border-bottom:
-    2px solid var(--clean-cyan) !important;
+  border:
+    1px solid #8fcbd6 !important;
+
+  box-shadow:
+    0 2px 6px rgba(21,149,178,.08) !important;
+}
+
+
+/* =========================================================
+   STUDY LINK ACTIVE AREA
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-connected {
+
+  color:
+    #168064 !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-v2-dot {
+
+  background:
+    #25a77f !important;
+
+  box-shadow:
+    0 0 0 3px rgba(37,167,127,.10) !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-v2-label,
+
+html[data-asc-theme="light"]
+.study-link-v2-members-label {
+
+  color:
+    #55747d !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-v2-room-code,
+
+html[data-asc-theme="light"]
+#study-link-room-clock-v1 {
+
+  color:
+    #0d6e83 !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+/* =========================================================
+   MEMBERS
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-members-wrap {
+
+  background:
+    #9bafb6 !important;
+
+  border:
+    1px solid rgba(20,132,156,.30) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.55) !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-v2-members {
+
+  color:
+    #12323c !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-v2-member,
+
+html[data-asc-theme="light"]
+.study-link-v2-member-card,
+
+html[data-asc-theme="light"]
+#study-link-v2-members > div {
+
+  background:
+    #f8fbfc !important;
+
+  color:
+    #12323c !important;
+
+  border:
+    1px solid rgba(25,135,158,.28) !important;
+
+  box-shadow:
+    0 2px 7px rgba(32,83,94,.05) !important;
+}
+
+
+/* 名前を絶対に背景と被らせない */
+
+html[data-asc-theme="light"]
+.study-link-v2-member-name,
+
+html[data-asc-theme="light"]
+#study-link-v2-members strong,
+
+html[data-asc-theme="light"]
+#study-link-v2-members [data-member-name] {
+
+  color:
+    #0e2c36 !important;
+
+  -webkit-text-fill-color:
+    #0e2c36 !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-v2-member-meta,
+
+html[data-asc-theme="light"]
+.study-link-v2-member-subject,
+
+html[data-asc-theme="light"]
+.study-link-v2-member-note {
+
+  color:
+    #607d86 !important;
+}
+
+
+/* member state */
+
+html[data-asc-theme="light"]
+.study-link-v2-member-state,
+
+html[data-asc-theme="light"]
+[data-member-state] {
+
+  background:
+    #d7eef2 !important;
+
+  color:
+    #106d81 !important;
+
+  border:
+    1px solid #9acdd7 !important;
+}
+
+
+/* =========================================================
+   LINK STATUS
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-status-panel-v1 {
+
+  background:
+    #eef7f8 !important;
+
+  color:
+    #17343d !important;
+
+  border:
+    1px solid rgba(27,135,158,.26) !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-status-bonus-v1 {
+
+  background:
+    #f8fbfb !important;
+
+  border:
+    1px solid rgba(30,129,150,.22) !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-status-bonus-value-v1 {
+
+  color:
+    #14323b !important;
+}
+
+
+/* =========================================================
+   BOOST FUND
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 > div {
+
+  background:
+    #f5fafb !important;
+
+  border:
+    1px solid rgba(20,135,158,.32) !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1
+div:has(> [data-boost-fill]) {
+
+  background:
+    #cadde1 !important;
+
+  box-shadow:
+    inset 0 1px 2px rgba(34,82,93,.09) !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 [data-boost-fill] {
+
+  background:
+    linear-gradient(
+      90deg,
+      #21a7c3,
+      #147d98
+    ) !important;
+
+  box-shadow:
+    0 0 8px rgba(33,167,195,.14) !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 button {
+
+  background:
+    #e2f2f5 !important;
+
+  color:
+    #12697d !important;
+
+  border:
+    1px solid #9bcbd5 !important;
 
   box-shadow:
     none !important;
+}
+
+
+/* =========================================================
+   FRIEND INVITE
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-friend-invite-v1 {
+
+  background:
+    #edf6f7 !important;
+
+  border:
+    1px solid rgba(20,135,158,.30) !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-invite-toggle-v1 {
+
+  background:
+    #d7edf1 !important;
+
+  color:
+    #0e6c81 !important;
+
+  border:
+    1px solid #91c8d3 !important;
+
+  box-shadow:
+    none !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-invite-friend-v1,
+
+html[data-asc-theme="light"]
+.study-link-incoming-card-v1 {
+
+  background:
+    #f8fbfc !important;
+
+  color:
+    #12323c !important;
+
+  border:
+    1px solid rgba(22,132,155,.26) !important;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+html[data-asc-theme="light"]
+input,
+
+html[data-asc-theme="light"]
+select,
+
+html[data-asc-theme="light"]
+textarea {
+
+  background:
+    #f8fbfb !important;
+
+  color:
+    #12313a !important;
+
+  border-color:
+    rgba(22,132,155,.30) !important;
+
+  -webkit-text-fill-color:
+    currentColor !important;
 }
 
 
@@ -13204,22 +13453,19 @@ html[data-asc-theme="light"]
 #study-link-v2-create,
 
 html[data-asc-theme="light"]
-#study-link-room-start-v1,
-
-html[data-asc-theme="light"]
-#study-link-invite-toggle-v1 {
+#study-link-room-start-v1 {
 
   background:
-    #ddf1f4 !important;
+    #d8eef2 !important;
 
   color:
-    var(--clean-cyan-deep) !important;
+    #0d697d !important;
 
   border:
-    1px solid rgba(0,155,186,.30) !important;
+    1px solid #8fc9d4 !important;
 
   box-shadow:
-    none !important;
+    0 2px 7px rgba(22,126,149,.08) !important;
 }
 
 
@@ -13233,13 +13479,13 @@ html[data-asc-theme="light"]
 #study-link-room-pause-v1 {
 
   background:
-    #edf6f7 !important;
+    #e3f2f4 !important;
 
   color:
-    #416d77 !important;
+    #205f6e !important;
 
   border:
-    1px solid rgba(24,137,159,.22) !important;
+    1px solid #a7cfd6 !important;
 
   box-shadow:
     none !important;
@@ -13247,44 +13493,1007 @@ html[data-asc-theme="light"]
 
 
 /* =========================================================
-   INPUT
+   TEXT SAFETY
 ========================================================= */
 
-html[data-asc-theme="light"] input,
-html[data-asc-theme="light"] select,
-html[data-asc-theme="light"] textarea {
+html[data-asc-theme="light"]
+.card *,
 
-  background:
-    #fbfdfd !important;
+html[data-asc-theme="light"]
+.rpg-section *,
 
-  color:
-    var(--clean-text) !important;
+html[data-asc-theme="light"]
+#study-link-card-v2 * {
 
-  border:
-    1px solid rgba(24,137,159,.25) !important;
+  text-shadow:
+    none;
+}
 
-  box-shadow:
-    none !important;
+</style>
+
+
+
+<style id="ascend-light-neon-finish-v5">
+
+/* =========================================================
+   ASCEND LIGHT
+   CLEAN FUTURE + CYAN NEON V5
+========================================================= */
+
+html[data-asc-theme="light"] {
+  --neon-cyan-light:#00a9cc;
+  --neon-cyan-deep:#08758c;
+  --neon-cyan-line:rgba(0,169,204,.48);
+  --neon-cyan-glow:rgba(0,169,204,.13);
+
+  --future-ink:#102f39;
+  --future-sub:#3f626d;
+  --future-muted:#68828a;
 }
 
 
-html[data-asc-theme="light"] input:focus,
-html[data-asc-theme="light"] select:focus,
-html[data-asc-theme="light"] textarea:focus {
+/* =========================================================
+   WHITE FONT CLEANUP
+========================================================= */
+
+/* HOME */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-name,
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-level,
+
+html[data-asc-theme="light"]
+#home-player-status .home-summary-value,
+
+html[data-asc-theme="light"]
+#home-player-status .home-stat-value,
+
+html[data-asc-theme="light"]
+#home-study-status strong,
+
+html[data-asc-theme="light"]
+#home-study-status .home-study-value {
+  color:var(--future-ink) !important;
+  -webkit-text-fill-color:var(--future-ink) !important;
+  text-shadow:none !important;
+}
+
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-title,
+
+html[data-asc-theme="light"]
+#home-player-status .home-summary-label,
+
+html[data-asc-theme="light"]
+#home-player-status .home-stat-label,
+
+html[data-asc-theme="light"]
+#home-study-status .home-study-label {
+  color:var(--future-sub) !important;
+  -webkit-text-fill-color:var(--future-sub) !important;
+  text-shadow:none !important;
+}
+
+
+/* STUDY */
+
+html[data-asc-theme="light"]
+.study-main-choice,
+
+html[data-asc-theme="light"]
+.study-main-choice strong,
+
+html[data-asc-theme="light"]
+.study-main-choice h3 {
+  color:var(--future-ink) !important;
+  -webkit-text-fill-color:var(--future-ink) !important;
+  text-shadow:none !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-main-choice p,
+
+html[data-asc-theme="light"]
+.study-main-choice small {
+  color:var(--future-sub) !important;
+  -webkit-text-fill-color:var(--future-sub) !important;
+}
+
+
+/* STUDY LINK */
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-v2-title,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-v2-member-name,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-status-bonus-value-v1,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 strong {
+  color:var(--future-ink) !important;
+  -webkit-text-fill-color:var(--future-ink) !important;
+  text-shadow:none !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-v2-desc,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-v2-member-meta,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-v2-member-subject,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-v2-member-note,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-status-count-v1,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-status-wait-v1 {
+  color:var(--future-sub) !important;
+  -webkit-text-fill-color:var(--future-sub) !important;
+  text-shadow:none !important;
+}
+
+
+/* QUEST / PARTY / RANK 系の通常テキスト */
+
+html[data-asc-theme="light"]
+.rpg-section > h2,
+
+html[data-asc-theme="light"]
+.rpg-section > h3,
+
+html[data-asc-theme="light"]
+.card > h2,
+
+html[data-asc-theme="light"]
+.card > h3 {
+  color:var(--future-ink) !important;
+  -webkit-text-fill-color:var(--future-ink) !important;
+}
+
+
+/* =========================================================
+   NEON EDGE — IMPORTANT CARDS
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status,
+
+html[data-asc-theme="light"]
+#home-study-status,
+
+html[data-asc-theme="light"]
+.study-main-choice,
+
+html[data-asc-theme="light"]
+#study-link-v2-active {
+
+  border-color:
+    var(--neon-cyan-line) !important;
+
+  box-shadow:
+    0 0 0 1px rgba(0,169,204,.06),
+    0 0 13px var(--neon-cyan-glow) !important;
+}
+
+
+/* top cyan blade */
+
+html[data-asc-theme="light"]
+#home-player-status,
+
+html[data-asc-theme="light"]
+#home-study-status,
+
+html[data-asc-theme="light"]
+#study-link-v2-active {
+
+  border-top:
+    2px solid rgba(0,169,204,.72) !important;
+}
+
+
+/* =========================================================
+   STUDY CHOICES — SIDE NEON
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-main-choice {
+  position:relative;
+  overflow:hidden;
+}
+
+
+html[data-asc-theme="light"]
+.study-main-choice::after {
+  content:"";
+
+  position:absolute;
+  left:0;
+  top:14px;
+  bottom:14px;
+
+  width:3px;
+
+  border-radius:
+    0 6px 6px 0;
+
+  background:
+    #00a9cc;
+
+  box-shadow:
+    0 0 8px rgba(0,169,204,.32);
+}
+
+
+/* =========================================================
+   TABS — SELECTED NEON
+========================================================= */
+
+html[data-asc-theme="light"]
+#sl-focus-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-focus-v2"],
+
+html[data-asc-theme="light"]
+#sl-room-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-room-v2"] {
+
+  background:
+    #f6fcfd !important;
+
+  color:
+    var(--neon-cyan-deep) !important;
+
+  border-color:
+    rgba(0,169,204,.55) !important;
+
+  box-shadow:
+    0 0 9px rgba(0,169,204,.14),
+    inset 0 -2px 0 rgba(0,169,204,.38) !important;
+}
+
+
+/* =========================================================
+   ROOM INNER PANELS
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-members-wrap,
+
+html[data-asc-theme="light"]
+#study-link-status-panel-v1,
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 > div,
+
+html[data-asc-theme="light"]
+#study-link-friend-invite-v1 {
+
+  border-color:
+    rgba(0,154,187,.34) !important;
+
+  box-shadow:
+    0 0 10px rgba(0,169,204,.06) !important;
+}
+
+
+/* =========================================================
+   MEMBERS
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-member,
+
+html[data-asc-theme="light"]
+.study-link-v2-member-card,
+
+html[data-asc-theme="light"]
+#study-link-v2-members > div {
+
+  border-color:
+    rgba(0,152,184,.28) !important;
+
+  box-shadow:
+    0 2px 6px rgba(28,92,106,.05) !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-v2-member-state,
+
+html[data-asc-theme="light"]
+[data-member-state] {
+
+  background:
+    #d9f1f5 !important;
+
+  color:
+    #087086 !important;
+
+  border-color:
+    rgba(0,157,190,.42) !important;
+
+  box-shadow:
+    0 0 7px rgba(0,169,204,.09) !important;
+}
+
+
+/* =========================================================
+   TIMER / ROOM CODE
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-room-clock-v1,
+
+html[data-asc-theme="light"]
+#study-link-v2-room-code {
+
+  color:
+    #08758c !important;
+
+  text-shadow:
+    0 0 8px rgba(0,169,204,.13) !important;
+}
+
+
+/* =========================================================
+   BOOST GAUGE
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 [data-boost-fill] {
+
+  background:
+    linear-gradient(
+      90deg,
+      #00b7d9,
+      #0589a6
+    ) !important;
+
+  box-shadow:
+    0 0 9px rgba(0,183,217,.26) !important;
+}
+
+
+/* =========================================================
+   PRIMARY CYAN BUTTONS
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-v2-create,
+
+html[data-asc-theme="light"]
+#study-link-room-start-v1,
+
+html[data-asc-theme="light"]
+#study-link-invite-toggle-v1 {
+
+  background:
+    #d9f1f5 !important;
+
+  color:
+    #086b80 !important;
+
+  border-color:
+    rgba(0,160,192,.48) !important;
+
+  box-shadow:
+    0 0 10px rgba(0,169,204,.10) !important;
+}
+
+
+/* =========================================================
+   INPUT FOCUS
+========================================================= */
+
+html[data-asc-theme="light"]
+input:focus,
+
+html[data-asc-theme="light"]
+select:focus,
+
+html[data-asc-theme="light"]
+textarea:focus {
+
+  outline:none !important;
+
+  border-color:
+    rgba(0,169,204,.62) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(0,169,204,.10) !important;
+}
+
+
+/* =========================================================
+   CLEAN TEXT RENDER
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-card-v2 *,
+
+html[data-asc-theme="light"]
+#home-player-status *,
+
+html[data-asc-theme="light"]
+#home-study-status * {
+
+  text-shadow:none;
+}
+
+
+/* clock / room codeだけ発光を戻す */
+
+html[data-asc-theme="light"]
+#study-link-room-clock-v1,
+
+html[data-asc-theme="light"]
+#study-link-v2-room-code {
+
+  text-shadow:
+    0 0 8px rgba(0,169,204,.13) !important;
+}
+
+</style>
+
+
+<style id="ascend-light-neon-system-v6">
+
+/* =========================================================
+   ASCEND LIGHT — UNIFIED CYAN NEON SYSTEM
+========================================================= */
+
+html[data-asc-theme="light"] {
+
+  --future-neon:#00aecd;
+
+  --future-neon-deep:#08748a;
+
+  --future-neon-line:
+    rgba(0,174,205,.42);
+
+  --future-neon-line-soft:
+    rgba(0,174,205,.25);
+
+  --future-neon-glow:
+    rgba(0,174,205,.105);
+
+  --future-neon-glow-strong:
+    rgba(0,174,205,.16);
+}
+
+
+/* =========================================================
+   LEVEL 1
+   MAIN / IMPORTANT CARDS
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status,
+
+html[data-asc-theme="light"]
+#home-study-status,
+
+html[data-asc-theme="light"]
+.study-main-choice,
+
+html[data-asc-theme="light"]
+#study-link-v2-active,
+
+html[data-asc-theme="light"]
+body:has(#quest-main-tabs) .rpg-section,
+
+html[data-asc-theme="light"]
+body:has(#party-main-tabs) .rpg-section,
+
+html[data-asc-theme="light"]
+main.rank-main-themed .rpg-section {
+
+  border-color:
+    var(--future-neon-line) !important;
+
+  box-shadow:
+    0 0 0 1px rgba(0,174,205,.035),
+    0 0 13px var(--future-neon-glow) !important;
+}
+
+
+/* cyan top blade */
+
+html[data-asc-theme="light"]
+#home-player-status,
+
+html[data-asc-theme="light"]
+#home-study-status,
+
+html[data-asc-theme="light"]
+#study-link-v2-active {
+
+  border-top:
+    2px solid rgba(0,174,205,.66) !important;
+}
+
+
+/* =========================================================
+   LEVEL 2
+   INNER PANELS
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-members-wrap,
+
+html[data-asc-theme="light"]
+#study-link-status-panel-v1,
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 > div,
+
+html[data-asc-theme="light"]
+#study-link-friend-invite-v1,
+
+html[data-asc-theme="light"]
+body:has(#quest-main-tabs)
+.rpg-section > div,
+
+html[data-asc-theme="light"]
+body:has(#party-main-tabs)
+.rpg-section > div {
+
+  border-color:
+    var(--future-neon-line-soft) !important;
+}
+
+
+/* =========================================================
+   LEVEL 3
+   SMALL CARDS
+   基本的に発光させない
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-member,
+
+html[data-asc-theme="light"]
+.study-link-v2-member-card,
+
+html[data-asc-theme="light"]
+.study-link-invite-friend-v1,
+
+html[data-asc-theme="light"]
+.study-link-incoming-card-v1,
+
+html[data-asc-theme="light"]
+.study-link-status-bonus-v1 {
+
+  border-color:
+    rgba(0,151,180,.25) !important;
+
+  box-shadow:
+    0 2px 6px rgba(30,86,99,.045) !important;
+}
+
+
+/* =========================================================
+   ACTIVE TAB / SELECTED
+========================================================= */
+
+html[data-asc-theme="light"]
+#sl-focus-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-focus-v2"],
+
+html[data-asc-theme="light"]
+#sl-room-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-room-v2"],
+
+html[data-asc-theme="light"]
+#quest-main-tabs button.active,
+
+html[data-asc-theme="light"]
+#party-main-tabs button.active,
+
+html[data-asc-theme="light"]
+main.rank-main-themed button.active,
+
+html[data-asc-theme="light"]
+main.rank-main-themed [aria-selected="true"] {
+
+  color:
+    var(--future-neon-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--future-neon-deep) !important;
+
+  border-color:
+    rgba(0,174,205,.56) !important;
+
+  box-shadow:
+    0 0 9px var(--future-neon-glow-strong),
+    inset 0 -2px 0 rgba(0,174,205,.42) !important;
+}
+
+
+/* =========================================================
+   PROGRESS / BOOST
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 [data-boost-fill] {
+
+  background:
+    linear-gradient(
+      90deg,
+      #00b7d6,
+      #087e99
+    ) !important;
+
+  box-shadow:
+    0 0 9px rgba(0,183,214,.25) !important;
+}
+
+
+/* =========================================================
+   MEMBER STATE
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-member-state,
+
+html[data-asc-theme="light"]
+[data-member-state] {
+
+  color:
+    #087187 !important;
+
+  -webkit-text-fill-color:
+    #087187 !important;
+
+  border-color:
+    rgba(0,166,197,.40) !important;
+
+  box-shadow:
+    0 0 6px rgba(0,174,205,.08) !important;
+}
+
+
+/* =========================================================
+   INPUT FOCUS
+========================================================= */
+
+html[data-asc-theme="light"]
+input:focus,
+
+html[data-asc-theme="light"]
+select:focus,
+
+html[data-asc-theme="light"]
+textarea:focus {
 
   outline:
     none !important;
 
   border-color:
-    rgba(0,166,198,.52) !important;
+    rgba(0,174,205,.62) !important;
 
   box-shadow:
-    0 0 0 2px rgba(0,166,198,.07) !important;
+    0 0 0 3px rgba(0,174,205,.09),
+    0 0 8px rgba(0,174,205,.08) !important;
 }
 
 
 /* =========================================================
-   SPECIAL INFO
+   TEXT SAFETY
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status,
+
+html[data-asc-theme="light"]
+#home-study-status,
+
+html[data-asc-theme="light"]
+.study-main-choice,
+
+html[data-asc-theme="light"]
+#study-link-card-v2,
+
+html[data-asc-theme="light"]
+body:has(#quest-main-tabs) > main,
+
+html[data-asc-theme="light"]
+body:has(#party-main-tabs) > main,
+
+html[data-asc-theme="light"]
+main.rank-main-themed {
+
+  color:
+    var(--asc-text) !important;
+}
+
+
+/* generic headings */
+
+html[data-asc-theme="light"]
+#home-player-status h1,
+
+html[data-asc-theme="light"]
+#home-player-status h2,
+
+html[data-asc-theme="light"]
+#home-player-status h3,
+
+html[data-asc-theme="light"]
+#home-study-status h1,
+
+html[data-asc-theme="light"]
+#home-study-status h2,
+
+html[data-asc-theme="light"]
+#home-study-status h3,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 h1,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 h2,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 h3,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 strong {
+
+  color:
+    var(--asc-text) !important;
+
+  -webkit-text-fill-color:
+    var(--asc-text) !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+/* clock / room codeだけネオン文字 */
+
+html[data-asc-theme="light"]
+#study-link-room-clock-v1,
+
+html[data-asc-theme="light"]
+#study-link-v2-room-code {
+
+  color:
+    var(--future-neon-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--future-neon-deep) !important;
+
+  text-shadow:
+    0 0 8px rgba(0,174,205,.14) !important;
+}
+
+</style>
+
+
+
+<style id="ascend-light-clean-palette-v7">
+
+/* =========================================================
+   ASCEND LIGHT V7
+   PURE CLEAN FUTURE
+   WHITE / ICE CYAN / NAVY
+========================================================= */
+
+html[data-asc-theme="light"] {
+
+  /* 黒ではなく青みネイビー */
+  --asc-text:#153844;
+  --asc-text-sub:#41636d;
+  --asc-muted:#6b858d;
+
+  /* LIGHTでは紫を廃止してCYANへ統合 */
+  --accent:#1599b7;
+  --accent-light:#43b7cf;
+  --accent-dark:#0d7389;
+
+  --cyan:#1599b7;
+
+  --clean-navy:#153844;
+  --clean-navy-soft:#315661;
+
+  --clean-cyan:#1599b7;
+  --clean-cyan-deep:#0c7187;
+  --clean-cyan-soft:#d9f1f5;
+  --clean-cyan-mid:#a9dbe4;
+}
+
+
+/* =========================================================
+   STRONG TEXT
+   真っ黒感を消す
+========================================================= */
+
+html[data-asc-theme="light"] h1,
+html[data-asc-theme="light"] h2,
+html[data-asc-theme="light"] h3,
+html[data-asc-theme="light"] strong,
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-name,
+
+html[data-asc-theme="light"]
+.study-link-v2-member-name,
+
+html[data-asc-theme="light"]
+#study-link-v2-members strong {
+
+  color:
+    var(--clean-navy) !important;
+
+  -webkit-text-fill-color:
+    var(--clean-navy) !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+/* =========================================================
+   PURPLE REMOVAL
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-chip,
+
+html[data-asc-theme="light"]
+.study-link-v2-member-state,
+
+html[data-asc-theme="light"]
+[data-member-state] {
+
+  background:
+    var(--clean-cyan-soft) !important;
+
+  color:
+    var(--clean-cyan-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--clean-cyan-deep) !important;
+
+  border-color:
+    var(--clean-cyan-mid) !important;
+
+  box-shadow:
+    0 0 7px rgba(21,153,183,.08) !important;
+}
+
+
+/* =========================================================
+   ACTIVE TABS
+========================================================= */
+
+html[data-asc-theme="light"]
+#sl-focus-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-focus-v2"],
+
+html[data-asc-theme="light"]
+#sl-room-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-room-v2"] {
+
+  background:
+    #f7fcfd !important;
+
+  color:
+    var(--clean-cyan-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--clean-cyan-deep) !important;
+
+  border-color:
+    rgba(21,153,183,.52) !important;
+
+  box-shadow:
+    0 0 9px rgba(21,153,183,.12),
+    inset 0 -2px 0 rgba(21,153,183,.34) !important;
+}
+
+
+/* =========================================================
+   PRIMARY ACTIONS
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-v2-create,
+
+html[data-asc-theme="light"]
+#study-link-room-start-v1,
+
+html[data-asc-theme="light"]
+#study-link-invite-toggle-v1 {
+
+  background:
+    linear-gradient(
+      145deg,
+      #ddf3f6,
+      #cdeaf0
+    ) !important;
+
+  color:
+    var(--clean-cyan-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--clean-cyan-deep) !important;
+
+  border-color:
+    #9ed3dd !important;
+
+  box-shadow:
+    0 0 10px rgba(21,153,183,.10) !important;
+}
+
+
+/* =========================================================
+   STUDY CHOICES
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-main-choice::after {
+
+  background:
+    var(--clean-cyan) !important;
+
+  box-shadow:
+    0 0 8px rgba(21,153,183,.28) !important;
+}
+
+
+/* 2枚目も紫にしない */
+
+html[data-asc-theme="light"]
+.study-main-choice:nth-child(2)::after {
+
+  background:
+    #309eb6 !important;
+
+  box-shadow:
+    0 0 8px rgba(48,158,182,.22) !important;
+}
+
+
+/* =========================================================
+   HOME ACCENTS
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status,
+
+html[data-asc-theme="light"]
+#home-study-status {
+
+  border-top-color:
+    rgba(21,153,183,.62) !important;
+}
+
+
+/* =========================================================
+   LINK TEXT / SPECIAL NUMBERS
 ========================================================= */
 
 html[data-asc-theme="light"]
@@ -13300,62 +14509,534 @@ html[data-asc-theme="light"]
     var(--clean-cyan-deep) !important;
 
   text-shadow:
-    0 0 6px rgba(0,166,198,.10) !important;
+    0 0 7px rgba(21,153,183,.12) !important;
 }
 
 
 /* =========================================================
-   STUDY CHOICES
+   GENERIC LIGHT BUTTON TEXT
 ========================================================= */
 
+html[data-asc-theme="light"] button {
+
+  text-shadow:
+    none !important;
+}
+
+
+/* 紫っぽい選択ボタンをCYAN系へ */
+
 html[data-asc-theme="light"]
-.study-main-choice {
+.study-link-invite-friend-v1 button {
 
   background:
-    #f8fbfc !important;
+    #dff2f5 !important;
 
   color:
-    var(--clean-text) !important;
+    var(--clean-cyan-deep) !important;
 
-  border:
-    1px solid var(--clean-border) !important;
+  border-color:
+    #a8d5dd !important;
 
   box-shadow:
     none !important;
 }
 
+</style>
 
-/* 古い派手な疑似要素を抑える */
+
+
+<style id="ascend-light-home-clean-gaming-v8">
+
+/* =========================================================
+   ASCEND HOME LIGHT V8
+   WHITE / CYAN / NAVY / VIOLET
+========================================================= */
+
+html[data-asc-theme="light"] {
+
+  --home-ice:#f7fbfc;
+  --home-ice-2:#edf7f9;
+  --home-navy:#153744;
+  --home-sub:#496973;
+
+  --home-cyan:#00a9ca;
+  --home-cyan-deep:#08738a;
+  --home-cyan-soft:#d9f2f6;
+
+  --home-violet:#6754c6;
+  --home-violet-deep:#4e3ba7;
+  --home-violet-soft:#e4def8;
+}
+
+
+/* =========================================================
+   HOME PAGE
+========================================================= */
 
 html[data-asc-theme="light"]
-.study-main-choice::after {
+body:has(#home-player-status) {
 
-  opacity:
-    .34 !important;
+  background:
+    radial-gradient(
+      circle at 15% 0%,
+      rgba(0,169,202,.10),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 90% 12%,
+      rgba(103,84,198,.07),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      #e8f4f6,
+      #f3f8f9
+    ) !important;
+}
+
+
+/* =========================================================
+   PLAYER CARD
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status {
+
+  background:
+    linear-gradient(
+      145deg,
+      #fbfdfd,
+      #edf7f9
+    ) !important;
+
+  color:
+    var(--home-navy) !important;
+
+  border:
+    1px solid rgba(0,169,202,.38) !important;
+
+  border-top:
+    2px solid var(--home-cyan) !important;
 
   box-shadow:
+    0 0 0 1px rgba(0,169,202,.04),
+    0 0 15px rgba(0,169,202,.11) !important;
+}
+
+
+/* 名前 */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-name {
+
+  color:
+    var(--home-navy) !important;
+
+  -webkit-text-fill-color:
+    var(--home-navy) !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+/* 称号・補助 */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-title {
+
+  color:
+    var(--home-violet-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--home-violet-deep) !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+/* LEVEL */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-level {
+
+  color:
+    var(--home-violet-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--home-violet-deep) !important;
+}
+
+
+/* =========================================================
+   HOME SMALL STAT CARDS
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status .home-summary-card,
+
+html[data-asc-theme="light"]
+#home-player-status .home-stat-card {
+
+  background:
+    rgba(255,255,255,.56) !important;
+
+  color:
+    var(--home-navy) !important;
+
+  border:
+    1px solid rgba(0,153,184,.22) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.60) !important;
+}
+
+
+html[data-asc-theme="light"]
+#home-player-status .home-summary-value,
+
+html[data-asc-theme="light"]
+#home-player-status .home-stat-value {
+
+  color:
+    var(--home-navy) !important;
+
+  -webkit-text-fill-color:
+    var(--home-navy) !important;
+}
+
+
+html[data-asc-theme="light"]
+#home-player-status .home-summary-label,
+
+html[data-asc-theme="light"]
+#home-player-status .home-stat-label {
+
+  color:
+    var(--home-sub) !important;
+}
+
+
+/* =========================================================
+   XP / RANK
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status .home-xp-track,
+
+html[data-asc-theme="light"]
+#home-player-status .home-rank-track {
+
+  background:
+    #d8e7ea !important;
+
+  border:
+    1px solid rgba(0,142,169,.20) !important;
+
+  box-shadow:
+    inset 0 1px 3px rgba(26,76,88,.08) !important;
+}
+
+
+/* XP = CYAN */
+
+html[data-asc-theme="light"]
+#home-player-status .home-xp-fill {
+
+  background:
+    linear-gradient(
+      90deg,
+      #00badc,
+      #078fa9
+    ) !important;
+
+  box-shadow:
+    0 0 8px rgba(0,186,220,.26) !important;
+}
+
+
+
+
+
+/* =========================================================
+   TODAY STUDY
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-study-status {
+
+  background:
+    linear-gradient(
+      145deg,
+      #f9fcfd,
+      #eaf6f8
+    ) !important;
+
+  color:
+    var(--home-navy) !important;
+
+  border:
+    1px solid rgba(0,169,202,.34) !important;
+
+  border-top:
+    2px solid rgba(0,169,202,.82) !important;
+
+  box-shadow:
+    0 0 13px rgba(0,169,202,.09) !important;
+}
+
+
+html[data-asc-theme="light"]
+#home-study-status strong,
+
+html[data-asc-theme="light"]
+#home-study-status .home-study-value {
+
+  color:
+    var(--home-navy) !important;
+
+  -webkit-text-fill-color:
+    var(--home-navy) !important;
+}
+
+
+html[data-asc-theme="light"]
+#home-study-status .home-study-label {
+
+  color:
+    var(--home-sub) !important;
+}
+
+
+/* =========================================================
+   QUICK MENU
+========================================================= */
+
+html[data-asc-theme="light"]
+.home-quick-grid .home-menu-card {
+
+  background:
+    linear-gradient(
+      145deg,
+      #f8fcfd,
+      #edf7f9
+    ) !important;
+
+  color:
+    var(--home-navy) !important;
+
+  border:
+    1px solid rgba(0,157,188,.25) !important;
+
+  box-shadow:
+    0 3px 9px rgba(31,86,98,.05) !important;
+}
+
+
+html[data-asc-theme="light"]
+.home-quick-grid .home-menu-card:hover {
+
+  border-color:
+    rgba(0,169,202,.52) !important;
+
+  box-shadow:
+    0 0 10px rgba(0,169,202,.11) !important;
+}
+
+
+/* =========================================================
+   PURPLE ONLY AS ACCENT
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status [class*="rank"],
+
+html[data-asc-theme="light"]
+#home-player-status [class*="level"] {
+
+  text-shadow:
     none !important;
 }
 
 
 /* =========================================================
-   BOOST
+   NO BLACK / NO WHITE TEXT
 ========================================================= */
 
 html[data-asc-theme="light"]
-#study-link-boost-fund-v1 [data-boost-fill] {
+#home-player-status *,
 
-  background:
-    var(--clean-cyan) !important;
+html[data-asc-theme="light"]
+#home-study-status *,
+
+html[data-asc-theme="light"]
+.home-quick-grid .home-menu-card * {
+
+  text-shadow:
+    none;
+}
+
+</style>
+
+
+<style id="ascend-light-balanced-v20">
+
+/* =========================================================
+   ASCEND LIGHT V20
+   CLEAN + DEPTH + CONTROLLED NEON
+========================================================= */
+
+
+/* -------------------------
+   HOME CARDS
+------------------------- */
+
+html[data-asc-theme="light"]
+#home-player-status,
+
+html[data-asc-theme="light"]
+#home-study-status {
+
+  border:
+    1px solid rgba(20,145,170,.24) !important;
+
+  border-top:
+    2px solid rgba(0,185,220,.62) !important;
 
   box-shadow:
-    none !important;
+    0 5px 16px rgba(32,78,90,.07),
+    0 0 12px rgba(0,185,220,.055) !important;
+}
+
+
+/* -------------------------
+   USERNAME
+------------------------- */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-name {
+
+  border:0 !important;
+  padding-left:0 !important;
+  box-shadow:none !important;
+}
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-name-text {
+
+  color:#8fa6ad !important;
+  -webkit-text-fill-color:#8fa6ad !important;
+
+  text-shadow:
+    0 0 7px rgba(0,185,220,.16) !important;
+}
+
+
+/* -------------------------
+   LEVEL
+------------------------- */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-level {
+
+  border:0 !important;
+  padding-left:0 !important;
+  box-shadow:none !important;
+}
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-level > small {
+
+  color:#8fa0a6 !important;
+  -webkit-text-fill-color:#8fa0a6 !important;
+
+  text-shadow:none !important;
+}
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-level > strong {
+
+  color:#958cc3 !important;
+  -webkit-text-fill-color:#958cc3 !important;
+
+  text-shadow:
+    0 0 7px rgba(116,98,216,.16) !important;
+}
+
+
+/* -------------------------
+   TODAY STUDY
+------------------------- */
+
+html[data-asc-theme="light"]
+#home-study-status .home-study-time {
+
+  color:#8da5ad !important;
+  -webkit-text-fill-color:#8da5ad !important;
+
+  border:0 !important;
+  padding-left:0 !important;
+  box-shadow:none !important;
+
+  text-shadow:
+    0 0 8px rgba(0,185,220,.17) !important;
+}
+
+
+/* -------------------------
+   GENERAL LIGHT CARDS
+   立体感は残す
+------------------------- */
+
+html[data-asc-theme="light"]
+.rpg-section {
+
+  box-shadow:
+    0 4px 14px rgba(34,75,86,.055) !important;
+}
+
+
+/* 内側カードは控えめ */
+html[data-asc-theme="light"]
+.home-summary-item {
+
+  box-shadow:none !important;
+
+  border-color:
+    rgba(31,140,161,.17) !important;
+}
+
+
+/* -------------------------
+   BUTTONS
+   面は残す、発光は抑える
+------------------------- */
+
+html[data-asc-theme="light"]
+.classic-primary-button {
+
+  box-shadow:
+    0 3px 9px rgba(0,150,180,.09) !important;
+}
+
+
+/* -------------------------
+   PROGRESS
+------------------------- */
+
+html[data-asc-theme="light"]
+.home-xp-fill {
+
+  box-shadow:
+    0 0 7px rgba(0,185,220,.22) !important;
 }
 
 
 /*
    RANK BAR:
-   既存ランク別カラーをそのまま使用
+   既存のランク別カラーを維持
 
    BOTTOM NAV:
    触らない
