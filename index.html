@@ -14881,167 +14881,183 @@ html[data-asc-theme="light"]
 </style>
 
 
-<style id="ascend-light-home-text-accent-v10">
+<style id="ascend-light-home-text-accent-final-v11">
 
 /* =========================================================
-   ASCEND HOME LIGHT V10
-   COOL GRAY TEXT + CYAN / VIOLET ACCENTS
+   ASCEND HOME LIGHT
+   FINAL TEXT ACCENT V11
+
+   BASE   = COOL GRAY
+   USER   = CYAN
+   LEVEL  = VIOLET
+   STUDY  = CYAN
 ========================================================= */
-
-html[data-asc-theme="light"] {
-
-  --home-text-gray:#536c75;
-  --home-text-gray-strong:#405d67;
-
-  --home-cyan-accent:#00a9ca;
-  --home-violet-accent:#6959c9;
-}
 
 
 /* =========================================================
    USER NAME
-   グレー主体 + シアンの薄い発光
+   .home-player-name-text ← 実DOM
 ========================================================= */
 
 html[data-asc-theme="light"]
-#home-player-status .home-player-name {
+#home-player-status .home-player-name-text {
 
-  color:
-    var(--home-text-gray-strong) !important;
+  display:inline-block;
+  position:relative;
 
-  -webkit-text-fill-color:
-    var(--home-text-gray-strong) !important;
+  color:#49636d !important;
+  -webkit-text-fill-color:#49636d !important;
+
+  font-weight:700;
 
   text-shadow:
-    0 0 7px rgba(0,169,202,.18) !important;
-
-  letter-spacing:
-    .02em;
+    0 0 8px rgba(0,174,205,.20) !important;
 }
 
 
-/* シアンの小さいアクセントライン */
+/* 細いCYANライン */
 
 html[data-asc-theme="light"]
-#home-player-status .home-player-name {
+#home-player-status .home-player-name-text::after {
 
-  border-bottom:
-    1px solid rgba(0,169,202,.42);
+  content:"";
 
-  padding-bottom:
-    2px;
+  position:absolute;
+
+  left:0;
+  right:18%;
+  bottom:-4px;
+
+  height:2px;
+
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #00b7d8,
+      rgba(0,183,216,.18)
+    );
+
+  box-shadow:
+    0 0 7px rgba(0,183,216,.34);
 }
 
 
 /* =========================================================
    LEVEL
-   グレー主体 + 紫アクセント
+   .home-player-level > strong ← 実DOM
 ========================================================= */
 
 html[data-asc-theme="light"]
-#home-player-status .home-player-level {
+#home-player-status .home-player-level > small {
 
-  color:
-    #5b6674 !important;
+  color:#71858c !important;
+  -webkit-text-fill-color:#71858c !important;
 
-  -webkit-text-fill-color:
-    #5b6674 !important;
+  text-shadow:none !important;
+}
+
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-level > strong {
+
+  display:inline-block;
+  position:relative;
+
+  color:#56616f !important;
+  -webkit-text-fill-color:#56616f !important;
 
   text-shadow:
-    0 0 7px rgba(105,89,201,.17) !important;
+    0 0 8px rgba(108,88,205,.24) !important;
+}
 
-  border-left:
-    2px solid rgba(105,89,201,.55);
 
-  padding-left:
-    7px;
+/* 紫は文字全面ではなく下端だけ */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-level > strong::after {
+
+  content:"";
+
+  position:absolute;
+
+  left:8%;
+  right:8%;
+  bottom:-3px;
+
+  height:2px;
+
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(111,91,207,.22),
+      #6f5bcf,
+      rgba(111,91,207,.22)
+    );
+
+  box-shadow:
+    0 0 7px rgba(111,91,207,.30);
 }
 
 
 /* =========================================================
    TODAY STUDY
-   グレー主体 + シアン
+   .home-study-time ← 実DOM
 ========================================================= */
 
 html[data-asc-theme="light"]
-#home-study-status .home-study-value {
+#home-study-status .home-study-time {
 
-  color:
-    var(--home-text-gray-strong) !important;
+  display:inline-block;
+  position:relative;
 
-  -webkit-text-fill-color:
-    var(--home-text-gray-strong) !important;
+  color:#49636d !important;
+  -webkit-text-fill-color:#49636d !important;
 
   text-shadow:
-    0 0 8px rgba(0,169,202,.20) !important;
+    0 0 9px rgba(0,174,205,.23) !important;
 }
 
 
-/* TODAY STUDY の値だけ下に細いCYAN */
+/* 時間表示の下だけ少し強めのCYAN */
 
 html[data-asc-theme="light"]
-#home-study-status .home-study-value {
+#home-study-status .home-study-time::after {
 
-  border-bottom:
-    2px solid rgba(0,169,202,.48);
+  content:"";
 
-  padding-bottom:
-    2px;
+  position:absolute;
+
+  left:10%;
+  right:10%;
+  bottom:-5px;
+
+  height:2px;
+
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #00afd0 18%,
+      #00afd0 82%,
+      transparent
+    );
+
+  box-shadow:
+    0 0 8px rgba(0,175,208,.38);
 }
 
 
 /* =========================================================
-   LABELS
+   RANK BAR
+   LIGHT側では色を上書きしない
+   → Bronze / Silver / Gold / ... の既存色を使用
 ========================================================= */
-
-html[data-asc-theme="light"]
-#home-player-status .home-player-title,
-
-html[data-asc-theme="light"]
-#home-player-status .home-summary-label,
-
-html[data-asc-theme="light"]
-#home-player-status .home-stat-label,
-
-html[data-asc-theme="light"]
-#home-study-status .home-study-label {
-
-  color:
-    #70868d !important;
-
-  -webkit-text-fill-color:
-    #70868d !important;
-
-  text-shadow:
-    none !important;
-}
-
-
-/* =========================================================
-   数値系
-========================================================= */
-
-html[data-asc-theme="light"]
-#home-player-status .home-summary-value,
-
-html[data-asc-theme="light"]
-#home-player-status .home-stat-value {
-
-  color:
-    #48636c !important;
-
-  -webkit-text-fill-color:
-    #48636c !important;
-
-  text-shadow:
-    none !important;
-}
-
-
-/*
-   RANK BARは一切触らない
-   → 既存のランク別カラーをそのまま使用
-*/
 
 </style>
 
