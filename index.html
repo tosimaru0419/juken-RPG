@@ -14881,166 +14881,196 @@ html[data-asc-theme="light"]
 </style>
 
 
-<style id="ascend-light-balanced-v20">
+<style id="ascend-light-home-text-accent-v14">
 
 /* =========================================================
-   ASCEND LIGHT V20
-   CLEAN + DEPTH + CONTROLLED NEON
+   HOME LIGHT V14
+   SILVER + CYAN / VIOLET
 ========================================================= */
 
 
-/* -------------------------
-   HOME CARDS
-------------------------- */
-
-html[data-asc-theme="light"]
-#home-player-status,
-
-html[data-asc-theme="light"]
-#home-study-status {
-
-  border:
-    1px solid rgba(20,145,170,.24) !important;
-
-  border-top:
-    2px solid rgba(0,185,220,.62) !important;
-
-  box-shadow:
-    0 5px 16px rgba(32,78,90,.07),
-    0 0 12px rgba(0,185,220,.055) !important;
-}
-
-
-/* -------------------------
-   USERNAME
-------------------------- */
-
+/* USERNAME */
 html[data-asc-theme="light"]
 #home-player-status .home-player-name {
 
-  border:0 !important;
-  padding-left:0 !important;
-  box-shadow:none !important;
+  border-left:2px solid #00b8d8 !important;
+  padding-left:9px !important;
+
+  box-shadow:
+    -5px 0 10px rgba(0,184,216,.10) !important;
 }
 
 html[data-asc-theme="light"]
 #home-player-status .home-player-name-text {
 
-  color:#8fa6ad !important;
-  -webkit-text-fill-color:#8fa6ad !important;
+  color:#9bafb6 !important;
+  -webkit-text-fill-color:#9bafb6 !important;
+
+  font-weight:700 !important;
 
   text-shadow:
-    0 0 7px rgba(0,185,220,.16) !important;
+    0 0 7px rgba(0,184,216,.28) !important;
 }
 
 
-/* -------------------------
-   LEVEL
-------------------------- */
-
+/* LEVEL */
 html[data-asc-theme="light"]
 #home-player-status .home-player-level {
 
-  border:0 !important;
-  padding-left:0 !important;
-  box-shadow:none !important;
+  border-left:2px solid #7462d8 !important;
+  padding-left:9px !important;
+
+  box-shadow:
+    -5px 0 10px rgba(116,98,216,.09) !important;
 }
 
 html[data-asc-theme="light"]
 #home-player-status .home-player-level > small {
 
-  color:#8fa0a6 !important;
-  -webkit-text-fill-color:#8fa0a6 !important;
-
-  text-shadow:none !important;
+  color:#96a9af !important;
+  -webkit-text-fill-color:#96a9af !important;
 }
 
 html[data-asc-theme="light"]
 #home-player-status .home-player-level > strong {
 
-  color:#958cc3 !important;
-  -webkit-text-fill-color:#958cc3 !important;
+  color:#aaa3c4 !important;
+  -webkit-text-fill-color:#aaa3c4 !important;
 
   text-shadow:
-    0 0 7px rgba(116,98,216,.16) !important;
+    0 0 7px rgba(116,98,216,.28) !important;
 }
 
 
-/* -------------------------
-   TODAY STUDY
-------------------------- */
+/* TODAY STUDY */
+html[data-asc-theme="light"]
+#home-study-status .home-study-time {
+
+  display:inline-block !important;
+
+  color:#9bafb6 !important;
+  -webkit-text-fill-color:#9bafb6 !important;
+
+  border-left:2px solid #00b8d8 !important;
+  padding-left:10px !important;
+
+  text-shadow:
+    0 0 8px rgba(0,184,216,.30) !important;
+
+  box-shadow:
+    -5px 0 10px rgba(0,184,216,.10) !important;
+}
+
+
+/* rank barは既存色のまま */
+
+</style>
+
+
+
+<style id="ascend-light-home-neon-v16">
+
+/* =========================================================
+   HOME LIGHT — NEON BOOST V16
+   CLEAN / CYAN / VIOLET
+========================================================= */
+
+
+/* USERNAME — CYAN GLOW */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-name-text {
+
+  text-shadow:
+    0 0 4px rgba(0,190,225,.45),
+    0 0 10px rgba(0,190,225,.24),
+    0 0 18px rgba(0,190,225,.10) !important;
+}
+
+
+/* USERNAME SIDE LINE */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-name {
+
+  border-left-color:
+    #00c0e4 !important;
+
+  box-shadow:
+    -4px 0 8px rgba(0,192,228,.16),
+    -8px 0 16px rgba(0,192,228,.06) !important;
+}
+
+
+/* LEVEL — VIOLET GLOW */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-level > strong {
+
+  text-shadow:
+    0 0 4px rgba(125,101,235,.42),
+    0 0 10px rgba(125,101,235,.22),
+    0 0 18px rgba(125,101,235,.09) !important;
+}
+
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-level {
+
+  border-left-color:
+    #8068e4 !important;
+
+  box-shadow:
+    -4px 0 8px rgba(128,104,228,.14),
+    -8px 0 16px rgba(128,104,228,.05) !important;
+}
+
+
+/* TODAY STUDY — CYAN GLOW */
 
 html[data-asc-theme="light"]
 #home-study-status .home-study-time {
 
-  color:#8da5ad !important;
-  -webkit-text-fill-color:#8da5ad !important;
-
-  border:0 !important;
-  padding-left:0 !important;
-  box-shadow:none !important;
-
   text-shadow:
-    0 0 8px rgba(0,185,220,.17) !important;
-}
+    0 0 4px rgba(0,190,225,.48),
+    0 0 11px rgba(0,190,225,.24),
+    0 0 20px rgba(0,190,225,.10) !important;
 
-
-/* -------------------------
-   GENERAL LIGHT CARDS
-   立体感は残す
-------------------------- */
-
-html[data-asc-theme="light"]
-.rpg-section {
+  border-left-color:
+    #00c0e4 !important;
 
   box-shadow:
-    0 4px 14px rgba(34,75,86,.055) !important;
+    -4px 0 8px rgba(0,192,228,.16),
+    -8px 0 16px rgba(0,192,228,.06) !important;
 }
 
 
-/* 内側カードは控えめ */
-html[data-asc-theme="light"]
-.home-summary-item {
-
-  box-shadow:none !important;
-
-  border-color:
-    rgba(31,140,161,.17) !important;
-}
-
-
-/* -------------------------
-   BUTTONS
-   面は残す、発光は抑える
-------------------------- */
+/* PLAYER CARD — THIN CYAN EDGE */
 
 html[data-asc-theme="light"]
-.classic-primary-button {
+#home-player-status {
+
+  border-top-color:
+    rgba(0,192,228,.78) !important;
 
   box-shadow:
-    0 3px 9px rgba(0,150,180,.09) !important;
+    0 0 12px rgba(0,192,228,.10),
+    0 5px 14px rgba(35,90,102,.06) !important;
 }
 
 
-/* -------------------------
-   PROGRESS
-------------------------- */
+/* TODAY CARD */
 
 html[data-asc-theme="light"]
-.home-xp-fill {
+#home-study-status {
+
+  border-top-color:
+    rgba(0,192,228,.72) !important;
 
   box-shadow:
-    0 0 7px rgba(0,185,220,.22) !important;
+    0 0 12px rgba(0,192,228,.09),
+    0 5px 14px rgba(35,90,102,.05) !important;
 }
-
-
-/*
-   RANK BAR:
-   既存のランク別カラーを維持
-
-   BOTTOM NAV:
-   触らない
-*/
 
 </style>
 
