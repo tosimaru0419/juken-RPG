@@ -14881,167 +14881,134 @@ html[data-asc-theme="light"]
 </style>
 
 
-<style id="ascend-light-home-text-accent-v10">
+<style id="ascend-light-home-text-accent-v13">
 
-/* =========================================================
-   ASCEND HOME LIGHT V10
-   COOL GRAY TEXT + CYAN / VIOLET ACCENTS
-========================================================= */
-
-html[data-asc-theme="light"] {
-
-  --home-text-gray:#536c75;
-  --home-text-gray-strong:#405d67;
-
-  --home-cyan-accent:#00a9ca;
-  --home-violet-accent:#6959c9;
-}
-
-
-/* =========================================================
-   USER NAME
-   グレー主体 + シアンの薄い発光
-========================================================= */
-
+/* USERNAME — LIGHT SILVER + CYAN */
 html[data-asc-theme="light"]
-#home-player-status .home-player-name {
+#home-player-status .home-player-name-text {
+  display:inline-block;
+  position:relative;
 
-  color:
-    var(--home-text-gray-strong) !important;
+  color:#7f969e !important;
+  -webkit-text-fill-color:#7f969e !important;
 
-  -webkit-text-fill-color:
-    var(--home-text-gray-strong) !important;
+  font-weight:700;
 
   text-shadow:
-    0 0 7px rgba(0,169,202,.18) !important;
+    0 0 5px rgba(0,181,216,.24),
+    0 0 11px rgba(0,181,216,.10) !important;
+}
 
-  letter-spacing:
-    .02em;
+html[data-asc-theme="light"]
+#home-player-status .home-player-name-text::after {
+  content:"";
+  position:absolute;
+
+  left:0;
+  width:68%;
+  bottom:-4px;
+
+  height:2px;
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #00b9dc,
+      rgba(0,185,220,.10)
+    );
+
+  box-shadow:
+    0 0 7px rgba(0,185,220,.38);
 }
 
 
-/* シアンの小さいアクセントライン */
-
+/* LEVEL — LIGHT SILVER + VIOLET */
 html[data-asc-theme="light"]
-#home-player-status .home-player-name {
-
-  border-bottom:
-    1px solid rgba(0,169,202,.42);
-
-  padding-bottom:
-    2px;
+#home-player-status .home-player-level > small {
+  color:#89999f !important;
+  -webkit-text-fill-color:#89999f !important;
+  text-shadow:none !important;
 }
 
-
-/* =========================================================
-   LEVEL
-   グレー主体 + 紫アクセント
-========================================================= */
-
 html[data-asc-theme="light"]
-#home-player-status .home-player-level {
+#home-player-status .home-player-level > strong {
+  display:inline-block;
+  position:relative;
 
-  color:
-    #5b6674 !important;
-
-  -webkit-text-fill-color:
-    #5b6674 !important;
+  color:#858b9b !important;
+  -webkit-text-fill-color:#858b9b !important;
 
   text-shadow:
-    0 0 7px rgba(105,89,201,.17) !important;
+    0 0 5px rgba(110,91,214,.27),
+    0 0 11px rgba(110,91,214,.10) !important;
+}
 
-  border-left:
-    2px solid rgba(105,89,201,.55);
+html[data-asc-theme="light"]
+#home-player-status .home-player-level > strong::after {
+  content:"";
+  position:absolute;
 
-  padding-left:
-    7px;
+  left:8%;
+  right:8%;
+  bottom:-3px;
+
+  height:2px;
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #7560d5,
+      transparent
+    );
+
+  box-shadow:
+    0 0 7px rgba(117,96,213,.38);
 }
 
 
-/* =========================================================
-   TODAY STUDY
-   グレー主体 + シアン
-========================================================= */
-
+/* TODAY STUDY — LIGHT SILVER + CYAN */
 html[data-asc-theme="light"]
-#home-study-status .home-study-value {
+#home-study-status .home-study-time {
+  display:inline-block;
+  position:relative;
 
-  color:
-    var(--home-text-gray-strong) !important;
-
-  -webkit-text-fill-color:
-    var(--home-text-gray-strong) !important;
+  color:#7d949c !important;
+  -webkit-text-fill-color:#7d949c !important;
 
   text-shadow:
-    0 0 8px rgba(0,169,202,.20) !important;
+    0 0 6px rgba(0,181,216,.28),
+    0 0 12px rgba(0,181,216,.10) !important;
 }
 
-
-/* TODAY STUDY の値だけ下に細いCYAN */
-
 html[data-asc-theme="light"]
-#home-study-status .home-study-value {
+#home-study-status .home-study-time::after {
+  content:"";
+  position:absolute;
 
-  border-bottom:
-    2px solid rgba(0,169,202,.48);
+  left:8%;
+  right:8%;
+  bottom:-5px;
 
-  padding-bottom:
-    2px;
+  height:2px;
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #00b9dc 18%,
+      #00b9dc 82%,
+      transparent
+    );
+
+  box-shadow:
+    0 0 8px rgba(0,185,220,.42);
 }
 
-
-/* =========================================================
-   LABELS
-========================================================= */
-
-html[data-asc-theme="light"]
-#home-player-status .home-player-title,
-
-html[data-asc-theme="light"]
-#home-player-status .home-summary-label,
-
-html[data-asc-theme="light"]
-#home-player-status .home-stat-label,
-
-html[data-asc-theme="light"]
-#home-study-status .home-study-label {
-
-  color:
-    #70868d !important;
-
-  -webkit-text-fill-color:
-    #70868d !important;
-
-  text-shadow:
-    none !important;
-}
-
-
-/* =========================================================
-   数値系
-========================================================= */
-
-html[data-asc-theme="light"]
-#home-player-status .home-summary-value,
-
-html[data-asc-theme="light"]
-#home-player-status .home-stat-value {
-
-  color:
-    #48636c !important;
-
-  -webkit-text-fill-color:
-    #48636c !important;
-
-  text-shadow:
-    none !important;
-}
-
-
-/*
-   RANK BARは一切触らない
-   → 既存のランク別カラーをそのまま使用
-*/
+/* RANK BARは一切触らない */
 
 </style>
 
