@@ -28738,10 +28738,12 @@ const xpPercent =
       );
 
     homeRankRemaining =
-      Math.max(
-        0,
-        homeNextRank.minutes -
-        homeRankMonthlyMinutes
+      Math.ceil(
+        Math.max(
+          0,
+          homeNextRank.minutes -
+          homeRankMonthlyMinutes
+        )
       );
 
   }
@@ -30691,6 +30693,20 @@ async function showPartyPage(user) {
               }
 
               ${
+                cycle.phase === "formation" &&
+                myParty.leaderUid === user.uid
+                  ? `
+                    <button
+                      id="disband-party-btn"
+                      style="${buttonStyle(false)}"
+                    >
+                      パーティーを解散
+                    </button>
+                  `
+                  : ""
+              }
+
+              ${
                 cycle.phase === "boss"
                   ? `
                     <div style="
@@ -30907,6 +30923,84 @@ async function showPartyPage(user) {
       );
 
       await showPartyFriendsMainPage(user, "party");
+    };
+  }
+
+
+  // ------------------------------
+  // パーティー解散
+  // ------------------------------
+
+  if (myParty && $("disband-party-btn")) {
+    $("disband-party-btn").onclick = async () => {
+
+      if (cycle.phase !== "formation") {
+        messageEl.style.color = "#ff8b8b";
+        messageEl.textContent =
+          "ボス戦期間中はパーティーを解散できません。";
+        return;
+      }
+
+      if (myParty.leaderUid !== user.uid) {
+        messageEl.style.color = "#ff8b8b";
+        messageEl.textContent =
+          "リーダーのみパーティーを解散できます。";
+        return;
+      }
+
+      const confirmed = confirm(
+        "パーティーを解散しますか？\nメンバー全員がパーティーから外れます。"
+      );
+
+      if (!confirmed) return;
+
+      const partyRef =
+        doc(db, "parties", myParty.id);
+
+      const latestSnap =
+        await getDoc(partyRef);
+
+      if (!latestSnap.exists()) {
+        messageEl.style.color = "#ff8b8b";
+        messageEl.textContent =
+          "パーティーが見つかりません。";
+        return;
+      }
+
+      if (
+        latestSnap.data().leaderUid !==
+        user.uid
+      ) {
+        messageEl.style.color = "#ff8b8b";
+        messageEl.textContent =
+          "リーダー情報が変更されています。";
+        return;
+      }
+
+      /*
+        解散済みパーティーの招待を残さない
+      */
+      const inviteQuery =
+        query(
+          collection(db, "partyInvites"),
+          where("partyId", "==", myParty.id)
+        );
+
+      const inviteSnap =
+        await getDocs(inviteQuery);
+
+      await Promise.all(
+        inviteSnap.docs.map(inviteDoc =>
+          deleteDoc(inviteDoc.ref)
+        )
+      );
+
+      await deleteDoc(partyRef);
+
+      await showPartyFriendsMainPage(
+        user,
+        "party"
+      );
     };
   }
 
