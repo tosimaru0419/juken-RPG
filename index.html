@@ -11,7 +11,7 @@
 
   <meta
     name="theme-color"
-    content="#080a10"
+    content="var(--asc-bg)"
   >
 
   <title>ASCEND</title>
@@ -37,18 +37,132 @@
 ========================================================= */
 
 :root {
-  --bg-dark: #080a10;
-  --bg-main: #0c0f17;
-  --bg-card: #121722;
-  --bg-card-hover: #171d2b;
-  --bg-input: #0b0e15;
+
+  /* STUDY LIGHT V1 INSTALLED */
+
+  --study-choice-1-bg-v1:
+    linear-gradient(
+      145deg,
+      rgba(53,201,255,.12),
+      var(--asc-card) 48%
+    );
+
+  --study-choice-2-bg-v1:
+    linear-gradient(
+      145deg,
+      rgba(124,92,255,.13),
+      var(--asc-card) 48%
+    );
+
+  --study-choice-hover-bg-v1:
+    linear-gradient(
+      145deg,
+      var(--asc-raised),
+      var(--asc-raised)
+    );
+
+
+
+  --home-player-bg-v1:
+    radial-gradient(
+      circle at 92% 0%,
+      rgba(124,92,255,.13),
+      transparent 36%
+    ),
+    linear-gradient(
+      155deg,
+      rgba(20,24,37,.98),
+      rgba(12,15,23,.98)
+    );
+
+
+  --bg-dark: var(--asc-bg);
+  --bg-main: var(--asc-surface);
+  --bg-card: var(--asc-card);
+  --bg-card-hover: var(--asc-raised);
+  --bg-input: var(--asc-surface);
+
+  --main-stage-bg:
+    var(--asc-bg);
+
+  /* =============================================
+     ASCEND THEME SURFACES
+  ============================================= */
+
+  --page-bg:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(124,92,255,.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 30%,
+      rgba(53,201,255,.06),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      var(--asc-bg) 0%,
+      var(--asc-surface) 50%,
+      var(--asc-bg) 100%
+    );
+
+  --card-bg:
+    linear-gradient(
+      145deg,
+      rgba(18,23,34,.96),
+      rgba(13,17,26,.96)
+    );
+
+  --section-bg:
+    linear-gradient(
+      145deg,
+      rgba(18,23,34,.94),
+      rgba(13,17,26,.94)
+    );
+
+  --hero-bg:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(124,92,255,.16),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      var(--asc-raised),
+      var(--asc-card)
+    );
+
+  --top-tabs-bg:
+    rgba(0,0,0,.18);
+
+  --bottom-nav-bg:
+    rgba(11,14,21,.96);
+
+  --progress-track-bg:
+    rgba(0,0,0,.42);
+
+  --surface-soft:
+    var(--asc-surface);
+
+  --surface-raised:
+    var(--asc-card);
+
+  --border-strong:
+    #263247;
+
+  --text-soft:
+    #9aa6ba;
+
+  --text-faint:
+    #768398;
 
   --border: rgba(255,255,255,.08);
   --border-light: rgba(255,255,255,.13);
 
-  --text-main: #f3f5f8;
-  --text-sub: #a8afbd;
-  --text-muted: #6f7786;
+  --text-main: var(--asc-text);
+  --text-sub: var(--asc-text-sub);
+  --text-muted: var(--asc-muted);
 
   --accent: #7c5cff;
   --accent-light: #9b83ff;
@@ -87,22 +201,7 @@ body {
   color: var(--text-main) !important;
 
   background:
-    radial-gradient(
-      circle at 15% 10%,
-      rgba(124,92,255,.12),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 85% 30%,
-      rgba(53,201,255,.06),
-      transparent 30%
-    ),
-    linear-gradient(
-      135deg,
-      #080a10 0%,
-      #0b0e16 50%,
-      #090b11 100%
-    ) !important;
+    var(--page-bg) !important;
 
   font-family:
     -apple-system,
@@ -234,11 +333,7 @@ button {
 
 .card {
   background:
-    linear-gradient(
-      145deg,
-      rgba(18,23,34,.96),
-      rgba(13,17,26,.96)
-    ) !important;
+    var(--card-bg) !important;
 
   border:
     1px solid var(--border) !important;
@@ -268,11 +363,7 @@ button {
     1px solid var(--border) !important;
 
   background:
-    linear-gradient(
-      145deg,
-      rgba(18,23,34,.94),
-      rgba(13,17,26,.94)
-    ) !important;
+    var(--section-bg) !important;
 
   box-shadow:
     0 8px 28px rgba(0,0,0,.16),
@@ -359,7 +450,7 @@ button {
     0 0 24px rgba(124,92,255,.08) !important;
 
   background:
-    #0d1019 !important;
+    var(--asc-surface) !important;
 }
 
 
@@ -400,16 +491,7 @@ button {
 
 #app section:first-of-type {
   background:
-    radial-gradient(
-      circle at 90% 10%,
-      rgba(124,92,255,.16),
-      transparent 38%
-    ),
-    linear-gradient(
-      145deg,
-      #151a28,
-      #0e121c
-    ) !important;
+    var(--hero-bg) !important;
 }
 
 
@@ -419,7 +501,7 @@ button {
 #app div[style*="height:8px"],
 #app div[style*="height: 8px"] {
   background:
-    rgba(0,0,0,.42) !important;
+    var(--progress-track-bg) !important;
 
   border-radius:
     999px !important;
@@ -469,8 +551,7 @@ button {
   gap:
     7px !important;
 
-  background:
-    rgba(0,0,0,.18) !important;
+  background: var(--asc-tabs) !important;
 
   border:
     1px solid
@@ -530,7 +611,7 @@ button {
 
 .persistent-top-tab.active {
   color:
-    white !important;
+    var(--asc-text) !important;
 
   background:
     linear-gradient(
@@ -607,7 +688,7 @@ button {
     ) !important;
 
   background:
-    rgba(11,14,21,.96) !important;
+    var(--bottom-nav-bg) !important;
 
   border:
     0 !important;
@@ -712,7 +793,7 @@ button {
 
 .persistent-main-nav-btn.active {
   color:
-    #fff !important;
+    var(--asc-text) !important;
 
   background:
     linear-gradient(
@@ -752,10 +833,10 @@ button {
    QUEST / LIST ITEMS
 ========================================================= */
 
-#app [style*="background:#0b1019"],
-#app [style*="background: #0b1019"],
-#app [style*="background:#111722"],
-#app [style*="background: #111722"] {
+#app [style*="background:var(--asc-surface)"],
+#app [style*="background: var(--asc-surface)"],
+#app [style*="background:var(--asc-card)"],
+#app [style*="background: var(--asc-card)"] {
   background:
     rgba(255,255,255,.025) !important;
 
@@ -973,6 +1054,147 @@ button {
 
 }
 
+
+
+/* =========================================================
+   ASCEND THEME FOUNDATION V1
+
+   DARK:
+   BLACK / NAVY + PURPLE + CYAN
+
+   LIGHT:
+   WHITE / CYAN + PURPLE ACCENT
+========================================================= */
+
+
+
+
+/* LIGHTでは背景のドットも暗色用から変更 */
+
+
+
+
+/* 下ナビのLIGHT調整 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* TOP TAB */
+
+
+
+
+
+
+
+/* PROFILE THEME SELECTOR */
+
+.profile-theme-options-v1 {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:
+    8px;
+}
+
+
+.profile-theme-btn-v1 {
+
+  min-height:
+    54px;
+
+  padding:
+    8px 5px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  gap:
+    2px;
+
+  color:
+    #7f8999;
+
+  background:
+    var(--asc-bg);
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius:
+    10px;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:
+    10px;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    .08em;
+
+  cursor:
+    pointer;
+}
+
+
+.profile-theme-btn-v1 span {
+
+  font-size:
+    17px;
+}
+
+
+html[data-asc-theme-mode="dark"]
+.profile-theme-btn-v1[data-theme-choice="dark"],
+
+html[data-asc-theme-mode="light"]
+.profile-theme-btn-v1[data-theme-choice="light"],
+
+html[data-asc-theme-mode="system"]
+.profile-theme-btn-v1[data-theme-choice="system"] {
+
+  color:
+    var(--asc-text);
+
+  background:
+    linear-gradient(
+      135deg,
+      #7657e8,
+      #6547d9
+    );
+
+  border-color:
+    rgba(155,131,255,.55);
+}
+
+
+
+
+
+
+
 </style>
 
 
@@ -986,18 +1208,18 @@ button {
 ========================================================= */
 
 :root {
-  --bg-dark: #080a10;
-  --bg-main: #0c0f17;
-  --bg-card: #121722;
-  --bg-card-hover: #171d2b;
-  --bg-input: #0b0e15;
+  --bg-dark: var(--asc-bg);
+  --bg-main: var(--asc-surface);
+  --bg-card: var(--asc-card);
+  --bg-card-hover: var(--asc-raised);
+  --bg-input: var(--asc-surface);
 
   --border: rgba(255,255,255,.08);
   --border-light: rgba(255,255,255,.13);
 
-  --text-main: #f3f5f8;
-  --text-sub: #a8afbd;
-  --text-muted: #6f7786;
+  --text-main: var(--asc-text);
+  --text-sub: var(--asc-text-sub);
+  --text-muted: var(--asc-muted);
 
   --accent: #7c5cff;
   --accent-light: #9b83ff;
@@ -1045,9 +1267,9 @@ body {
     ),
     linear-gradient(
       135deg,
-      #080a10 0%,
-      #0b0e16 50%,
-      #090b11 100%
+      var(--asc-bg) 0%,
+      var(--asc-surface) 50%,
+      var(--asc-bg) 100%
     );
 
   font-family:
@@ -1155,12 +1377,7 @@ button {
 
   padding: 20px;
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(18,23,34,.96),
-      rgba(13,17,26,.96)
-    );
+  background: var(--asc-section-gradient);
 
   border:
     1px solid var(--border);
@@ -1189,8 +1406,8 @@ button {
     ),
     linear-gradient(
       145deg,
-      #151a28,
-      #0e121c
+      var(--asc-raised),
+      var(--asc-card)
     );
 }
 
@@ -1437,8 +1654,8 @@ button {
     ),
     linear-gradient(
       145deg,
-      #121a25,
-      #0d1119
+      var(--asc-card),
+      var(--asc-surface)
     );
 }
 
@@ -1454,7 +1671,7 @@ button {
 .home-study-time {
   margin: 5px 0 19px;
 
-  color: #edf8ff;
+  color: var(--asc-text);
 
   font-variant-numeric: tabular-nums;
 
@@ -1482,7 +1699,7 @@ button {
 
   padding: 13px 16px;
 
-  color: white;
+  color: var(--asc-text);
 
   background:
     linear-gradient(
@@ -1617,8 +1834,7 @@ button {
 
   gap: 7px !important;
 
-  background:
-    rgba(8,10,16,.92) !important;
+  background: var(--asc-tabs) !important;
 
   border:
     1px solid var(--border) !important;
@@ -1659,7 +1875,7 @@ button {
 
 .persistent-top-tab.active {
   color:
-    #fff !important;
+    var(--asc-text) !important;
 
   background:
     linear-gradient(
@@ -1810,7 +2026,7 @@ button {
 
 .persistent-main-nav-btn.active {
   color:
-    #fff !important;
+    var(--asc-text) !important;
 
   background:
     linear-gradient(
@@ -1994,7 +2210,7 @@ button {
   align-items: stretch !important;
 
   background:
-    #0b0e15 !important;
+    var(--asc-surface) !important;
 
   border: 0 !important;
 
@@ -2042,7 +2258,7 @@ button {
     transparent !important;
 
   color:
-    #6f7786 !important;
+    var(--asc-muted) !important;
 
   box-sizing:
     border-box !important;
@@ -2051,7 +2267,7 @@ button {
 
 #main-navigation .nav-button.active {
   color:
-    #fff !important;
+    var(--asc-text) !important;
 
   background:
     rgba(124,92,255,.18) !important;
@@ -2172,8 +2388,7 @@ button {
 
   padding: 5px;
 
-  background:
-    rgba(0,0,0,.18);
+  background: var(--asc-tabs);
 
   border:
     1px solid
@@ -2198,7 +2413,7 @@ button {
     9px;
 
   color:
-    #6f7786;
+    var(--asc-muted);
 
   background:
     transparent;
@@ -2220,7 +2435,7 @@ button {
 
 #quest-main-tabs button:hover {
   color:
-    #f3f5f8;
+    var(--asc-text);
 
   background:
     rgba(255,255,255,.05);
@@ -2228,7 +2443,7 @@ button {
 
 
 #quest-main-tabs button.active {
-  color: white;
+  color: var(--asc-text);
 
   background:
     linear-gradient(
@@ -2498,7 +2713,7 @@ button {
 
   47% {
     color:
-      #fff;
+      var(--asc-text);
 
     text-shadow:
       0 0 8px rgba(255,255,255,.8),
@@ -2875,7 +3090,7 @@ button {
 .boss-ui-name {
   display: block;
 
-  color: #f5f7ff;
+  color: var(--asc-text);
 
   font-size: 1.38rem;
   font-weight: 950;
@@ -2943,7 +3158,7 @@ button {
 
   margin-bottom: 4px;
 
-  color: #6f7786;
+  color: var(--asc-muted);
 
   font-size: 9px;
 
@@ -2958,7 +3173,7 @@ button {
 
   text-overflow: ellipsis;
 
-  color: #e9edf5;
+  color: var(--asc-text);
 
   font-size: 12px;
 
@@ -2988,7 +3203,7 @@ button {
 
   gap: 15px;
 
-  color: #a8afbd;
+  color: var(--asc-text-sub);
 
   font-size: 11px;
 
@@ -2997,7 +3212,7 @@ button {
 
 
 .boss-hp-label strong {
-  color: #f3f5f8;
+  color: var(--asc-text);
 
   font-variant-numeric:
     tabular-nums;
@@ -3115,7 +3330,7 @@ button {
 
   margin-bottom: 4px;
 
-  color: #6f7786;
+  color: var(--asc-muted);
 
   font-size: 8px;
 
@@ -3128,7 +3343,7 @@ button {
 
   overflow: hidden;
 
-  color: #f3f5f8;
+  color: var(--asc-text);
 
   font-size: 12px;
 
@@ -3697,18 +3912,16 @@ body:has(#main-navigation):not(:has(.boss-battle-card)):not(:has(#boss-back-btn)
 
   text-align: left;
 
-  color: #f3f5f8;
+  color: var(--text-main);
 
   background:
     linear-gradient(
       145deg,
-      #121722,
-      #0e131d
+      var(--asc-card),
+      var(--asc-card)
     );
 
-  border:
-    1px solid
-    rgba(255,255,255,.09);
+  border: 1px solid var(--border);
 
   border-radius: 16px;
 
@@ -3727,12 +3940,7 @@ body:has(#main-navigation):not(:has(.boss-battle-card)):not(:has(#boss-back-btn)
   border-color:
     rgba(124,92,255,.42);
 
-  background:
-    linear-gradient(
-      145deg,
-      #171c29,
-      #111623
-    );
+  background: var(--study-choice-hover-bg-v1);
 }
 
 
@@ -3850,7 +4058,7 @@ body:has(#party-main-tabs)
 
   box-sizing: border-box !important;
 
-  background: #0a0e15 !important;
+  background: var(--asc-surface) !important;
 
   border:
     1px solid
@@ -3882,7 +4090,7 @@ body:has(#party-main-tabs)
 
 #party-main-tabs button.active {
 
-  color: #fff !important;
+  color: var(--asc-text) !important;
 
   background:
     rgba(124,92,255,.17) !important;
@@ -3915,8 +4123,8 @@ body:has(#party-main-tabs)
   background:
     linear-gradient(
       145deg,
-      #101620,
-      #0c1119
+      var(--asc-card),
+      var(--asc-card)
     ) !important;
 
   border:
@@ -3946,7 +4154,7 @@ body:has(#party-main-tabs)
 
   margin-bottom: 3px;
 
-  color: #eef1f6;
+  color: var(--asc-text);
 
   font-size: .94rem;
 
@@ -4036,7 +4244,7 @@ div:has(> #friend-search-id)
   box-sizing: border-box !important;
 
   background:
-    #0a0f17 !important;
+    var(--asc-surface) !important;
 
   border:
     1px solid
@@ -4327,7 +4535,7 @@ body > main.rank-main-themed {
       rgba(var(--rank-rgb), .07) 28%,
       transparent 52%
     ),
-    #080b12 !important;
+    var(--asc-bg) !important;
 }
 
 
@@ -4338,8 +4546,8 @@ body > main
     linear-gradient(
       155deg,
       rgba(var(--rank-rgb), .13),
-      #111722 30%,
-      #0d121b 100%
+      var(--asc-card) 30%,
+      var(--asc-surface) 100%
     ) !important;
 
   border-color:
@@ -4414,7 +4622,7 @@ body > main.rank-theme-legend {
       rgba(140,82,255,.13),
       transparent 38%
     ),
-    #080b12 !important;
+    var(--asc-bg) !important;
 }
 
 </style>
@@ -4453,7 +4661,7 @@ body > main.rank-theme-legend {
 ========================================================= */
 
 body > main:not(.rank-main-themed) {
-  background:#080b12 !important;
+  background:var(--asc-bg) !important;
 }
 
 
@@ -4493,8 +4701,8 @@ body > main > section {
     ),
     linear-gradient(
       145deg,
-      #151a28,
-      #0e121c
+      var(--asc-raised),
+      var(--asc-card)
     )
     !important;
 }
@@ -4544,8 +4752,8 @@ body > main > section {
     ),
     linear-gradient(
       145deg,
-      #121a25,
-      #0d1119
+      var(--asc-card),
+      var(--asc-surface)
     )
     !important;
 }
@@ -4557,25 +4765,13 @@ body > main > section {
 
 .study-main-choice:nth-child(1) {
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-cyan),.12),
-      #111722 48%
-    )
-    !important;
+  background: var(--study-choice-1-bg-v1) !important;
 }
 
 
 .study-main-choice:nth-child(2) {
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(var(--flat-purple),.13),
-      #111722 48%
-    )
-    !important;
+  background: var(--study-choice-2-bg-v1) !important;
 }
 
 
@@ -4605,7 +4801,7 @@ body:has(#quest-main-tabs)
     linear-gradient(
       150deg,
       rgba(var(--flat-purple),.07),
-      #111722 32%
+      var(--asc-card) 32%
     )
     !important;
 }
@@ -4637,7 +4833,7 @@ body:has(#party-main-tabs)
     linear-gradient(
       150deg,
       rgba(var(--flat-cyan),.06),
-      #111722 34%
+      var(--asc-card) 34%
     )
     !important;
 }
@@ -4667,7 +4863,7 @@ body:has(#party-main-tabs)
     linear-gradient(
       145deg,
       rgba(var(--flat-purple),.055),
-      #0b1019 42%
+      var(--asc-surface) 42%
     )
     !important;
 }
@@ -4697,7 +4893,7 @@ body:has(#party-main-tabs)
     linear-gradient(
       145deg,
       rgba(var(--flat-cyan),.035),
-      #0b1019 42%
+      var(--asc-surface) 42%
     )
     !important;
 }
@@ -4713,7 +4909,7 @@ body:has(#party-main-tabs)
     linear-gradient(
       145deg,
       rgba(var(--flat-purple),.045),
-      #0b1019 40%
+      var(--asc-surface) 40%
     )
     !important;
 }
@@ -4732,7 +4928,7 @@ body:has(#party-main-tabs)
 
   box-shadow:none !important;
 
-  color:#fff !important;
+  color:var(--asc-text) !important;
 }
 
 
@@ -4746,7 +4942,7 @@ body:has(#party-main-tabs)
     linear-gradient(
       145deg,
       rgba(var(--flat-cyan),.13),
-      #101620 48%
+      var(--asc-card) 48%
     )
     !important;
 }
@@ -4758,7 +4954,7 @@ body:has(#party-main-tabs)
     linear-gradient(
       145deg,
       rgba(var(--flat-purple),.14),
-      #101620 48%
+      var(--asc-card) 48%
     )
     !important;
 }
@@ -4770,7 +4966,7 @@ body:has(#party-main-tabs)
     linear-gradient(
       145deg,
       rgba(var(--flat-green),.11),
-      #101620 48%
+      var(--asc-card) 48%
     )
     !important;
 }
@@ -4782,7 +4978,7 @@ body:has(#party-main-tabs)
     linear-gradient(
       145deg,
       rgba(var(--flat-gold),.10),
-      #101620 48%
+      var(--asc-card) 48%
     )
     !important;
 }
@@ -5075,7 +5271,7 @@ body:has(#main-navigation) > main > section {
 
 body > main > section h1,
 .screen-header h2 {
-  color:#ffffff !important;
+  color:var(--asc-text) !important;
 
   text-shadow:
     0 0 5px rgba(255,255,255,.18),
@@ -5128,7 +5324,7 @@ body > main > section h1,
 #quest-main-tabs button.active,
 .shop-tab.active,
 .subject-chip.active {
-  color:#fff !important;
+  color:var(--asc-text) !important;
 
   text-shadow:
     0 0 7px rgba(169,140,255,.70) !important;
@@ -5139,7 +5335,7 @@ body > main > section h1,
 
 #party-main-tabs button.active,
 .profile-track-btn.active {
-  color:#fff !important;
+  color:var(--asc-text) !important;
 
   text-shadow:
     0 0 7px rgba(66,229,255,.70) !important;
@@ -5245,7 +5441,7 @@ body > main > section textarea:focus {
 
 body > main > section h1,
 .screen-header h2 {
-  color:#fff !important;
+  color:var(--asc-text) !important;
 
   text-shadow:
     0 0 4px rgba(255,255,255,.42),
@@ -5284,7 +5480,7 @@ body > main > section h1,
 }
 
 .home-study-time {
-  color:#effdff !important;
+  color:var(--asc-text) !important;
 
   text-shadow:
     0 0 5px rgba(255,255,255,.32),
@@ -5311,7 +5507,7 @@ body > main > section h1,
 #quest-main-tabs button.active,
 .shop-tab.active,
 .subject-chip.active {
-  color:#fff !important;
+  color:var(--asc-text) !important;
 
   text-shadow:
     0 0 5px rgba(255,255,255,.35),
@@ -5331,7 +5527,7 @@ body > main > section h1,
 
 #party-main-tabs button.active,
 .profile-track-btn.active {
-  color:#fff !important;
+  color:var(--asc-text) !important;
 
   text-shadow:
     0 0 5px rgba(255,255,255,.32),
@@ -5516,7 +5712,7 @@ body > main:not(.rank-main-themed) {
       transparent 48%
     ),
 
-    #080b12 !important;
+    var(--asc-bg) !important;
 }
 
 </style>
@@ -5572,7 +5768,7 @@ body > main > section:has(#login-btn) {
       rgba(155,124,255,.10),
       transparent 42%
     ),
-    #111722 !important;
+    var(--asc-card) !important;
 
   border:1px solid rgba(169,140,255,.18) !important;
 
@@ -5594,7 +5790,7 @@ body > main > section:has(#login-btn) h1 {
   font-weight:950 !important;
   letter-spacing:.14em !important;
 
-  color:#fff !important;
+  color:var(--asc-text) !important;
 
   text-shadow:
     0 0 5px rgba(255,255,255,.40),
@@ -5651,9 +5847,9 @@ body > main > section:has(#login-btn) input {
   border:
     1px solid rgba(255,255,255,.10) !important;
 
-  background:#090d15 !important;
+  background:var(--asc-input)!important;
 
-  color:#fff !important;
+  color:var(--asc-text)!important;
 
   font-size:16px !important;
 
@@ -5669,7 +5865,7 @@ body > main > section:has(#login-btn) input:focus {
   border-color:
     rgba(169,140,255,.70) !important;
 
-  background:#0c1019 !important;
+  background:var(--asc-surface) !important;
 
   box-shadow:
     0 0 0 3px rgba(124,92,255,.10),
@@ -5690,7 +5886,7 @@ body > main > section:has(#login-btn) #login-btn {
 
   background:#7658e8 !important;
 
-  color:#fff !important;
+  color:var(--asc-text) !important;
 
   font-weight:900 !important;
   font-size:14px !important;
@@ -5741,7 +5937,7 @@ body > main > section:has(#login-btn) #register-btn {
 
 @media (hover:hover) {
   body > main > section:has(#login-btn) #register-btn:hover {
-    color:#fff !important;
+    color:var(--asc-text) !important;
 
     border-color:
       rgba(169,140,255,.35) !important;
@@ -5770,7 +5966,7 @@ body:has(#login-btn) > main {
       transparent 42%
     ),
 
-    #070a11 !important;
+    var(--asc-bg) !important;
 }
 
 
@@ -5820,7 +6016,7 @@ body > main > section:has(.profile-save) textarea {
   margin-top:6px;
   padding:16px;
 
-  background:#0b1019;
+  background:var(--asc-surface);
 
   border:
     1px solid rgba(155,124,255,.16);
@@ -5865,9 +6061,9 @@ body > main > section:has(.profile-save) textarea {
 
   padding:0 12px !important;
 
-  background:#080c13 !important;
+  background:var(--asc-bg) !important;
 
-  color:#fff !important;
+  color:var(--asc-text) !important;
 
   border:
     1px solid rgba(255,255,255,.10) !important;
@@ -5898,7 +6094,7 @@ body > main > section:has(.profile-save) textarea {
 
   background:#5940d8;
 
-  color:#fff;
+  color:var(--asc-text);
 
   font-weight:900;
 
@@ -6197,9 +6393,9 @@ body > main > section:has(#login-btn) #login-btn {
       rgba(53,217,255,.12),
       transparent 38%
     ),
-    #070a11;
+    var(--asc-bg);
 
-  color:#fff;
+  color:var(--asc-text);
 
   font-family:
     system-ui,
@@ -6263,7 +6459,7 @@ body > main > section:has(#login-btn) #login-btn {
 .ascend-boot-logo {
   margin:0;
 
-  color:#fff;
+  color:var(--asc-text);
 
   font-size:46px;
   line-height:1;
@@ -7108,7 +7304,8 @@ body > main,
 body > main.rank-main-themed,
 body > main:not(.rank-main-themed) {
 
-  background: #080b12 !important;
+  background:
+    var(--main-stage-bg, var(--asc-bg)) !important;
 
 }
 
@@ -7169,7 +7366,7 @@ a:active,
   box-shadow: none !important;
 
   background:
-    #0b0e15 !important;
+    var(--asc-surface) !important;
 
 }
 
@@ -7317,7 +7514,7 @@ body > main > section {
 
   padding:14px !important;
 
-  background:#0a0f17 !important;
+  background:var(--asc-surface) !important;
 
   border:
     1px solid rgba(255,255,255,.075) !important;
@@ -7352,7 +7549,7 @@ body > main > section {
 .friend-card-rich-name {
   min-width:0;
 
-  color:#f3f5f8;
+  color:var(--asc-text);
 
   font-size:.98rem;
   font-weight:900;
@@ -7430,7 +7627,7 @@ body > main > section {
   display:grid;
   gap:3px;
 
-  background:#080c13;
+  background:var(--asc-bg);
 
   border:
     1px solid rgba(255,255,255,.055);
@@ -7458,7 +7655,7 @@ body > main > section {
 .friend-card-stat-value {
   min-width:0;
 
-  color:#e7eaf0;
+  color:var(--asc-text);
 
   font-size:.76rem;
   font-weight:850;
@@ -7532,7 +7729,7 @@ body:has(
       rgba(124,92,255,.16),
       transparent 44%
     ),
-    #090e16 !important;
+    var(--asc-bg) !important;
 
   border:
     1px solid
@@ -7558,7 +7755,7 @@ body:has(
       rgba(124,92,255,.10),
       transparent 48%
     ),
-    #090e16 !important;
+    var(--asc-bg) !important;
 
   border-color:
     rgba(255,88,112,.16) !important;
@@ -7638,7 +7835,7 @@ body:has(
 
 .party-cycle-title {
 
-  color:#f3f5f8 !important;
+  color:var(--asc-text) !important;
 
   font-size:1rem !important;
 
@@ -7744,8 +7941,7 @@ body:has(
 
   padding:9px !important;
 
-  background:
-    rgba(0,0,0,.20) !important;
+  background: var(--asc-inset-strong) !important;
 
   border:
     1px solid
@@ -8031,7 +8227,7 @@ body:has(
   padding:0 !important;
   margin:0 !important;
 
-  color:#f3f5f8 !important;
+  color:var(--asc-text) !important;
 
   font-size:1rem !important;
   line-height:1.4 !important;
@@ -8211,7 +8407,7 @@ body:has(
   padding:0 !important;
   margin:0 !important;
 
-  color:#f3f5f8 !important;
+  color:var(--asc-text) !important;
 
   font-size:1rem !important;
   line-height:1.45 !important;
@@ -8285,7 +8481,7 @@ article.party-cycle-premium {
       rgba(255,88,112,.13),
       transparent 44%
     ),
-    #090e16 !important;
+    var(--asc-bg) !important;
 
   border:
     1px solid
@@ -8302,7 +8498,7 @@ article.party-cycle-premium.formation {
       rgba(53,201,255,.11),
       transparent 44%
     ),
-    #090e16 !important;
+    var(--asc-bg) !important;
 }
 
 
@@ -8347,7 +8543,7 @@ article.party-cycle-premium
 
   overflow:visible !important;
 
-  color:#f3f5f8 !important;
+  color:var(--asc-text) !important;
 
   opacity:1 !important;
   visibility:visible !important;
@@ -8397,7 +8593,7 @@ article.party-cycle-premium
 
 <meta
   name="theme-color"
-  content="#080b12"
+  content="var(--asc-bg)"
 >
 
 <meta
@@ -8446,9 +8642,9 @@ article.party-cycle-premium
     ),
     linear-gradient(
       145deg,
-      #111723 0%,
-      #0a0f18 60%,
-      #090d14 100%
+      var(--asc-card) 0%,
+      var(--asc-surface) 60%,
+      var(--asc-bg) 100%
     ) !important;
 
   border:
@@ -8483,7 +8679,7 @@ article.party-cycle-premium
 }
 
 .home-player-name {
-  color:#f5f7fb !important;
+  color:var(--asc-text) !important;
 
   font-weight:900 !important;
   letter-spacing:.01em !important;
@@ -8631,7 +8827,7 @@ article.party-cycle-premium
 
 .home-summary-item > strong,
 .home-summary-item > span:last-child {
-  color:#e8ebf1 !important;
+  color:var(--asc-text) !important;
 
   font-family:
     "Rajdhani",
@@ -8685,17 +8881,7 @@ article.party-cycle-premium
 
   padding: 21px !important;
 
-  background:
-    radial-gradient(
-      circle at 92% 0%,
-      rgba(124, 92, 255, .13),
-      transparent 36%
-    ),
-    linear-gradient(
-      155deg,
-      rgba(20, 24, 37, .98),
-      rgba(12, 15, 23, .98)
-    ) !important;
+  background: var(--home-player-bg-v1) !important;
 
   border:
     1px solid rgba(255,255,255,.09) !important;
@@ -8931,7 +9117,7 @@ article.party-cycle-premium
 
 
 #home-player-status .home-summary-item strong {
-  color: #f4f5f8;
+  color: var(--asc-text);
 
   font-family:
     "Rajdhani",
@@ -9020,7 +9206,7 @@ article.party-cycle-premium
     2px 0
     18px;
 
-  color: #f4f9fc;
+  color: var(--asc-text);
 
   font-family:
     "Rajdhani",
@@ -9128,7 +9314,7 @@ article.party-cycle-premium
 
 
 .home-quick-grid .home-menu-card strong {
-  color: #f0f2f6;
+  color: var(--asc-text);
 
   font-family:
     "Noto Sans JP",
@@ -9421,12 +9607,14 @@ article.party-cycle-premium
   border: 1px solid rgba(124,92,255,.24);
   border-radius: 16px;
 
-  background:
+  background: var(
+    --section-bg,
     linear-gradient(
       145deg,
       rgba(18,23,34,.97),
       rgba(11,14,22,.97)
-    );
+    )
+  );
 }
 
 .study-link-v2-head {
@@ -9452,7 +9640,7 @@ article.party-cycle-premium
 .study-link-v2-title {
   margin:2px 0 0;
 
-  color:#f4f5fa;
+  color:var(--asc-text);
 
   font-size:20px;
   font-weight:900;
@@ -9489,7 +9677,7 @@ article.party-cycle-premium
   width:100%;
   min-height:46px;
 
-  color:#fff !important;
+  color:var(--asc-text) !important;
 
   border:
     1px solid rgba(124,92,255,.34) !important;
@@ -9554,7 +9742,7 @@ article.party-cycle-premium
 #study-link-v2-join {
   min-width:92px;
 
-  color:#e8eaf1 !important;
+  color:var(--asc-text) !important;
 
   border:
     1px solid rgba(255,255,255,.1) !important;
@@ -9613,7 +9801,7 @@ article.party-cycle-premium
 #study-link-v2-room-code {
   margin-top:2px;
 
-  color:#f3f5ff;
+  color:var(--asc-text);
 
   font-family:
     "Orbitron",
@@ -9686,9 +9874,9 @@ article.party-cycle-premium
   margin-top:8px!important;
   box-sizing:border-box!important;
 
-  border:1px solid rgba(255,255,255,.075)!important;
+  border:1px solid var(--border-light,rgba(255,255,255,.075))!important;
   border-radius:14px!important;
-  background:#0a0f17!important;
+  background:var(--bg-card,var(--asc-surface))!important;
 }
 
 #study-link-v2-create{
@@ -9749,8 +9937,8 @@ article.party-cycle-premium
   border:1px solid rgba(255,255,255,.08)!important;
   border-radius:9px!important;
 
-  background:#070b11!important;
-  color:#f2efff!important;
+  background:var(--asc-bg)!important;
+  color:var(--asc-text)!important;
 
   font-family:"Rajdhani",sans-serif!important;
   font-size:14px!important;
@@ -9857,7 +10045,7 @@ article.party-cycle-premium
 .study-link-v2-member-name {
   overflow:hidden;
 
-  color:#eef0f5;
+  color:var(--asc-text);
 
   font-size:13px;
   font-weight:800;
@@ -10003,20 +10191,9 @@ body.study-link-room-mode-v1
   border-radius: 0 !important;
 
   background:
-    radial-gradient(
-      circle at 85% 5%,
-      rgba(124,92,255,.16),
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at 10% 80%,
-      rgba(53,201,255,.06),
-      transparent 34%
-    ),
-    linear-gradient(
-      145deg,
-      #0d1018,
-      #080a10
+    var(
+      --section-bg,
+      var(--asc-bg)
     ) !important;
 
   box-shadow: none !important;
@@ -10070,7 +10247,7 @@ body.study-link-room-mode-v1
 
 
 .study-link-room-mode-app-v1 {
-  color: #f4f5fb;
+  color: var(--asc-text);
 
   font-family:
     "Orbitron",
@@ -10313,7 +10490,7 @@ body.study-link-room-mode-v1
   border:1px solid rgba(255,255,255,.075)!important;
   border-radius:14px!important;
 
-  background:#0a0f17!important;
+  background:var(--asc-surface)!important;
 
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.025),
@@ -10338,7 +10515,7 @@ body.study-link-room-mode-v1
   border:1px solid rgba(255,255,255,.07)!important;
   border-radius:8px!important;
 
-  background:#070b11!important;
+  background:var(--asc-bg)!important;
   color:#cbd5e1!important;
 
   font-size:10px!important;
@@ -10362,7 +10539,7 @@ body.study-link-room-mode-v1
   background:transparent!important;
   box-shadow:none!important;
 
-  color:#f4f2ff!important;
+  color:var(--asc-text)!important;
 
   font-family:Rajdhani,sans-serif!important;
   font-size:72px!important;
@@ -10568,14 +10745,14 @@ body.study-link-room-mode-v1
 .study-link-status-count-v1 {
   margin-bottom: 12px;
 
-  color: #747f92;
+  color: var(--asc-muted);
 
   font-size: 11px;
 }
 
 
 .study-link-status-count-v1 strong {
-  color: #f3f5f8;
+  color: var(--asc-text);
 }
 
 
@@ -10600,15 +10777,14 @@ body.study-link-room-mode-v1
 
   border-radius: 10px;
 
-  background:
-    rgba(0,0,0,.13);
+  background: var(--asc-inset);
 
   text-align: center;
 }
 
 
 .study-link-status-bonus-name-v1 {
-  color: #717b8d;
+  color: var(--asc-muted);
 
   font-family:
     "Rajdhani",
@@ -10624,7 +10800,7 @@ body.study-link-room-mode-v1
 .study-link-status-bonus-value-v1 {
   margin-top: 2px;
 
-  color: #eff2f7;
+  color: var(--asc-text);
 
   font-family:
     "Rajdhani",
@@ -10636,7 +10812,7 @@ body.study-link-room-mode-v1
 
 
 .study-link-status-wait-v1 {
-  color: #7f899c;
+  color: var(--asc-muted);
 
   font-size: 11px;
 
@@ -10652,7 +10828,7 @@ body.study-link-room-mode-v1
   border-top:
     1px solid rgba(255,255,255,.055);
 
-  color: #788295;
+  color: var(--asc-muted);
 
   font-size: 10px;
 }
@@ -10678,62 +10854,219 @@ body.study-link-room-mode-v1
 </style>
 
 
+
 <style id="study-link-room-tabs-v2-css">
 
-#sl-focus-v2,#sl-room-v2{
-  position:absolute;
-  opacity:0;
-  pointer-events:none;
+/* =========================================================
+   ASCEND STUDY LINK
+   FOCUS / ROOM — RESTORED
+========================================================= */
+
+
+/* RADIO */
+
+#sl-focus-v2,
+#sl-room-v2 {
+  position:absolute !important;
+  width:1px !important;
+  height:1px !important;
+  opacity:0 !important;
+  pointer-events:none !important;
 }
 
-#study-link-room-tabs-v2{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:4px;
-  margin:0 0 10px;
-  padding:4px;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:12px;
-  background:#080c13;
+
+/* =========================================================
+   TAB BAR
+========================================================= */
+
+#study-link-room-tabs-v2 {
+  display:grid !important;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr)) !important;
+
+  gap:4px !important;
+
+  margin:
+    0 0 10px !important;
+
+  padding:
+    4px !important;
+
+  box-sizing:
+    border-box;
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  border-radius:
+    12px;
+
+  background:
+    var(--asc-bg);
 }
 
-#study-link-room-tabs-v2 label{
-  padding:10px;
+
+#study-link-room-tabs-v2 label {
+  min-width:0;
+
+  padding:
+    9px 6px !important;
+
+  border-radius:
+    9px;
+
+  color:
+    var(--asc-muted);
+
+  font:
+    800 11px
+    "Rajdhani",
+    sans-serif;
+
+  letter-spacing:
+    .11em;
+
   text-align:center;
-  border-radius:9px;
-  color:#70798c;
-  font:700 12px Rajdhani,sans-serif;
-  letter-spacing:.1em;
+
   cursor:pointer;
+
+  user-select:none;
 }
 
-#sl-focus-v2:checked ~ #study-link-room-tabs-v2 label[for="sl-focus-v2"],
-#sl-room-v2:checked ~ #study-link-room-tabs-v2 label[for="sl-room-v2"]{
-  color:#00f3ff;
-  background:rgba(0,243,255,.09);
-  box-shadow:inset 0 0 0 1px rgba(0,243,255,.18);
+
+/* DARK ACTIVE */
+
+#sl-focus-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-focus-v2"],
+
+#sl-room-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-room-v2"] {
+  color:
+    #00e8f0;
+
+  background:
+    rgba(0,232,240,.09);
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(0,232,240,.18);
 }
 
-/* FOCUSではROOM情報を隠す */
-#sl-focus-v2:checked ~ .study-link-v2-connected,
-#sl-focus-v2:checked ~ .study-link-v2-label,
-#sl-focus-v2:checked ~ #study-link-v2-room-code,
-#sl-focus-v2:checked ~ .study-link-v2-actions,
-#sl-focus-v2:checked ~ #study-link-boost-fund-v1{
-  display:none!important;
+
+/* =========================================================
+   FOCUS TAB
+
+   ・教科
+   ・タイマー
+   ・LINK STATUS
+========================================================= */
+
+
+/* ROOM CODE周辺 */
+
+#study-link-card-v2:has(#sl-focus-v2:checked)
+.study-link-v2-connected,
+
+#study-link-card-v2:has(#sl-focus-v2:checked)
+.study-link-v2-label,
+
+#study-link-card-v2:has(#sl-focus-v2:checked)
+#study-link-v2-room-code,
+
+#study-link-card-v2:has(#sl-focus-v2:checked)
+.study-link-v2-actions {
+  display:none !important;
 }
 
-/* ROOMではタイマーを隠す */
-#sl-room-v2:checked ~ #study-link-room-timer-v1{
-  display:none!important;
+
+/* 事後記録 */
+
+#study-link-card-v2:has(#sl-focus-v2:checked)
+#study-link-room-manual-v1 {
+  display:none !important;
 }
 
-/* ROOMではLINK STATUSも隠す */
-#study-link-card-v2:has(#sl-room-v2:checked) #study-link-v2-status{
-  display:none!important;
+
+/* BOOST */
+
+#study-link-card-v2:has(#sl-focus-v2:checked)
+#study-link-boost-fund-v1 {
+  display:none !important;
 }
+
+
+
+
+
+/* FRIEND INVITE */
+
+#study-link-card-v2:has(#sl-focus-v2:checked)
+#study-link-friend-invite-v1 {
+  display:none !important;
+}
+
+
+/* =========================================================
+   ROOM TAB
+
+   ・ROOM CODE
+   ・事後記録
+   ・BOOST
+   ・MEMBERS
+   ・INVITE
+   ・COPY / LEAVE
+========================================================= */
+
+
+/* TIMER */
+
+#study-link-card-v2:has(#sl-room-v2:checked)
+#study-link-room-timer-v1 {
+  display:none !important;
+}
+
+
+
+/* MEMBERSはFOCUS側 */
+
+#study-link-card-v2:has(#sl-room-v2:checked)
+.study-link-v2-members-wrap,
+
+#study-link-card-v2:has(#sl-room-v2:checked)
+#study-link-v2-members {
+  display:none !important;
+}
+
+
+/* LINK STATUS */
+
+#study-link-card-v2:has(#sl-room-v2:checked)
+#study-link-status-panel-v1 {
+  display:none !important;
+}
+
+
+/* =========================================================
+   LIGHT
+========================================================= */
+
+
+
+
+
+
+
+/* LIGHT ACTIVE
+   紫 = 選択
+*/
+
+
 
 </style>
+
 
 
 <style id="study-link-room-compact-final">
@@ -10916,7 +11249,7 @@ body.study-link-room-mode-v1
 /* BOOST I/II/III FUND */
 body.study-link-room-mode-v1
 #study-link-boost-fund-v1 [data-boost-title]{
-  color:#f5f8ff!important;
+  color:var(--asc-text)!important;
 
   font-size:12px!important;
   font-weight:800!important;
@@ -11017,8 +11350,8 @@ body.study-link-room-mode-v1
 
   border-radius:8px!important;
 
-  background:#080d15!important;
-  color:#fff!important;
+  background: var(--asc-input) !important;
+  color:var(--asc-text)!important;
 
   font-size:10px!important;
   text-align:center!important;
@@ -11253,7 +11586,7 @@ body.study-link-room-mode-v1
 
   border-radius:13px;
 
-  background:#0a0f17;
+  background:var(--asc-surface);
 
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.025);
@@ -11279,7 +11612,7 @@ body.study-link-room-mode-v1
 }
 
 .asc-ranked-entry-copy > strong{
-  color:#eef2f8;
+  color:var(--asc-text);
 
   font-family:
     "Rajdhani",
@@ -11356,7 +11689,7 @@ body.study-link-room-mode-v1
   padding:4px;
   border:1px solid rgba(255,255,255,.065);
   border-radius:11px;
-  background:#080c13;
+  background:var(--asc-bg);
 }
 
 .asc-leaderboard-scope-tab-v1{
@@ -11373,7 +11706,7 @@ body.study-link-room-mode-v1
 }
 
 .asc-leaderboard-scope-tab-v1.active{
-  color:#f2f4ff;
+  color:var(--asc-text);
   background:rgba(var(--rank-rgb),.10);
   box-shadow:
     inset 0 0 0 1px rgba(var(--rank-rgb),.18);
@@ -11412,7 +11745,7 @@ body.study-link-room-mode-v1
 
   border-radius:11px;
 
-  background:#090d14;
+  background:var(--asc-bg);
 }
 
 .asc-lb-position-v1{
@@ -11444,7 +11777,7 @@ body.study-link-room-mode-v1
 
   overflow:hidden;
 
-  color:#eef2fb;
+  color:var(--asc-text);
   font-size:12px;
 
   white-space:nowrap;
@@ -11494,7 +11827,7 @@ body.study-link-room-mode-v1
 }
 
 .asc-lb-time-v1{
-  color:#e9edf8;
+  color:var(--asc-text);
 
   font-family:
     "Rajdhani",
@@ -11610,7 +11943,7 @@ body.study-link-room-mode-v1
 }
 
 .asc-lb-next-v1 strong{
-  color:#eef2fb;
+  color:var(--asc-text);
   font-size:12px;
   letter-spacing:.03em;
 }
@@ -12097,8 +12430,8 @@ body.study-link-room-mode-v1
 
   border-radius:11px;
 
-  background:#090e16;
-  color:#eef2f7;
+  background:var(--asc-bg);
+  color:var(--asc-text);
 
   text-align:left;
 }
@@ -12129,6 +12462,2586 @@ body.study-link-room-mode-v1
   font-size:20px;
   line-height:1;
 }
+
+</style>
+
+
+<style id="ascend-global-theme-tokens-v1">
+
+/* =========================================================
+   ASCEND GLOBAL COLOR SYSTEM
+========================================================= */
+
+:root,
+html[data-asc-theme="dark"] {
+
+  --asc-bg:       #080a10;
+  --asc-surface:  #0b0f17;
+  --asc-card:     #111722;
+  --asc-raised:   #171d2b;
+
+  --asc-text:     #f3f5f8;
+  --asc-text-sub: #a8afbd;
+  --asc-muted:    #6f7786;
+
+  --asc-border:
+    rgba(255,255,255,.08);
+
+  --asc-border-strong:
+    rgba(255,255,255,.13);
+
+}
+
+
+/* =========================================================
+   ASCEND LIGHT
+   Pearl / Titanium / Cyan / Violet
+========================================================= */
+
+html[data-asc-theme="light"] {
+
+  --asc-bg:       #c7d0d2;
+  --asc-surface:  #d4dcdd;
+  --asc-card:     #e3e7e5;
+  --asc-raised:   #edf0ed;
+
+  --asc-text:     #142b35;
+  --asc-text-sub: #405b65;
+  --asc-muted:    #687e85;
+
+  --asc-border:
+    rgba(71,111,121,.18);
+
+  --asc-border-strong:
+    rgba(71,111,121,.28);
+
+}
+
+
+/* PAGE */
+
+html[data-asc-theme="light"],
+html[data-asc-theme="light"] body {
+
+  background:
+    linear-gradient(
+      145deg,
+      #c3cdcf,
+      #d6dddc
+    ) !important;
+
+  color:
+    var(--asc-text) !important;
+}
+
+
+/* common border migration */
+
+html[data-asc-theme="light"] * {
+  text-shadow:none;
+}
+
+
+
+/* =========================================================
+   ASCEND LEGACY TOKEN BRIDGE
+   旧カラー変数を新GLOBAL TOKENへ統合
+========================================================= */
+
+html[data-asc-theme="light"] {
+
+  --bg-dark:
+    var(--asc-bg) !important;
+
+  --bg-main:
+    var(--asc-bg) !important;
+
+  --bg-card:
+    var(--asc-card) !important;
+
+  --bg-card-hover:
+    var(--asc-raised) !important;
+
+  --bg-input:
+    var(--asc-surface) !important;
+
+
+  --page-bg:
+    var(--asc-bg) !important;
+
+  --main-stage-bg:
+    var(--asc-bg) !important;
+
+
+  --card-bg:
+    var(--asc-card) !important;
+
+  --section-bg:
+    var(--asc-card) !important;
+
+  --hero-bg:
+    var(--asc-card) !important;
+
+
+  --surface-soft:
+    var(--asc-surface) !important;
+
+  --surface-raised:
+    var(--asc-raised) !important;
+
+
+  --text-main:
+    var(--asc-text) !important;
+
+  --text-sub:
+    var(--asc-text-sub) !important;
+
+  --text-muted:
+    var(--asc-muted) !important;
+
+  --text-soft:
+    var(--asc-text-sub) !important;
+
+  --text-faint:
+    var(--asc-muted) !important;
+
+
+  --border:
+    var(--asc-border) !important;
+
+  --border-light:
+    var(--asc-border-strong) !important;
+
+  --border-strong:
+    var(--asc-border-strong) !important;
+
+
+  --top-tabs-bg:
+    var(--asc-surface) !important;
+
+  --bottom-nav-bg:
+    var(--asc-surface) !important;
+
+  --progress-track-bg:
+    var(--asc-surface) !important;
+}
+
+
+
+/* =========================================================
+   ASCEND SECONDARY SURFACE TOKENS
+========================================================= */
+
+:root,
+html[data-asc-theme="dark"] {
+
+  --asc-inset:
+    rgba(0,0,0,.18);
+
+  --asc-inset-strong:
+    rgba(0,0,0,.20);
+
+  --asc-input:
+    #090d15;
+
+  --asc-tabs:
+    rgba(0,0,0,.18);
+
+  --asc-section-gradient:
+    linear-gradient(
+      145deg,
+      rgba(18,23,34,.96),
+      rgba(13,17,26,.96)
+    );
+}
+
+
+html[data-asc-theme="light"] {
+
+  --asc-inset:
+    rgba(73,108,117,.10);
+
+  --asc-inset-strong:
+    rgba(73,108,117,.14);
+
+  --asc-input:
+    #e8edeb;
+
+  --asc-tabs:
+    rgba(92,125,133,.11);
+
+  --asc-section-gradient:
+    linear-gradient(
+      145deg,
+      #e5e9e7,
+      #d9e1e0
+    );
+}
+
+</style>
+
+
+
+<style id="ascend-light-four-cards-fix-v1">
+
+/* =========================================================
+   LIGHT MODE
+   HOME PLAYER / TODAY STUDY
+   BOOST FUND / FRIEND INVITE
+   ONLY
+========================================================= */
+
+
+/* =========================
+   HOME — PLAYER
+========================= */
+
+html[data-asc-theme="light"]
+#home-player-status {
+  background:
+    linear-gradient(
+      145deg,
+      var(--asc-card),
+      var(--asc-surface)
+    ) !important;
+
+  border-color:
+    var(--asc-border-strong) !important;
+
+  color:
+    var(--asc-text) !important;
+
+  box-shadow:
+    0 8px 22px rgba(38,70,78,.08) !important;
+}
+
+
+/* PLAYER内の小カード */
+
+html[data-asc-theme="light"]
+#home-player-status .home-summary-card,
+
+html[data-asc-theme="light"]
+#home-player-status .home-stat-card {
+  background:
+    var(--asc-raised) !important;
+
+  border-color:
+    var(--asc-border) !important;
+
+  color:
+    var(--asc-text) !important;
+}
+
+
+/* =========================
+   HOME — TODAY STUDY
+========================= */
+
+html[data-asc-theme="light"]
+#home-study-status {
+  background:
+    linear-gradient(
+      145deg,
+      var(--asc-card),
+      var(--asc-surface)
+    ) !important;
+
+  border-color:
+    var(--asc-border-strong) !important;
+
+  color:
+    var(--asc-text) !important;
+
+  box-shadow:
+    0 8px 22px rgba(38,70,78,.08) !important;
+}
+
+
+/* =========================
+   ROOM — BOOST FUND
+========================= */
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 > div,
+
+html[data-asc-theme="light"]
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 > div {
+  background:
+    linear-gradient(
+      145deg,
+      var(--asc-card),
+      var(--asc-surface)
+    ) !important;
+
+  border-color:
+    var(--asc-border-strong) !important;
+
+  color:
+    var(--asc-text) !important;
+
+  box-shadow:
+    0 7px 18px rgba(38,70,78,.07) !important;
+}
+
+
+/* BOOST内の入力 */
+
+html[data-asc-theme="light"]
+body.study-link-room-mode-v1
+#study-link-boost-fund-v1 [data-boost-input] {
+  background:
+    var(--asc-raised) !important;
+
+  color:
+    var(--asc-text) !important;
+
+  border-color:
+    var(--asc-border-strong) !important;
+}
+
+
+/* =========================
+   ROOM — FRIEND INVITE
+========================= */
+
+html[data-asc-theme="light"]
+#study-link-friend-invite-v1,
+
+html[data-asc-theme="light"]
+body.study-link-room-mode-v1
+#study-link-friend-invite-v1 {
+  background:
+    linear-gradient(
+      145deg,
+      var(--asc-card),
+      var(--asc-surface)
+    ) !important;
+
+  border-color:
+    var(--asc-border-strong) !important;
+
+  color:
+    var(--asc-text) !important;
+
+  box-shadow:
+    0 7px 18px rgba(38,70,78,.07) !important;
+}
+
+
+/* 招待リスト内 */
+
+html[data-asc-theme="light"]
+.study-link-invite-friend-v1,
+
+html[data-asc-theme="light"]
+.study-link-incoming-card-v1 {
+  background:
+    var(--asc-raised) !important;
+
+  color:
+    var(--asc-text) !important;
+
+  border-color:
+    var(--asc-border) !important;
+}
+
+</style>
+
+
+<style id="ascend-light-clean-future-v4">
+
+/* =========================================================
+   ASCEND LIGHT
+   CLEAN FUTURE V4
+
+   WHITE / ICE / CYAN / NAVY
+========================================================= */
+
+html[data-asc-theme="light"] {
+
+  /* page */
+  --asc-bg:#e7f2f5;
+
+  /* recessed / tab background */
+  --asc-surface:#dbecef;
+
+  /* standard card */
+  --asc-card:#f4f9fa;
+
+  /* raised card */
+  --asc-raised:#fbfdfd;
+
+  /* text */
+  --asc-text:#102f39;
+  --asc-text-sub:#395d68;
+  --asc-muted:#66818a;
+
+  /* border */
+  --asc-border:rgba(32,137,160,.20);
+  --asc-border-strong:rgba(25,128,151,.34);
+
+  /* cyan */
+  --future-cyan:#1595b2;
+  --future-cyan-deep:#0e6d83;
+  --future-cyan-soft:#d5eef3;
+  --future-cyan-line:#91cbd6;
+
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+html[data-asc-theme="light"] body {
+
+  background:
+    linear-gradient(
+      145deg,
+      #e5f1f4 0%,
+      #edf6f7 48%,
+      #e3f0f3 100%
+    ) !important;
+
+  color:
+    var(--asc-text) !important;
+}
+
+
+/* =========================================================
+   STANDARD CARDS
+========================================================= */
+
+html[data-asc-theme="light"] .card,
+
+html[data-asc-theme="light"] .rpg-section {
+
+  background:
+    #f3f8f9 !important;
+
+  color:
+    var(--asc-text) !important;
+
+  border:
+    1px solid rgba(28,132,154,.25) !important;
+
+  box-shadow:
+    0 4px 12px rgba(36,91,103,.06) !important;
+}
+
+
+/* =========================================================
+   IMPORTANT CARDS
+========================================================= */
+
+html[data-asc-theme="light"] #home-player-status,
+
+html[data-asc-theme="light"] #home-study-status,
+
+html[data-asc-theme="light"] .study-main-choice,
+
+html[data-asc-theme="light"] #study-link-v2-active,
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 > div,
+
+html[data-asc-theme="light"]
+#study-link-friend-invite-v1 {
+
+  background:
+    #f9fcfc !important;
+
+  color:
+    var(--asc-text) !important;
+
+  border:
+    1px solid rgba(20,139,164,.36) !important;
+
+  box-shadow:
+    0 5px 15px rgba(30,91,104,.07) !important;
+}
+
+
+/* thin cyan detail */
+
+html[data-asc-theme="light"] #home-player-status,
+
+html[data-asc-theme="light"] #home-study-status,
+
+html[data-asc-theme="light"] #study-link-v2-active {
+
+  border-top:
+    2px solid rgba(21,149,178,.52) !important;
+}
+
+
+/* =========================================================
+   HEADINGS / TEXT
+========================================================= */
+
+html[data-asc-theme="light"] h1,
+
+html[data-asc-theme="light"] h2,
+
+html[data-asc-theme="light"] h3,
+
+html[data-asc-theme="light"] strong {
+
+  color:
+    #102f39;
+}
+
+
+html[data-asc-theme="light"] p {
+
+  color:
+    #3d606a;
+}
+
+
+html[data-asc-theme="light"] .text-muted {
+
+  color:
+    #69828a !important;
+}
+
+
+/* =========================================================
+   STUDY CHOICES
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-main-choice {
+
+  background:
+    #f7fbfc !important;
+
+  border:
+    1px solid rgba(22,142,168,.30) !important;
+
+  color:
+    #15343e !important;
+
+  box-shadow:
+    none !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-main-choice:nth-child(1) {
+
+  background:
+    linear-gradient(
+      100deg,
+      rgba(21,149,178,.10),
+      #f7fbfc 28%
+    ) !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-main-choice:nth-child(2) {
+
+  background:
+    linear-gradient(
+      100deg,
+      rgba(21,149,178,.06),
+      #f7fbfc 28%
+    ) !important;
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+html[data-asc-theme="light"]
+#persistent-top-tabs,
+
+html[data-asc-theme="light"]
+#quest-main-tabs,
+
+html[data-asc-theme="light"]
+.classic-tab-navigation,
+
+html[data-asc-theme="light"]
+#study-link-room-tabs-v2 {
+
+  background:
+    #dcecef !important;
+
+  border:
+    1px solid rgba(25,128,151,.28) !important;
+
+  box-shadow:
+    inset 0 1px 2px rgba(32,84,96,.05) !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-room-tabs-v2 label {
+
+  color:
+    #496a74 !important;
+
+  background:
+    transparent !important;
+
+  border:
+    1px solid transparent !important;
+
+  box-shadow:
+    none !important;
+}
+
+
+html[data-asc-theme="light"]
+#sl-focus-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-focus-v2"],
+
+html[data-asc-theme="light"]
+#sl-room-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-room-v2"] {
+
+  background:
+    #f5fbfc !important;
+
+  color:
+    #0d748a !important;
+
+  border:
+    1px solid #8fcbd6 !important;
+
+  box-shadow:
+    0 2px 6px rgba(21,149,178,.08) !important;
+}
+
+
+/* =========================================================
+   STUDY LINK ACTIVE AREA
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-connected {
+
+  color:
+    #168064 !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-v2-dot {
+
+  background:
+    #25a77f !important;
+
+  box-shadow:
+    0 0 0 3px rgba(37,167,127,.10) !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-v2-label,
+
+html[data-asc-theme="light"]
+.study-link-v2-members-label {
+
+  color:
+    #55747d !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-v2-room-code,
+
+html[data-asc-theme="light"]
+#study-link-room-clock-v1 {
+
+  color:
+    #0d6e83 !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+/* =========================================================
+   MEMBERS
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-members-wrap {
+
+  background:
+    #e8f3f5 !important;
+
+  border:
+    1px solid rgba(20,132,156,.30) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.55) !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-v2-members {
+
+  color:
+    #12323c !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-v2-member,
+
+html[data-asc-theme="light"]
+.study-link-v2-member-card,
+
+html[data-asc-theme="light"]
+#study-link-v2-members > div {
+
+  background:
+    #f8fbfc !important;
+
+  color:
+    #12323c !important;
+
+  border:
+    1px solid rgba(25,135,158,.28) !important;
+
+  box-shadow:
+    0 2px 7px rgba(32,83,94,.05) !important;
+}
+
+
+/* 名前を絶対に背景と被らせない */
+
+html[data-asc-theme="light"]
+.study-link-v2-member-name,
+
+html[data-asc-theme="light"]
+#study-link-v2-members strong,
+
+html[data-asc-theme="light"]
+#study-link-v2-members [data-member-name] {
+
+  color:
+    #0e2c36 !important;
+
+  -webkit-text-fill-color:
+    #0e2c36 !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-v2-member-meta,
+
+html[data-asc-theme="light"]
+.study-link-v2-member-subject,
+
+html[data-asc-theme="light"]
+.study-link-v2-member-note {
+
+  color:
+    #607d86 !important;
+}
+
+
+/* member state */
+
+html[data-asc-theme="light"]
+.study-link-v2-member-state,
+
+html[data-asc-theme="light"]
+[data-member-state] {
+
+  background:
+    #d7eef2 !important;
+
+  color:
+    #106d81 !important;
+
+  border:
+    1px solid #9acdd7 !important;
+}
+
+
+/* =========================================================
+   LINK STATUS
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-status-panel-v1 {
+
+  background:
+    #eef7f8 !important;
+
+  color:
+    #17343d !important;
+
+  border:
+    1px solid rgba(27,135,158,.26) !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-status-bonus-v1 {
+
+  background:
+    #f8fbfb !important;
+
+  border:
+    1px solid rgba(30,129,150,.22) !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-status-bonus-value-v1 {
+
+  color:
+    #14323b !important;
+}
+
+
+/* =========================================================
+   BOOST FUND
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 > div {
+
+  background:
+    #f5fafb !important;
+
+  border:
+    1px solid rgba(20,135,158,.32) !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1
+div:has(> [data-boost-fill]) {
+
+  background:
+    #cadde1 !important;
+
+  box-shadow:
+    inset 0 1px 2px rgba(34,82,93,.09) !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 [data-boost-fill] {
+
+  background:
+    linear-gradient(
+      90deg,
+      #21a7c3,
+      #147d98
+    ) !important;
+
+  box-shadow:
+    0 0 8px rgba(33,167,195,.14) !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 button {
+
+  background:
+    #e2f2f5 !important;
+
+  color:
+    #12697d !important;
+
+  border:
+    1px solid #9bcbd5 !important;
+
+  box-shadow:
+    none !important;
+}
+
+
+/* =========================================================
+   FRIEND INVITE
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-friend-invite-v1 {
+
+  background:
+    #edf6f7 !important;
+
+  border:
+    1px solid rgba(20,135,158,.30) !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-invite-toggle-v1 {
+
+  background:
+    #d7edf1 !important;
+
+  color:
+    #0e6c81 !important;
+
+  border:
+    1px solid #91c8d3 !important;
+
+  box-shadow:
+    none !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-invite-friend-v1,
+
+html[data-asc-theme="light"]
+.study-link-incoming-card-v1 {
+
+  background:
+    #f8fbfc !important;
+
+  color:
+    #12323c !important;
+
+  border:
+    1px solid rgba(22,132,155,.26) !important;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+html[data-asc-theme="light"]
+input,
+
+html[data-asc-theme="light"]
+select,
+
+html[data-asc-theme="light"]
+textarea {
+
+  background:
+    #f8fbfb !important;
+
+  color:
+    #12313a !important;
+
+  border-color:
+    rgba(22,132,155,.30) !important;
+
+  -webkit-text-fill-color:
+    currentColor !important;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-v2-create,
+
+html[data-asc-theme="light"]
+#study-link-room-start-v1 {
+
+  background:
+    #d8eef2 !important;
+
+  color:
+    #0d697d !important;
+
+  border:
+    1px solid #8fc9d4 !important;
+
+  box-shadow:
+    0 2px 7px rgba(22,126,149,.08) !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-v2-copy,
+
+html[data-asc-theme="light"]
+#study-link-v2-join,
+
+html[data-asc-theme="light"]
+#study-link-room-pause-v1 {
+
+  background:
+    #e3f2f4 !important;
+
+  color:
+    #205f6e !important;
+
+  border:
+    1px solid #a7cfd6 !important;
+
+  box-shadow:
+    none !important;
+}
+
+
+/* =========================================================
+   TEXT SAFETY
+========================================================= */
+
+html[data-asc-theme="light"]
+.card *,
+
+html[data-asc-theme="light"]
+.rpg-section *,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 * {
+
+  text-shadow:
+    none;
+}
+
+</style>
+
+
+
+<style id="ascend-light-neon-finish-v5">
+
+/* =========================================================
+   ASCEND LIGHT
+   CLEAN FUTURE + CYAN NEON V5
+========================================================= */
+
+html[data-asc-theme="light"] {
+  --neon-cyan-light:#00a9cc;
+  --neon-cyan-deep:#08758c;
+  --neon-cyan-line:rgba(0,169,204,.48);
+  --neon-cyan-glow:rgba(0,169,204,.13);
+
+  --future-ink:#102f39;
+  --future-sub:#3f626d;
+  --future-muted:#68828a;
+}
+
+
+/* =========================================================
+   WHITE FONT CLEANUP
+========================================================= */
+
+/* HOME */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-name,
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-level,
+
+html[data-asc-theme="light"]
+#home-player-status .home-summary-value,
+
+html[data-asc-theme="light"]
+#home-player-status .home-stat-value,
+
+html[data-asc-theme="light"]
+#home-study-status strong,
+
+html[data-asc-theme="light"]
+#home-study-status .home-study-value {
+  color:var(--future-ink) !important;
+  -webkit-text-fill-color:var(--future-ink) !important;
+  text-shadow:none !important;
+}
+
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-title,
+
+html[data-asc-theme="light"]
+#home-player-status .home-summary-label,
+
+html[data-asc-theme="light"]
+#home-player-status .home-stat-label,
+
+html[data-asc-theme="light"]
+#home-study-status .home-study-label {
+  color:var(--future-sub) !important;
+  -webkit-text-fill-color:var(--future-sub) !important;
+  text-shadow:none !important;
+}
+
+
+/* STUDY */
+
+html[data-asc-theme="light"]
+.study-main-choice,
+
+html[data-asc-theme="light"]
+.study-main-choice strong,
+
+html[data-asc-theme="light"]
+.study-main-choice h3 {
+  color:var(--future-ink) !important;
+  -webkit-text-fill-color:var(--future-ink) !important;
+  text-shadow:none !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-main-choice p,
+
+html[data-asc-theme="light"]
+.study-main-choice small {
+  color:var(--future-sub) !important;
+  -webkit-text-fill-color:var(--future-sub) !important;
+}
+
+
+/* STUDY LINK */
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-v2-title,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-v2-member-name,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-status-bonus-value-v1,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 strong {
+  color:var(--future-ink) !important;
+  -webkit-text-fill-color:var(--future-ink) !important;
+  text-shadow:none !important;
+}
+
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-v2-desc,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-v2-member-meta,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-v2-member-subject,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-v2-member-note,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-status-count-v1,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 .study-link-status-wait-v1 {
+  color:var(--future-sub) !important;
+  -webkit-text-fill-color:var(--future-sub) !important;
+  text-shadow:none !important;
+}
+
+
+/* QUEST / PARTY / RANK 系の通常テキスト */
+
+html[data-asc-theme="light"]
+.rpg-section > h2,
+
+html[data-asc-theme="light"]
+.rpg-section > h3,
+
+html[data-asc-theme="light"]
+.card > h2,
+
+html[data-asc-theme="light"]
+.card > h3 {
+  color:var(--future-ink) !important;
+  -webkit-text-fill-color:var(--future-ink) !important;
+}
+
+
+/* =========================================================
+   NEON EDGE — IMPORTANT CARDS
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status,
+
+html[data-asc-theme="light"]
+#home-study-status,
+
+html[data-asc-theme="light"]
+.study-main-choice,
+
+html[data-asc-theme="light"]
+#study-link-v2-active {
+
+  border-color:
+    var(--neon-cyan-line) !important;
+
+  box-shadow:
+    0 0 0 1px rgba(0,169,204,.06),
+    0 0 13px var(--neon-cyan-glow) !important;
+}
+
+
+/* top cyan blade */
+
+html[data-asc-theme="light"]
+#home-player-status,
+
+html[data-asc-theme="light"]
+#home-study-status,
+
+html[data-asc-theme="light"]
+#study-link-v2-active {
+
+  border-top:
+    2px solid rgba(0,169,204,.72) !important;
+}
+
+
+/* =========================================================
+   STUDY CHOICES — SIDE NEON
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-main-choice {
+  position:relative;
+  overflow:hidden;
+}
+
+
+html[data-asc-theme="light"]
+.study-main-choice::after {
+  content:"";
+
+  position:absolute;
+  left:0;
+  top:14px;
+  bottom:14px;
+
+  width:3px;
+
+  border-radius:
+    0 6px 6px 0;
+
+  background:
+    #00a9cc;
+
+  box-shadow:
+    0 0 8px rgba(0,169,204,.32);
+}
+
+
+/* =========================================================
+   TABS — SELECTED NEON
+========================================================= */
+
+html[data-asc-theme="light"]
+#sl-focus-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-focus-v2"],
+
+html[data-asc-theme="light"]
+#sl-room-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-room-v2"] {
+
+  background:
+    #f6fcfd !important;
+
+  color:
+    var(--neon-cyan-deep) !important;
+
+  border-color:
+    rgba(0,169,204,.55) !important;
+
+  box-shadow:
+    0 0 9px rgba(0,169,204,.14),
+    inset 0 -2px 0 rgba(0,169,204,.38) !important;
+}
+
+
+/* =========================================================
+   ROOM INNER PANELS
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-members-wrap,
+
+html[data-asc-theme="light"]
+#study-link-status-panel-v1,
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 > div,
+
+html[data-asc-theme="light"]
+#study-link-friend-invite-v1 {
+
+  border-color:
+    rgba(0,154,187,.34) !important;
+
+  box-shadow:
+    0 0 10px rgba(0,169,204,.06) !important;
+}
+
+
+/* =========================================================
+   MEMBERS
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-member,
+
+html[data-asc-theme="light"]
+.study-link-v2-member-card,
+
+html[data-asc-theme="light"]
+#study-link-v2-members > div {
+
+  border-color:
+    rgba(0,152,184,.28) !important;
+
+  box-shadow:
+    0 2px 6px rgba(28,92,106,.05) !important;
+}
+
+
+html[data-asc-theme="light"]
+.study-link-v2-member-state,
+
+html[data-asc-theme="light"]
+[data-member-state] {
+
+  background:
+    #d9f1f5 !important;
+
+  color:
+    #087086 !important;
+
+  border-color:
+    rgba(0,157,190,.42) !important;
+
+  box-shadow:
+    0 0 7px rgba(0,169,204,.09) !important;
+}
+
+
+/* =========================================================
+   TIMER / ROOM CODE
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-room-clock-v1,
+
+html[data-asc-theme="light"]
+#study-link-v2-room-code {
+
+  color:
+    #08758c !important;
+
+  text-shadow:
+    0 0 8px rgba(0,169,204,.13) !important;
+}
+
+
+/* =========================================================
+   BOOST GAUGE
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 [data-boost-fill] {
+
+  background:
+    linear-gradient(
+      90deg,
+      #00b7d9,
+      #0589a6
+    ) !important;
+
+  box-shadow:
+    0 0 9px rgba(0,183,217,.26) !important;
+}
+
+
+/* =========================================================
+   PRIMARY CYAN BUTTONS
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-v2-create,
+
+html[data-asc-theme="light"]
+#study-link-room-start-v1,
+
+html[data-asc-theme="light"]
+#study-link-invite-toggle-v1 {
+
+  background:
+    #d9f1f5 !important;
+
+  color:
+    #086b80 !important;
+
+  border-color:
+    rgba(0,160,192,.48) !important;
+
+  box-shadow:
+    0 0 10px rgba(0,169,204,.10) !important;
+}
+
+
+/* =========================================================
+   INPUT FOCUS
+========================================================= */
+
+html[data-asc-theme="light"]
+input:focus,
+
+html[data-asc-theme="light"]
+select:focus,
+
+html[data-asc-theme="light"]
+textarea:focus {
+
+  outline:none !important;
+
+  border-color:
+    rgba(0,169,204,.62) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(0,169,204,.10) !important;
+}
+
+
+/* =========================================================
+   CLEAN TEXT RENDER
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-card-v2 *,
+
+html[data-asc-theme="light"]
+#home-player-status *,
+
+html[data-asc-theme="light"]
+#home-study-status * {
+
+  text-shadow:none;
+}
+
+
+/* clock / room codeだけ発光を戻す */
+
+html[data-asc-theme="light"]
+#study-link-room-clock-v1,
+
+html[data-asc-theme="light"]
+#study-link-v2-room-code {
+
+  text-shadow:
+    0 0 8px rgba(0,169,204,.13) !important;
+}
+
+</style>
+
+
+<style id="ascend-light-neon-system-v6">
+
+/* =========================================================
+   ASCEND LIGHT — UNIFIED CYAN NEON SYSTEM
+========================================================= */
+
+html[data-asc-theme="light"] {
+
+  --future-neon:#00aecd;
+
+  --future-neon-deep:#08748a;
+
+  --future-neon-line:
+    rgba(0,174,205,.42);
+
+  --future-neon-line-soft:
+    rgba(0,174,205,.25);
+
+  --future-neon-glow:
+    rgba(0,174,205,.105);
+
+  --future-neon-glow-strong:
+    rgba(0,174,205,.16);
+}
+
+
+/* =========================================================
+   LEVEL 1
+   MAIN / IMPORTANT CARDS
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status,
+
+html[data-asc-theme="light"]
+#home-study-status,
+
+html[data-asc-theme="light"]
+.study-main-choice,
+
+html[data-asc-theme="light"]
+#study-link-v2-active,
+
+html[data-asc-theme="light"]
+body:has(#quest-main-tabs) .rpg-section,
+
+html[data-asc-theme="light"]
+body:has(#party-main-tabs) .rpg-section,
+
+html[data-asc-theme="light"]
+main.rank-main-themed .rpg-section {
+
+  border-color:
+    var(--future-neon-line) !important;
+
+  box-shadow:
+    0 0 0 1px rgba(0,174,205,.035),
+    0 0 13px var(--future-neon-glow) !important;
+}
+
+
+/* cyan top blade */
+
+html[data-asc-theme="light"]
+#home-player-status,
+
+html[data-asc-theme="light"]
+#home-study-status,
+
+html[data-asc-theme="light"]
+#study-link-v2-active {
+
+  border-top:
+    2px solid rgba(0,174,205,.66) !important;
+}
+
+
+/* =========================================================
+   LEVEL 2
+   INNER PANELS
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-members-wrap,
+
+html[data-asc-theme="light"]
+#study-link-status-panel-v1,
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 > div,
+
+html[data-asc-theme="light"]
+#study-link-friend-invite-v1,
+
+html[data-asc-theme="light"]
+body:has(#quest-main-tabs)
+.rpg-section > div,
+
+html[data-asc-theme="light"]
+body:has(#party-main-tabs)
+.rpg-section > div {
+
+  border-color:
+    var(--future-neon-line-soft) !important;
+}
+
+
+/* =========================================================
+   LEVEL 3
+   SMALL CARDS
+   基本的に発光させない
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-member,
+
+html[data-asc-theme="light"]
+.study-link-v2-member-card,
+
+html[data-asc-theme="light"]
+.study-link-invite-friend-v1,
+
+html[data-asc-theme="light"]
+.study-link-incoming-card-v1,
+
+html[data-asc-theme="light"]
+.study-link-status-bonus-v1 {
+
+  border-color:
+    rgba(0,151,180,.25) !important;
+
+  box-shadow:
+    0 2px 6px rgba(30,86,99,.045) !important;
+}
+
+
+/* =========================================================
+   ACTIVE TAB / SELECTED
+========================================================= */
+
+html[data-asc-theme="light"]
+#sl-focus-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-focus-v2"],
+
+html[data-asc-theme="light"]
+#sl-room-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-room-v2"],
+
+html[data-asc-theme="light"]
+#quest-main-tabs button.active,
+
+html[data-asc-theme="light"]
+#party-main-tabs button.active,
+
+html[data-asc-theme="light"]
+main.rank-main-themed button.active,
+
+html[data-asc-theme="light"]
+main.rank-main-themed [aria-selected="true"] {
+
+  color:
+    var(--future-neon-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--future-neon-deep) !important;
+
+  border-color:
+    rgba(0,174,205,.56) !important;
+
+  box-shadow:
+    0 0 9px var(--future-neon-glow-strong),
+    inset 0 -2px 0 rgba(0,174,205,.42) !important;
+}
+
+
+/* =========================================================
+   PROGRESS / BOOST
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-boost-fund-v1 [data-boost-fill] {
+
+  background:
+    linear-gradient(
+      90deg,
+      #00b7d6,
+      #087e99
+    ) !important;
+
+  box-shadow:
+    0 0 9px rgba(0,183,214,.25) !important;
+}
+
+
+/* =========================================================
+   MEMBER STATE
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-member-state,
+
+html[data-asc-theme="light"]
+[data-member-state] {
+
+  color:
+    #087187 !important;
+
+  -webkit-text-fill-color:
+    #087187 !important;
+
+  border-color:
+    rgba(0,166,197,.40) !important;
+
+  box-shadow:
+    0 0 6px rgba(0,174,205,.08) !important;
+}
+
+
+/* =========================================================
+   INPUT FOCUS
+========================================================= */
+
+html[data-asc-theme="light"]
+input:focus,
+
+html[data-asc-theme="light"]
+select:focus,
+
+html[data-asc-theme="light"]
+textarea:focus {
+
+  outline:
+    none !important;
+
+  border-color:
+    rgba(0,174,205,.62) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(0,174,205,.09),
+    0 0 8px rgba(0,174,205,.08) !important;
+}
+
+
+/* =========================================================
+   TEXT SAFETY
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status,
+
+html[data-asc-theme="light"]
+#home-study-status,
+
+html[data-asc-theme="light"]
+.study-main-choice,
+
+html[data-asc-theme="light"]
+#study-link-card-v2,
+
+html[data-asc-theme="light"]
+body:has(#quest-main-tabs) > main,
+
+html[data-asc-theme="light"]
+body:has(#party-main-tabs) > main,
+
+html[data-asc-theme="light"]
+main.rank-main-themed {
+
+  color:
+    var(--asc-text) !important;
+}
+
+
+/* generic headings */
+
+html[data-asc-theme="light"]
+#home-player-status h1,
+
+html[data-asc-theme="light"]
+#home-player-status h2,
+
+html[data-asc-theme="light"]
+#home-player-status h3,
+
+html[data-asc-theme="light"]
+#home-study-status h1,
+
+html[data-asc-theme="light"]
+#home-study-status h2,
+
+html[data-asc-theme="light"]
+#home-study-status h3,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 h1,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 h2,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 h3,
+
+html[data-asc-theme="light"]
+#study-link-card-v2 strong {
+
+  color:
+    var(--asc-text) !important;
+
+  -webkit-text-fill-color:
+    var(--asc-text) !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+/* clock / room codeだけネオン文字 */
+
+html[data-asc-theme="light"]
+#study-link-room-clock-v1,
+
+html[data-asc-theme="light"]
+#study-link-v2-room-code {
+
+  color:
+    var(--future-neon-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--future-neon-deep) !important;
+
+  text-shadow:
+    0 0 8px rgba(0,174,205,.14) !important;
+}
+
+</style>
+
+
+
+<style id="ascend-light-clean-palette-v7">
+
+/* =========================================================
+   ASCEND LIGHT V7
+   PURE CLEAN FUTURE
+   WHITE / ICE CYAN / NAVY
+========================================================= */
+
+html[data-asc-theme="light"] {
+
+  /* 黒ではなく青みネイビー */
+  --asc-text:#153844;
+  --asc-text-sub:#41636d;
+  --asc-muted:#6b858d;
+
+  /* LIGHTでは紫を廃止してCYANへ統合 */
+  --accent:#1599b7;
+  --accent-light:#43b7cf;
+  --accent-dark:#0d7389;
+
+  --cyan:#1599b7;
+
+  --clean-navy:#153844;
+  --clean-navy-soft:#315661;
+
+  --clean-cyan:#1599b7;
+  --clean-cyan-deep:#0c7187;
+  --clean-cyan-soft:#d9f1f5;
+  --clean-cyan-mid:#a9dbe4;
+}
+
+
+/* =========================================================
+   STRONG TEXT
+   真っ黒感を消す
+========================================================= */
+
+html[data-asc-theme="light"] h1,
+html[data-asc-theme="light"] h2,
+html[data-asc-theme="light"] h3,
+html[data-asc-theme="light"] strong,
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-name,
+
+html[data-asc-theme="light"]
+.study-link-v2-member-name,
+
+html[data-asc-theme="light"]
+#study-link-v2-members strong {
+
+  color:
+    var(--clean-navy) !important;
+
+  -webkit-text-fill-color:
+    var(--clean-navy) !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+/* =========================================================
+   PURPLE REMOVAL
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-link-v2-chip,
+
+html[data-asc-theme="light"]
+.study-link-v2-member-state,
+
+html[data-asc-theme="light"]
+[data-member-state] {
+
+  background:
+    var(--clean-cyan-soft) !important;
+
+  color:
+    var(--clean-cyan-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--clean-cyan-deep) !important;
+
+  border-color:
+    var(--clean-cyan-mid) !important;
+
+  box-shadow:
+    0 0 7px rgba(21,153,183,.08) !important;
+}
+
+
+/* =========================================================
+   ACTIVE TABS
+========================================================= */
+
+html[data-asc-theme="light"]
+#sl-focus-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-focus-v2"],
+
+html[data-asc-theme="light"]
+#sl-room-v2:checked
+~ #study-link-room-tabs-v2
+label[for="sl-room-v2"] {
+
+  background:
+    #f7fcfd !important;
+
+  color:
+    var(--clean-cyan-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--clean-cyan-deep) !important;
+
+  border-color:
+    rgba(21,153,183,.52) !important;
+
+  box-shadow:
+    0 0 9px rgba(21,153,183,.12),
+    inset 0 -2px 0 rgba(21,153,183,.34) !important;
+}
+
+
+/* =========================================================
+   PRIMARY ACTIONS
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-v2-create,
+
+html[data-asc-theme="light"]
+#study-link-room-start-v1,
+
+html[data-asc-theme="light"]
+#study-link-invite-toggle-v1 {
+
+  background:
+    linear-gradient(
+      145deg,
+      #ddf3f6,
+      #cdeaf0
+    ) !important;
+
+  color:
+    var(--clean-cyan-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--clean-cyan-deep) !important;
+
+  border-color:
+    #9ed3dd !important;
+
+  box-shadow:
+    0 0 10px rgba(21,153,183,.10) !important;
+}
+
+
+/* =========================================================
+   STUDY CHOICES
+========================================================= */
+
+html[data-asc-theme="light"]
+.study-main-choice::after {
+
+  background:
+    var(--clean-cyan) !important;
+
+  box-shadow:
+    0 0 8px rgba(21,153,183,.28) !important;
+}
+
+
+/* 2枚目も紫にしない */
+
+html[data-asc-theme="light"]
+.study-main-choice:nth-child(2)::after {
+
+  background:
+    #309eb6 !important;
+
+  box-shadow:
+    0 0 8px rgba(48,158,182,.22) !important;
+}
+
+
+/* =========================================================
+   HOME ACCENTS
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status,
+
+html[data-asc-theme="light"]
+#home-study-status {
+
+  border-top-color:
+    rgba(21,153,183,.62) !important;
+}
+
+
+/* =========================================================
+   LINK TEXT / SPECIAL NUMBERS
+========================================================= */
+
+html[data-asc-theme="light"]
+#study-link-v2-room-code,
+
+html[data-asc-theme="light"]
+#study-link-room-clock-v1 {
+
+  color:
+    var(--clean-cyan-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--clean-cyan-deep) !important;
+
+  text-shadow:
+    0 0 7px rgba(21,153,183,.12) !important;
+}
+
+
+/* =========================================================
+   GENERIC LIGHT BUTTON TEXT
+========================================================= */
+
+html[data-asc-theme="light"] button {
+
+  text-shadow:
+    none !important;
+}
+
+
+/* 紫っぽい選択ボタンをCYAN系へ */
+
+html[data-asc-theme="light"]
+.study-link-invite-friend-v1 button {
+
+  background:
+    #dff2f5 !important;
+
+  color:
+    var(--clean-cyan-deep) !important;
+
+  border-color:
+    #a8d5dd !important;
+
+  box-shadow:
+    none !important;
+}
+
+</style>
+
+
+
+<style id="ascend-light-home-clean-gaming-v8">
+
+/* =========================================================
+   ASCEND HOME LIGHT V8
+   WHITE / CYAN / NAVY / VIOLET
+========================================================= */
+
+html[data-asc-theme="light"] {
+
+  --home-ice:#f7fbfc;
+  --home-ice-2:#edf7f9;
+  --home-navy:#153744;
+  --home-sub:#496973;
+
+  --home-cyan:#00a9ca;
+  --home-cyan-deep:#08738a;
+  --home-cyan-soft:#d9f2f6;
+
+  --home-violet:#6754c6;
+  --home-violet-deep:#4e3ba7;
+  --home-violet-soft:#e4def8;
+}
+
+
+/* =========================================================
+   HOME PAGE
+========================================================= */
+
+html[data-asc-theme="light"]
+body:has(#home-player-status) {
+
+  background:
+    radial-gradient(
+      circle at 15% 0%,
+      rgba(0,169,202,.10),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 90% 12%,
+      rgba(103,84,198,.07),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      #e8f4f6,
+      #f3f8f9
+    ) !important;
+}
+
+
+/* =========================================================
+   PLAYER CARD
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status {
+
+  background:
+    linear-gradient(
+      145deg,
+      #fbfdfd,
+      #edf7f9
+    ) !important;
+
+  color:
+    var(--home-navy) !important;
+
+  border:
+    1px solid rgba(0,169,202,.38) !important;
+
+  border-top:
+    2px solid var(--home-cyan) !important;
+
+  box-shadow:
+    0 0 0 1px rgba(0,169,202,.04),
+    0 0 15px rgba(0,169,202,.11) !important;
+}
+
+
+/* 名前 */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-name {
+
+  color:
+    var(--home-navy) !important;
+
+  -webkit-text-fill-color:
+    var(--home-navy) !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+/* 称号・補助 */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-title {
+
+  color:
+    var(--home-violet-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--home-violet-deep) !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+/* LEVEL */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-level {
+
+  color:
+    var(--home-violet-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--home-violet-deep) !important;
+}
+
+
+/* =========================================================
+   HOME SMALL STAT CARDS
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status .home-summary-card,
+
+html[data-asc-theme="light"]
+#home-player-status .home-stat-card {
+
+  background:
+    rgba(255,255,255,.56) !important;
+
+  color:
+    var(--home-navy) !important;
+
+  border:
+    1px solid rgba(0,153,184,.22) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.60) !important;
+}
+
+
+html[data-asc-theme="light"]
+#home-player-status .home-summary-value,
+
+html[data-asc-theme="light"]
+#home-player-status .home-stat-value {
+
+  color:
+    var(--home-navy) !important;
+
+  -webkit-text-fill-color:
+    var(--home-navy) !important;
+}
+
+
+html[data-asc-theme="light"]
+#home-player-status .home-summary-label,
+
+html[data-asc-theme="light"]
+#home-player-status .home-stat-label {
+
+  color:
+    var(--home-sub) !important;
+}
+
+
+/* =========================================================
+   XP / RANK
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status .home-xp-track,
+
+html[data-asc-theme="light"]
+#home-player-status .home-rank-track {
+
+  background:
+    #d8e7ea !important;
+
+  border:
+    1px solid rgba(0,142,169,.20) !important;
+
+  box-shadow:
+    inset 0 1px 3px rgba(26,76,88,.08) !important;
+}
+
+
+/* XP = CYAN */
+
+html[data-asc-theme="light"]
+#home-player-status .home-xp-fill {
+
+  background:
+    linear-gradient(
+      90deg,
+      #00badc,
+      #078fa9
+    ) !important;
+
+  box-shadow:
+    0 0 8px rgba(0,186,220,.26) !important;
+}
+
+
+
+
+
+/* =========================================================
+   TODAY STUDY
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-study-status {
+
+  background:
+    linear-gradient(
+      145deg,
+      #f9fcfd,
+      #eaf6f8
+    ) !important;
+
+  color:
+    var(--home-navy) !important;
+
+  border:
+    1px solid rgba(0,169,202,.34) !important;
+
+  border-top:
+    2px solid rgba(0,169,202,.82) !important;
+
+  box-shadow:
+    0 0 13px rgba(0,169,202,.09) !important;
+}
+
+
+html[data-asc-theme="light"]
+#home-study-status strong,
+
+html[data-asc-theme="light"]
+#home-study-status .home-study-value {
+
+  color:
+    var(--home-navy) !important;
+
+  -webkit-text-fill-color:
+    var(--home-navy) !important;
+}
+
+
+html[data-asc-theme="light"]
+#home-study-status .home-study-label {
+
+  color:
+    var(--home-sub) !important;
+}
+
+
+/* =========================================================
+   QUICK MENU
+========================================================= */
+
+html[data-asc-theme="light"]
+.home-quick-grid .home-menu-card {
+
+  background:
+    linear-gradient(
+      145deg,
+      #f8fcfd,
+      #edf7f9
+    ) !important;
+
+  color:
+    var(--home-navy) !important;
+
+  border:
+    1px solid rgba(0,157,188,.25) !important;
+
+  box-shadow:
+    0 3px 9px rgba(31,86,98,.05) !important;
+}
+
+
+html[data-asc-theme="light"]
+.home-quick-grid .home-menu-card:hover {
+
+  border-color:
+    rgba(0,169,202,.52) !important;
+
+  box-shadow:
+    0 0 10px rgba(0,169,202,.11) !important;
+}
+
+
+/* =========================================================
+   PURPLE ONLY AS ACCENT
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status [class*="rank"],
+
+html[data-asc-theme="light"]
+#home-player-status [class*="level"] {
+
+  text-shadow:
+    none !important;
+}
+
+
+/* =========================================================
+   NO BLACK / NO WHITE TEXT
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status *,
+
+html[data-asc-theme="light"]
+#home-study-status *,
+
+html[data-asc-theme="light"]
+.home-quick-grid .home-menu-card * {
+
+  text-shadow:
+    none;
+}
+
+</style>
+
+
+<style id="ascend-light-home-text-accent-v10">
+
+/* =========================================================
+   ASCEND HOME LIGHT V10
+   COOL GRAY TEXT + CYAN / VIOLET ACCENTS
+========================================================= */
+
+html[data-asc-theme="light"] {
+
+  --home-text-gray:#536c75;
+  --home-text-gray-strong:#405d67;
+
+  --home-cyan-accent:#00a9ca;
+  --home-violet-accent:#6959c9;
+}
+
+
+/* =========================================================
+   USER NAME
+   グレー主体 + シアンの薄い発光
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-name {
+
+  color:
+    var(--home-text-gray-strong) !important;
+
+  -webkit-text-fill-color:
+    var(--home-text-gray-strong) !important;
+
+  text-shadow:
+    0 0 7px rgba(0,169,202,.18) !important;
+
+  letter-spacing:
+    .02em;
+}
+
+
+/* シアンの小さいアクセントライン */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-name {
+
+  border-bottom:
+    1px solid rgba(0,169,202,.42);
+
+  padding-bottom:
+    2px;
+}
+
+
+/* =========================================================
+   LEVEL
+   グレー主体 + 紫アクセント
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-level {
+
+  color:
+    #5b6674 !important;
+
+  -webkit-text-fill-color:
+    #5b6674 !important;
+
+  text-shadow:
+    0 0 7px rgba(105,89,201,.17) !important;
+
+  border-left:
+    2px solid rgba(105,89,201,.55);
+
+  padding-left:
+    7px;
+}
+
+
+/* =========================================================
+   TODAY STUDY
+   グレー主体 + シアン
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-study-status .home-study-value {
+
+  color:
+    var(--home-text-gray-strong) !important;
+
+  -webkit-text-fill-color:
+    var(--home-text-gray-strong) !important;
+
+  text-shadow:
+    0 0 8px rgba(0,169,202,.20) !important;
+}
+
+
+/* TODAY STUDY の値だけ下に細いCYAN */
+
+html[data-asc-theme="light"]
+#home-study-status .home-study-value {
+
+  border-bottom:
+    2px solid rgba(0,169,202,.48);
+
+  padding-bottom:
+    2px;
+}
+
+
+/* =========================================================
+   LABELS
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-title,
+
+html[data-asc-theme="light"]
+#home-player-status .home-summary-label,
+
+html[data-asc-theme="light"]
+#home-player-status .home-stat-label,
+
+html[data-asc-theme="light"]
+#home-study-status .home-study-label {
+
+  color:
+    #70868d !important;
+
+  -webkit-text-fill-color:
+    #70868d !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+/* =========================================================
+   数値系
+========================================================= */
+
+html[data-asc-theme="light"]
+#home-player-status .home-summary-value,
+
+html[data-asc-theme="light"]
+#home-player-status .home-stat-value {
+
+  color:
+    #48636c !important;
+
+  -webkit-text-fill-color:
+    #48636c !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+/*
+   RANK BARは一切触らない
+   → 既存のランク別カラーをそのまま使用
+*/
 
 </style>
 
@@ -12404,8 +15317,8 @@ function page(content) {
       min-height:100vh;
       display:grid;
       place-items:center;
-      background:#080b12;
-      color:#fff;
+      background:var(--main-stage-bg,var(--asc-bg));
+      color:var(--text-main,#fff);
       font-family:system-ui,sans-serif;
       padding:24px;
     ">
@@ -12474,8 +15387,9 @@ function card(content) {
   return `
     <section style="
       width:min(460px,100%);
-      background:#111722;
-      border:1px solid #263247;
+      background:var(--section-bg,var(--asc-card));
+      border:1px solid var(--border-light,#263247);
+      color:var(--text-main,#fff);
       border-radius:20px;
       padding:24px;
       display:grid;
@@ -12494,8 +15408,8 @@ function fieldStyle() {
     padding:14px;
     border-radius:12px;
     border:1px solid #34405a;
-    background:#0b1019;
-    color:#fff;
+    background:var(--asc-surface);
+    color:var(--asc-text);
     font:inherit;
   `;
 }
@@ -12513,8 +15427,8 @@ function buttonStyle(primary = true) {
       padding:14px;
       border:1px solid #34405a;
       border-radius:12px;
-      background:#161d2a;
-      color:#fff;
+      background:var(--asc-raised);
+      color:var(--asc-text);
       font-weight:700;
       cursor:pointer;
     `;
@@ -12819,7 +15733,7 @@ function showRegister() {
         align-items:center;
         gap:8px;
         padding:8px 10px;
-        background:#0b1019;
+        background:var(--asc-surface);
         border:1px solid #263247;
         border-radius:10px;
       ">
@@ -14237,7 +17151,7 @@ async function showRankPage(user) {
             18px !important;
 
           background:
-            #0b0f17 !important;
+            var(--asc-surface) !important;
 
           border:
             1px solid
@@ -14323,7 +17237,7 @@ async function showRankPage(user) {
             0;
 
           color:
-            #f7f8fb;
+            var(--asc-text);
 
           font-size:
             27px;
@@ -14385,8 +17299,8 @@ async function showRankPage(user) {
 
             linear-gradient(
               155deg,
-              #121722,
-              #0b0f17
+              var(--asc-card),
+              var(--asc-surface)
             );
 
           border:
@@ -14542,7 +17456,7 @@ async function showRankPage(user) {
             5px;
 
           color:
-            #f4f6fa;
+            var(--asc-text);
 
           font-family:
             "Rajdhani",
@@ -14644,7 +17558,7 @@ async function showRankPage(user) {
             block;
 
           color:
-            #e9ecf2;
+            var(--asc-text);
 
           font-family:
             "Rajdhani",
@@ -14877,7 +17791,7 @@ async function showRankPage(user) {
             hidden;
 
           color:
-            #e5e8ee;
+            var(--asc-text);
 
           font-size:
             11px;
@@ -14936,7 +17850,7 @@ async function showRankPage(user) {
         div {
 
           color:
-            #f1f3f7;
+            var(--asc-text);
 
           font-size:
             14px;
@@ -15096,7 +18010,7 @@ async function showRankPage(user) {
             block;
 
           color:
-            #e7eaf0;
+            var(--asc-text);
 
           font-family:
             "Rajdhani",
@@ -15462,7 +18376,7 @@ async function showRankPage(user) {
           margin-bottom:16px;
           border:1px solid rgba(255,255,255,.07);
           border-radius:12px;
-          background:#080c13;
+          background:var(--asc-bg);
         }
 
         .asc-rank-tab-v1{
@@ -15479,7 +18393,7 @@ async function showRankPage(user) {
         }
 
         .asc-rank-tab-v1.active{
-          color:#f3f5ff;
+          color:var(--asc-text);
           background:rgba(var(--rank-rgb),.11);
           box-shadow:
             inset 0 0 0 1px rgba(var(--rank-rgb),.20);
@@ -15506,14 +18420,14 @@ async function showRankPage(user) {
           text-align:center;
           border:1px solid rgba(255,255,255,.07);
           border-radius:14px;
-          background:#090d14;
+          background:var(--asc-bg);
           color:#778296;
         }
 
         .asc-leaderboard-empty-v1 strong{
           display:block;
           margin-bottom:5px;
-          color:#eef1fa;
+          color:var(--asc-text);
           font-family:"Rajdhani",sans-serif;
           font-size:18px;
           letter-spacing:.08em;
@@ -16381,7 +19295,7 @@ async function showRankPage(user) {
             ${currentTheme.rgb},
             .12
           ),
-          #080b12 43%
+          var(--asc-bg) 43%
         )
       `,
 
@@ -16561,7 +19475,7 @@ function ensureClassicNavigationStyle() {
 
       border-radius: 13px;
 
-      color: #6f7786;
+      color: var(--asc-muted);
 
       background: transparent;
 
@@ -16575,7 +19489,7 @@ function ensureClassicNavigationStyle() {
 
 
     .nav-button:hover {
-      color: #f3f5f8;
+      color: var(--asc-text);
 
       background:
         rgba(255,255,255,.045);
@@ -16605,7 +19519,7 @@ function ensureClassicNavigationStyle() {
 
 
     .nav-button.active {
-      color: #fff;
+      color: var(--asc-text);
 
       background:
         linear-gradient(
@@ -16649,8 +19563,7 @@ function ensureClassicNavigationStyle() {
 
       overflow-x: auto;
 
-      background:
-        rgba(0,0,0,.18);
+      background: var(--asc-tabs);
 
       border:
         1px solid
@@ -16679,7 +19592,7 @@ function ensureClassicNavigationStyle() {
       padding:
         10px 13px;
 
-      color: #6f7786;
+      color: var(--asc-muted);
 
       background: transparent;
 
@@ -16692,7 +19605,7 @@ function ensureClassicNavigationStyle() {
 
 
     .classic-tab-navigation button:hover {
-      color: #f3f5f8;
+      color: var(--asc-text);
 
       background:
         rgba(255,255,255,.05);
@@ -16700,7 +19613,7 @@ function ensureClassicNavigationStyle() {
 
 
     .classic-tab-navigation button.active {
-      color: #fff;
+      color: var(--asc-text);
 
       background:
         linear-gradient(
@@ -21134,6 +24047,37 @@ async function mountStudyLinkPanelV2(user) {
         class="study-link-v2-active hidden"
       >
 
+        <!-- =====================================
+             STUDY LINK FOCUS / ROOM TABS
+        ====================================== -->
+
+        <input
+          type="radio"
+          name="study-link-room-tab-v2"
+          id="sl-focus-v2"
+          checked
+        >
+
+        <input
+          type="radio"
+          name="study-link-room-tab-v2"
+          id="sl-room-v2"
+        >
+
+        <div id="study-link-room-tabs-v2">
+
+          <label for="sl-focus-v2">
+            FOCUS
+          </label>
+
+          <label for="sl-room-v2">
+            ROOM
+          </label>
+
+        </div>
+
+
+
         <div class="study-link-v2-connected">
 
           <span class="study-link-v2-dot"></span>
@@ -23631,7 +26575,7 @@ async function showLockerPage(user) {
           padding:0 12px;
 
           color:#abb4c2;
-          background:#0b1019;
+          background:var(--asc-surface);
 
           border:
             1px solid rgba(255,255,255,.09);
@@ -23682,7 +26626,7 @@ async function showLockerPage(user) {
 
           gap:8px 12px;
 
-          background:#0b1019;
+          background:var(--asc-surface);
 
           border:
             1px solid rgba(255,255,255,.075);
@@ -23713,7 +26657,7 @@ async function showLockerPage(user) {
 
           padding:6px 9px;
 
-          color:#fff;
+          color:var(--asc-text);
 
           background:
             rgba(124,92,255,.16);
@@ -24184,7 +27128,7 @@ async function showProfilePage(user) {
           padding:0 12px;
 
           color:#aeb6c4;
-          background:#0b1019;
+          background:var(--asc-surface);
 
           border:
             1px solid rgba(255,255,255,.09);
@@ -24202,7 +27146,7 @@ async function showProfilePage(user) {
 
           padding:14px;
 
-          background:#0b1019;
+          background:var(--asc-surface);
 
           border:
             1px solid rgba(255,255,255,.08);
@@ -24225,8 +27169,8 @@ async function showProfilePage(user) {
 
           padding:9px 11px;
 
-          color:#f3f5f8;
-          background:#080c13;
+          color:var(--asc-text);
+          background:var(--asc-bg);
 
           border:
             1px solid rgba(255,255,255,.10);
@@ -24254,7 +27198,7 @@ async function showProfilePage(user) {
           min-height:42px;
 
           color:#7f8999;
-          background:#090d14;
+          background:var(--asc-bg);
 
           border:
             1px solid rgba(255,255,255,.08);
@@ -24267,7 +27211,7 @@ async function showProfilePage(user) {
 
 
         .profile-track-btn.active {
-          color:#fff;
+          color:var(--asc-text);
 
           background:
             rgba(124,92,255,.17);
@@ -24310,7 +27254,7 @@ async function showProfilePage(user) {
           padding:7px 6px;
 
           color:#7d8797;
-          background:#090d14;
+          background:var(--asc-bg);
 
           border:
             1px solid rgba(255,255,255,.07);
@@ -24325,7 +27269,7 @@ async function showProfilePage(user) {
 
 
         .subject-chip.active {
-          color:#fff;
+          color:var(--asc-text);
 
           background:
             rgba(124,92,255,.17);
@@ -24351,7 +27295,7 @@ async function showProfilePage(user) {
           width:100%;
           min-height:46px;
 
-          color:#fff;
+          color:var(--asc-text);
 
           background:
             linear-gradient(
@@ -24521,6 +27465,56 @@ async function showProfilePage(user) {
       </div>
 
 
+      <div
+        id="profile-theme-settings-v1"
+        class="profile-box"
+      >
+
+        <div class="profile-label">
+          表示設定
+        </div>
+
+        <div class="profile-theme-options-v1">
+
+          <button
+            type="button"
+            class="profile-theme-btn-v1"
+            data-theme-choice="dark"
+          >
+            <span>☾</span>
+            DARK
+          </button>
+
+          <button
+            type="button"
+            class="profile-theme-btn-v1"
+            data-theme-choice="light"
+          >
+            <span>☀</span>
+            LIGHT
+          </button>
+
+          <button
+            type="button"
+            class="profile-theme-btn-v1"
+            data-theme-choice="system"
+          >
+            <span>◐</span>
+            SYSTEM
+          </button>
+
+        </div>
+
+        <div style="
+          color:#768398;
+          font-size:.68rem;
+        ">
+          SYSTEMは端末の表示設定に合わせます
+        </div>
+
+      </div>
+
+
       <button
         id="profile-save"
         class="profile-save"
@@ -24625,6 +27619,66 @@ async function showProfilePage(user) {
       };
 
     });
+
+
+  // ======================================================
+  // ASCEND PROFILE THEME DIRECT FIX
+  // ======================================================
+
+  document
+    .querySelectorAll(
+      "[data-theme-choice]"
+    )
+    .forEach(button => {
+
+      button.onclick = () => {
+
+        let mode =
+          button.dataset.themeChoice;
+
+        if (
+          !["dark","light","system"]
+            .includes(mode)
+        ) {
+          mode = "dark";
+        }
+
+        localStorage.setItem(
+          "ascend-theme",
+          mode
+        );
+
+        let resolved =
+          mode;
+
+        if (mode === "system") {
+
+          resolved =
+            window.matchMedia(
+              "(prefers-color-scheme: light)"
+            ).matches
+              ? "light"
+              : "dark";
+
+        }
+
+        document.documentElement
+          .setAttribute(
+            "data-asc-theme",
+            resolved
+          );
+
+        document.documentElement
+          .setAttribute(
+            "data-asc-theme-mode",
+            mode
+          );
+
+      };
+
+    });
+
+  // ASCEND PROFILE THEME DIRECT FIX END
 
 
   // 保存
@@ -24739,13 +27793,13 @@ async function showOtherPage(user) {
 
           text-align:left;
 
-          color:#f3f5f8;
+          color:var(--asc-text);
 
           background:
             linear-gradient(
               145deg,
-              #151b28,
-              #0e131c
+              var(--asc-raised),
+              var(--asc-card)
             );
 
           border:
@@ -24769,8 +27823,8 @@ async function showOtherPage(user) {
           background:
             linear-gradient(
               145deg,
-              #1a2130,
-              #101620
+              var(--asc-raised),
+              var(--asc-card)
             );
 
           border-color:
@@ -24866,7 +27920,7 @@ async function showOtherPage(user) {
           display:grid;
           gap:15px;
 
-          background:#111722;
+          background:var(--asc-card);
 
           border:
             1px solid
@@ -24900,7 +27954,7 @@ async function showOtherPage(user) {
           display:grid;
           place-items:center;
 
-          color:#a8afbd;
+          color:var(--asc-text-sub);
 
           background:
             rgba(255,255,255,.055);
@@ -24926,7 +27980,7 @@ async function showOtherPage(user) {
           justify-content:space-between;
           gap:12px;
 
-          background:#0b1019;
+          background:var(--asc-surface);
 
           border:
             1px solid
@@ -26684,7 +29738,7 @@ async function showBossPage(user) {
 
       <div style="
         padding:16px;
-        background:#0b1019;
+        background:var(--asc-surface);
         border:1px solid #263247;
         border-radius:14px;
         display:grid;
@@ -26700,7 +29754,7 @@ async function showBossPage(user) {
           ? `
             <div style="
               padding:16px;
-              background:#0b1019;
+              background:var(--asc-surface);
               border:1px solid #263247;
               border-radius:14px;
               display:grid;
@@ -26758,7 +29812,7 @@ async function showBossPage(user) {
           display:grid;
           gap:7px;
           padding:10px;
-          background:#111722;
+          background:var(--asc-card);
           border-radius:10px;
           margin-bottom:8px;
         ">
@@ -27472,7 +30526,7 @@ async function showPartyPage(user) {
           border:1px solid rgba(255,88,112,.20)!important;
           background:
             radial-gradient(circle at 100% 0%,rgba(255,88,112,.14),transparent 44%),
-            #090e16!important;
+            var(--asc-bg)!important;
           overflow:visible!important;
         "
       >
@@ -27498,7 +30552,7 @@ async function showPartyPage(user) {
 
         <span style="
           display:block!important;
-          color:#f3f5f8!important;
+          color:var(--asc-text)!important;
           font-size:1rem!important;
           line-height:1.4!important;
           font-weight:900!important;
@@ -27577,7 +30631,7 @@ async function showPartyPage(user) {
           ? `
             <div style="
               padding:16px;
-              background:#0b1019;
+              background:var(--asc-surface);
               border:1px solid #263247;
               border-radius:14px;
               display:grid;
@@ -27751,7 +30805,7 @@ async function showPartyPage(user) {
           return `
             <div style="
               padding:8px 10px;
-              background:#111722;
+              background:var(--asc-card);
               border-radius:10px;
               margin-top:6px;
             ">
@@ -27847,7 +30901,7 @@ async function showPartyPage(user) {
       return `
         <div style="
           padding:14px;
-          background:#0b1019;
+          background:var(--asc-surface);
           border:1px solid #263247;
           border-radius:12px;
           display:grid;
@@ -28042,7 +31096,7 @@ async function showPartyPage(user) {
       cards.push(`
         <div style="
           padding:12px;
-          background:#0b1019;
+          background:var(--asc-surface);
           border:1px solid #263247;
           border-radius:12px;
           display:grid;
@@ -28968,7 +32022,7 @@ async function showFriendsPage(user) {
       return `
         <div style="
           padding:14px;
-          background:#0b1019;
+          background:var(--asc-surface);
           border:1px solid #263247;
           border-radius:12px;
           display:grid;
@@ -29112,7 +32166,7 @@ async function showFriendsPage(user) {
         <div style="
           margin-top:8px;
           padding:16px;
-          background:#0b1019;
+          background:var(--asc-surface);
           border:1px solid #263247;
           border-radius:14px;
           display:grid;
@@ -30204,7 +33258,7 @@ async function showTitlesPage(user) {
 
       <div style="
         padding:14px;
-        background:#0b1019;
+        background:var(--asc-surface);
         border:1px solid #263247;
         border-radius:12px;
       ">
@@ -30247,7 +33301,7 @@ async function showTitlesPage(user) {
                   return `
                     <div style="
                       padding:14px;
-                      background:${owned ? "#151e2c" : "#0b1019"};
+                      background:${owned ? "var(--asc-raised)" : "var(--asc-surface)"};
                       border:1px solid ${owned ? "#596b89" : "#263247"};
                       border-radius:12px;
                       display:grid;
@@ -30439,7 +33493,7 @@ async function showTitlesPage(user) {
 
     titlesBackBtn.style.setProperty(
       "background",
-      "#0b1019",
+      "var(--asc-surface)",
       "important"
     );
 
@@ -30661,7 +33715,7 @@ async function showShopPage(user, activeTab = "xp") {
 
           padding:4px;
 
-          background:#090d14;
+          background:var(--asc-bg);
 
           border:
             1px solid
@@ -30690,7 +33744,7 @@ async function showShopPage(user, activeTab = "xp") {
         }
 
         .shop-tab.active {
-          color:#fff;
+          color:var(--asc-text);
 
           background:
             rgba(124,92,255,.18);
@@ -30707,7 +33761,7 @@ async function showShopPage(user, activeTab = "xp") {
 
           padding:12px 14px;
 
-          background:#0b1019;
+          background:var(--asc-surface);
 
           border:
             1px solid
@@ -30742,7 +33796,7 @@ async function showShopPage(user, activeTab = "xp") {
 
           padding:13px 14px;
 
-          background:#0b1019;
+          background:var(--asc-surface);
 
           border:
             1px solid
@@ -30784,7 +33838,7 @@ async function showShopPage(user, activeTab = "xp") {
 
           padding:6px 10px;
 
-          color:#fff;
+          color:var(--asc-text);
 
           background:
             rgba(124,92,255,.16);
@@ -31702,7 +34756,7 @@ async function showQuestPage(user) {
           return `
             <div style="
               padding:16px;
-              background:#0b1019;
+              background:var(--asc-surface);
               border:1px solid #263247;
               border-radius:14px;
               display:grid;
@@ -31773,7 +34827,7 @@ async function showQuestPage(user) {
         id="quest-weekly-content"
         style="
           padding:16px;
-          background:#0b1019;
+          background:var(--asc-surface);
           border:1px solid #263247;
           border-radius:14px;
           display:grid;
@@ -34691,9 +37745,9 @@ document.addEventListener(
 })();
 </script>
 
-</body>
-</html>
 
+
+<!-- ASCEND NORMALIZED TAIL START -->
 <style id="boss-image-background-blend-v1">
 
 /* ボス画像の四角い背景をステージへ自然に溶かす */
@@ -34817,7 +37871,7 @@ body:has(#quest-main-tabs) > main > section {
 
   box-sizing: border-box;
 
-  background: #0b0e15;
+  background: var(--asc-surface);
 
   border: 1px solid rgba(255,255,255,.08);
   border-radius: 13px;
@@ -34842,7 +37896,7 @@ body:has(#quest-main-tabs) > main > section {
 }
 
 #party-main-tabs button.active {
-  color: #fff;
+  color: var(--asc-text);
 
   background: rgba(124,92,255,.18);
 
@@ -34866,7 +37920,7 @@ body > main.rank-main-themed {
       rgba(var(--rank-rgb), .06) 52%,
       transparent 72%
     ),
-    #080b12 !important;
+    var(--asc-bg) !important;
 }
 
 
@@ -34878,8 +37932,8 @@ body > main
       155deg,
       rgba(var(--rank-rgb), .25),
       rgba(var(--rank-rgb), .10) 28%,
-      #111722 55%,
-      #0d121b 100%
+      var(--asc-card) 55%,
+      var(--asc-surface) 100%
     ) !important;
 
   border-color:
@@ -34900,7 +37954,7 @@ body > main
       145deg,
       rgba(var(--rank-rgb), .24),
       rgba(var(--rank-rgb), .08) 45%,
-      #0c1119
+      var(--asc-card)
     ) !important;
 
   border-color:
@@ -34924,7 +37978,7 @@ body > main
     linear-gradient(
       145deg,
       rgba(var(--rank-rgb), .09),
-      #0c1119 52%
+      var(--asc-card) 52%
     ) !important;
 
   border-color:
@@ -34948,7 +38002,7 @@ body > main.rank-main-themed {
       rgba(var(--rank-rgb), .65),
       rgba(var(--rank-rgb), .30) 28%,
       rgba(var(--rank-rgb), .12) 52%,
-      #080b12 78%
+      var(--asc-bg) 78%
     ) !important;
 }
 
@@ -34962,8 +38016,8 @@ body > main
       160deg,
       rgba(var(--rank-rgb), .42) 0%,
       rgba(var(--rank-rgb), .22) 22%,
-      #111722 52%,
-      #0b0f17 100%
+      var(--asc-card) 52%,
+      var(--asc-surface) 100%
     ) !important;
 
   border:
@@ -34991,7 +38045,7 @@ body > main
       145deg,
       rgba(var(--rank-rgb), .52),
       rgba(var(--rank-rgb), .20) 45%,
-      #0b1018 100%
+      var(--asc-surface) 100%
     ) !important;
 
   border-color:
@@ -35044,7 +38098,7 @@ body > main
       145deg,
       rgba(var(--rank-rgb), .22),
       rgba(var(--rank-rgb), .07) 55%,
-      #0b1018
+      var(--asc-surface)
     ) !important;
 
   border-color:
@@ -35097,7 +38151,7 @@ body > main
       145deg,
       rgba(var(--rank-rgb), .16),
       rgba(var(--rank-rgb), .04) 50%,
-      #0b1018
+      var(--asc-surface)
     ) !important;
 
   border-color:
@@ -35126,7 +38180,7 @@ body > main
 
 .screen-header h2,
 body > main > section h1 {
-  color:#f8f5ff !important;
+  color:var(--asc-text) !important;
 
   text-shadow:
     0 0 10px rgba(155,124,255,.38);
@@ -35168,7 +38222,7 @@ body > main > section h1 {
 /* ===== QUEST ===== */
 
 #quest-main-tabs button.active {
-  color:#fff !important;
+  color:var(--asc-text) !important;
   background-color:rgba(155,124,255,.28) !important;
 
   text-shadow:
@@ -35181,7 +38235,7 @@ body > main > section h1 {
 /* ===== PARTY ===== */
 
 #party-main-tabs button.active {
-  color:#fff !important;
+  color:var(--asc-text) !important;
   background-color:rgba(53,217,255,.20) !important;
 
   text-shadow:
@@ -35194,7 +38248,7 @@ body > main > section h1 {
 /* ===== SHOP ===== */
 
 .shop-tab.active {
-  color:#fff !important;
+  color:var(--asc-text) !important;
   background-color:rgba(155,124,255,.30) !important;
 
   box-shadow:none !important;
@@ -35219,7 +38273,7 @@ body > main > section h1 {
 /* ===== PROFILE ===== */
 
 .subject-chip.active {
-  color:#fff !important;
+  color:var(--asc-text) !important;
 
   background-color:
     rgba(155,124,255,.30) !important;
@@ -35228,7 +38282,7 @@ body > main > section h1 {
 }
 
 .profile-track-btn.active {
-  color:#fff !important;
+  color:var(--asc-text) !important;
 
   background-color:
     rgba(53,217,255,.20) !important;
@@ -35322,7 +38376,7 @@ body.study-link-room-mode-v1
 /* タイトルも普通のROOM見出し寄り */
 body.study-link-room-mode-v1
 #study-link-boost-fund-v1 [data-boost-title]{
-  color:#e8edf5!important;
+  color:var(--asc-text)!important;
   font-size:11px!important;
   letter-spacing:.08em!important;
   text-shadow:none!important;
@@ -35555,3 +38609,129 @@ setTimeout(()=>{
   }
 }
 </style>
+<!-- ASCEND NORMALIZED TAIL END -->
+
+
+<script id="ascend-theme-engine-v1">
+(() => {
+
+  const KEY = "ascend-theme";
+
+  const valid =
+    new Set([
+      "dark",
+      "light",
+      "system"
+    ]);
+
+  function getMode() {
+
+    try {
+
+      const saved =
+        localStorage.getItem(KEY);
+
+      return valid.has(saved)
+        ? saved
+        : "dark";
+
+    } catch (_) {
+
+      return "dark";
+
+    }
+
+  }
+
+
+  function resolve(mode) {
+
+    if (mode !== "system") {
+      return mode;
+    }
+
+    return matchMedia(
+      "(prefers-color-scheme: light)"
+    ).matches
+      ? "light"
+      : "dark";
+
+  }
+
+
+  function apply(mode) {
+
+    if (!valid.has(mode)) {
+      mode = "dark";
+    }
+
+    try {
+      localStorage.setItem(KEY, mode);
+    } catch (_) {}
+
+    const resolved =
+      resolve(mode);
+
+    document.documentElement.setAttribute(
+      "data-asc-theme",
+      resolved
+    );
+
+    document.documentElement.setAttribute(
+      "data-asc-theme-mode",
+      mode
+    );
+
+  }
+
+
+  window.ASCEND_THEME = {
+    getMode,
+    setMode: apply
+  };
+
+
+  apply(
+    getMode()
+  );
+
+
+  document.addEventListener(
+    "click",
+    event => {
+
+      const button =
+        event.target.closest(
+          "[data-theme-choice]"
+        );
+
+      if (!button) {
+        return;
+      }
+
+      apply(
+        button.dataset.themeChoice
+      );
+
+    }
+  );
+
+
+  matchMedia(
+    "(prefers-color-scheme: light)"
+  ).addEventListener(
+    "change",
+    () => {
+
+      if (getMode() === "system") {
+        apply("system");
+      }
+
+    }
+  );
+
+})();
+</script>
+
+</body>
+</html>
