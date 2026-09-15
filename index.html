@@ -15489,6 +15489,1087 @@ html[data-asc-theme="light"]
 
 </style>
 
+
+
+<style id="ascend-light-weekly-future-v32">
+
+/* =========================================================
+   WEEKLY QUEST — FUTURE V32
+========================================================= */
+
+html[data-asc-theme="light"]
+#quest-weekly-content {
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,190,220,.72),
+      rgba(0,190,220,.16) 42%,
+      rgba(125,100,225,.14) 76%,
+      transparent
+    ) top / 100% 2px no-repeat,
+
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(125,100,225,.10),
+      transparent 38%
+    ),
+
+    linear-gradient(
+      135deg,
+      rgba(205,244,248,.42) 0%,
+      rgba(246,251,252,.97) 38%,
+      rgba(249,252,253,.99) 100%
+    ) !important;
+
+  border:
+    1px solid rgba(0,155,185,.30) !important;
+
+  box-shadow:
+    0 6px 16px rgba(30,82,94,.06),
+    0 0 13px rgba(0,174,205,.055) !important;
+}
+
+
+/* WEEKLYラベル */
+html[data-asc-theme="light"]
+#quest-weekly-content
+.quest-status-row
+> div:first-child {
+
+  color:
+    #4a8f9e !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .07em !important;
+
+  text-shadow:
+    0 0 7px rgba(0,174,205,.11) !important;
+}
+
+</style>
+
+
+
+<style id="ascend-light-rank-future-v33">
+
+/* =========================================================
+   ASCEND LIGHT — RANK FUTURE V33
+========================================================= */
+
+
+/* -------------------------
+   MAIN PROGRESS CARD
+------------------------- */
+
+html[data-asc-theme="light"]
+.asc-rank-progress-card {
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(var(--rank-rgb, 0,174,205),.75),
+      rgba(var(--rank-rgb, 0,174,205),.12) 48%,
+      transparent
+    ) top / 100% 2px no-repeat,
+
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(var(--rank-rgb, 0,174,205),.10),
+      transparent 42%
+    ),
+
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.82),
+      rgba(239,248,250,.92)
+    ) !important;
+
+  border-color:
+    rgba(var(--rank-rgb, 0,174,205),.28) !important;
+
+  box-shadow:
+    0 7px 18px rgba(31,79,91,.07),
+    0 0 14px rgba(var(--rank-rgb, 0,174,205),.07) !important;
+}
+
+
+/* 大きい進捗数字 */
+html[data-asc-theme="light"]
+.asc-rank-progress-value {
+
+  text-shadow:
+    0 0 8px rgba(var(--rank-rgb, 0,174,205),.18) !important;
+}
+
+
+/* -------------------------
+   PROGRESS BAR
+------------------------- */
+
+html[data-asc-theme="light"]
+.asc-rank-track {
+
+  background:
+    rgba(92,130,140,.12) !important;
+
+  border-color:
+    rgba(40,128,148,.18) !important;
+
+  box-shadow:
+    inset 0 1px 3px rgba(45,87,97,.07) !important;
+}
+
+
+html[data-asc-theme="light"]
+.asc-rank-fill {
+
+  box-shadow:
+    0 0 8px rgba(var(--rank-rgb, 0,174,205),.22) !important;
+}
+
+
+/* -------------------------
+   SEASON STATUS
+------------------------- */
+
+html[data-asc-theme="light"]
+.asc-rank-season-grid {
+
+  background:
+    rgba(248,252,253,.72) !important;
+
+  border-color:
+    rgba(21,145,170,.20) !important;
+
+  box-shadow:
+    0 4px 12px rgba(30,80,92,.045) !important;
+}
+
+
+html[data-asc-theme="light"]
+.asc-rank-season-stat
++ .asc-rank-season-stat {
+
+  border-left-color:
+    rgba(0,160,190,.16) !important;
+}
+
+
+/* -------------------------
+   LADDER HEADING
+------------------------- */
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-heading span {
+
+  color:
+    #558995 !important;
+
+  letter-spacing:
+    .16em !important;
+}
+
+
+/* -------------------------
+   NORMAL LADDER ROWS
+------------------------- */
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row {
+
+  background:
+    rgba(248,252,253,.72) !important;
+
+  border-color:
+    rgba(25,135,158,.17) !important;
+
+  box-shadow:
+    0 2px 7px rgba(33,81,92,.035) !important;
+}
+
+
+/* -------------------------
+   CURRENT RANK
+------------------------- */
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.current {
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(var(--row-rgb, 0,174,205),.17),
+      rgba(255,255,255,.88) 34%,
+      rgba(255,255,255,.76)
+    ) !important;
+
+  border-color:
+    rgba(var(--row-rgb, 0,174,205),.40) !important;
+
+  box-shadow:
+    inset 3px 0 0 rgba(var(--row-rgb, 0,174,205),.78),
+    0 5px 14px rgba(var(--row-rgb, 0,174,205),.08) !important;
+}
+
+
+/* CURRENT文字だけ少し発光 */
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.current
+.asc-rank-ladder-state {
+
+  text-shadow:
+    0 0 7px rgba(var(--row-rgb, 0,174,205),.18) !important;
+}
+
+
+/* -------------------------
+   COMPLETE / LOCKED
+------------------------- */
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.complete {
+
+  opacity:.76 !important;
+}
+
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.locked {
+
+  opacity:.46 !important;
+
+  background:
+    rgba(236,244,246,.56) !important;
+}
+
+
+/* -------------------------
+   ELITE DIVIDER
+------------------------- */
+
+html[data-asc-theme="light"]
+.asc-rank-elite-divider {
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(126,100,220,.09),
+      rgba(0,174,205,.05),
+      transparent
+    ) !important;
+
+  border-top-color:
+    rgba(126,100,220,.22) !important;
+
+  border-bottom-color:
+    rgba(0,174,205,.12) !important;
+}
+
+</style>
+
+
+
+<style id="ascend-light-rank-identity-v34">
+
+/* =========================================================
+   ASCEND LIGHT — RANK IDENTITY V34
+========================================================= */
+
+
+/* 各ランクに固有色を持たせる */
+html[data-asc-theme="light"] .asc-rank-bronze {
+  --row-rgb:191,116,72;
+}
+
+html[data-asc-theme="light"] .asc-rank-silver {
+  --row-rgb:155,176,205;
+}
+
+html[data-asc-theme="light"] .asc-rank-gold {
+  --row-rgb:225,168,47;
+}
+
+html[data-asc-theme="light"] .asc-rank-platinum {
+  --row-rgb:53,190,210;
+}
+
+html[data-asc-theme="light"] .asc-rank-diamond {
+  --row-rgb:51,151,235;
+}
+
+html[data-asc-theme="light"] .asc-rank-master {
+  --row-rgb:143,84,235;
+}
+
+html[data-asc-theme="light"] .asc-rank-grandmaster {
+  --row-rgb:226,64,112;
+}
+
+html[data-asc-theme="light"] .asc-rank-legend {
+  --row-rgb:218,170,55;
+}
+
+
+/* =========================================================
+   CURRENT PROGRESS — HERO化
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-rank-progress-card {
+
+  padding:
+    21px !important;
+
+  background:
+    radial-gradient(
+      circle at 88% 5%,
+      rgba(var(--rank-rgb,0,174,205),.20),
+      transparent 36%
+    ),
+
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.96),
+      rgba(230,244,247,.94)
+    ) !important;
+
+  border:
+    1px solid
+    rgba(var(--rank-rgb,0,174,205),.40) !important;
+
+  border-top:
+    3px solid
+    rgba(var(--rank-rgb,0,174,205),.78) !important;
+
+  box-shadow:
+    0 9px 24px rgba(38,81,91,.09),
+    0 0 18px rgba(var(--rank-rgb,0,174,205),.10) !important;
+}
+
+
+/* 今のランク名 */
+html[data-asc-theme="light"]
+.asc-rank-progress-title strong {
+
+  font-size:
+    20px !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .025em !important;
+}
+
+
+/* 進捗数字 */
+html[data-asc-theme="light"]
+.asc-rank-progress-value {
+
+  font-size:
+    30px !important;
+
+  font-weight:
+    800 !important;
+
+  text-shadow:
+    0 0 10px
+    rgba(var(--rank-rgb,0,174,205),.24) !important;
+}
+
+
+/* 進捗バー */
+html[data-asc-theme="light"]
+.asc-rank-track {
+
+  height:
+    11px !important;
+
+  background:
+    rgba(74,121,131,.12) !important;
+
+  border:
+    1px solid
+    rgba(var(--rank-rgb,0,174,205),.18) !important;
+}
+
+
+html[data-asc-theme="light"]
+.asc-rank-fill {
+
+  box-shadow:
+    0 0 8px
+    rgba(var(--rank-rgb,0,174,205),.30),
+    0 0 15px
+    rgba(var(--rank-rgb,0,174,205),.13) !important;
+}
+
+
+/* =========================================================
+   SEASON INFO — 3枚のHUDカードに分離
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-rank-season-grid {
+
+  display:
+    grid !important;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr)) !important;
+
+  gap:
+    8px !important;
+
+  overflow:
+    visible !important;
+
+  background:
+    transparent !important;
+
+  border:
+    0 !important;
+
+  box-shadow:
+    none !important;
+}
+
+
+html[data-asc-theme="light"]
+.asc-rank-season-stat {
+
+  padding:
+    14px 7px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.88),
+      rgba(233,245,247,.80)
+    ) !important;
+
+  border:
+    1px solid rgba(0,156,185,.20) !important;
+
+  border-radius:
+    13px !important;
+
+  box-shadow:
+    0 4px 10px rgba(31,82,94,.045) !important;
+}
+
+
+html[data-asc-theme="light"]
+.asc-rank-season-stat
++ .asc-rank-season-stat {
+
+  border-left:
+    1px solid rgba(0,156,185,.20) !important;
+}
+
+
+html[data-asc-theme="light"]
+.asc-rank-season-stat span {
+
+  color:
+    #4f8996 !important;
+
+  letter-spacing:
+    .14em !important;
+}
+
+
+html[data-asc-theme="light"]
+.asc-rank-season-stat strong {
+
+  margin-top:
+    2px !important;
+
+  font-size:
+    13px !important;
+}
+
+
+/* =========================================================
+   RANK LADDER — 各ランクを色で識別
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-rank-ladder {
+
+  gap:
+    9px !important;
+}
+
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row {
+
+  min-height:
+    68px !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(var(--row-rgb,0,174,205),.075),
+      rgba(255,255,255,.90) 28%,
+      rgba(247,251,252,.86)
+    ) !important;
+
+  border:
+    1px solid
+    rgba(var(--row-rgb,0,174,205),.20) !important;
+
+  border-left:
+    4px solid
+    rgba(var(--row-rgb,0,174,205),.62) !important;
+
+  box-shadow:
+    0 3px 9px rgba(30,75,86,.04) !important;
+}
+
+
+/* ランクエンブレムにも少し色を返す */
+html[data-asc-theme="light"]
+.asc-rank-ladder-row
+.asc-rank-emblem {
+
+  filter:
+    drop-shadow(
+      0 0 5px
+      rgba(var(--row-rgb,0,174,205),.18)
+    ) !important;
+}
+
+
+/* =========================================================
+   CURRENT — 明確に主役
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.current {
+
+  transform:
+    translateX(3px);
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(var(--row-rgb),.23),
+      rgba(255,255,255,.94) 38%,
+      rgba(var(--row-rgb),.055)
+    ) !important;
+
+  border-color:
+    rgba(var(--row-rgb),.50) !important;
+
+  border-left:
+    5px solid
+    rgb(var(--row-rgb)) !important;
+
+  box-shadow:
+    0 7px 18px
+    rgba(var(--row-rgb),.10),
+
+    0 0 12px
+    rgba(var(--row-rgb),.07) !important;
+}
+
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.current
+.asc-rank-ladder-info strong {
+
+  color:
+    rgb(var(--row-rgb)) !important;
+
+  text-shadow:
+    0 0 7px
+    rgba(var(--row-rgb),.16) !important;
+}
+
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.current
+.asc-rank-ladder-state {
+
+  color:
+    rgb(var(--row-rgb)) !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .12em !important;
+}
+
+
+/* =========================================================
+   COMPLETE / LOCKED
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.complete:not(.current) {
+
+  opacity:
+    .68 !important;
+}
+
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.locked {
+
+  opacity:
+    .42 !important;
+
+  filter:
+    saturate(.55) !important;
+}
+
+
+/* =========================================================
+   ELITE ZONE
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-rank-elite-divider {
+
+  margin:
+    20px 0 11px !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(132,87,224,.12),
+      rgba(0,174,205,.08),
+      rgba(132,87,224,.12),
+      transparent
+    ) !important;
+
+  border-top:
+    1px solid rgba(132,87,224,.26) !important;
+
+  border-bottom:
+    1px solid rgba(0,174,205,.14) !important;
+}
+
+
+html[data-asc-theme="light"]
+.asc-rank-elite-divider span {
+
+  color:
+    #7959bf !important;
+
+  text-shadow:
+    0 0 8px rgba(132,87,224,.13) !important;
+}
+
+</style>
+
+
+
+<style id="ascend-light-legend-special-v35">
+
+/* =========================================================
+   LEGEND — SPECIAL TIER V35
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend {
+
+  min-height:
+    78px !important;
+
+  background:
+    radial-gradient(
+      circle at 8% 50%,
+      rgba(240,196,92,.22),
+      transparent 32%
+    ),
+
+    radial-gradient(
+      circle at 92% 0%,
+      rgba(145,99,235,.14),
+      transparent 34%
+    ),
+
+    linear-gradient(
+      120deg,
+      rgba(255,253,245,.98) 0%,
+      rgba(255,248,220,.95) 48%,
+      rgba(247,242,255,.92) 100%
+    ) !important;
+
+  border:
+    1px solid rgba(214,165,44,.52) !important;
+
+  border-left:
+    5px solid #d8a82f !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(217,169,51,.14),
+    0 7px 18px rgba(176,129,28,.10),
+    0 0 16px rgba(224,177,57,.10),
+    0 0 24px rgba(139,94,220,.045) !important;
+}
+
+
+/* LEGEND NAME */
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend
+.asc-rank-ladder-info strong {
+
+  color:
+    #a97708 !important;
+
+  font-size:
+    15px !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .07em !important;
+
+  text-shadow:
+    0 0 7px rgba(222,172,48,.20),
+    0 0 13px rgba(139,94,220,.07) !important;
+}
+
+
+/* subtitle */
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend
+.asc-rank-ladder-info span {
+
+  color:
+    #8a7441 !important;
+}
+
+
+/* emblem */
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend
+.asc-rank-emblem {
+
+  filter:
+    drop-shadow(0 0 5px rgba(230,182,60,.40))
+    drop-shadow(0 0 11px rgba(139,94,220,.16)) !important;
+}
+
+
+/* state */
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend
+.asc-rank-ladder-state {
+
+  color:
+    #a77810 !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .14em !important;
+
+  text-shadow:
+    0 0 7px rgba(222,172,48,.18) !important;
+}
+
+
+/* 未到達でも存在感は消しすぎない */
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend.locked {
+
+  opacity:
+    .70 !important;
+
+  filter:
+    saturate(.82) !important;
+}
+
+
+/* 到達中ならさらに一段上 */
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend.current {
+
+  transform:
+    translateX(4px) scale(1.01);
+
+  border-color:
+    rgba(215,165,40,.72) !important;
+
+  border-left:
+    6px solid #d9a82d !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.98),
+    0 9px 22px rgba(181,132,24,.15),
+    0 0 18px rgba(231,182,55,.18),
+    0 0 30px rgba(140,93,224,.08) !important;
+}
+
+</style>
+
+
+
+<style id="ascend-light-legend-apex-v36">
+
+/* =========================================================
+   LEGEND — APEX TIER V36
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend {
+
+  min-height:
+    92px !important;
+
+  padding:
+    13px 15px !important;
+
+  background:
+    radial-gradient(
+      circle at 4% 50%,
+      rgba(255,199,45,.40),
+      transparent 32%
+    ),
+
+    radial-gradient(
+      circle at 96% 15%,
+      rgba(126,78,230,.24),
+      transparent 34%
+    ),
+
+    linear-gradient(
+      115deg,
+      #fff9df 0%,
+      #fffef8 34%,
+      #fff1b5 67%,
+      #f4ebff 100%
+    ) !important;
+
+  border:
+    2px solid rgba(216,163,24,.72) !important;
+
+  border-left:
+    7px solid #d69d0b !important;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.88),
+    inset 0 -2px 0 rgba(193,137,0,.14),
+
+    0 8px 22px rgba(165,115,8,.16),
+
+    0 0 16px rgba(238,183,37,.22),
+    0 0 30px rgba(238,183,37,.13),
+
+    0 0 40px rgba(127,81,224,.08) !important;
+}
+
+
+/* =========================================================
+   EMBLEM — 大きく、明確に発光
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend
+.asc-rank-ladder-emblem {
+
+  width:
+    56px !important;
+
+  height:
+    56px !important;
+}
+
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend
+.asc-rank-emblem,
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend
+.asc-rank-emblem.small {
+
+  width:
+    52px !important;
+
+  height:
+    52px !important;
+
+  filter:
+    drop-shadow(0 0 5px rgba(255,208,68,.72))
+    drop-shadow(0 0 11px rgba(232,174,25,.48))
+    drop-shadow(0 0 18px rgba(133,83,224,.22)) !important;
+}
+
+
+/* =========================================================
+   NAME
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend
+.asc-rank-ladder-info strong {
+
+  color:
+    #946400 !important;
+
+  font-size:
+    18px !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .11em !important;
+
+  text-shadow:
+    0 0 5px rgba(255,255,255,.90),
+    0 0 9px rgba(235,178,27,.36),
+    0 0 18px rgba(137,84,224,.12) !important;
+}
+
+
+/* 必要時間など */
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend
+.asc-rank-ladder-info span {
+
+  margin-top:
+    5px !important;
+
+  color:
+    #886f35 !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .10em !important;
+}
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend
+.asc-rank-ladder-state {
+
+  padding:
+    5px 9px !important;
+
+  color:
+    #966700 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,230,145,.68),
+      rgba(245,232,255,.70)
+    ) !important;
+
+  border:
+    1px solid rgba(207,151,17,.38) !important;
+
+  border-radius:
+    8px !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .15em !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.90),
+    0 0 9px rgba(225,167,23,.12) !important;
+}
+
+
+/* =========================================================
+   LOCKEDでも「最終到達点」感を維持
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend.locked {
+
+  opacity:
+    .88 !important;
+
+  filter:
+    none !important;
+}
+
+
+/* =========================================================
+   CURRENT LEGEND — 到達者はさらに別格
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-rank-ladder-row.asc-rank-legend.current {
+
+  transform:
+    translateX(5px) scale(1.015);
+
+  border-color:
+    rgba(211,151,0,.92) !important;
+
+  border-left:
+    8px solid #cf9300 !important;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.95),
+
+    0 11px 27px rgba(157,105,0,.20),
+
+    0 0 16px rgba(255,199,47,.34),
+    0 0 31px rgba(255,199,47,.22),
+    0 0 48px rgba(129,75,222,.14) !important;
+}
+
+</style>
+
+
+
+<style id="ascend-rank-days-left-v37">
+
+html[data-asc-theme="light"]
+.asc-rank-season-grid {
+  grid-template-columns:
+    repeat(4,minmax(0,1fr)) !important;
+}
+
+html[data-asc-theme="light"]
+.asc-rank-season-stat:last-child strong {
+  color:#438896 !important;
+
+  text-shadow:
+    0 0 7px rgba(0,174,205,.12) !important;
+}
+
+@media (max-width:600px) {
+
+  html[data-asc-theme="light"]
+  .asc-rank-season-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr)) !important;
+  }
+
+}
+
+</style>
+
 </head>
 
 
@@ -16777,6 +17858,22 @@ async function showRankPage(user) {
     `${now.getFullYear()}.${String(
       now.getMonth() + 1
     ).padStart(2, "0")}`;
+
+  const seasonEnd =
+    new Date(
+      now.getFullYear(),
+      now.getMonth() + 1,
+      1
+    );
+
+  const seasonRemainingDays =
+    Math.max(
+      0,
+      Math.ceil(
+        (seasonEnd.getTime() - now.getTime()) /
+        86400000
+      )
+    );
 
 
 
@@ -19245,6 +20342,23 @@ async function showRankPage(user) {
                 data.lastSeasonRank ||
                 "—"
               }
+            </strong>
+
+          </div>
+
+
+          <div
+            class="
+              asc-rank-season-stat
+            "
+          >
+
+            <span>
+              DAYS LEFT
+            </span>
+
+            <strong>
+              ${seasonRemainingDays} DAYS
             </strong>
 
           </div>
