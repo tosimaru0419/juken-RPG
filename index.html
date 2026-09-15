@@ -15074,6 +15074,421 @@ html[data-asc-theme="light"]
 
 </style>
 
+
+
+<style id="ascend-light-cyan-balance-v23">
+
+/* =========================================================
+   ASCEND LIGHT — CYAN BALANCE V23
+   no new UI / no layout changes
+========================================================= */
+
+
+/* HOMEの主要カード枠をほんの少しシアン寄りに */
+
+html[data-asc-theme="light"]
+#home-player-status,
+
+html[data-asc-theme="light"]
+#home-study-status {
+
+  border-color:
+    rgba(0,170,205,.30) !important;
+}
+
+
+/* セクションタイトル */
+
+html[data-asc-theme="light"]
+#home-study-status .home-section-title {
+
+  color:
+    #458291 !important;
+}
+
+
+/* XPの小さいラベル */
+
+html[data-asc-theme="light"]
+#home-player-status .home-xp-row > span:first-child {
+
+  color:
+    #4d8997 !important;
+}
+
+
+/* RANKラベルだけシアン寄り
+   ランク本体の色は触らない */
+
+html[data-asc-theme="light"]
+#home-player-status .home-rank-progress-label {
+
+  color:
+    #4b8896 !important;
+}
+
+
+/* HOME下部の小さい見出し */
+
+html[data-asc-theme="light"]
+#home-player-status .home-summary-item > span {
+
+  color:
+    #5d909b !important;
+}
+
+
+/* XPバーだけ少しエネルギー感 */
+
+html[data-asc-theme="light"]
+#home-player-status .home-xp-fill {
+
+  box-shadow:
+    0 0 7px rgba(0,185,220,.22) !important;
+}
+
+</style>
+
+
+
+<style id="ascend-light-home-name-level-clean-v24">
+
+/* 名前まわりの余計な枠・縦線・帯を消す */
+html[data-asc-theme="light"]
+#home-player-status .home-player-name {
+  border:0 !important;
+  border-left:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  padding-left:0 !important;
+}
+
+/* LEVELまわりの余計な枠・縦線・帯を消す */
+html[data-asc-theme="light"]
+#home-player-status .home-player-level {
+  border:0 !important;
+  border-left:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  padding-left:0 !important;
+}
+
+/* 文字側のネオンは残す */
+html[data-asc-theme="light"]
+#home-player-status .home-player-name-text,
+
+html[data-asc-theme="light"]
+#home-player-status .home-player-level > strong {
+  background:transparent !important;
+}
+
+</style>
+
+
+<style id="ascend-light-level-purple-line-v26">
+
+/* LEVEL：枠なし、紫ラインだけ */
+html[data-asc-theme="light"]
+#home-player-status .home-player-level {
+
+  border:0 !important;
+  outline:0 !important;
+
+  padding-left:10px !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      #8a6cff 0,
+      #8a6cff 3px,
+      transparent 3px,
+      transparent 100%
+    ) !important;
+
+  box-shadow:none !important;
+}
+
+</style>
+
+
+
+<style id="ascend-light-timer-clean-v27">
+
+/* 今日の勉強タイマー：枠だけ消す */
+html[data-asc-theme="light"]
+#home-study-status .home-study-time {
+
+  border:0 !important;
+  outline:0 !important;
+
+  background:transparent !important;
+
+  padding-left:0 !important;
+
+  box-shadow:none !important;
+
+  /* 文字のシアンネオンは残す */
+  text-shadow:
+    0 0 6px rgba(0,190,225,.30),
+    0 0 13px rgba(0,190,225,.12) !important;
+}
+
+</style>
+
+
+
+<style id="ascend-light-home-summary-bright-v28">
+
+/* HOME プレイヤーカード内の4つの小窓 */
+html[data-asc-theme="light"]
+#home-player-status .home-summary-item {
+
+  background:
+    #f7fbfc !important;
+
+  border-color:
+    rgba(0,170,205,.24) !important;
+
+  box-shadow:
+    0 2px 7px rgba(30,90,105,.045) !important;
+}
+
+</style>
+
+
+
+<style id="ascend-light-quest-mint-depth-v29">
+
+/* QUEST active tab — mint glass depth */
+html[data-asc-theme="light"]
+#quest-main-tabs button.active {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(190,246,244,.92) 0%,
+      rgba(213,246,249,.88) 55%,
+      rgba(229,222,255,.62) 100%
+    ) !important;
+
+  color:
+    #397985 !important;
+
+  -webkit-text-fill-color:
+    #397985 !important;
+
+  border:
+    1px solid rgba(0,174,205,.34) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.82),
+    inset 0 -2px 0 rgba(0,174,205,.14),
+    0 3px 9px rgba(30,105,120,.07),
+    0 0 8px rgba(0,174,205,.08) !important;
+
+  text-shadow:
+    0 0 6px rgba(0,174,205,.10) !important;
+}
+
+</style>
+
+
+
+<style id="ascend-light-quest-daily-clean-v30">
+
+/* =========================================================
+   QUEST DAILY — CLEAN FUTURE V30
+========================================================= */
+
+
+/* DAILYカード本体 */
+html[data-asc-theme="light"]
+body:has(#quest-main-tabs)
+div:has(> .replace-daily-btn) {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(199,243,248,.52) 0%,
+      rgba(246,251,252,.96) 34%,
+      rgba(249,252,253,.98) 100%
+    ) !important;
+
+  border:
+    1px solid rgba(0,145,175,.30) !important;
+
+  box-shadow:
+    0 5px 15px rgba(30,82,94,.055),
+    0 0 11px rgba(0,174,205,.045) !important;
+}
+
+
+/* DAILYラベル */
+html[data-asc-theme="light"]
+body:has(#quest-main-tabs)
+div:has(> .replace-daily-btn)
+> div:first-child {
+
+  color:
+    #4d91a0 !important;
+}
+
+
+/* 入れ替えボタン */
+html[data-asc-theme="light"]
+.replace-daily-btn {
+
+  min-height:
+    48px !important;
+
+  padding:
+    10px 14px !important;
+
+  background:
+    rgba(248,252,253,.82) !important;
+
+  color:
+    #3e6974 !important;
+
+  -webkit-text-fill-color:
+    #3e6974 !important;
+
+  border:
+    1px solid rgba(0,145,175,.27) !important;
+
+  border-radius:
+    13px !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.88),
+    0 2px 6px rgba(30,78,90,.04) !important;
+
+  font-weight:
+    800 !important;
+}
+
+
+/* hoverできる端末だけ */
+@media (hover:hover) {
+
+  html[data-asc-theme="light"]
+  .replace-daily-btn:hover {
+
+    background:
+      rgba(229,247,250,.92) !important;
+
+    border-color:
+      rgba(0,174,205,.42) !important;
+  }
+
+}
+
+</style>
+
+
+
+<style id="ascend-light-quest-future-v31">
+
+/* =========================================================
+   QUEST DAILY — FUTURE DETAIL V31
+   V30ベース / layout unchanged
+========================================================= */
+
+
+/* DAILYカード */
+html[data-asc-theme="light"]
+body:has(#quest-main-tabs)
+div:has(> .replace-daily-btn) {
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,190,220,.78),
+      rgba(0,190,220,.16) 38%,
+      rgba(125,100,225,.12) 72%,
+      transparent
+    ) top / 100% 2px no-repeat,
+
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(125,100,225,.075),
+      transparent 34%
+    ),
+
+    linear-gradient(
+      135deg,
+      rgba(199,243,248,.48) 0%,
+      rgba(246,251,252,.97) 35%,
+      rgba(249,252,253,.99) 100%
+    ) !important;
+
+  border-color:
+    rgba(0,155,185,.32) !important;
+
+  box-shadow:
+    0 6px 16px rgba(30,82,94,.06),
+    0 0 13px rgba(0,174,205,.055) !important;
+}
+
+
+/* DAILY 1 / DAILY 2 / DAILY 3 */
+html[data-asc-theme="light"]
+body:has(#quest-main-tabs)
+div:has(> .replace-daily-btn)
+> div:first-child {
+
+  color:
+    #4a8f9e !important;
+
+  letter-spacing:
+    .055em !important;
+
+  font-weight:
+    700 !important;
+
+  text-shadow:
+    0 0 7px rgba(0,174,205,.11) !important;
+}
+
+
+/* 入れ替えボタンを軽いガラスUIに */
+html[data-asc-theme="light"]
+.replace-daily-btn {
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.93),
+      rgba(242,249,250,.83)
+    ) !important;
+
+  border-color:
+    rgba(0,155,185,.28) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(0,174,205,.07),
+    0 3px 8px rgba(30,78,90,.045) !important;
+
+  text-shadow:
+    0 0 6px rgba(0,174,205,.06) !important;
+}
+
+
+/* 押した時だけ少し発光 */
+html[data-asc-theme="light"]
+.replace-daily-btn:active {
+
+  border-color:
+    rgba(0,174,205,.45) !important;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(0,174,205,.10),
+    0 0 9px rgba(0,174,205,.10) !important;
+}
+
+</style>
+
 </head>
 
 
