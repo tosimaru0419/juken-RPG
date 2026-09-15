@@ -16716,10 +16716,12 @@ async function showRankPage(user) {
 
 
     remaining =
-      Math.max(
-        0,
-        nextStep.minutes -
-        rankMonthlyMinutes
+      Math.ceil(
+        Math.max(
+          0,
+          nextStep.minutes -
+          rankMonthlyMinutes
+        )
       );
 
   }
