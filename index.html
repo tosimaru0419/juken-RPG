@@ -45552,6 +45552,90 @@ async function showManualStudyPage(user) {
         </select>
       </label>
 
+      <div
+        id="manual-weakness-wrap-v1"
+        class="hidden"
+        style="
+          display:grid;
+          gap:12px;
+          padding:14px;
+          border:1px solid rgba(124,92,255,.22);
+          border-radius:14px;
+          background:rgba(124,92,255,.055);
+        "
+      >
+        <div>
+          <div
+            style="
+              font-size:12px;
+              font-weight:900;
+              letter-spacing:.08em;
+              color:#9b83ff;
+            "
+          >
+            WEAKNESS MAP
+          </div>
+
+          <div
+            style="
+              margin-top:3px;
+              color:#9aa6ba;
+              font-size:12px;
+              line-height:1.6;
+            "
+          >
+            単元への記録は任意です。
+          </div>
+        </div>
+
+        <label>
+          科目
+          <select
+            id="manual-weakness-course-v1"
+            style="
+              width:100%;
+              margin-top:6px;
+              padding:12px;
+              border-radius:10px;
+            "
+          >
+            <option value="">選択しない</option>
+          </select>
+        </label>
+
+        <label>
+          CHAPTER
+          <select
+            id="manual-weakness-chapter-v1"
+            disabled
+            style="
+              width:100%;
+              margin-top:6px;
+              padding:12px;
+              border-radius:10px;
+            "
+          >
+            <option value="">選択してください</option>
+          </select>
+        </label>
+
+        <label>
+          UNIT
+          <select
+            id="manual-weakness-unit-v1"
+            disabled
+            style="
+              width:100%;
+              margin-top:6px;
+              padding:12px;
+              border-radius:10px;
+            "
+          >
+            <option value="">選択してください</option>
+          </select>
+        </label>
+      </div>
+
       <label>
         勉強時間（分）
         <input
@@ -45591,6 +45675,325 @@ async function showManualStudyPage(user) {
     `)
   );
 
+  const manualSubjectEl =
+    $("manual-study-subject");
+
+  const manualWeaknessWrapV1 =
+    $("manual-weakness-wrap-v1");
+
+  const manualWeaknessCourseV1 =
+    $("manual-weakness-course-v1");
+
+  const manualWeaknessChapterV1 =
+    $("manual-weakness-chapter-v1");
+
+  const manualWeaknessUnitV1 =
+    $("manual-weakness-unit-v1");
+
+
+  function manualIsMathSubjectV1(subject) {
+
+    const value =
+      String(subject || "").trim();
+
+    return (
+      value === "数学" ||
+      value.includes("数学")
+    );
+
+  }
+
+
+  function manualWeaknessArrayV1(value) {
+
+    if (Array.isArray(value)) {
+      return value;
+    }
+
+    if (
+      value &&
+      typeof value === "object"
+    ) {
+      return Object.entries(value).map(
+        ([key, item]) => ({
+          ...(item || {}),
+          id:
+            item?.id ||
+            key,
+        })
+      );
+    }
+
+    return [];
+
+  }
+
+
+  function manualWeaknessLabelV1(item) {
+
+    return String(
+      item?.name ||
+      item?.label ||
+      item?.title ||
+      item?.id ||
+      ""
+    );
+
+  }
+
+
+  const manualWeaknessMasterV1 =
+    ASCEND_UNIT_MASTER?.courses ??
+    ASCEND_UNIT_MASTER;
+
+  const manualWeaknessCoursesV1 =
+    manualWeaknessArrayV1(
+      manualWeaknessMasterV1
+    );
+
+
+  function resetManualWeaknessV1() {
+
+    if (manualWeaknessCourseV1) {
+      manualWeaknessCourseV1.innerHTML =
+        `<option value="">選択しない</option>`;
+    }
+
+    if (manualWeaknessChapterV1) {
+      manualWeaknessChapterV1.innerHTML =
+        `<option value="">選択してください</option>`;
+
+      manualWeaknessChapterV1.disabled =
+        true;
+    }
+
+    if (manualWeaknessUnitV1) {
+      manualWeaknessUnitV1.innerHTML =
+        `<option value="">選択してください</option>`;
+
+      manualWeaknessUnitV1.disabled =
+        true;
+    }
+
+  }
+
+
+  function renderManualWeaknessCoursesV1() {
+
+    if (!manualWeaknessCourseV1) {
+      return;
+    }
+
+    manualWeaknessCourseV1.innerHTML =
+      `
+        <option value="">選択しない</option>
+        ${
+          manualWeaknessCoursesV1
+            .map(course => `
+              <option value="${course.id}">
+                ${manualWeaknessLabelV1(course)}
+              </option>
+            `)
+            .join("")
+        }
+      `;
+
+  }
+
+
+  function findManualWeaknessCourseV1(courseId) {
+
+    return manualWeaknessCoursesV1.find(
+      course =>
+        String(course?.id || "") ===
+        String(courseId || "")
+    ) || null;
+
+  }
+
+
+  function getManualWeaknessChaptersV1(course) {
+
+    return manualWeaknessArrayV1(
+      course?.chapters ??
+      course?.chapter ??
+      []
+    );
+
+  }
+
+
+  function getManualWeaknessUnitsV1(chapter) {
+
+    return manualWeaknessArrayV1(
+      chapter?.units ??
+      chapter?.unit ??
+      []
+    );
+
+  }
+
+
+  function syncManualWeaknessVisibilityV1() {
+
+    if (!manualWeaknessWrapV1) {
+      return;
+    }
+
+    const subject =
+      manualSubjectEl?.value ||
+      "";
+
+    const isMath =
+      manualIsMathSubjectV1(subject);
+
+    manualWeaknessWrapV1.classList.toggle(
+      "hidden",
+      !isMath
+    );
+
+    if (!isMath) {
+      resetManualWeaknessV1();
+      return;
+    }
+
+    renderManualWeaknessCoursesV1();
+
+  }
+
+
+  if (manualSubjectEl) {
+
+    manualSubjectEl.onchange =
+      () => {
+
+        resetManualWeaknessV1();
+
+        syncManualWeaknessVisibilityV1();
+
+      };
+
+  }
+
+
+  if (manualWeaknessCourseV1) {
+
+    manualWeaknessCourseV1.onchange =
+      () => {
+
+        if (
+          !manualWeaknessChapterV1 ||
+          !manualWeaknessUnitV1
+        ) {
+          return;
+        }
+
+        manualWeaknessUnitV1.innerHTML =
+          `<option value="">選択してください</option>`;
+
+        manualWeaknessUnitV1.disabled =
+          true;
+
+        const course =
+          findManualWeaknessCourseV1(
+            manualWeaknessCourseV1.value
+          );
+
+        const chapters =
+          getManualWeaknessChaptersV1(
+            course
+          );
+
+        manualWeaknessChapterV1.innerHTML =
+          `
+            <option value="">
+              選択してください
+            </option>
+
+            ${
+              chapters
+                .map(chapter => `
+                  <option value="${chapter.id}">
+                    ${manualWeaknessLabelV1(chapter)}
+                  </option>
+                `)
+                .join("")
+            }
+          `;
+
+        manualWeaknessChapterV1.disabled =
+          !course;
+
+      };
+
+  }
+
+
+  if (manualWeaknessChapterV1) {
+
+    manualWeaknessChapterV1.onchange =
+      () => {
+
+        if (
+          !manualWeaknessCourseV1 ||
+          !manualWeaknessUnitV1
+        ) {
+          return;
+        }
+
+        const course =
+          findManualWeaknessCourseV1(
+            manualWeaknessCourseV1.value
+          );
+
+        const chapters =
+          getManualWeaknessChaptersV1(
+            course
+          );
+
+        const chapter =
+          chapters.find(
+            item =>
+              String(item?.id || "") ===
+              String(
+                manualWeaknessChapterV1.value ||
+                ""
+              )
+          ) || null;
+
+        const units =
+          getManualWeaknessUnitsV1(
+            chapter
+          );
+
+        manualWeaknessUnitV1.innerHTML =
+          `
+            <option value="">
+              選択してください
+            </option>
+
+            ${
+              units
+                .map(unit => `
+                  <option value="${unit.id}">
+                    ${manualWeaknessLabelV1(unit)}
+                  </option>
+                `)
+                .join("")
+            }
+          `;
+
+        manualWeaknessUnitV1.disabled =
+          !chapter;
+
+      };
+
+  }
+
+
+  syncManualWeaknessVisibilityV1();
+
+
   const manualStudyBack =
     $("manual-study-back");
 
@@ -45618,12 +46021,16 @@ async function showManualStudyPage(user) {
 
   }
 
+
   $("manual-study-next").onclick = async () => {
+
     const subject =
       $("manual-study-subject").value;
 
     const minutes =
-      Number($("manual-study-minutes").value);
+      Number(
+        $("manual-study-minutes").value
+      );
 
     const errorEl =
       $("manual-study-error");
@@ -45646,10 +46053,39 @@ async function showManualStudyPage(user) {
       return;
     }
 
+
+    const selectedWeaknessUnitIdV1 =
+      manualIsMathSubjectV1(subject)
+        ? (
+            manualWeaknessUnitV1?.value ||
+            ""
+          )
+        : "";
+
+
+    const selectedWeaknessUnitV1 =
+      selectedWeaknessUnitIdV1
+        ? findAscendWeaknessUnitV1(
+            selectedWeaknessUnitIdV1
+          )
+        : null;
+
+
+    if (
+      selectedWeaknessUnitIdV1 &&
+      !selectedWeaknessUnitV1
+    ) {
+      errorEl.textContent =
+        "選択したUNITを読み込めませんでした。";
+      return;
+    }
+
+
     /*
       既存タイマー画面を一度生成して、
       経過時間だけ手動入力値に置き換える。
 
+      Weakness Map の UNIT も timerState に渡し、
       その後「終了」処理を呼ぶことで、
       タイマーと完全に同じ保存ロジックを使用する。
     */
@@ -45660,10 +46096,26 @@ async function showManualStudyPage(user) {
 
     timerState = {
       subject,
+
+      weaknessCourseId:
+        selectedWeaknessUnitV1?.courseId ||
+        "",
+
+      weaknessChapterId:
+        selectedWeaknessUnitV1?.chapterId ||
+        "",
+
+      weaknessUnitId:
+        selectedWeaknessUnitV1?.id ||
+        "",
+
       xpItem: "",
+
       startedAt: null,
+
       elapsedBeforePause:
         minutes * 60 * 1000,
+
       paused: true,
 
       studyLinkRankEligibleMs: 0,
@@ -45693,9 +46145,10 @@ async function showManualStudyPage(user) {
 
     endButton.disabled = false;
     endButton.click();
-  };
-}
 
+  };
+
+}
 
 async function showTimerPage(user) {
 
