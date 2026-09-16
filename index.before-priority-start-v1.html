@@ -4056,44 +4056,6 @@ body:has(#main-navigation):not(:has(.boss-battle-card)):not(:has(#boss-back-btn)
     0 8px 8px;
 }
 
-
-
-.home-priority-item-v1 {
-  grid-template-columns:
-    28px minmax(0,1fr) auto;
-}
-
-.home-priority-start-v1 {
-  align-self: center;
-
-  min-width: 62px;
-  min-height: 38px;
-
-  padding: 7px 10px;
-
-  border:
-    1px solid rgba(140,115,255,.22);
-
-  border-radius: 10px;
-
-  background:
-    rgba(115,85,235,.12);
-
-  color: inherit;
-
-  font: inherit;
-
-  font-size: .62rem;
-  font-weight: 900;
-  letter-spacing: .07em;
-
-  cursor: pointer;
-}
-
-.home-priority-start-v1:active {
-  transform: scale(.96);
-}
-
 </style>
 
 <style id="ascend-weakness-map-ui-v1">
@@ -37802,10 +37764,6 @@ function scheduleHomeMaintenance(user, data) {
 // ASCEND / PRIORITY TARGETS v1
 // ============================================================
 
-let ascendPendingStudyTargetV1 =
-  null;
-
-
 function ascendPriorityTimeMsV1(value) {
   if (!value) return null;
 
@@ -37988,15 +37946,6 @@ function ascendPriorityItemHtmlV1(
         </span>
 
       </div>
-
-
-      <button
-        type="button"
-        class="home-priority-start-v1"
-        data-priority-start-unit="${target.id}"
-      >
-        START
-      </button>
 
     </div>
   `;
@@ -38751,55 +38700,6 @@ const xpPercent =
       </div>
     `)
   );
-
-
-
-  document
-    .querySelectorAll(
-      "[data-priority-start-unit]"
-    )
-    .forEach(
-      button => {
-
-        button.onclick =
-          async () => {
-
-            const unit =
-              findAscendWeaknessUnitV1(
-                button.dataset
-                  .priorityStartUnit
-              );
-
-            if (!unit) {
-              return;
-            }
-
-
-            ascendPendingStudyTargetV1 = {
-              courseId:
-                unit.courseId,
-
-              chapterId:
-                unit.chapterId,
-
-              unitId:
-                unit.id,
-            };
-
-
-            await showTimerPage(
-              user
-            );
-
-
-            mountClassicNavigation(
-              user
-            );
-
-          };
-
-      }
-    );
 
 
   $("home-start-study").onclick =
@@ -46282,71 +46182,6 @@ async function showTimerPage(user) {
   syncWeaknessVisibilityV1();
 
   restoreWeaknessSelectionV1();
-
-
-
-  // ========================================================
-  // PRIORITY TARGET -> TIMER
-  // ========================================================
-
-  if (
-    ascendPendingStudyTargetV1 &&
-    !timerState.subject
-  ) {
-
-    const target =
-      ascendPendingStudyTargetV1;
-
-
-    const mathOption =
-      [
-        ...$("timer-subject").options
-      ].find(
-        option =>
-          isMathSubjectV1(
-            option.value
-          )
-      );
-
-
-    if (mathOption) {
-
-      $("timer-subject").value =
-        mathOption.value;
-
-
-      syncWeaknessVisibilityV1();
-
-
-      weaknessCourseV1.value =
-        target.courseId || "";
-
-
-      renderWeaknessChaptersV1(
-        target.courseId
-      );
-
-
-      weaknessChapterV1.value =
-        target.chapterId || "";
-
-
-      renderWeaknessUnitsV1(
-        target.courseId,
-        target.chapterId
-      );
-
-
-      weaknessUnitV1.value =
-        target.unitId || "";
-
-    }
-
-
-    ascendPendingStudyTargetV1 =
-      null;
-
-  }
 
 
   $("timer-back").onclick = async () => {

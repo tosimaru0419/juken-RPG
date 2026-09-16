@@ -3884,218 +3884,6 @@ body:has(#main-navigation):not(:has(.boss-battle-card)):not(:has(#boss-back-btn)
 
 
 
-
-<style id="ascend-priority-targets-v1">
-
-.home-priority-v1 {
-  margin-top: 18px;
-  display: grid;
-  gap: 10px;
-}
-
-.home-priority-header-v1 {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.home-priority-header-v1 > div {
-  display: grid;
-  gap: 2px;
-}
-
-.home-priority-header-v1 span {
-  font-size: .56rem;
-  font-weight: 900;
-  letter-spacing: .15em;
-  opacity: .4;
-}
-
-.home-priority-header-v1 strong {
-  font-size: .92rem;
-  letter-spacing: .04em;
-}
-
-.home-priority-header-v1 small {
-  font-size: .62rem;
-  font-weight: 900;
-  opacity: .42;
-}
-
-.home-priority-list-v1 {
-  display: grid;
-  gap: 7px;
-}
-
-.home-priority-item-v1 {
-  display: grid;
-  grid-template-columns: 28px minmax(0,1fr);
-  gap: 8px;
-
-  padding: 11px;
-
-  border:
-    1px solid rgba(255,255,255,.075);
-
-  border-radius: 13px;
-
-  background:
-    rgba(255,255,255,.025);
-}
-
-.home-priority-rank-v1 {
-  padding-top: 2px;
-
-  font-size: .58rem;
-  font-weight: 900;
-
-  opacity: .28;
-}
-
-.home-priority-body-v1 {
-  min-width: 0;
-
-  display: grid;
-  gap: 3px;
-}
-
-.home-priority-badge-v1 {
-  width: fit-content;
-
-  padding: 3px 6px;
-
-  border-radius: 999px;
-
-  font-size: .54rem;
-  font-weight: 900;
-  letter-spacing: .06em;
-
-  border:
-    1px solid rgba(255,255,255,.08);
-}
-
-.home-priority-item-v1[data-kind="weak"]
-.home-priority-badge-v1 {
-  color: #ff8b9b;
-}
-
-.home-priority-item-v1[data-kind="unstable"]
-.home-priority-badge-v1 {
-  color: #ffd76a;
-}
-
-.home-priority-item-v1[data-kind="review"]
-.home-priority-badge-v1,
-.home-priority-item-v1[data-kind="review-soon"]
-.home-priority-badge-v1 {
-  color: #8bdcff;
-}
-
-.home-priority-unit-v1 {
-  font-size: .88rem;
-}
-
-.home-priority-path-v1 {
-  font-size: .66rem;
-  opacity: .48;
-}
-
-.home-priority-last-v1 {
-  font-size: .59rem;
-  font-weight: 700;
-  opacity: .36;
-}
-
-.home-priority-empty-v1 {
-  padding: 15px;
-
-  border:
-    1px dashed rgba(255,255,255,.09);
-
-  border-radius: 13px;
-
-  font-size: .71rem;
-  line-height: 1.7;
-
-  opacity: .5;
-}
-
-.home-priority-more-v1 {
-  border:
-    1px solid rgba(255,255,255,.07);
-
-  border-radius: 12px;
-
-  background:
-    rgba(255,255,255,.018);
-}
-
-.home-priority-more-v1 > summary {
-  cursor: pointer;
-
-  padding: 11px;
-
-  list-style: none;
-
-  text-align: center;
-
-  font-size: .66rem;
-  font-weight: 900;
-
-  opacity: .58;
-}
-
-.home-priority-more-v1 > summary::-webkit-details-marker {
-  display: none;
-}
-
-.home-priority-more-v1
-.home-priority-list-v1 {
-  padding:
-    0 8px 8px;
-}
-
-
-
-.home-priority-item-v1 {
-  grid-template-columns:
-    28px minmax(0,1fr) auto;
-}
-
-.home-priority-start-v1 {
-  align-self: center;
-
-  min-width: 62px;
-  min-height: 38px;
-
-  padding: 7px 10px;
-
-  border:
-    1px solid rgba(140,115,255,.22);
-
-  border-radius: 10px;
-
-  background:
-    rgba(115,85,235,.12);
-
-  color: inherit;
-
-  font: inherit;
-
-  font-size: .62rem;
-  font-weight: 900;
-  letter-spacing: .07em;
-
-  cursor: pointer;
-}
-
-.home-priority-start-v1:active {
-  transform: scale(.96);
-}
-
-</style>
-
 <style id="ascend-weakness-map-ui-v1">
 
 /* ============================================================
@@ -37797,313 +37585,6 @@ function scheduleHomeMaintenance(user, data) {
 }
 
 
-
-// ============================================================
-// ASCEND / PRIORITY TARGETS v1
-// ============================================================
-
-let ascendPendingStudyTargetV1 =
-  null;
-
-
-function ascendPriorityTimeMsV1(value) {
-  if (!value) return null;
-
-  if (typeof value.toMillis === "function") {
-    return Number(value.toMillis());
-  }
-
-  if (typeof value.toDate === "function") {
-    return value.toDate().getTime();
-  }
-
-  if (
-    typeof value === "object" &&
-    Number.isFinite(Number(value.seconds))
-  ) {
-    return Number(value.seconds) * 1000;
-  }
-
-  const ms = new Date(value).getTime();
-  return Number.isFinite(ms) ? ms : null;
-}
-
-
-function ascendPriorityDaysAgoV1(value) {
-  const ms = ascendPriorityTimeMsV1(value);
-
-  if (ms == null) return null;
-
-  return Math.max(
-    0,
-    Math.floor(
-      (Date.now() - ms) / 86400000
-    )
-  );
-}
-
-
-function getAscendPriorityTargetsV1(data) {
-
-  const weaknessMap =
-    data?.weaknessMap &&
-    typeof data.weaknessMap === "object"
-      ? data.weaknessMap
-      : {};
-
-  const result = [];
-
-  getAscendWeaknessUnitsV1().forEach(unit => {
-
-    const record =
-      weaknessMap[unit.id] || {};
-
-    const status =
-      normalizeAscendWeaknessStatusV1(
-        record.status
-      );
-
-    const daysAgo =
-      ascendPriorityDaysAgoV1(
-        record.lastStudiedAt
-      );
-
-    let rank = null;
-    let kind = "";
-    let label = "";
-
-    if (status === "weak") {
-      rank = 1;
-      kind = "weak";
-      label = "WEAK";
-    }
-
-    else if (status === "unstable") {
-      rank = 2;
-      kind = "unstable";
-      label = "UNSTABLE";
-    }
-
-    else if (
-      status === "clear" &&
-      daysAgo != null &&
-      daysAgo >= 14
-    ) {
-      rank = 3;
-      kind = "review";
-      label = "REVIEW DUE";
-    }
-
-    else if (
-      status === "clear" &&
-      daysAgo != null &&
-      daysAgo >= 7
-    ) {
-      rank = 4;
-      kind = "review-soon";
-      label = "REVIEW SOON";
-    }
-
-    if (rank == null) return;
-
-    result.push({
-      ...unit,
-      rank,
-      kind,
-      label,
-      daysAgo,
-      lastMs:
-        ascendPriorityTimeMsV1(
-          record.lastStudiedAt
-        ) ?? 0,
-    });
-
-  });
-
-
-  result.sort((a, b) => {
-    if (a.rank !== b.rank) {
-      return a.rank - b.rank;
-    }
-
-    return a.lastMs - b.lastMs;
-  });
-
-
-  return result;
-}
-
-
-function ascendPriorityLastTextV1(target) {
-
-  if (target.daysAgo == null) {
-    return "NOT STUDIED";
-  }
-
-  if (target.daysAgo === 0) {
-    return "LAST STUDIED TODAY";
-  }
-
-  if (target.daysAgo === 1) {
-    return "LAST STUDIED 1 DAY AGO";
-  }
-
-  return `LAST STUDIED ${target.daysAgo} DAYS AGO`;
-}
-
-
-function ascendPriorityItemHtmlV1(
-  target,
-  number
-) {
-
-  return `
-    <div
-      class="home-priority-item-v1"
-      data-kind="${target.kind}"
-    >
-
-      <div class="home-priority-rank-v1">
-        #${number}
-      </div>
-
-      <div class="home-priority-body-v1">
-
-        <div class="home-priority-badge-v1">
-          ${target.label}
-        </div>
-
-        <strong class="home-priority-unit-v1">
-          ${target.name}
-        </strong>
-
-        <span class="home-priority-path-v1">
-          ${target.courseName}
-          /
-          ${target.chapterName}
-        </span>
-
-        <span class="home-priority-last-v1">
-          ${ascendPriorityLastTextV1(target)}
-        </span>
-
-      </div>
-
-
-      <button
-        type="button"
-        class="home-priority-start-v1"
-        data-priority-start-unit="${target.id}"
-      >
-        START
-      </button>
-
-    </div>
-  `;
-}
-
-
-function renderAscendPriorityTargetsV1(data) {
-
-  const targets =
-    getAscendPriorityTargetsV1(data);
-
-  if (targets.length === 0) {
-    return `
-      <section class="home-priority-v1">
-
-        <div class="home-priority-header-v1">
-          <div>
-            <span>ASCEND / STUDY ANALYSIS</span>
-            <strong>PRIORITY TARGETS</strong>
-          </div>
-        </div>
-
-        <div class="home-priority-empty-v1">
-          現在、優先攻略対象はありません。
-          WEAKNESS MAPで苦手単元を登録すると
-          ここに表示されます。
-        </div>
-
-      </section>
-    `;
-  }
-
-
-  const first =
-    targets.slice(0, 6);
-
-  const rest =
-    targets.slice(6);
-
-
-  return `
-    <section class="home-priority-v1">
-
-      <div class="home-priority-header-v1">
-
-        <div>
-          <span>
-            ASCEND / STUDY ANALYSIS
-          </span>
-
-          <strong>
-            PRIORITY TARGETS
-          </strong>
-        </div>
-
-        <small>
-          ${targets.length} TARGET
-        </small>
-
-      </div>
-
-
-      <div class="home-priority-list-v1">
-        ${
-          first.map(
-            (target, i) =>
-              ascendPriorityItemHtmlV1(
-                target,
-                i + 1
-              )
-          ).join("")
-        }
-      </div>
-
-
-      ${
-        rest.length
-          ? `
-            <details class="home-priority-more-v1">
-
-              <summary>
-                すべて表示
-                （${targets.length}）
-              </summary>
-
-              <div class="home-priority-list-v1">
-                ${
-                  rest.map(
-                    (target, i) =>
-                      ascendPriorityItemHtmlV1(
-                        target,
-                        i + 7
-                      )
-                  ).join("")
-                }
-              </div>
-
-            </details>
-          `
-          : ""
-      }
-
-    </section>
-  `;
-}
-
-
 async function showHome(user) {
 
   try {
@@ -38740,10 +38221,51 @@ const xpPercent =
 
 
         <!-- =====================================
-             PRIORITY TARGETS
+             QUICK MENU
         ====================================== -->
 
-        ${renderAscendPriorityTargetsV1(data)}
+        <div class="home-quick-grid">
+
+          <button
+            id="home-open-quests"
+            class="home-menu-card"
+          >
+
+            <span class="home-menu-icon">
+              📜
+            </span>
+
+            <strong>
+              クエスト
+            </strong>
+
+            <small>
+              今日の目標を確認
+            </small>
+
+          </button>
+
+
+          <button
+            id="home-open-boss"
+            class="home-menu-card"
+          >
+
+            <span class="home-menu-icon">
+              ⚔
+            </span>
+
+            <strong>
+              ボスバトル
+            </strong>
+
+            <small>
+              今週のボスを確認
+            </small>
+
+          </button>
+
+        </div>
 
 
         ${mainBottomNav("home")}
@@ -38751,55 +38273,6 @@ const xpPercent =
       </div>
     `)
   );
-
-
-
-  document
-    .querySelectorAll(
-      "[data-priority-start-unit]"
-    )
-    .forEach(
-      button => {
-
-        button.onclick =
-          async () => {
-
-            const unit =
-              findAscendWeaknessUnitV1(
-                button.dataset
-                  .priorityStartUnit
-              );
-
-            if (!unit) {
-              return;
-            }
-
-
-            ascendPendingStudyTargetV1 = {
-              courseId:
-                unit.courseId,
-
-              chapterId:
-                unit.chapterId,
-
-              unitId:
-                unit.id,
-            };
-
-
-            await showTimerPage(
-              user
-            );
-
-
-            mountClassicNavigation(
-              user
-            );
-
-          };
-
-      }
-    );
 
 
   $("home-start-study").onclick =
@@ -38811,32 +38284,22 @@ const xpPercent =
     };
 
 
-  const homeOpenQuests =
-    $("home-open-quests");
-
-  if (homeOpenQuests) {
-    homeOpenQuests.onclick =
-      async () => {
-        await showQuestBossMainPage(
-          user,
-          "quest"
-        );
-      };
-  }
+  $("home-open-quests").onclick =
+    async () => {
+      await showQuestBossMainPage(
+        user,
+        "quest"
+      );
+    };
 
 
-  const homeOpenBoss =
-    $("home-open-boss");
-
-  if (homeOpenBoss) {
-    homeOpenBoss.onclick =
-      async () => {
-        await showQuestBossMainPage(
-          user,
-          "boss"
-        );
-      };
-  }
+  $("home-open-boss").onclick =
+    async () => {
+      await showQuestBossMainPage(
+        user,
+        "boss"
+      );
+    };
 
 
   bindMainBottomNav(user);
@@ -46282,71 +45745,6 @@ async function showTimerPage(user) {
   syncWeaknessVisibilityV1();
 
   restoreWeaknessSelectionV1();
-
-
-
-  // ========================================================
-  // PRIORITY TARGET -> TIMER
-  // ========================================================
-
-  if (
-    ascendPendingStudyTargetV1 &&
-    !timerState.subject
-  ) {
-
-    const target =
-      ascendPendingStudyTargetV1;
-
-
-    const mathOption =
-      [
-        ...$("timer-subject").options
-      ].find(
-        option =>
-          isMathSubjectV1(
-            option.value
-          )
-      );
-
-
-    if (mathOption) {
-
-      $("timer-subject").value =
-        mathOption.value;
-
-
-      syncWeaknessVisibilityV1();
-
-
-      weaknessCourseV1.value =
-        target.courseId || "";
-
-
-      renderWeaknessChaptersV1(
-        target.courseId
-      );
-
-
-      weaknessChapterV1.value =
-        target.chapterId || "";
-
-
-      renderWeaknessUnitsV1(
-        target.courseId,
-        target.chapterId
-      );
-
-
-      weaknessUnitV1.value =
-        target.unitId || "";
-
-    }
-
-
-    ascendPendingStudyTargetV1 =
-      null;
-
-  }
 
 
   $("timer-back").onclick = async () => {

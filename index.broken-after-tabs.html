@@ -1,0 +1,10502 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <meta
+    name="theme-color"
+    content="#080a10"
+  >
+
+  <title>ASCEND</title>
+
+  <link rel="stylesheet" href="style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap"
+  rel="stylesheet"
+>
+
+
+
+<style id="juken-rpg-dark-fantasy-theme">
+
+/* =========================================================
+   ASCEND
+   Dark Fantasy × Study RPG
+   CURRENT THEME OVERRIDE
+========================================================= */
+
+:root {
+  --bg-dark: #080a10;
+  --bg-main: #0c0f17;
+  --bg-card: #121722;
+  --bg-card-hover: #171d2b;
+  --bg-input: #0b0e15;
+
+  --border: rgba(255,255,255,.08);
+  --border-light: rgba(255,255,255,.13);
+
+  --text-main: #f3f5f8;
+  --text-sub: #a8afbd;
+  --text-muted: #6f7786;
+
+  --accent: #7c5cff;
+  --accent-light: #9b83ff;
+  --accent-dark: #5940d8;
+
+  --cyan: #35c9ff;
+  --green: #42d392;
+  --yellow: #ffd166;
+  --orange: #ff9f43;
+  --red: #ff5d73;
+
+  --shadow:
+    0 12px 40px rgba(0,0,0,.35);
+
+  --radius: 18px;
+  --radius-small: 12px;
+
+  --transition:
+    180ms cubic-bezier(.2,.8,.2,1);
+}
+
+
+/* =========================================================
+   BASE
+========================================================= */
+
+html {
+  min-height: 100%;
+  background: var(--bg-dark) !important;
+}
+
+body {
+  margin: 0 !important;
+  min-height: 100vh;
+
+  color: var(--text-main) !important;
+
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(124,92,255,.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 30%,
+      rgba(53,201,255,.06),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #080a10 0%,
+      #0b0e16 50%,
+      #090b11 100%
+    ) !important;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Hiragino Kaku Gothic ProN",
+    "Hiragino Sans",
+    "Yu Gothic",
+    Meiryo,
+    sans-serif !important;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+  text-rendering:
+    optimizeLegibility;
+}
+
+
+body::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+  z-index: -1;
+
+  background-image:
+    radial-gradient(
+      rgba(255,255,255,.035) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    26px 26px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.8),
+      transparent 90%
+    );
+
+  opacity: .35;
+}
+
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+
+button {
+  cursor: pointer;
+}
+
+
+.hidden {
+  display: none !important;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background:
+    rgba(255,255,255,.12);
+
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:
+    rgba(255,255,255,.22);
+}
+
+
+/* =========================================================
+   APP / PAGE WIDTH
+========================================================= */
+
+#app {
+  min-height: 100vh;
+
+  padding-bottom:
+    calc(
+      76px +
+      env(safe-area-inset-bottom)
+    ) !important;
+}
+
+
+#app > div,
+#app > main {
+  width:
+    min(
+      calc(100% - 28px),
+      1080px
+    );
+
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+
+/* =========================================================
+   GENERIC CARD
+========================================================= */
+
+.card,
+#app > div > div {
+  color: var(--text-main);
+}
+
+
+.card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,23,34,.96),
+      rgba(13,17,26,.96)
+    ) !important;
+
+  border:
+    1px solid var(--border) !important;
+
+  border-radius:
+    var(--radius) !important;
+
+  box-shadow:
+    0 8px 28px rgba(0,0,0,.16),
+    inset 0 1px rgba(255,255,255,.035) !important;
+}
+
+
+/* =========================================================
+   CONTENT SECTIONS
+========================================================= */
+
+#app section {
+  position: relative;
+
+  margin-bottom: 18px !important;
+
+  border-radius:
+    var(--radius) !important;
+
+  border:
+    1px solid var(--border) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,23,34,.94),
+      rgba(13,17,26,.94)
+    ) !important;
+
+  box-shadow:
+    0 8px 28px rgba(0,0,0,.16),
+    inset 0 1px rgba(255,255,255,.035) !important;
+
+  overflow: hidden;
+
+  transition:
+    border-color var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
+}
+
+
+#app section:hover {
+  border-color:
+    rgba(255,255,255,.105) !important;
+}
+
+
+/* =========================================================
+   HEADINGS
+========================================================= */
+
+#app h1,
+#app h2,
+#app h3,
+#app h4 {
+  color: var(--text-main);
+}
+
+
+#app h1 {
+  letter-spacing: -.02em;
+}
+
+
+#app h2 {
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+#app input,
+#app select,
+#app textarea {
+  width: 100%;
+
+  color:
+    var(--text-main) !important;
+
+  background:
+    var(--bg-input) !important;
+
+  border:
+    1px solid var(--border) !important;
+
+  border-radius:
+    11px !important;
+
+  padding:
+    12px 13px !important;
+
+  outline: none;
+
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition),
+    background var(--transition);
+}
+
+
+#app input:focus,
+#app select:focus,
+#app textarea:focus {
+  border-color:
+    rgba(124,92,255,.65) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(124,92,255,.12),
+    0 0 24px rgba(124,92,255,.08) !important;
+
+  background:
+    #0d1019 !important;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+#app button:not(
+  .persistent-main-nav-btn
+):not(
+  .persistent-top-tab
+) {
+  border-radius:
+    11px !important;
+
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    filter var(--transition),
+    background var(--transition),
+    border-color var(--transition);
+}
+
+
+#app button:not(
+  .persistent-main-nav-btn
+):not(
+  .persistent-top-tab
+):hover {
+  transform:
+    translateY(-2px);
+}
+
+
+/* =========================================================
+   PLAYER / HOME STYLE
+========================================================= */
+
+#app section:first-of-type {
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(124,92,255,.16),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      #151a28,
+      #0e121c
+    ) !important;
+}
+
+
+/* XPっぽい横バー */
+#app div[style*="height:7px"],
+#app div[style*="height: 7px"],
+#app div[style*="height:8px"],
+#app div[style*="height: 8px"] {
+  background:
+    rgba(0,0,0,.42) !important;
+
+  border-radius:
+    999px !important;
+}
+
+
+/* 紫〜シアンの進捗 */
+#app div[style*="width:${xpPercent}%"] {
+  background:
+    linear-gradient(
+      90deg,
+      #694cf1,
+      #a994ff,
+      #35c9ff
+    ) !important;
+
+  box-shadow:
+    0 0 15px
+    rgba(124,92,255,.4) !important;
+}
+
+
+/* =========================================================
+   TOP TAB NAVIGATION
+========================================================= */
+
+#persistent-top-tabs {
+  position: sticky !important;
+
+  top: -12px !important;
+
+  z-index: 80 !important;
+
+  width:
+    min(
+      calc(100% - 28px),
+      1080px
+    ) !important;
+
+  margin:
+    0 auto
+    18px !important;
+
+  padding:
+    5px !important;
+
+  gap:
+    7px !important;
+
+  background:
+    rgba(0,0,0,.18) !important;
+
+  border:
+    1px solid
+    var(--border) !important;
+
+  border-radius:
+    13px !important;
+
+  box-shadow:
+    none !important;
+
+  backdrop-filter:
+    blur(16px);
+}
+
+
+.persistent-top-tab {
+  min-height:
+    42px !important;
+
+  border:
+    0 !important;
+
+  border-radius:
+    9px !important;
+
+  padding:
+    10px 13px !important;
+
+  color:
+    var(--text-muted) !important;
+
+  background:
+    transparent !important;
+
+  font-size:
+    12px !important;
+
+  font-weight:
+    800 !important;
+
+  transition:
+    background var(--transition),
+    color var(--transition),
+    transform var(--transition) !important;
+}
+
+
+.persistent-top-tab:hover {
+  color:
+    var(--text-main) !important;
+
+  background:
+    rgba(255,255,255,.05) !important;
+}
+
+
+.persistent-top-tab.active {
+  color:
+    white !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124,92,255,.85),
+      rgba(89,64,216,.85)
+    ) !important;
+
+  border:
+    0 !important;
+
+  box-shadow:
+    0 5px 16px
+    rgba(124,92,255,.18) !important;
+}
+
+
+/* =========================================================
+   BOTTOM NAVIGATION
+   ★ 浮かせない
+========================================================= */
+
+#persistent-bottom-nav {
+  position:
+    fixed !important;
+
+  left:
+    0 !important;
+
+  right:
+    0 !important;
+
+  bottom:
+    0 !important;
+
+  transform:
+    none !important;
+
+  z-index:
+    9999 !important;
+
+  width:
+    100% !important;
+
+  max-width:
+    none !important;
+
+  min-height:
+    70px !important;
+
+  display:
+    grid !important;
+
+  grid-template-columns:
+    repeat(
+      6,
+      minmax(0,1fr)
+    ) !important;
+
+  gap:
+    4px !important;
+
+  padding:
+    7px
+    max(
+      7px,
+      calc(
+        (100vw - 1080px) / 2
+      )
+    )
+    calc(
+      7px +
+      env(safe-area-inset-bottom)
+    ) !important;
+
+  background:
+    rgba(11,14,21,.96) !important;
+
+  border:
+    0 !important;
+
+  border-top:
+    1px solid
+    var(--border-light) !important;
+
+  border-radius:
+    0 !important;
+
+  box-shadow:
+    0 -8px 30px
+    rgba(0,0,0,.35) !important;
+
+  backdrop-filter:
+    blur(22px);
+
+  -webkit-backdrop-filter:
+    blur(22px);
+}
+
+
+.persistent-main-nav-btn {
+  min-width: 0 !important;
+
+  min-height:
+    56px !important;
+
+  display:
+    flex !important;
+
+  flex-direction:
+    column !important;
+
+  align-items:
+    center !important;
+
+  justify-content:
+    center !important;
+
+  gap:
+    3px !important;
+
+  padding:
+    5px 2px !important;
+
+  border:
+    0 !important;
+
+  border-radius:
+    13px !important;
+
+  color:
+    var(--text-muted) !important;
+
+  background:
+    transparent !important;
+
+  transition:
+    color var(--transition),
+    background var(--transition),
+    transform var(--transition) !important;
+}
+
+
+.persistent-main-nav-btn:hover {
+  color:
+    var(--text-main) !important;
+
+  background:
+    rgba(255,255,255,.045) !important;
+}
+
+
+.persistent-main-nav-btn
+.nav-icon {
+  font-size:
+    19px !important;
+
+  line-height:
+    1 !important;
+
+  transition:
+    transform .25s
+    cubic-bezier(.16,1,.3,1);
+}
+
+
+.persistent-main-nav-btn
+.nav-label {
+  font-size:
+    9px !important;
+
+  line-height:
+    1 !important;
+
+  font-weight:
+    800 !important;
+}
+
+
+.persistent-main-nav-btn.active {
+  color:
+    #fff !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124,92,255,.28),
+      rgba(124,92,255,.09)
+    ) !important;
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(124,92,255,.15) !important;
+}
+
+
+.persistent-main-nav-btn.active
+.nav-icon {
+  transform:
+    translateY(-1px)
+    scale(1.08);
+
+  filter:
+    drop-shadow(
+      0 0 8px
+      rgba(124,92,255,.45)
+    ) !important;
+}
+
+
+/* 以前の青い上ラインを削除 */
+.persistent-main-nav-btn.active::before {
+  display:
+    none !important;
+}
+
+
+/* =========================================================
+   QUEST / LIST ITEMS
+========================================================= */
+
+#app [style*="background:#0b1019"],
+#app [style*="background: #0b1019"],
+#app [style*="background:#111722"],
+#app [style*="background: #111722"] {
+  background:
+    rgba(255,255,255,.025) !important;
+
+  border-color:
+    var(--border) !important;
+}
+
+
+/* =========================================================
+   BOSS
+========================================================= */
+
+#app [style*="255,56,100"],
+#app [style*="255, 56, 100"] {
+  border-color:
+    rgba(255,93,115,.18) !important;
+}
+
+
+/* =========================================================
+   OTHER MENU BUTTONS
+========================================================= */
+
+#other-profile,
+#other-shop,
+#other-locker,
+#other-titles,
+#other-settings {
+  min-height:
+    64px !important;
+
+  padding:
+    15px 17px !important;
+
+  text-align:
+    left !important;
+
+  color:
+    var(--text-main) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.045),
+      rgba(255,255,255,.018)
+    ) !important;
+
+  border:
+    1px solid
+    var(--border) !important;
+
+  box-shadow:
+    none !important;
+}
+
+
+#other-profile:hover,
+#other-shop:hover,
+#other-locker:hover,
+#other-titles:hover,
+#other-settings:hover {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124,92,255,.1),
+      rgba(255,255,255,.025)
+    ) !important;
+
+  border-color:
+    rgba(124,92,255,.25) !important;
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+#auth-screen {
+  min-height:
+    100vh;
+
+  background:
+    transparent !important;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  #app > div,
+  #app > main {
+    width:
+      min(
+        calc(100% - 18px),
+        1080px
+      );
+  }
+
+
+  #persistent-top-tabs {
+    width:
+      calc(100% - 18px) !important;
+
+    margin-bottom:
+      14px !important;
+  }
+
+
+  #persistent-bottom-nav {
+    padding-left:
+      3px !important;
+
+    padding-right:
+      3px !important;
+  }
+
+
+  .persistent-main-nav-btn {
+    min-height:
+      53px !important;
+  }
+
+
+  .persistent-main-nav-btn
+  .nav-icon {
+    font-size:
+      17px !important;
+  }
+
+
+  .persistent-main-nav-btn
+  .nav-label {
+    font-size:
+      8px !important;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .persistent-main-nav-btn
+  .nav-icon {
+    font-size:
+      16px !important;
+  }
+
+
+  .persistent-main-nav-btn
+  .nav-label {
+    font-size:
+      7px !important;
+  }
+
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes rpgScreenEnter {
+
+  from {
+    opacity: 0;
+    transform:
+      translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+#app > div {
+  animation:
+    rpgScreenEnter
+    .35s
+    cubic-bezier(.16,1,.3,1);
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration:
+      .01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      .01ms !important;
+  }
+
+}
+
+</style>
+
+
+
+
+<style id="classic-rpg-ui-v2">
+
+/* =========================================================
+   ASCEND
+   Dark Fantasy × Study RPG
+========================================================= */
+
+:root {
+  --bg-dark: #080a10;
+  --bg-main: #0c0f17;
+  --bg-card: #121722;
+  --bg-card-hover: #171d2b;
+  --bg-input: #0b0e15;
+
+  --border: rgba(255,255,255,.08);
+  --border-light: rgba(255,255,255,.13);
+
+  --text-main: #f3f5f8;
+  --text-sub: #a8afbd;
+  --text-muted: #6f7786;
+
+  --accent: #7c5cff;
+  --accent-light: #9b83ff;
+  --accent-dark: #5940d8;
+
+  --cyan: #35c9ff;
+  --green: #42d392;
+  --yellow: #ffd166;
+  --orange: #ff9f43;
+  --red: #ff5d73;
+
+  --radius: 18px;
+  --radius-small: 12px;
+
+  --transition:
+    180ms cubic-bezier(.2,.8,.2,1);
+}
+
+
+/* =========================================================
+   BASE
+========================================================= */
+
+html {
+  min-height: 100%;
+  background: var(--bg-dark);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+
+  color: var(--text-main);
+
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(124,92,255,.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 30%,
+      rgba(53,201,255,.06),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #080a10 0%,
+      #0b0e16 50%,
+      #090b11 100%
+    );
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Hiragino Kaku Gothic ProN",
+    "Hiragino Sans",
+    "Yu Gothic",
+    Meiryo,
+    sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+  z-index: -1;
+
+  background-image:
+    radial-gradient(
+      rgba(255,255,255,.035) 1px,
+      transparent 1px
+    );
+
+  background-size: 26px 26px;
+  opacity: .30;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+#app {
+  min-height: 100vh;
+
+  padding-bottom:
+    calc(
+      82px +
+      env(safe-area-inset-bottom)
+    );
+}
+
+.app-screen {
+  width: min(100%, 1080px);
+
+  margin: 0 auto;
+
+  display: grid;
+  gap: 18px;
+
+  animation:
+    classicScreenEnter
+    .35s cubic-bezier(.16,1,.3,1);
+}
+
+
+/* =========================================================
+   SCREEN HEADER
+========================================================= */
+
+.screen-header {
+  margin-bottom: 2px;
+}
+
+.screen-header h2 {
+  margin: 0;
+
+  font-size: clamp(23px,5vw,30px);
+
+  letter-spacing: -.02em;
+}
+
+.screen-header p {
+  margin: 7px 0 0;
+
+  color: var(--text-sub);
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.rpg-section {
+  position: relative;
+
+  padding: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,23,34,.96),
+      rgba(13,17,26,.96)
+    );
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    var(--radius);
+
+  box-shadow:
+    0 8px 28px rgba(0,0,0,.16),
+    inset 0 1px rgba(255,255,255,.035);
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   HOME PLAYER STATUS
+========================================================= */
+
+#home-player-status {
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(124,92,255,.16),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      #151a28,
+      #0e121c
+    );
+}
+
+.home-player-top {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+}
+
+.home-player-avatar {
+  width: 58px;
+  height: 58px;
+
+  flex: 0 0 58px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124,92,255,.19),
+      rgba(53,201,255,.07)
+    );
+
+  border:
+    1px solid rgba(124,92,255,.22);
+
+  font-size: 27px;
+
+  box-shadow:
+    0 0 28px rgba(124,92,255,.09),
+    inset 0 1px rgba(255,255,255,.06);
+}
+
+.home-player-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.home-player-name {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.home-player-title {
+  margin-top: 3px;
+
+  color: #a995ff;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.home-player-id {
+  margin-top: 3px;
+
+  color: var(--text-muted);
+
+  font-size: 10px;
+}
+
+.home-player-level {
+  text-align: right;
+
+  flex: 0 0 auto;
+}
+
+.home-player-level small {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: var(--text-muted);
+
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: .15em;
+}
+
+.home-player-level strong {
+  display: block;
+
+  color: #a995ff;
+
+  font-size: 29px;
+
+  line-height: 1;
+
+  text-shadow:
+    0 0 20px rgba(124,92,255,.22);
+}
+
+.home-star {
+  margin-bottom: 6px;
+
+  color: var(--yellow);
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   XP
+========================================================= */
+
+.home-xp-section {
+  margin-top: 20px;
+}
+
+.home-xp-row {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 8px;
+
+  color: var(--text-sub);
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+.home-xp-track {
+  height: 12px;
+
+  padding: 2px;
+
+  border-radius: 999px;
+
+  background: rgba(0,0,0,.42);
+
+  overflow: hidden;
+}
+
+.home-xp-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #694cf1,
+      #a994ff,
+      #35c9ff
+    );
+
+  box-shadow:
+    0 0 15px rgba(124,92,255,.4);
+
+  transition:
+    width .7s cubic-bezier(.16,1,.3,1);
+}
+
+
+/* =========================================================
+   PLAYER SUMMARY
+========================================================= */
+
+.home-summary-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+
+  gap: 10px;
+
+  margin-top: 20px;
+
+  padding-top: 17px;
+
+  border-top:
+    1px solid var(--border);
+}
+
+.home-summary-item {
+  min-width: 0;
+
+  text-align: center;
+
+  padding: 4px 5px;
+}
+
+.home-summary-item + .home-summary-item {
+  border-left:
+    1px solid var(--border);
+}
+
+.home-summary-item span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+}
+
+.home-summary-item strong {
+  display: block;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  font-size: 12px;
+}
+
+.home-summary-item.coin strong {
+  color: var(--yellow);
+}
+
+
+/* =========================================================
+   TODAY STUDY
+========================================================= */
+
+#home-study-status {
+  text-align: center;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(53,201,255,.08),
+      transparent 48%
+    ),
+    linear-gradient(
+      145deg,
+      #121a25,
+      #0d1119
+    );
+}
+
+.home-section-title {
+  margin: 0 0 14px;
+
+  color: var(--text-sub);
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.home-study-time {
+  margin: 5px 0 19px;
+
+  color: #edf8ff;
+
+  font-variant-numeric: tabular-nums;
+
+  font-size: clamp(31px,8vw,48px);
+
+  font-weight: 900;
+
+  letter-spacing: .04em;
+
+  text-shadow:
+    0 0 30px rgba(53,201,255,.15);
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.classic-primary-button {
+  width: 100%;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  padding: 13px 16px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent),
+      #6549e8
+    );
+
+  font-weight: 800;
+
+  box-shadow:
+    0 7px 24px rgba(124,92,255,.20);
+
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    filter var(--transition);
+}
+
+.classic-primary-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 32px rgba(124,92,255,.32);
+
+  filter: brightness(1.08);
+}
+
+
+/* =========================================================
+   HOME QUICK MENU
+========================================================= */
+
+.home-quick-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap: 10px;
+}
+
+.home-menu-card {
+  min-height: 115px;
+
+  padding: 17px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: flex-start;
+
+  gap: 5px;
+
+  text-align: left;
+
+  color: var(--text-main);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.045),
+      rgba(255,255,255,.018)
+    );
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 15px;
+
+  transition:
+    transform var(--transition),
+    border-color var(--transition),
+    background var(--transition);
+}
+
+.home-menu-card:hover {
+  transform: translateY(-3px);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124,92,255,.1),
+      rgba(255,255,255,.025)
+    );
+
+  border-color:
+    rgba(124,92,255,.25);
+}
+
+.home-menu-icon {
+  margin-bottom: 3px;
+
+  font-size: 24px;
+}
+
+.home-menu-card strong {
+  font-size: 14px;
+}
+
+.home-menu-card small {
+  color: var(--text-muted);
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   TOP TAB
+========================================================= */
+
+#persistent-top-tabs {
+  position: sticky !important;
+
+  top: -10px !important;
+
+  z-index: 80 !important;
+
+  width:
+    min(
+      calc(100% - 28px),
+      1080px
+    ) !important;
+
+  margin:
+    0 auto 18px !important;
+
+  padding: 5px !important;
+
+  gap: 7px !important;
+
+  background:
+    rgba(8,10,16,.92) !important;
+
+  border:
+    1px solid var(--border) !important;
+
+  border-radius:
+    13px !important;
+
+  backdrop-filter:
+    blur(18px);
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.18) !important;
+}
+
+.persistent-top-tab {
+  min-height: 42px !important;
+
+  padding:
+    10px 13px !important;
+
+  border: 0 !important;
+
+  border-radius:
+    9px !important;
+
+  color:
+    var(--text-muted) !important;
+
+  background:
+    transparent !important;
+
+  font-size:
+    12px !important;
+
+  font-weight:
+    800 !important;
+}
+
+.persistent-top-tab.active {
+  color:
+    #fff !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124,92,255,.85),
+      rgba(89,64,216,.85)
+    ) !important;
+
+  box-shadow:
+    0 5px 16px
+    rgba(124,92,255,.18) !important;
+}
+
+
+/* =========================================================
+   BOTTOM NAV
+   常時固定 / 浮かせない
+========================================================= */
+
+#persistent-bottom-nav {
+  position: fixed !important;
+
+  left: 0 !important;
+  right: 102px !important;
+  bottom: 0 !important;
+
+  transform:
+    none !important;
+
+  z-index:
+    9999 !important;
+
+  width:
+    100% !important;
+
+  max-width:
+    none !important;
+
+  min-height:
+    70px !important;
+
+  display:
+    grid !important;
+
+  grid-template-columns:
+    repeat(6,minmax(0,1fr)) !important;
+
+  gap:
+    4px !important;
+
+  padding:
+    7px
+    max(
+      5px,
+      calc((100vw - 1080px) / 2)
+    )
+    calc(
+      7px +
+      env(safe-area-inset-bottom)
+    ) !important;
+
+  background:
+    rgba(11,14,21,.97) !important;
+
+  border:
+    0 !important;
+
+  border-top:
+    1px solid var(--border-light) !important;
+
+  border-radius:
+    0 !important;
+
+  box-shadow:
+    0 -8px 35px rgba(0,0,0,.32) !important;
+
+  backdrop-filter:
+    blur(22px);
+}
+
+.persistent-main-nav-btn {
+  position: relative;
+
+  min-width: 0 !important;
+
+  min-height:
+    56px !important;
+
+  padding:
+    5px 2px !important;
+
+  display:
+    flex !important;
+
+  flex-direction:
+    column !important;
+
+  justify-content:
+    center !important;
+
+  align-items:
+    center !important;
+
+  gap:
+    3px !important;
+
+  color:
+    var(--text-muted) !important;
+
+  background:
+    transparent !important;
+
+  border:
+    0 !important;
+
+  border-radius:
+    13px !important;
+
+  transition:
+    color var(--transition),
+    background var(--transition);
+}
+
+.persistent-main-nav-btn:hover {
+  color:
+    var(--text-main) !important;
+
+  background:
+    rgba(255,255,255,.045) !important;
+}
+
+.persistent-main-nav-btn .nav-icon {
+  font-size:
+    19px !important;
+
+  line-height: 1;
+}
+
+.persistent-main-nav-btn .nav-label {
+  font-size:
+    9px !important;
+
+  line-height: 1;
+
+  font-weight:
+    800 !important;
+}
+
+.persistent-main-nav-btn.active {
+  color:
+    #fff !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124,92,255,.28),
+      rgba(124,92,255,.09)
+    ) !important;
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(124,92,255,.15) !important;
+}
+
+.persistent-main-nav-btn.active .nav-icon {
+  filter:
+    drop-shadow(
+      0 0 8px
+      rgba(124,92,255,.45)
+    );
+}
+
+.persistent-main-nav-btn.active::before {
+  display: none !important;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:600px) {
+
+  .app-screen {
+    gap: 14px;
+  }
+
+  .rpg-section {
+    padding: 16px;
+
+    border-radius: 16px;
+  }
+
+  .home-player-avatar {
+    width: 51px;
+    height: 51px;
+
+    flex-basis: 51px;
+
+    border-radius: 15px;
+
+    font-size: 23px;
+  }
+
+  .home-player-name {
+    font-size: 17px;
+  }
+
+  .home-player-level strong {
+    font-size: 25px;
+  }
+
+  .home-summary-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+
+    gap: 0;
+  }
+
+  .home-summary-item {
+    padding: 10px 5px;
+  }
+
+  .home-summary-item + .home-summary-item {
+    border-left: 0;
+  }
+
+  .home-summary-item:nth-child(even) {
+    border-left:
+      1px solid var(--border);
+  }
+
+  .home-summary-item:nth-child(n+3) {
+    border-top:
+      1px solid var(--border);
+  }
+
+  #persistent-top-tabs {
+    width:
+      calc(100% - 18px) !important;
+  }
+
+  .persistent-main-nav-btn {
+    min-height:
+      53px !important;
+  }
+
+  .persistent-main-nav-btn .nav-icon {
+    font-size:
+      17px !important;
+  }
+
+  .persistent-main-nav-btn .nav-label {
+    font-size:
+      8px !important;
+  }
+}
+
+
+@media (max-width:380px) {
+
+  .persistent-main-nav-btn .nav-label {
+    font-size:
+      7px !important;
+  }
+
+  .persistent-main-nav-btn .nav-icon {
+    font-size:
+      16px !important;
+  }
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes classicScreenEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+</style>
+
+
+<style id="bottom-nav-hard-fix">
+
+/* =========================================================
+   BOTTOM NAV — HARD FIX
+========================================================= */
+
+#app {
+  padding-bottom: 68px !important;
+}
+
+
+#main-navigation {
+  position: fixed !important;
+
+  left: 0 !important;
+  right: 100px !important;
+  bottom: 0 !important;
+
+  top: auto !important;
+
+  transform: none !important;
+
+  width: 100vw !important;
+  max-width: none !important;
+
+  height: 64px !important;
+  min-height: 64px !important;
+
+  margin: 0 !important;
+
+  padding: 4px 6px !important;
+
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(6, 1fr) !important;
+
+  gap: 2px !important;
+
+  align-items: stretch !important;
+
+  background:
+    #0b0e15 !important;
+
+  border: 0 !important;
+
+  border-top:
+    1px solid
+    rgba(255,255,255,.10) !important;
+
+  border-radius: 0 !important;
+
+  box-shadow:
+    0 -6px 22px
+    rgba(0,0,0,.35) !important;
+
+  z-index: 99999 !important;
+
+  overflow: hidden !important;
+}
+
+
+#main-navigation .nav-button {
+  width: 100% !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+
+  margin: 0 !important;
+
+  padding: 4px 1px !important;
+
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  gap: 3px !important;
+
+  border: 0 !important;
+
+  border-radius: 10px !important;
+
+  background:
+    transparent !important;
+
+  color:
+    #6f7786 !important;
+
+  box-sizing:
+    border-box !important;
+}
+
+
+#main-navigation .nav-button.active {
+  color:
+    #fff !important;
+
+  background:
+    rgba(124,92,255,.18) !important;
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(124,92,255,.14) !important;
+}
+
+
+#main-navigation .nav-icon {
+  display: block !important;
+
+  width: auto !important;
+  height: auto !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  font-size: 18px !important;
+
+  line-height: 18px !important;
+}
+
+
+#main-navigation .nav-label {
+  display: block !important;
+
+  width: 100% !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  text-align: center !important;
+
+  white-space: nowrap !important;
+
+  overflow: hidden !important;
+
+  text-overflow: ellipsis !important;
+
+  font-size: 8px !important;
+
+  line-height: 10px !important;
+
+  font-weight: 800 !important;
+}
+
+
+/* 余計な疑似要素を全消し */
+#main-navigation .nav-button::before,
+#main-navigation .nav-button::after {
+  display: none !important;
+  content: none !important;
+}
+
+
+/* Persistent版が万一残っていても非表示 */
+#persistent-bottom-nav {
+  display: none !important;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  #app {
+    padding-bottom: 66px !important;
+  }
+
+
+  #main-navigation {
+    height: 62px !important;
+    min-height: 62px !important;
+
+    padding: 3px 2px !important;
+  }
+
+
+  #main-navigation .nav-button {
+    height: 56px !important;
+    min-height: 56px !important;
+  }
+
+
+  #main-navigation .nav-icon {
+    font-size: 17px !important;
+    line-height: 17px !important;
+  }
+
+
+  #main-navigation .nav-label {
+    font-size: 7.5px !important;
+    line-height: 9px !important;
+  }
+
+}
+
+</style>
+
+
+
+<style id="real-quest-tabs-style">
+
+#quest-main-tabs {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0,1fr));
+
+  gap: 7px;
+
+  margin:
+    0 0 20px;
+
+  padding: 5px;
+
+  background:
+    rgba(0,0,0,.18);
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius:
+    13px;
+}
+
+
+#quest-main-tabs button {
+  min-width: 0;
+
+  min-height: 42px;
+
+  padding:
+    10px 8px;
+
+  border: 0;
+
+  border-radius:
+    9px;
+
+  color:
+    #6f7786;
+
+  background:
+    transparent;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+  cursor: pointer;
+
+  transition:
+    background .18s ease,
+    color .18s ease,
+    transform .18s ease;
+}
+
+
+#quest-main-tabs button:hover {
+  color:
+    #f3f5f8;
+
+  background:
+    rgba(255,255,255,.05);
+}
+
+
+#quest-main-tabs button.active {
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124,92,255,.85),
+      rgba(89,64,216,.85)
+    );
+
+  box-shadow:
+    0 5px 16px
+    rgba(124,92,255,.18);
+}
+
+
+@media (max-width:600px) {
+
+  #quest-main-tabs {
+    gap: 4px;
+  }
+
+
+  #quest-main-tabs button {
+    min-height: 40px;
+
+    padding:
+      8px 4px;
+
+    font-size:
+      10px;
+  }
+
+}
+
+</style>
+
+
+
+<style id="boss-title-animation-style">
+
+/* =========================================================
+   BOSS TITLE
+========================================================= */
+
+.boss-title-animated {
+  display: inline-block;
+
+  position: relative;
+
+  font-weight: 900;
+
+  letter-spacing: .035em;
+
+  transform: translateZ(0);
+
+  will-change:
+    filter,
+    text-shadow,
+    transform;
+}
+
+
+/* =========================================================
+   数学
+   二律背反
+========================================================= */
+
+.boss-title-math {
+  color: #c5b7ff !important;
+
+  animation:
+    bossTitleMath
+    2.8s ease-in-out infinite;
+}
+
+
+@keyframes bossTitleMath {
+
+  0%,
+  100% {
+    color: #b9a9ff;
+
+    text-shadow:
+      -3px 0 10px rgba(124,92,255,.12),
+      3px 0 10px rgba(53,201,255,.06);
+
+    filter:
+      brightness(1);
+  }
+
+
+  50% {
+    color: #e0d9ff;
+
+    text-shadow:
+      -6px 0 15px rgba(124,92,255,.55),
+      6px 0 15px rgba(53,201,255,.28),
+      0 0 22px rgba(124,92,255,.28);
+
+    filter:
+      brightness(1.14);
+  }
+
+}
+
+
+/* =========================================================
+   国語
+   古今之文悉皆通暁
+========================================================= */
+
+.boss-title-japanese {
+  color: #f2d58b !important;
+
+  animation:
+    bossTitleJapanese
+    3.4s ease-in-out infinite;
+}
+
+
+@keyframes bossTitleJapanese {
+
+  0%,
+  100% {
+    color: #d8bc73;
+
+    text-shadow:
+      0 0 4px rgba(255,209,102,.12);
+
+    filter:
+      brightness(.96);
+  }
+
+
+  50% {
+    color: #fff0b7;
+
+    text-shadow:
+      0 0 7px rgba(255,209,102,.7),
+      0 0 18px rgba(255,187,70,.32),
+      0 0 30px rgba(255,209,102,.12);
+
+    filter:
+      brightness(1.15);
+  }
+
+}
+
+
+/* =========================================================
+   地歴公民
+   天地ノ軌跡
+========================================================= */
+
+.boss-title-history {
+  color: #a9cbff !important;
+
+  background:
+    linear-gradient(
+      100deg,
+      #8caee8 0%,
+      #dceaff 35%,
+      #ffd98a 50%,
+      #dceaff 65%,
+      #8caee8 100%
+    );
+
+  background-size:
+    250% 100%;
+
+  background-clip:
+    text;
+
+  -webkit-background-clip:
+    text;
+
+  -webkit-text-fill-color:
+    transparent;
+
+  animation:
+    bossTitleHistory
+    4s linear infinite;
+
+  filter:
+    drop-shadow(
+      0 0 7px
+      rgba(120,170,255,.25)
+    );
+}
+
+
+@keyframes bossTitleHistory {
+
+  from {
+    background-position:
+      200% center;
+  }
+
+  to {
+    background-position:
+      -50% center;
+  }
+
+}
+
+
+/* =========================================================
+   理科
+   右手に宿りし雷光
+========================================================= */
+
+.boss-title-science {
+  color: #86eaff !important;
+
+  animation:
+    bossTitleScience
+    3.1s linear infinite;
+}
+
+
+@keyframes bossTitleScience {
+
+  0%,
+  8%,
+  12%,
+  46%,
+  50%,
+  100% {
+    transform:
+      translateX(0);
+
+    color:
+      #86eaff;
+
+    text-shadow:
+      0 0 5px rgba(53,201,255,.24);
+
+    filter:
+      brightness(1);
+  }
+
+
+  9% {
+    transform:
+      translateX(-1px);
+
+    color:
+      #e8fcff;
+
+    text-shadow:
+      0 0 7px rgba(255,255,255,.9),
+      0 0 15px rgba(53,201,255,.95),
+      0 0 28px rgba(53,201,255,.5);
+
+    filter:
+      brightness(1.7);
+  }
+
+
+  10% {
+    transform:
+      translateX(1px);
+
+    text-shadow:
+      0 0 3px rgba(53,201,255,.2);
+  }
+
+
+  47% {
+    color:
+      #fff;
+
+    text-shadow:
+      0 0 8px rgba(255,255,255,.8),
+      0 0 20px rgba(53,201,255,.75);
+
+    filter:
+      brightness(1.45);
+  }
+
+}
+
+
+/* =========================================================
+   英語
+   BEYOND THE LOGIC
+========================================================= */
+
+.boss-title-english {
+  color: #d7c5ff !important;
+
+  animation:
+    bossTitleEnglish
+    3.6s steps(1,end) infinite;
+}
+
+
+@keyframes bossTitleEnglish {
+
+  0%,
+  89%,
+  100% {
+    transform:
+      translate(0,0);
+
+    text-shadow:
+      0 0 7px rgba(124,92,255,.32);
+  }
+
+
+  90% {
+    transform:
+      translate(-1px,0);
+
+    text-shadow:
+      3px 0 #35c9ff,
+      -3px 0 #ff4fd8,
+      0 0 13px rgba(124,92,255,.7);
+  }
+
+
+  92% {
+    transform:
+      translate(2px,-1px);
+
+    text-shadow:
+      -2px 0 #35c9ff,
+      2px 0 #ff4fd8;
+  }
+
+
+  94% {
+    transform:
+      translate(-1px,1px);
+
+    text-shadow:
+      4px 0 rgba(53,201,255,.8),
+      -4px 0 rgba(255,79,216,.8);
+  }
+
+
+  96% {
+    transform:
+      translate(0,0);
+
+    text-shadow:
+      0 0 10px rgba(124,92,255,.45);
+  }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .boss-title-animated {
+    animation: none !important;
+  }
+
+}
+
+</style>
+
+
+
+<style id="boss-battle-ui-v1">
+
+/* =========================================================
+   BOSS BATTLE UI
+========================================================= */
+
+.boss-battle-card {
+  --boss-color: #7c5cff;
+  --boss-color-rgb: 124,92,255;
+  --boss-color-2: #35c9ff;
+
+  position: relative;
+
+  display: grid;
+  gap: 16px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(var(--boss-color-rgb), .28);
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      160deg,
+      rgba(17,22,34,.98),
+      rgba(9,12,20,.98)
+    );
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.04),
+    0 14px 35px rgba(0,0,0,.20);
+
+  animation:
+    bossCardEnter
+    .55s cubic-bezier(.16,1,.3,1);
+}
+
+
+/* =========================================================
+   THEMES
+========================================================= */
+
+.boss-theme-math {
+  --boss-color: #9b83ff;
+  --boss-color-rgb: 155,131,255;
+  --boss-color-2: #6751da;
+}
+
+
+.boss-theme-japanese {
+  --boss-color: #ffd166;
+  --boss-color-rgb: 255,209,102;
+  --boss-color-2: #bc7c37;
+}
+
+
+.boss-theme-history {
+  --boss-color: #76a9ff;
+  --boss-color-rgb: 118,169,255;
+  --boss-color-2: #d7a85b;
+}
+
+
+.boss-theme-science {
+  --boss-color: #35c9ff;
+  --boss-color-rgb: 53,201,255;
+  --boss-color-2: #8af5ff;
+}
+
+
+.boss-theme-english {
+  --boss-color: #d76cff;
+  --boss-color-rgb: 215,108,255;
+  --boss-color-2: #35c9ff;
+}
+
+
+/* =========================================================
+   BOSS STAGE
+========================================================= */
+
+.boss-stage {
+  position: relative;
+
+  min-height: 245px;
+
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 48%,
+      rgba(var(--boss-color-rgb), .17),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 50% 110%,
+      rgba(var(--boss-color-rgb), .08),
+      transparent 48%
+    ),
+    #090d16;
+
+  border-bottom:
+    1px solid
+    rgba(255,255,255,.07);
+}
+
+
+.boss-stage::before {
+  content: "";
+
+  position: absolute;
+
+  width: 260px;
+  height: 260px;
+
+  border-radius: 50%;
+
+  border:
+    1px solid
+    rgba(var(--boss-color-rgb), .16);
+
+  box-shadow:
+    0 0 55px
+    rgba(var(--boss-color-rgb), .10);
+
+  animation:
+    bossAuraRing
+    4s ease-in-out infinite;
+}
+
+
+.boss-stage::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      transparent 49%,
+      rgba(255,255,255,.025) 50%,
+      transparent 51%
+    );
+
+  background-size:
+    100% 7px;
+
+  opacity: .35;
+}
+
+
+/* =========================================================
+   AURA
+========================================================= */
+
+.boss-aura {
+  position: absolute;
+
+  width: 190px;
+  height: 190px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(var(--boss-color-rgb), .24),
+      rgba(var(--boss-color-rgb), .05) 50%,
+      transparent 72%
+    );
+
+  filter:
+    blur(10px);
+
+  animation:
+    bossAuraPulse
+    2.8s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   EMBLEM / LATER IMAGE SLOT
+========================================================= */
+
+.boss-visual {
+  position: relative;
+  z-index: 2;
+
+  width: 128px;
+  height: 128px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  color: var(--boss-color);
+
+  font-size: 54px;
+  font-weight: 1000;
+
+  background:
+    radial-gradient(
+      circle at 40% 30%,
+      rgba(255,255,255,.09),
+      rgba(var(--boss-color-rgb), .11) 45%,
+      rgba(0,0,0,.15) 70%
+    );
+
+  border:
+    1px solid
+    rgba(var(--boss-color-rgb), .32);
+
+  box-shadow:
+    0 0 24px rgba(var(--boss-color-rgb), .18),
+    0 0 65px rgba(var(--boss-color-rgb), .08),
+    inset 0 0 24px rgba(var(--boss-color-rgb), .08);
+
+  text-shadow:
+    0 0 18px rgba(var(--boss-color-rgb), .55);
+
+  animation:
+    bossFloat
+    3.2s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.boss-main-info {
+  display: grid;
+  gap: 15px;
+
+  padding: 18px;
+}
+
+
+.boss-name-row {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+
+.boss-name-wrap {
+  min-width: 0;
+}
+
+
+.boss-caption {
+  margin-bottom: 4px;
+
+  color: var(--boss-color);
+
+  font-size: 9px;
+  font-weight: 900;
+
+  letter-spacing: .18em;
+
+  opacity: .8;
+}
+
+
+.boss-ui-name {
+  display: block;
+
+  color: #f5f7ff;
+
+  font-size: 1.38rem;
+  font-weight: 950;
+
+  line-height: 1.25;
+
+  text-shadow:
+    0 0 22px rgba(var(--boss-color-rgb), .15);
+}
+
+
+.boss-level-badge {
+  flex: 0 0 auto;
+
+  padding: 7px 10px;
+
+  border-radius: 9px;
+
+  color: var(--boss-color);
+
+  background:
+    rgba(var(--boss-color-rgb), .08);
+
+  border:
+    1px solid
+    rgba(var(--boss-color-rgb), .20);
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   WEAKNESS
+========================================================= */
+
+.boss-weakness-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0,1fr));
+
+  gap: 8px;
+}
+
+
+.boss-info-chip {
+  min-width: 0;
+
+  padding: 10px 11px;
+
+  border-radius: 11px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  border:
+    1px solid
+    rgba(255,255,255,.07);
+}
+
+
+.boss-info-chip span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #6f7786;
+
+  font-size: 9px;
+
+  font-weight: 800;
+}
+
+
+.boss-info-chip strong {
+  display: block;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  color: #e9edf5;
+
+  font-size: 12px;
+
+  white-space: nowrap;
+}
+
+
+.boss-info-chip.weakness strong {
+  color: var(--boss-color);
+}
+
+
+/* =========================================================
+   HP
+========================================================= */
+
+.boss-hp-area {
+  display: grid;
+  gap: 7px;
+}
+
+
+.boss-hp-label {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  color: #a8afbd;
+
+  font-size: 11px;
+
+  font-weight: 800;
+}
+
+
+.boss-hp-label strong {
+  color: #f3f5f8;
+
+  font-variant-numeric:
+    tabular-nums;
+}
+
+
+.boss-hp-track {
+  position: relative;
+
+  height: 15px;
+
+  padding: 2px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    rgba(0,0,0,.48);
+
+  border:
+    1px solid
+    rgba(255,255,255,.055);
+}
+
+
+.boss-hp-fill {
+  position: relative;
+
+  height: 100%;
+
+  overflow: hidden;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--boss-color-2),
+      var(--boss-color)
+    );
+
+  box-shadow:
+    0 0 15px
+    rgba(var(--boss-color-rgb), .28);
+
+  transition:
+    width .8s cubic-bezier(.16,1,.3,1);
+}
+
+
+.boss-hp-fill::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+
+  width: 45%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.28),
+      transparent
+    );
+
+  transform:
+    skewX(-20deg);
+
+  animation:
+    bossHpShine
+    2.5s linear infinite;
+}
+
+
+/* =========================================================
+   CONTRIBUTION
+========================================================= */
+
+.boss-contribution-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0,1fr));
+
+  gap: 8px;
+
+  padding-top: 13px;
+
+  border-top:
+    1px solid
+    rgba(255,255,255,.07);
+}
+
+
+.boss-contribution-item {
+  min-width: 0;
+
+  text-align: center;
+
+  padding: 8px 4px;
+
+  border-radius: 10px;
+
+  background:
+    rgba(255,255,255,.018);
+}
+
+
+.boss-contribution-item span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #6f7786;
+
+  font-size: 8px;
+
+  font-weight: 800;
+}
+
+
+.boss-contribution-item strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #f3f5f8;
+
+  font-size: 12px;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.boss-contribution-item.rate strong {
+  color: var(--boss-color);
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes bossCardEnter {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(12px)
+      scale(.975);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+@keyframes bossFloat {
+
+  0%,
+  100% {
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translateY(-9px)
+      scale(1.025);
+  }
+
+}
+
+
+@keyframes bossAuraPulse {
+
+  0%,
+  100% {
+    transform:
+      scale(.92);
+
+    opacity: .55;
+  }
+
+  50% {
+    transform:
+      scale(1.12);
+
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes bossAuraRing {
+
+  0%,
+  100% {
+    transform:
+      scale(.86)
+      rotate(0deg);
+
+    opacity: .35;
+  }
+
+  50% {
+    transform:
+      scale(1.06)
+      rotate(8deg);
+
+    opacity: .8;
+  }
+
+}
+
+
+@keyframes bossHpShine {
+
+  from {
+    left: -60%;
+  }
+
+  to {
+    left: 130%;
+  }
+
+}
+
+
+/* 英語ボスだけ少し機械的に */
+.boss-theme-english .boss-visual {
+
+  animation:
+    bossEnglishFloat
+    3.4s steps(1,end) infinite;
+
+}
+
+
+@keyframes bossEnglishFloat {
+
+  0%,
+  88%,
+  100% {
+    transform:
+      translate(0,0);
+  }
+
+  90% {
+    transform:
+      translate(-2px,1px);
+  }
+
+  92% {
+    transform:
+      translate(2px,-1px);
+  }
+
+  94% {
+    transform:
+      translate(-1px,0);
+  }
+
+}
+
+
+/* 理科ボスはたまに閃光 */
+.boss-theme-science .boss-visual {
+
+  animation:
+    bossScienceFloat
+    3s linear infinite;
+
+}
+
+
+@keyframes bossScienceFloat {
+
+  0%,
+  8%,
+  12%,
+  100% {
+    transform:
+      translateY(0);
+
+    filter:
+      brightness(1);
+  }
+
+  9% {
+    transform:
+      translateY(-2px);
+
+    filter:
+      brightness(1.8);
+  }
+
+  10% {
+    transform:
+      translateY(1px);
+
+    filter:
+      brightness(1.15);
+  }
+
+  55% {
+    transform:
+      translateY(-8px);
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:600px) {
+
+  .boss-stage {
+    min-height: 205px;
+  }
+
+
+  .boss-visual {
+    width: 110px;
+    height: 110px;
+
+    font-size: 46px;
+  }
+
+
+  .boss-main-info {
+    padding: 15px;
+  }
+
+
+  .boss-ui-name {
+    font-size: 1.18rem;
+  }
+
+
+  .boss-weakness-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .boss-battle-card,
+  .boss-stage::before,
+  .boss-aura,
+  .boss-visual,
+  .boss-hp-fill::after {
+    animation: none !important;
+  }
+
+}
+
+</style>
+
+
+
+
+
+
+
+<style id="boss-character-images-v2">
+
+.boss-visual {
+  width: 210px !important;
+  height: 210px !important;
+
+  overflow: hidden !important;
+
+  border-radius: 22px !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(var(--boss-color-rgb), .10),
+      rgba(5,8,16,.52) 70%
+    ) !important;
+
+  border:
+    1px solid
+    rgba(var(--boss-color-rgb), .26)
+    !important;
+
+  box-shadow:
+    0 0 25px rgba(var(--boss-color-rgb), .14),
+    0 0 55px rgba(var(--boss-color-rgb), .06),
+    inset 0 0 22px rgba(var(--boss-color-rgb), .05)
+    !important;
+}
+
+
+.boss-character-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  border-radius: inherit;
+
+  user-select: none;
+  pointer-events: none;
+
+  transform: scale(.97);
+}
+
+
+.boss-visual-fallback {
+  width: 100%;
+  height: 100%;
+
+  place-items: center;
+
+  color: var(--boss-color);
+
+  font-size: 52px;
+  font-weight: 1000;
+}
+
+
+.boss-theme-math .boss-character-image {
+  filter:
+    saturate(1.04)
+    brightness(.98);
+}
+
+
+.boss-theme-japanese .boss-character-image {
+  filter:
+    saturate(.96)
+    brightness(.98);
+}
+
+
+.boss-theme-history .boss-character-image {
+  filter:
+    saturate(.96)
+    brightness(.99);
+}
+
+
+.boss-theme-science .boss-character-image {
+  filter:
+    saturate(1.08)
+    brightness(1.02);
+}
+
+
+.boss-theme-english .boss-character-image {
+  filter:
+    saturate(1.02)
+    brightness(1);
+}
+
+
+@media (max-width:600px) {
+
+  .boss-visual {
+    width: 182px !important;
+    height: 182px !important;
+  }
+
+}
+
+</style>
+
+
+<style id="boss-character-images-safe">
+
+.boss-visual {
+  width: 210px !important;
+  height: 210px !important;
+
+  overflow: visible !important;
+
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.boss-character-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  transform: scale(.97);
+
+  border-radius: inherit;
+
+  pointer-events: none;
+  user-select: none;
+}
+
+.boss-visual-fallback {
+  width: 100%;
+  height: 100%;
+
+  place-items: center;
+
+  color: var(--boss-color);
+
+  font-size: 52px;
+  font-weight: 1000;
+}
+
+@media (max-width:600px) {
+
+  .boss-visual {
+    width: 182px !important;
+    height: 182px !important;
+  }
+
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
+<style id="app-page-size-unify-v4">
+
+/* =========================================================
+   通常ページ
+   ※ :not をbodyに直接つなげるのが重要
+========================================================= */
+
+body:has(#main-navigation):not(:has(.boss-battle-card)):not(:has(#boss-back-btn)) > main {
+  display: flex !important;
+
+  justify-content: center !important;
+  align-items: flex-start !important;
+
+  min-height: 100dvh !important;
+
+  padding:
+    10px
+    12px
+    70px !important;
+
+  overflow: hidden !important;
+}
+
+
+/* =========================================================
+   通常ページの外枠
+========================================================= */
+
+body:has(#main-navigation):not(:has(.boss-battle-card)):not(:has(#boss-back-btn)) > main > section {
+  width: min(460px, 100%) !important;
+
+  height: calc(100dvh - 84px) !important;
+  min-height: calc(100dvh - 84px) !important;
+  max-height: calc(100dvh - 84px) !important;
+
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+
+  align-content: start !important;
+
+  padding-bottom: 34px !important;
+
+  box-sizing: border-box !important;
+
+  overscroll-behavior-y: contain;
+}
+
+
+/* =========================================================
+   QUEST
+========================================================= */
+
+#quest-daily-content,
+#quest-weekly-content {
+  min-width: 0 !important;
+  max-width: 100% !important;
+
+  box-sizing: border-box !important;
+}
+
+
+/*
+  Weeklyは width:100% を無理に指定せず
+  gridの親幅いっぱいに自然に収める
+*/
+#quest-weekly-content {
+  width: auto !important;
+
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+  overflow: hidden !important;
+}
+
+
+/* Weekly内部の長い文字でも親を押し広げない */
+#quest-weekly-content > * {
+  min-width: 0 !important;
+  max-width: 100% !important;
+
+  overflow-wrap: anywhere !important;
+
+  box-sizing: border-box !important;
+}
+
+
+/* Questページ全体の子要素も横にはみ出させない */
+body:has(#quest-main-tabs) > main > section > * {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+body:has(#main-navigation):not(:has(.boss-battle-card)):not(:has(#boss-back-btn)) > main > section::-webkit-scrollbar {
+  width: 5px;
+}
+
+body:has(#main-navigation):not(:has(.boss-battle-card)):not(:has(#boss-back-btn)) > main > section::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+body:has(#main-navigation):not(:has(.boss-battle-card)):not(:has(#boss-back-btn)) > main > section::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.16);
+  border-radius: 999px;
+}
+
+</style>
+
+
+
+<style id="study-main-menu-v1">
+
+.study-main-menu {
+  display: grid;
+  gap: 14px;
+
+  margin-top: 4px;
+}
+
+
+.study-main-choice {
+  width: 100%;
+  min-height: 112px;
+
+  display: grid;
+
+  grid-template-columns:
+    56px
+    minmax(0,1fr)
+    24px;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 18px;
+
+  text-align: left;
+
+  color: #f3f5f8;
+
+  background:
+    linear-gradient(
+      145deg,
+      #121722,
+      #0e131d
+    );
+
+  border:
+    1px solid
+    rgba(255,255,255,.09);
+
+  border-radius: 16px;
+
+  cursor: pointer;
+
+  transition:
+    transform .15s ease,
+    border-color .15s ease,
+    background .15s ease;
+}
+
+
+.study-main-choice:hover {
+  transform: translateY(-1px);
+
+  border-color:
+    rgba(124,92,255,.42);
+
+  background:
+    linear-gradient(
+      145deg,
+      #171c29,
+      #111623
+    );
+}
+
+
+.study-main-choice:active {
+  transform: scale(.99);
+}
+
+
+.study-main-choice-icon {
+  width: 54px;
+  height: 54px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 14px;
+
+  font-size: 25px;
+
+  background:
+    rgba(124,92,255,.13);
+
+  border:
+    1px solid
+    rgba(124,92,255,.18);
+}
+
+
+.study-main-choice-text {
+  min-width: 0;
+
+  display: grid;
+  gap: 5px;
+}
+
+
+.study-main-choice-text strong {
+  font-size: 1.08rem;
+  font-weight: 850;
+}
+
+
+.study-main-choice-text span {
+  color: #8f98a8;
+
+  font-size: .86rem;
+}
+
+
+.study-main-choice-arrow {
+  color: #7c5cff;
+
+  font-size: 30px;
+  line-height: 1;
+}
+
+
+@media (max-width:500px) {
+
+  .study-main-choice {
+    min-height: 102px;
+
+    grid-template-columns:
+      50px
+      minmax(0,1fr)
+      20px;
+
+    padding: 16px;
+  }
+
+  .study-main-choice-icon {
+    width: 80px;
+    height: 80px;
+
+    font-size: 23px;
+  }
+
+}
+
+</style>
+
+
+
+<style id="party-ui-polish-v1">
+
+/* =========================================================
+   PARTY / FRIENDS / REQUESTS
+========================================================= */
+
+body:has(#party-main-tabs)
+> main
+> section {
+
+  gap: 14px !important;
+
+}
+
+
+/* =========================================================
+   TOP TABS
+========================================================= */
+
+#party-main-tabs {
+
+  width: 100% !important;
+
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr)) !important;
+
+  gap: 5px !important;
+
+  padding: 4px !important;
+
+  box-sizing: border-box !important;
+
+  background: #0a0e15 !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08) !important;
+
+  border-radius: 13px !important;
+
+}
+
+
+#party-main-tabs button {
+
+  min-height: 38px !important;
+
+  border: 0 !important;
+
+  border-radius: 9px !important;
+
+  background: transparent !important;
+
+  color: #747d8d !important;
+
+  font-size: .83rem !important;
+
+  font-weight: 800 !important;
+
+}
+
+
+#party-main-tabs button.active {
+
+  color: #fff !important;
+
+  background:
+    rgba(124,92,255,.17) !important;
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(124,92,255,.15) !important;
+
+}
+
+
+/* =========================================================
+   MAIN SECTIONS
+
+   ただのテキストの塊を
+   ちゃんとしたセクションカードへ
+========================================================= */
+
+body:has(#party-main-tabs)
+> main
+> section
+> div:not(#party-main-tabs):not(#friend-search-result):not(.main-screen-english) {
+
+  min-width: 0 !important;
+
+  padding: 16px !important;
+
+  box-sizing: border-box !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #101620,
+      #0c1119
+    ) !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.075) !important;
+
+  border-radius: 16px !important;
+
+}
+
+
+/* =========================================================
+   SECTION HEADINGS
+========================================================= */
+
+body:has(#party-main-tabs)
+> main
+> section
+> div
+> strong:first-child {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 3px;
+
+  color: #eef1f6;
+
+  font-size: .94rem;
+
+  font-weight: 850;
+
+}
+
+
+/* アイコンを自動追加 */
+
+body:has(#party-main-tabs)
+div:has(> #party-members)
+> strong:first-child::before {
+  content: "👥";
+}
+
+
+body:has(#party-main-tabs)
+div:has(> #party-invites)
+> strong:first-child::before {
+  content: "📨";
+}
+
+
+body:has(#party-main-tabs)
+div:has(> #party-friend-list)
+> strong:first-child::before {
+  content: "➕";
+}
+
+
+body:has(#party-main-tabs)
+div:has(> #friend-list)
+> strong:first-child::before {
+  content: "👥";
+}
+
+
+body:has(#party-main-tabs)
+div:has(> #incoming-friend-requests)
+> strong:first-child::before {
+  content: "📨";
+}
+
+
+body:has(#party-main-tabs)
+div:has(> #friend-search-id)
+> strong:first-child::before {
+  content: "🔎";
+}
+
+
+/* =========================================================
+   LISTS
+========================================================= */
+
+#party-members,
+#party-invites,
+#party-friend-list,
+#friend-list,
+#incoming-friend-requests {
+
+  display: grid !important;
+
+  gap: 8px !important;
+
+  margin-top: 8px;
+
+}
+
+
+/* 個々のユーザー / 招待カード */
+
+#party-members > div,
+#party-invites > div,
+#party-friend-list > div,
+#friend-list > div,
+#incoming-friend-requests > div,
+#friend-search-result > div {
+
+  min-width: 0 !important;
+
+  margin: 0 !important;
+
+  padding: 12px !important;
+
+  box-sizing: border-box !important;
+
+  background:
+    #0a0f17 !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.07) !important;
+
+  border-radius: 12px !important;
+
+}
+
+
+/* メンバー */
+
+#party-members > div {
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  min-height: 42px;
+
+}
+
+
+/* =========================================================
+   REQUEST CARDS
+   承認 / 拒否を横並び
+========================================================= */
+
+#incoming-friend-requests > div,
+#party-invites > div {
+
+  display: grid !important;
+
+  grid-template-columns:
+    1fr 1fr !important;
+
+  gap: 8px !important;
+
+}
+
+
+#incoming-friend-requests
+> div
+> strong,
+
+#incoming-friend-requests
+> div
+> div,
+
+#party-invites
+> div
+> strong {
+
+  grid-column:
+    1 / -1;
+
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+#open-boss-btn,
+#create-party-btn {
+
+  min-height: 46px !important;
+
+  border-radius: 12px !important;
+
+  font-weight: 850 !important;
+
+}
+
+
+/* 承認 */
+
+.accept-friend-btn,
+.accept-party-invite {
+
+  width: 100% !important;
+
+  min-height: 39px !important;
+
+  border-radius: 10px !important;
+
+  background:
+    rgba(66,211,146,.12) !important;
+
+  border:
+    1px solid
+    rgba(66,211,146,.22) !important;
+
+  color: #75e4b5 !important;
+
+}
+
+
+/* 拒否 / 脱退 */
+
+.reject-friend-btn,
+.reject-party-invite,
+#leave-party-btn {
+
+  width: 100% !important;
+
+  min-height: 39px !important;
+
+  border-radius: 10px !important;
+
+  background:
+    rgba(255,93,115,.08) !important;
+
+  border:
+    1px solid
+    rgba(255,93,115,.17) !important;
+
+  color: #ff8899 !important;
+
+}
+
+
+/* 招待 */
+
+.send-party-invite {
+
+  min-height: 38px !important;
+
+  border-radius: 10px !important;
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+#friend-search-id {
+
+  min-height: 43px !important;
+
+  border-radius: 11px !important;
+
+}
+
+
+#friend-search-btn {
+
+  min-height: 42px !important;
+
+  border-radius: 11px !important;
+
+}
+
+
+/* =========================================================
+   REMOVE DUPLICATE NAVIGATION
+========================================================= */
+
+#party-back-btn,
+#friend-back-btn,
+#open-party-btn {
+
+  display: none !important;
+
+}
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+#party-message,
+#friend-message {
+
+  min-height: 0 !important;
+
+  margin: 0 !important;
+
+  font-size: .84rem !important;
+
+}
+
+
+#party-message:empty,
+#friend-message:empty {
+
+  display: none !important;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:500px) {
+
+  body:has(#party-main-tabs)
+  > main
+  > section
+  > div:not(#party-main-tabs):not(#friend-search-result):not(.main-screen-english) {
+
+    padding: 14px !important;
+
+  }
+
+
+  #party-main-tabs button {
+
+    font-size: .78rem !important;
+
+  }
+
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+<style id="party-transition-speed-v2">
+
+/*
+  mainのみatomic交換。
+  下部ナビは一切動かさない。
+*/
+body > main {
+  view-transition-name:
+    app-main-content;
+}
+
+
+/*
+  root全体のアニメーションは無効
+*/
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none !important;
+}
+
+
+/*
+  古い画面を次画面完成まで保持。
+  完成したらアニメーション無しで即交換。
+*/
+::view-transition-old(app-main-content),
+::view-transition-new(app-main-content) {
+  animation: none !important;
+}
+
+
+/*
+  View Transition中のサイズ補間で
+  ガタッとするのも抑える
+*/
+::view-transition-group(app-main-content) {
+  animation-duration: 0s !important;
+}
+
+</style>
+
+
+
+<style id="rank-background-theme-v2">
+
+/* 共通 */
+.rank-main-themed,
+.rank-page-themed {
+  --rank-rgb: 124,92,255;
+  --rank-accent: #9b83ff;
+}
+
+
+/* ページ外側 */
+body > main.rank-main-themed {
+  background:
+    radial-gradient(
+      circle at 50% 16%,
+      rgba(var(--rank-rgb), .20),
+      rgba(var(--rank-rgb), .07) 28%,
+      transparent 52%
+    ),
+    #080b12 !important;
+}
+
+
+/* ランクページ本体 */
+body > main
+> section.rank-page-themed {
+  background:
+    linear-gradient(
+      155deg,
+      rgba(var(--rank-rgb), .13),
+      #111722 30%,
+      #0d121b 100%
+    ) !important;
+
+  border-color:
+    rgba(var(--rank-rgb), .28) !important;
+}
+
+
+/* BRONZE */
+.rank-theme-bronze {
+  --rank-rgb: 176,109,67;
+  --rank-accent: #d08a57;
+}
+
+
+/* SILVER */
+.rank-theme-silver {
+  --rank-rgb: 165,178,194;
+  --rank-accent: #d5dce5;
+}
+
+
+/* GOLD */
+.rank-theme-gold {
+  --rank-rgb: 224,176,64;
+  --rank-accent: #ffd166;
+}
+
+
+/* PLATINUM */
+.rank-theme-platinum {
+  --rank-rgb: 107,205,215;
+  --rank-accent: #baf2f4;
+}
+
+
+/* DIAMOND */
+.rank-theme-diamond {
+  --rank-rgb: 70,160,255;
+  --rank-accent: #82c8ff;
+}
+
+
+/* MASTER */
+.rank-theme-master {
+  --rank-rgb: 214,70,110;
+  --rank-accent: #ff7895;
+}
+
+
+/* GRANDMASTER */
+.rank-theme-grandmaster {
+  --rank-rgb: 140,82,255;
+  --rank-accent: #b596ff;
+}
+
+
+/* LEGEND */
+.rank-theme-legend {
+  --rank-rgb: 239,185,72;
+  --rank-accent: #ffe08a;
+}
+
+body > main.rank-theme-legend {
+  background:
+    radial-gradient(
+      circle at 30% 12%,
+      rgba(239,185,72,.21),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 75% 18%,
+      rgba(140,82,255,.13),
+      transparent 38%
+    ),
+    #080b12 !important;
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="final-flat-neon-v7">
+
+:root {
+  --flat-purple: 124,92,255;
+  --flat-cyan: 53,201,255;
+  --flat-green: 66,211,146;
+  --flat-gold: 255,209,102;
+}
+
+
+/* =========================================================
+   GLOBAL
+   光らせず、面に色を混ぜる
+========================================================= */
+
+body > main:not(.rank-main-themed) {
+  background:#080b12 !important;
+}
+
+
+/* =========================================================
+   PAGE TRANSITION
+   opacityだけ
+========================================================= */
+
+body > main > section {
+  animation:
+    flatPageIn
+    130ms ease-out both;
+}
+
+@keyframes flatPageIn {
+  from {
+    opacity:.60;
+  }
+
+  to {
+    opacity:1;
+  }
+}
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+#home-player-status {
+
+  background:
+    radial-gradient(
+      circle at 90% 5%,
+      rgba(var(--flat-purple),.18),
+      transparent 42%
+    ),
+    linear-gradient(
+      145deg,
+      #151a28,
+      #0e121c
+    )
+    !important;
+}
+
+
+.home-player-avatar {
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(var(--flat-purple),.23),
+      rgba(var(--flat-cyan),.08)
+    )
+    !important;
+}
+
+
+.home-player-title,
+.home-player-level strong {
+
+  color:#ad9cff !important;
+}
+
+
+.home-xp-fill {
+
+  background:
+    linear-gradient(
+      90deg,
+      #6548eb,
+      #9d82ff,
+      #35c9ff
+    )
+    !important;
+
+  box-shadow:none !important;
+}
+
+
+#home-study-status {
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(var(--flat-cyan),.12),
+      transparent 50%
+    ),
+    linear-gradient(
+      145deg,
+      #121a25,
+      #0d1119
+    )
+    !important;
+}
+
+
+/* =========================================================
+   STUDY
+========================================================= */
+
+.study-main-choice:nth-child(1) {
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(var(--flat-cyan),.12),
+      #111722 48%
+    )
+    !important;
+}
+
+
+.study-main-choice:nth-child(2) {
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(var(--flat-purple),.13),
+      #111722 48%
+    )
+    !important;
+}
+
+
+/* =========================================================
+   QUEST
+========================================================= */
+
+#quest-main-tabs button.active {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(var(--flat-purple),.25),
+      rgba(var(--flat-purple),.10)
+    )
+    !important;
+
+  box-shadow:none !important;
+}
+
+
+body:has(#quest-main-tabs)
+> main
+> section {
+
+  background:
+    linear-gradient(
+      150deg,
+      rgba(var(--flat-purple),.07),
+      #111722 32%
+    )
+    !important;
+}
+
+
+/* =========================================================
+   PARTY
+========================================================= */
+
+#party-main-tabs button.active {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(var(--flat-cyan),.21),
+      rgba(var(--flat-purple),.10)
+    )
+    !important;
+
+  box-shadow:none !important;
+}
+
+
+body:has(#party-main-tabs)
+> main
+> section {
+
+  background:
+    linear-gradient(
+      150deg,
+      rgba(var(--flat-cyan),.06),
+      #111722 34%
+    )
+    !important;
+}
+
+
+/* =========================================================
+   SHOP
+========================================================= */
+
+.shop-tab.active {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(var(--flat-purple),.24),
+      rgba(var(--flat-purple),.09)
+    )
+    !important;
+
+  box-shadow:none !important;
+}
+
+
+.shop-product {
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(var(--flat-purple),.055),
+      #0b1019 42%
+    )
+    !important;
+}
+
+
+/* =========================================================
+   LOCKER
+========================================================= */
+
+.locker-reserved {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(var(--flat-purple),.14),
+      rgba(var(--flat-cyan),.055)
+    )
+    !important;
+
+  box-shadow:none !important;
+}
+
+
+.locker-item {
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(var(--flat-cyan),.035),
+      #0b1019 42%
+    )
+    !important;
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.profile-box {
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(var(--flat-purple),.045),
+      #0b1019 40%
+    )
+    !important;
+}
+
+
+.subject-chip.active,
+.profile-track-btn.active {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(var(--flat-purple),.25),
+      rgba(var(--flat-purple),.10)
+    )
+    !important;
+
+  box-shadow:none !important;
+
+  color:#fff !important;
+}
+
+
+/* =========================================================
+   OTHER
+========================================================= */
+
+.other-card:nth-child(1) {
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(var(--flat-cyan),.13),
+      #101620 48%
+    )
+    !important;
+}
+
+
+.other-card:nth-child(2) {
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(var(--flat-purple),.14),
+      #101620 48%
+    )
+    !important;
+}
+
+
+.other-card:nth-child(3) {
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(var(--flat-green),.11),
+      #101620 48%
+    )
+    !important;
+}
+
+
+.other-card:nth-child(4) {
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(var(--flat-gold),.10),
+      #101620 48%
+    )
+    !important;
+}
+
+
+/* =========================================================
+   BUTTON INTERACTION
+   発光させない
+========================================================= */
+
+body > main > section button {
+
+  transition:
+    transform 90ms ease,
+    filter 90ms ease;
+}
+
+
+@media (hover:hover) {
+
+  body
+  > main
+  > section
+  button:not(:disabled):hover {
+
+    filter:brightness(1.07);
+  }
+
+}
+
+
+body
+> main
+> section
+button:not(:disabled):active {
+
+  transform:scale(.985);
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+body > main > section input:focus,
+body > main > section select:focus,
+body > main > section textarea:focus {
+
+  outline:
+    2px solid
+    rgba(var(--flat-purple),.28);
+
+  outline-offset:1px;
+
+  box-shadow:none !important;
+}
+
+
+/* =========================================================
+   RANK
+   今のランク固有テーマをそのまま使う
+========================================================= */
+
+
+/* =========================================================
+   BOSS
+   一切上書きしない
+========================================================= */
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion:reduce) {
+
+  body > main > section {
+    animation:none !important;
+  }
+
+  body > main > section * {
+    transition:none !important;
+  }
+
+}
+
+</style>
+
+
+<style id="fixed-page-internal-scroll-v1">
+
+/* =========================================================
+   FIXED PAGE + INTERNAL SCROLL
+========================================================= */
+
+html,
+body {
+  width:100%;
+  height:100%;
+  overflow:hidden !important;
+}
+
+
+/* 外側のページは画面サイズで固定 */
+body > main {
+  width:100%;
+  height:100dvh !important;
+  min-height:100dvh !important;
+  max-height:100dvh !important;
+
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+
+  padding:16px !important;
+}
+
+
+/* 中のカードだけスクロール */
+body > main > section {
+  width:min(460px,100%) !important;
+
+  max-height:calc(100dvh - 32px) !important;
+  min-height:0 !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  box-sizing:border-box !important;
+
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
+
+/* =========================================================
+   MAIN PAGES
+   下ナビ64px分を避ける
+========================================================= */
+
+body:has(#main-navigation) > main {
+  padding:
+    12px
+    12px
+    76px
+    !important;
+
+  place-items:start center !important;
+}
+
+
+body:has(#main-navigation) > main > section {
+  height:calc(100dvh - 88px) !important;
+  min-height:calc(100dvh - 88px) !important;
+  max-height:calc(100dvh - 88px) !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+}
+
+
+/* スクロールバーを少し控えめに */
+body > main > section::-webkit-scrollbar {
+  width:5px;
+}
+
+body > main > section::-webkit-scrollbar-thumb {
+  background:rgba(255,255,255,.13);
+  border-radius:999px;
+}
+
+body > main > section::-webkit-scrollbar-track {
+  background:transparent;
+}
+
+</style>
+
+
+<style id="hard-fixed-page-scroll-v2">
+
+/* =========================================
+   OUTER PAGE — 完全固定
+========================================= */
+
+html {
+  width:100%;
+  height:100%;
+  overflow:hidden !important;
+  overscroll-behavior:none !important;
+}
+
+body {
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100% !important;
+  height:100% !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  overflow:hidden !important;
+  overscroll-behavior:none !important;
+}
+
+
+/* main自体も絶対に動かさない */
+body > main {
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100% !important;
+  height:100dvh !important;
+  min-height:0 !important;
+  max-height:none !important;
+
+  margin:0 !important;
+  padding:16px !important;
+
+  box-sizing:border-box !important;
+
+  overflow:hidden !important;
+
+  display:grid !important;
+  place-items:center !important;
+}
+
+
+/* =========================================
+   INNER CARD — ここだけスクロール
+========================================= */
+
+body > main > section {
+  width:min(460px,100%) !important;
+
+  max-height:calc(100dvh - 32px) !important;
+  min-height:0 !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  box-sizing:border-box !important;
+
+  overscroll-behavior-y:contain !important;
+  -webkit-overflow-scrolling:touch;
+}
+
+
+/* =========================================
+   MAIN NAVIGATION PAGES
+========================================= */
+
+body:has(#main-navigation) > main {
+  padding:
+    12px
+    12px
+    76px
+    !important;
+
+  place-items:start center !important;
+}
+
+body:has(#main-navigation) > main > section {
+  height:calc(100dvh - 88px) !important;
+  min-height:calc(100dvh - 88px) !important;
+  max-height:calc(100dvh - 88px) !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+}
+
+</style>
+
+
+<style id="safe-neon-boost-v2">
+
+/* =========================================================
+   SAFE NEON BOOST
+   背景・大枠・下ナビは変更しない
+========================================================= */
+
+:root {
+  --boost-purple:#a98cff;
+  --boost-cyan:#42e5ff;
+  --boost-green:#51e8ad;
+  --boost-gold:#ffe06b;
+}
+
+
+/* ===== PAGE TITLE ===== */
+
+body > main > section h1,
+.screen-header h2 {
+  color:#ffffff !important;
+
+  text-shadow:
+    0 0 5px rgba(255,255,255,.18),
+    0 0 12px rgba(169,140,255,.55),
+    0 0 24px rgba(169,140,255,.18) !important;
+}
+
+
+/* ===== HOME ===== */
+
+.home-player-title {
+  color:#d1c4ff !important;
+
+  text-shadow:
+    0 0 8px rgba(169,140,255,.42) !important;
+}
+
+.home-player-level strong {
+  color:#c2acff !important;
+
+  text-shadow:
+    0 0 7px rgba(169,140,255,.75),
+    0 0 16px rgba(169,140,255,.32) !important;
+}
+
+.home-player-avatar {
+  filter:
+    drop-shadow(0 0 7px rgba(169,140,255,.45));
+}
+
+.home-study-time {
+  color:#e3fbff !important;
+
+  text-shadow:
+    0 0 8px rgba(66,229,255,.58),
+    0 0 18px rgba(66,229,255,.22) !important;
+}
+
+.home-xp-fill {
+  background:#9a78ff !important;
+
+  box-shadow:
+    0 0 7px rgba(154,120,255,.80),
+    0 0 16px rgba(154,120,255,.38) !important;
+}
+
+
+/* ===== ACTIVE TABS ===== */
+
+#quest-main-tabs button.active,
+.shop-tab.active,
+.subject-chip.active {
+  color:#fff !important;
+
+  text-shadow:
+    0 0 7px rgba(169,140,255,.70) !important;
+
+  box-shadow:
+    0 0 10px rgba(169,140,255,.18) !important;
+}
+
+#party-main-tabs button.active,
+.profile-track-btn.active {
+  color:#fff !important;
+
+  text-shadow:
+    0 0 7px rgba(66,229,255,.70) !important;
+
+  box-shadow:
+    0 0 10px rgba(66,229,255,.16) !important;
+}
+
+
+/* ===== OTHER ICONS ===== */
+
+.other-card:nth-child(1) .other-card-icon {
+  filter:
+    drop-shadow(0 0 7px rgba(66,229,255,.55));
+}
+
+.other-card:nth-child(2) .other-card-icon {
+  filter:
+    drop-shadow(0 0 7px rgba(169,140,255,.55));
+}
+
+.other-card:nth-child(3) .other-card-icon {
+  filter:
+    drop-shadow(0 0 7px rgba(81,232,173,.50));
+}
+
+.other-card:nth-child(4) .other-card-icon {
+  filter:
+    drop-shadow(0 0 7px rgba(255,224,107,.50));
+}
+
+
+/* ===== IMPORTANT BUTTONS ===== */
+
+#login-btn,
+#register-btn,
+.profile-save,
+.shop-buy,
+.locker-action {
+  box-shadow:
+    0 0 10px rgba(169,140,255,.28),
+    0 0 20px rgba(169,140,255,.10) !important;
+}
+
+#login-btn:hover,
+#register-btn:hover,
+.profile-save:hover,
+.shop-buy:hover,
+.locker-action:hover {
+  filter:
+    brightness(1.12)
+    saturate(1.15) !important;
+}
+
+
+/* ===== INPUT FOCUS ===== */
+
+body > main > section input:focus,
+body > main > section select:focus,
+body > main > section textarea:focus {
+  outline:
+    1px solid rgba(169,140,255,.60) !important;
+
+  outline-offset:1px !important;
+
+  box-shadow:
+    0 0 8px rgba(169,140,255,.22) !important;
+}
+
+
+/* ===== NO EFFECT ON BOTTOM NAV ===== */
+
+#main-navigation,
+#main-navigation * {
+  text-shadow:none;
+}
+
+
+/* ===== REDUCED MOTION ===== */
+
+@media (prefers-reduced-motion:reduce) {
+  body > main > section * {
+    transition:none !important;
+  }
+}
+
+</style>
+
+
+<style id="safe-neon-boost-v3">
+
+:root {
+  --neon-purple:#b79cff;
+  --neon-cyan:#55ecff;
+  --neon-green:#59f0b5;
+  --neon-gold:#ffe879;
+}
+
+
+/* =========================
+   PAGE TITLE
+========================= */
+
+body > main > section h1,
+.screen-header h2 {
+  color:#fff !important;
+
+  text-shadow:
+    0 0 4px rgba(255,255,255,.42),
+    0 0 8px rgba(183,156,255,.95),
+    0 0 18px rgba(183,156,255,.68),
+    0 0 34px rgba(183,156,255,.30) !important;
+}
+
+
+/* =========================
+   HOME
+========================= */
+
+.home-player-title {
+  color:#e0d7ff !important;
+
+  text-shadow:
+    0 0 7px rgba(183,156,255,.85),
+    0 0 16px rgba(183,156,255,.42) !important;
+}
+
+.home-player-level strong {
+  color:#d0bcff !important;
+
+  text-shadow:
+    0 0 5px rgba(255,255,255,.32),
+    0 0 9px rgba(183,156,255,1),
+    0 0 20px rgba(183,156,255,.65),
+    0 0 34px rgba(183,156,255,.28) !important;
+}
+
+.home-player-avatar {
+  filter:
+    drop-shadow(0 0 5px rgba(183,156,255,.85))
+    drop-shadow(0 0 12px rgba(183,156,255,.48)) !important;
+}
+
+.home-study-time {
+  color:#effdff !important;
+
+  text-shadow:
+    0 0 5px rgba(255,255,255,.32),
+    0 0 9px rgba(85,236,255,.95),
+    0 0 20px rgba(85,236,255,.55),
+    0 0 32px rgba(85,236,255,.22) !important;
+}
+
+.home-xp-fill {
+  background:#aa88ff !important;
+
+  box-shadow:
+    0 0 5px rgba(255,255,255,.32),
+    0 0 10px rgba(170,136,255,1),
+    0 0 22px rgba(170,136,255,.72),
+    0 0 34px rgba(170,136,255,.35) !important;
+}
+
+
+/* =========================
+   PURPLE ACTIVE UI
+========================= */
+
+#quest-main-tabs button.active,
+.shop-tab.active,
+.subject-chip.active {
+  color:#fff !important;
+
+  text-shadow:
+    0 0 5px rgba(255,255,255,.35),
+    0 0 9px rgba(183,156,255,.95),
+    0 0 18px rgba(183,156,255,.55) !important;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(183,156,255,.35),
+    0 0 9px rgba(183,156,255,.42),
+    0 0 20px rgba(183,156,255,.20) !important;
+}
+
+
+/* =========================
+   CYAN ACTIVE UI
+========================= */
+
+#party-main-tabs button.active,
+.profile-track-btn.active {
+  color:#fff !important;
+
+  text-shadow:
+    0 0 5px rgba(255,255,255,.32),
+    0 0 9px rgba(85,236,255,.95),
+    0 0 18px rgba(85,236,255,.55) !important;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(85,236,255,.30),
+    0 0 9px rgba(85,236,255,.35),
+    0 0 20px rgba(85,236,255,.16) !important;
+}
+
+
+/* =========================
+   IMPORTANT BUTTONS
+========================= */
+
+#login-btn,
+#register-btn,
+.profile-save,
+.shop-buy,
+.locker-action {
+  box-shadow:
+    0 0 5px rgba(255,255,255,.10),
+    0 0 10px rgba(183,156,255,.58),
+    0 0 22px rgba(183,156,255,.30),
+    0 0 36px rgba(183,156,255,.12) !important;
+
+  text-shadow:
+    0 0 7px rgba(255,255,255,.28) !important;
+}
+
+@media (hover:hover) {
+
+  #login-btn:hover,
+  #register-btn:hover,
+  .profile-save:hover,
+  .shop-buy:hover,
+  .locker-action:hover {
+    filter:
+      brightness(1.18)
+      saturate(1.25) !important;
+
+    box-shadow:
+      0 0 8px rgba(255,255,255,.16),
+      0 0 14px rgba(183,156,255,.80),
+      0 0 28px rgba(183,156,255,.42),
+      0 0 46px rgba(183,156,255,.18) !important;
+  }
+
+}
+
+
+/* =========================
+   OTHER ICONS
+========================= */
+
+.other-card:nth-child(1) .other-card-icon {
+  color:var(--neon-cyan) !important;
+
+  filter:
+    drop-shadow(0 0 5px rgba(85,236,255,.95))
+    drop-shadow(0 0 12px rgba(85,236,255,.58)) !important;
+}
+
+.other-card:nth-child(2) .other-card-icon {
+  color:var(--neon-purple) !important;
+
+  filter:
+    drop-shadow(0 0 5px rgba(183,156,255,.95))
+    drop-shadow(0 0 12px rgba(183,156,255,.58)) !important;
+}
+
+.other-card:nth-child(3) .other-card-icon {
+  color:var(--neon-green) !important;
+
+  filter:
+    drop-shadow(0 0 5px rgba(89,240,181,.92))
+    drop-shadow(0 0 12px rgba(89,240,181,.52)) !important;
+}
+
+.other-card:nth-child(4) .other-card-icon {
+  color:var(--neon-gold) !important;
+
+  filter:
+    drop-shadow(0 0 5px rgba(255,232,121,.92))
+    drop-shadow(0 0 12px rgba(255,232,121,.50)) !important;
+}
+
+
+/* =========================
+   INPUT FOCUS
+========================= */
+
+body > main > section input:focus,
+body > main > section select:focus,
+body > main > section textarea:focus {
+  outline:
+    1px solid rgba(183,156,255,.82) !important;
+
+  outline-offset:1px !important;
+
+  box-shadow:
+    0 0 7px rgba(183,156,255,.48),
+    0 0 18px rgba(183,156,255,.20) !important;
+}
+
+
+/* =========================
+   KEEP NAV / BOSS SAFE
+========================= */
+
+#main-navigation,
+#main-navigation * {
+  text-shadow:none !important;
+  filter:none !important;
+}
+
+.boss-battle-card,
+.boss-battle-card * {
+  text-shadow:revert;
+}
+
+</style>
+
+
+
+
+
+
+
+
+<style id="boss-page-layout-safe-v3">
+
+body:has(.boss-battle-card) > main > section {
+  height:calc(100dvh - 88px) !important;
+  min-height:0 !important;
+  max-height:calc(100dvh - 88px) !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  display:grid !important;
+
+  /* ★ これが本命 */
+  grid-auto-rows:max-content !important;
+  align-content:start !important;
+
+  box-sizing:border-box !important;
+  overscroll-behavior-y:contain !important;
+}
+
+</style>
+
+
+<style id="safe-background-neon-v1">
+
+/* =========================================================
+   BACKGROUND NEON
+   背景だけ。レイアウトには触らない。
+========================================================= */
+
+body > main:not(.rank-main-themed) {
+  background:
+    radial-gradient(
+      circle at 10% 8%,
+      rgba(155,124,255,.24) 0%,
+      rgba(155,124,255,.10) 18%,
+      transparent 38%
+    ),
+
+    radial-gradient(
+      circle at 92% 88%,
+      rgba(53,217,255,.16) 0%,
+      rgba(53,217,255,.07) 20%,
+      transparent 40%
+    ),
+
+    radial-gradient(
+      circle at 52% 48%,
+      rgba(124,92,255,.045) 0%,
+      transparent 48%
+    ),
+
+    #080b12 !important;
+}
+
+</style>
+
+
+<style id="safe-page-fade-v1">
+
+/* =========================================================
+   SAFE PAGE FADE
+   opacityだけ。レイアウト・ボス・スクロールには触らない
+========================================================= */
+
+body > main > section {
+  animation:
+    jukenPageFade
+    210ms cubic-bezier(.16,1,.3,1) both !important;
+}
+
+@keyframes jukenPageFade {
+  from {
+    opacity:.78;
+  }
+
+  to {
+    opacity:1;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  body > main > section {
+    animation:none !important;
+  }
+}
+
+</style>
+
+
+<style id="ascend-login-ui-v1">
+
+/* =========================================================
+   ASCEND LOGIN SCREEN
+   #login-btn が存在する画面だけ
+========================================================= */
+
+body > main > section:has(#login-btn) {
+  width:min(420px,100%) !important;
+  padding:34px 28px 28px !important;
+  gap:18px !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(155,124,255,.10),
+      transparent 42%
+    ),
+    #111722 !important;
+
+  border:1px solid rgba(169,140,255,.18) !important;
+
+  box-shadow:
+    0 18px 55px rgba(0,0,0,.38),
+    0 0 38px rgba(124,92,255,.08) !important;
+}
+
+
+/* ===== ASCEND TITLE ===== */
+
+body > main > section:has(#login-btn) h1 {
+  margin:2px 0 0 !important;
+
+  text-align:center !important;
+
+  font-size:42px !important;
+  line-height:1 !important;
+  font-weight:950 !important;
+  letter-spacing:.14em !important;
+
+  color:#fff !important;
+
+  text-shadow:
+    0 0 5px rgba(255,255,255,.40),
+    0 0 12px rgba(183,156,255,.95),
+    0 0 28px rgba(124,92,255,.48) !important;
+}
+
+
+/* サブコピー */
+
+body > main > section:has(#login-btn) h1::after {
+  content:"受験を、攻略する。";
+
+  display:block;
+
+  margin-top:13px;
+
+  font-size:13px;
+  line-height:1.5;
+  font-weight:700;
+  letter-spacing:.18em;
+
+  color:#aeb6c8;
+
+  text-shadow:
+    0 0 10px rgba(53,217,255,.18);
+}
+
+
+/* ===== LABEL ===== */
+
+body > main > section:has(#login-btn) label {
+  color:#bfc6d4 !important;
+
+  font-size:12px !important;
+  font-weight:800 !important;
+  letter-spacing:.05em;
+}
+
+
+/* ===== INPUT ===== */
+
+body > main > section:has(#login-btn) input {
+  width:100% !important;
+  min-width:0 !important;
+  box-sizing:border-box !important;
+
+  min-height:48px !important;
+
+  padding:0 14px !important;
+
+  border-radius:12px !important;
+
+  border:
+    1px solid rgba(255,255,255,.10) !important;
+
+  background:#090d15 !important;
+
+  color:#fff !important;
+
+  font-size:16px !important;
+
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    background 140ms ease !important;
+}
+
+body > main > section:has(#login-btn) input:focus {
+  outline:none !important;
+
+  border-color:
+    rgba(169,140,255,.70) !important;
+
+  background:#0c1019 !important;
+
+  box-shadow:
+    0 0 0 3px rgba(124,92,255,.10),
+    0 0 15px rgba(124,92,255,.18) !important;
+}
+
+
+/* ===== LOGIN BUTTON ===== */
+
+body > main > section:has(#login-btn) #login-btn {
+  width:100% !important;
+  min-height:50px !important;
+
+  margin-top:4px !important;
+
+  border:1px solid rgba(205,190,255,.18) !important;
+  border-radius:13px !important;
+
+  background:#7658e8 !important;
+
+  color:#fff !important;
+
+  font-weight:900 !important;
+  font-size:14px !important;
+
+  letter-spacing:.16em !important;
+
+  box-shadow:
+    0 0 10px rgba(155,124,255,.48),
+    0 0 25px rgba(124,92,255,.18) !important;
+
+  transition:
+    filter 120ms ease,
+    transform 120ms ease,
+    box-shadow 120ms ease !important;
+}
+
+@media (hover:hover) {
+  body > main > section:has(#login-btn) #login-btn:hover {
+    filter:brightness(1.13);
+
+    box-shadow:
+      0 0 13px rgba(169,140,255,.66),
+      0 0 30px rgba(124,92,255,.25) !important;
+  }
+}
+
+body > main > section:has(#login-btn) #login-btn:active {
+  transform:scale(.985);
+}
+
+
+/* ===== REGISTER BUTTON / LINK ===== */
+
+body > main > section:has(#login-btn) #register-btn {
+  min-height:44px !important;
+
+  background:transparent !important;
+
+  border:
+    1px solid rgba(255,255,255,.10) !important;
+
+  border-radius:12px !important;
+
+  color:#b9c0cf !important;
+
+  box-shadow:none !important;
+}
+
+@media (hover:hover) {
+  body > main > section:has(#login-btn) #register-btn:hover {
+    color:#fff !important;
+
+    border-color:
+      rgba(169,140,255,.35) !important;
+
+    background:
+      rgba(124,92,255,.07) !important;
+  }
+}
+
+
+/* ===== LOGIN PAGE ONLY: BACKGROUND ===== */
+
+body:has(#login-btn) > main {
+  background:
+    radial-gradient(
+      circle at 18% 15%,
+      rgba(124,92,255,.26) 0%,
+      rgba(124,92,255,.09) 20%,
+      transparent 40%
+    ),
+
+    radial-gradient(
+      circle at 82% 82%,
+      rgba(53,217,255,.17) 0%,
+      rgba(53,217,255,.05) 21%,
+      transparent 42%
+    ),
+
+    #070a11 !important;
+}
+
+
+/* ===== MOBILE ===== */
+
+@media (max-width:480px) {
+  body > main > section:has(#login-btn) {
+    padding:30px 22px 24px !important;
+  }
+
+  body > main > section:has(#login-btn) h1 {
+    font-size:36px !important;
+  }
+}
+
+</style>
+
+
+<style id="profile-fix-password-v1">
+
+/* ===== PROFILE OVERFLOW FIX ===== */
+
+body > main > section:has(.profile-save) {
+  min-width:0 !important;
+}
+
+body > main > section:has(.profile-save) > * {
+  min-width:0 !important;
+}
+
+body > main > section:has(.profile-save) input,
+body > main > section:has(.profile-save) select,
+body > main > section:has(.profile-save) textarea {
+  width:100% !important;
+  min-width:0 !important;
+  max-width:100% !important;
+  box-sizing:border-box !important;
+}
+
+
+/* ===== PASSWORD PANEL ===== */
+
+.profile-password-panel {
+  display:grid;
+  gap:12px;
+
+  margin-top:6px;
+  padding:16px;
+
+  background:#0b1019;
+
+  border:
+    1px solid rgba(155,124,255,.16);
+
+  border-radius:14px;
+}
+
+.profile-password-title {
+  margin:0;
+
+  color:#eeeaff;
+
+  font-size:14px;
+  font-weight:900;
+
+  letter-spacing:.04em;
+
+  text-shadow:
+    0 0 10px rgba(155,124,255,.28);
+}
+
+.profile-password-panel label {
+  display:grid;
+  gap:6px;
+
+  min-width:0;
+
+  color:#aeb5c4;
+
+  font-size:11px;
+  font-weight:800;
+}
+
+.profile-password-panel input {
+  width:100% !important;
+  min-width:0 !important;
+  max-width:100% !important;
+
+  box-sizing:border-box !important;
+
+  height:44px;
+
+  padding:0 12px !important;
+
+  background:#080c13 !important;
+
+  color:#fff !important;
+
+  border:
+    1px solid rgba(255,255,255,.10) !important;
+
+  border-radius:11px !important;
+}
+
+.profile-password-panel input:focus {
+  outline:none !important;
+
+  border-color:
+    rgba(155,124,255,.62) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(124,92,255,.08),
+    0 0 12px rgba(124,92,255,.15) !important;
+}
+
+#profile-password-save {
+  width:100%;
+
+  min-height:44px;
+
+  margin-top:2px;
+
+  border:0;
+  border-radius:11px;
+
+  background:#5940d8;
+
+  color:#fff;
+
+  font-weight:900;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 0 12px rgba(124,92,255,.25);
+}
+
+#profile-password-save:disabled {
+  opacity:.55;
+  cursor:default;
+}
+
+.profile-password-status {
+  min-height:16px;
+
+  margin:0;
+
+  font-size:11px;
+  line-height:1.45;
+
+  color:#9da6b7;
+}
+
+</style>
+
+
+<style id="ascend-login-brand-v2">
+
+/* =========================================
+   ASCEND LOGIN - FINAL BRAND BOOST
+========================================= */
+
+body > main > section:has(#login-btn) {
+  position:relative !important;
+  overflow:hidden !important;
+
+  padding-top:30px !important;
+
+  border-color:
+    rgba(169,140,255,.28) !important;
+
+  box-shadow:
+    0 22px 65px rgba(0,0,0,.50),
+    0 0 25px rgba(124,92,255,.10),
+    inset 0 0 35px rgba(124,92,255,.025) !important;
+}
+
+
+/* ===== SYSTEM STATUS ===== */
+
+.ascend-login-system {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+
+  margin-bottom:-3px;
+
+  color:#8790a1;
+
+  font-size:9px;
+  line-height:1;
+  font-weight:900;
+
+  letter-spacing:.19em;
+}
+
+.ascend-login-system-dot {
+  width:6px;
+  height:6px;
+
+  flex:0 0 6px;
+
+  border-radius:999px;
+
+  background:#59f0b5;
+
+  box-shadow:
+    0 0 5px rgba(89,240,181,.95),
+    0 0 12px rgba(89,240,181,.42);
+}
+
+
+/* ===== TITLE ===== */
+
+body > main > section:has(#login-btn) h1 {
+  margin-top:5px !important;
+
+  font-size:46px !important;
+
+  letter-spacing:.16em !important;
+
+  text-shadow:
+    0 0 4px rgba(255,255,255,.55),
+    0 0 10px rgba(183,156,255,1),
+    0 0 24px rgba(124,92,255,.65),
+    0 0 42px rgba(124,92,255,.25) !important;
+}
+
+
+/* ===== MISSION ===== */
+
+.ascend-login-mission {
+  margin:1px 0 2px;
+
+  text-align:center;
+
+  color:#d7d0f7;
+
+  font-size:10px;
+  font-weight:900;
+
+  letter-spacing:.14em;
+
+  text-shadow:
+    0 0 10px rgba(169,140,255,.24);
+}
+
+.ascend-login-mission span {
+  color:#7568a5;
+}
+
+
+/* ===== FEATURE HUD ===== */
+
+.ascend-login-features {
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+
+  gap:6px;
+
+  margin:1px 0 5px;
+}
+
+.ascend-login-feature {
+  min-width:0;
+
+  padding:7px 3px;
+
+  text-align:center;
+
+  border:
+    1px solid rgba(255,255,255,.07);
+
+  border-radius:8px;
+
+  background:
+    rgba(7,10,17,.72);
+
+  color:#818b9d;
+
+  font-size:8px;
+  line-height:1;
+  font-weight:900;
+
+  letter-spacing:.08em;
+}
+
+.ascend-login-feature:nth-child(1) {
+  color:#b9a6ff;
+
+  box-shadow:
+    inset 0 0 10px rgba(155,124,255,.05);
+}
+
+.ascend-login-feature:nth-child(2) {
+  color:#66ddff;
+
+  box-shadow:
+    inset 0 0 10px rgba(53,217,255,.04);
+}
+
+.ascend-login-feature:nth-child(3) {
+  color:#73e5b0;
+
+  box-shadow:
+    inset 0 0 10px rgba(69,224,163,.04);
+}
+
+.ascend-login-feature:nth-child(4) {
+  color:#ffd875;
+
+  box-shadow:
+    inset 0 0 10px rgba(255,211,92,.04);
+}
+
+
+/* ===== INPUT AREA ===== */
+
+body > main > section:has(#login-btn) input {
+  border-color:
+    rgba(169,140,255,.13) !important;
+}
+
+
+/* ===== PRIMARY LOGIN ===== */
+
+body > main > section:has(#login-btn) #login-btn {
+  position:relative;
+
+  min-height:52px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6848da,
+      #8064ef
+    ) !important;
+
+  border:
+    1px solid rgba(210,198,255,.25) !important;
+
+  box-shadow:
+    0 0 10px rgba(169,140,255,.55),
+    0 0 25px rgba(124,92,255,.24),
+    inset 0 1px 0 rgba(255,255,255,.10) !important;
+}
+
+
+/* ===== SMALL FOOTER ===== */
+
+.ascend-login-footer {
+  margin-top:-2px;
+
+  text-align:center;
+
+  color:#555f71;
+
+  font-size:8px;
+  line-height:1.5;
+  font-weight:800;
+
+  letter-spacing:.12em;
+}
+
+
+/* ===== MOBILE ===== */
+
+@media (max-width:480px) {
+
+  body > main > section:has(#login-btn) h1 {
+    font-size:39px !important;
+  }
+
+  .ascend-login-feature {
+    font-size:7px;
+  }
+
+}
+
+</style>
+
+
+<style id="quest-subject-neon-color-v1">
+
+.quest-subject-name {
+  color:#55eaff;
+
+  font-weight:900;
+
+  text-shadow:
+    0 0 6px rgba(85,234,255,.70),
+    0 0 14px rgba(85,234,255,.25);
+}
+
+</style>
+
+
+
+
+
+<style id="ascend-boot-screen-v2">
+
+#boot-screen {
+  position:fixed;
+  inset:0;
+
+  display:grid;
+  place-items:center;
+
+  padding:24px;
+  box-sizing:border-box;
+
+  background:
+    radial-gradient(
+      circle at 25% 20%,
+      rgba(124,92,255,.22),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 78% 80%,
+      rgba(53,217,255,.12),
+      transparent 38%
+    ),
+    #070a11;
+
+  color:#fff;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+
+  z-index:999999;
+}
+
+
+.ascend-boot-inner {
+  width:min(360px,100%);
+
+  display:grid;
+
+  gap:18px;
+
+  text-align:center;
+}
+
+
+/* ===== STATUS ===== */
+
+.ascend-boot-status {
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:8px;
+
+  color:#7f899b;
+
+  font-size:9px;
+  font-weight:900;
+
+  letter-spacing:.22em;
+}
+
+
+.ascend-boot-dot {
+  width:6px;
+  height:6px;
+
+  border-radius:999px;
+
+  background:#59f0b5;
+
+  box-shadow:
+    0 0 6px rgba(89,240,181,.95),
+    0 0 14px rgba(89,240,181,.40);
+
+  animation:
+    ascendBootDot
+    1.3s ease-in-out infinite;
+}
+
+
+/* ===== LOGO ===== */
+
+.ascend-boot-logo {
+  margin:0;
+
+  color:#fff;
+
+  font-size:46px;
+  line-height:1;
+
+  font-weight:950;
+
+  letter-spacing:.18em;
+
+  text-indent:.18em;
+
+  text-shadow:
+    0 0 5px rgba(255,255,255,.45),
+    0 0 12px rgba(183,156,255,.95),
+    0 0 28px rgba(124,92,255,.60),
+    0 0 48px rgba(124,92,255,.22);
+
+  animation:
+    ascendBootLogo
+    1.8s ease-in-out infinite;
+}
+
+
+.ascend-boot-copy {
+  margin-top:-6px;
+
+  color:#aeb6c8;
+
+  font-size:12px;
+  font-weight:700;
+
+  letter-spacing:.18em;
+}
+
+
+/* ===== LOADING ===== */
+
+.ascend-boot-loading {
+  display:grid;
+
+  gap:8px;
+
+  margin-top:4px;
+}
+
+
+.ascend-boot-track {
+  width:100%;
+  height:3px;
+
+  overflow:hidden;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.07);
+}
+
+
+.ascend-boot-bar {
+  width:38%;
+  height:100%;
+
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7658e8,
+      #b79cff,
+      #55ecff
+    );
+
+  box-shadow:
+    0 0 10px rgba(155,124,255,.70);
+
+  animation:
+    ascendBootLoad
+    1.25s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+
+.ascend-boot-loading-text {
+  color:#687386;
+
+  font-size:8px;
+  font-weight:850;
+
+  letter-spacing:.17em;
+}
+
+
+/* ===== SYSTEMS ===== */
+
+.ascend-boot-systems {
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+
+  gap:6px;
+
+  margin-top:2px;
+}
+
+
+.ascend-boot-system {
+  padding:7px 2px;
+
+  border:
+    1px solid rgba(255,255,255,.06);
+
+  border-radius:7px;
+
+  background:
+    rgba(9,13,21,.68);
+
+  color:#707b8e;
+
+  font-size:7px;
+  font-weight:900;
+
+  letter-spacing:.08em;
+}
+
+
+.ascend-boot-system:nth-child(1) {
+  color:#bbaaff;
+}
+
+.ascend-boot-system:nth-child(2) {
+  color:#67dcff;
+}
+
+.ascend-boot-system:nth-child(3) {
+  color:#72e3ad;
+}
+
+.ascend-boot-system:nth-child(4) {
+  color:#ffd876;
+}
+
+
+/* ===== ANIMATION ===== */
+
+@keyframes ascendBootLoad {
+
+  0% {
+    transform:translateX(-110%);
+  }
+
+  100% {
+    transform:translateX(290%);
+  }
+
+}
+
+
+@keyframes ascendBootLogo {
+
+  0%,
+  100% {
+    opacity:.88;
+  }
+
+  50% {
+    opacity:1;
+  }
+
+}
+
+
+@keyframes ascendBootDot {
+
+  0%,
+  100% {
+    opacity:.45;
+  }
+
+  50% {
+    opacity:1;
+  }
+
+}
+
+
+@media (prefers-reduced-motion:reduce) {
+
+  .ascend-boot-logo,
+  .ascend-boot-dot,
+  .ascend-boot-bar {
+    animation:none;
+  }
+
+}
+
+</style>
+
+
+<style id="ascend-boot-transition-v1">
+
+/* 起動画面 → ASCEND本体 */
+
+#boot-screen {
+  opacity:1;
+
+  transition:
+    opacity 420ms cubic-bezier(.22,1,.36,1);
+}
+
+#boot-screen.ascend-boot-exit {
+  opacity:0;
+
+  pointer-events:none;
+}
+
+
+/* 初回に表示されるゲーム画面だけ */
+
+body > main.ascend-first-enter {
+  animation:
+    ascendFirstGameEnter
+    460ms
+    70ms
+    cubic-bezier(.16,1,.3,1)
+    both !important;
+}
+
+
+@keyframes ascendFirstGameEnter {
+
+  from {
+    opacity:.10;
+  }
+
+  to {
+    opacity:1;
+  }
+
+}
+
+
+@media (prefers-reduced-motion:reduce) {
+
+  #boot-screen,
+  body > main.ascend-first-enter {
+    transition:none !important;
+    animation:none !important;
+  }
+
+}
+
+</style>
+
+
+
+<style id="home-rank-progress-v1">
+
+.home-rank-progress {
+  margin-top:16px;
+}
+
+
+/* XPバーと同じ情報行 */
+
+.home-rank-progress-top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+
+  margin-bottom:8px;
+
+  color:var(--text-sub);
+
+  font-size:11px;
+  font-weight:700;
+}
+
+
+.home-rank-progress-label {
+  display:block;
+  min-width:0;
+}
+
+
+.home-rank-progress-label span {
+  color:var(--text-sub);
+
+  font-size:11px;
+  font-weight:700;
+
+  letter-spacing:0;
+}
+
+
+.home-rank-progress-label strong {
+  display:none;
+}
+
+
+.home-rank-progress-percent {
+  color:var(--text-sub);
+
+  font-size:11px;
+  font-weight:700;
+
+  text-shadow:none;
+}
+
+
+/* BAR */
+
+.home-rank-track {
+  width:100%;
+  height:12px;
+
+  padding:2px;
+
+  overflow:hidden;
+
+  box-sizing:border-box;
+
+  background:
+    rgba(0,0,0,.42);
+
+  border-radius:999px;
+}
+
+
+.home-rank-fill {
+  height:100%;
+
+  border-radius:inherit;
+
+  transition:
+    width .7s cubic-bezier(.16,1,.3,1);
+}
+
+
+/* 残り時間 */
+
+.home-rank-remaining {
+  margin-top:6px;
+
+  color:#737e90;
+
+  font-size:9px;
+  font-weight:700;
+
+  text-align:right;
+}
+
+
+/* ==========================================
+   RANK COLORS
+========================================== */
+
+
+/* BRONZE */
+
+.home-rank-bronze .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #8f542d,
+      #cd7f32,
+      #e9a05c
+    );
+
+  box-shadow:
+    0 0 12px rgba(205,127,50,.55);
+}
+
+
+/* SILVER */
+
+.home-rank-silver .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #8993a3,
+      #c8d0dc,
+      #f1f5fa
+    );
+
+  box-shadow:
+    0 0 12px rgba(205,216,232,.45);
+}
+
+
+/* GOLD */
+
+.home-rank-gold .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #b88620,
+      #ffd35c,
+      #fff0a0
+    );
+
+  box-shadow:
+    0 0 13px rgba(255,211,92,.58);
+}
+
+
+/* PLATINUM */
+
+.home-rank-platinum .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #32a9bc,
+      #55eaff,
+      #b6f8ff
+    );
+
+  box-shadow:
+    0 0 14px rgba(85,234,255,.55);
+}
+
+
+/* DIAMOND */
+
+.home-rank-diamond .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #377de8,
+      #65b9ff,
+      #9fe7ff
+    );
+
+  box-shadow:
+    0 0 14px rgba(101,185,255,.58);
+}
+
+
+/* MASTER */
+
+.home-rank-master .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #6848da,
+      #b79cff,
+      #d6c7ff
+    );
+
+  box-shadow:
+    0 0 15px rgba(183,156,255,.62);
+}
+
+
+/* GRANDMASTER */
+
+.home-rank-grandmaster .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #b73582,
+      #ff5cac,
+      #ff9ed0
+    );
+
+  box-shadow:
+    0 0 15px rgba(255,92,172,.62);
+}
+
+
+/* LEGEND */
+
+.home-rank-legend .home-rank-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #8d64ff,
+      #d99cff,
+      #ffd35c
+    );
+
+  box-shadow:
+    0 0 9px rgba(183,156,255,.65),
+    0 0 18px rgba(255,211,92,.30);
+}
+
+</style>
+
+
+
+<style id="main-screen-english-labels-v1">
+
+.main-screen-english {
+  margin:0 0 4px !important;
+
+  color:#768398 !important;
+
+  font-size:.68rem !important;
+  line-height:1 !important;
+
+  font-weight:800 !important;
+
+  letter-spacing:.14em !important;
+
+  text-shadow:none !important;
+}
+
+.screen-header .main-screen-english {
+  margin-bottom:5px !important;
+}
+
+</style>
+
+
+
+
+
+<style id="party-atomic-render-v1">
+
+body > main > section.party-page-preparing {
+  opacity:0 !important;
+  animation:none !important;
+  pointer-events:none !important;
+}
+
+</style>
+
+
+
+
+
+<style id="main-title-spacing-home-standard-v2">
+
+/*
+  HOME / OTHERS の見た目を基準にする。
+
+  card() の section は gap:16px なので、
+  直下に置かれた英語ラベルだけ -11px 補正
+  → 実質 約5px の間隔になる。
+*/
+body > main > section > .main-screen-english {
+  margin:0 0 -11px !important;
+}
+
+/* 日本語タイトル側の余白差も消す */
+body > main > section > .main-screen-english + h1,
+body > main > section > .main-screen-english + h2 {
+  margin-top:0 !important;
+}
+
+/* HOMEは今の完成形をそのまま維持 */
+.screen-header .main-screen-english {
+  margin:0 0 5px !important;
+}
+
+/* OTHER内の既存ヘッダーも触らない */
+.main-screen-english:not(
+  body > main > section > .main-screen-english
+) {
+  margin-bottom:5px !important;
+}
+
+</style>
+
+
+<style id="quest-boss-clear-status-v1">
+
+.quest-status-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  min-width:0;
+}
+
+.quest-complete-badge {
+  flex:0 0 auto;
+
+  padding:4px 9px;
+
+  color:#75e4b5;
+  background:rgba(66,211,146,.10);
+
+  border:
+    1px solid rgba(66,211,146,.28);
+
+  border-radius:999px;
+
+  font-size:.68rem;
+  font-weight:900;
+
+  letter-spacing:.04em;
+
+  box-shadow:
+    0 0 10px rgba(66,211,146,.14);
+}
+
+
+/* ボス討伐 */
+
+.boss-defeated-badge {
+  position:absolute;
+  top:12px;
+  right:12px;
+
+  z-index:20;
+
+  padding:5px 10px;
+
+  color:#ffd166;
+
+  background:
+    rgba(255,209,102,.11);
+
+  border:
+    1px solid rgba(255,209,102,.30);
+
+  border-radius:999px;
+
+  font-size:.7rem;
+  font-weight:900;
+
+  letter-spacing:.05em;
+
+  box-shadow:
+    0 0 12px rgba(255,209,102,.18);
+}
+
+</style>
+
+
+<style id="ascend-font-system-v1">
+
+/* =========================================
+   BASE / JAPANESE
+========================================= */
+
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family:
+    "Noto Sans JP",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif !important;
+}
+
+
+/* =========================================
+   SYSTEM / GAME UI
+========================================= */
+
+.main-screen-english,
+
+.ascend-boot-status,
+.ascend-boot-loading-text,
+.ascend-boot-system,
+
+.home-xp-row,
+.home-rank-progress,
+
+#main-navigation .nav-label,
+
+#quest-main-tabs,
+#party-main-tabs,
+
+.quest-complete-badge,
+.boss-defeated-badge {
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif !important;
+
+}
+
+
+/* 英語ラベルはRajdhaniの良さを強める */
+
+.main-screen-english {
+  font-weight:700 !important;
+  letter-spacing:.18em !important;
+}
+
+
+/* XP / RANK / 数字系 */
+
+.home-xp-row,
+.home-rank-progress {
+  font-weight:700;
+}
+
+
+/* =========================================
+   ASCEND LOGO
+========================================= */
+
+.ascend-boot-logo {
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    sans-serif !important;
+
+  font-weight:800 !important;
+  letter-spacing:.08em !important;
+}
+
+
+/*
+  ログイン画面のASCENDタイトルも
+  Orbitronへ変更
+*/
+
+body > main > section:has(#login-btn) h1 {
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    sans-serif !important;
+
+  font-weight:800 !important;
+  letter-spacing:.07em !important;
+}
+
+
+/* =========================================
+   NUMBER FEEL
+========================================= */
+
+.home-xp-row,
+.home-rank-progress,
+#timer-display {
+
+  font-variant-numeric:
+    tabular-nums;
+
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+<style id="ascend-extreme-performance-v1">
+
+/* ============================================================
+   ASCEND EXTREME PERFORMANCE MODE
+
+   PC / MOBILE 共通
+   描画速度・タップ反応 最優先
+============================================================ */
+
+
+/* ------------------------------------------------------------
+   タップ
+------------------------------------------------------------ */
+
+button,
+a,
+input,
+select,
+textarea,
+[role="button"] {
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+
+/* ------------------------------------------------------------
+   全画面アニメーション停止
+------------------------------------------------------------ */
+
+body > main *,
+body > main *::before,
+body > main *::after,
+#main-navigation,
+#main-navigation *,
+#main-navigation *::before,
+#main-navigation *::after {
+
+  animation: none !important;
+  transition: none !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   GPU負荷の高い影を全停止
+------------------------------------------------------------ */
+
+body > main *,
+body > main *::before,
+body > main *::after,
+#main-navigation,
+#main-navigation *,
+#main-navigation *::before,
+#main-navigation *::after {
+
+  box-shadow: none !important;
+  text-shadow: none !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   blur / filter / backdrop-filter 全停止
+------------------------------------------------------------ */
+
+body > main *,
+body > main *::before,
+body > main *::after,
+#main-navigation,
+#main-navigation *,
+#main-navigation *::before,
+#main-navigation *::after {
+
+  filter: none !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   背景描画を最小化
+
+   radial-gradientも停止
+------------------------------------------------------------ */
+
+body > main,
+body > main.rank-main-themed,
+body > main:not(.rank-main-themed) {
+
+  background: #080b12 !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   メインカード
+------------------------------------------------------------ */
+
+body > main > section {
+
+  animation: none !important;
+
+  scroll-behavior: auto !important;
+
+  overscroll-behavior:
+    contain !important;
+
+  contain:
+    paint !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   ボタン
+
+   動く演出は完全停止
+------------------------------------------------------------ */
+
+button {
+
+  transform: none !important;
+
+}
+
+
+/*
+  押した瞬間だけ視覚反応
+  transition無しなので即座に反応
+*/
+
+button:active,
+a:active,
+#main-navigation button:active,
+.classic-tab-navigation button:active {
+
+  opacity: .65 !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   下部ナビ
+------------------------------------------------------------ */
+
+#main-navigation {
+
+  box-shadow: none !important;
+
+  background:
+    #0b0e15 !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   タブ
+------------------------------------------------------------ */
+
+.classic-tab-navigation,
+.classic-tab-navigation button {
+
+  box-shadow: none !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   発光バッジ
+------------------------------------------------------------ */
+
+.quest-complete-badge,
+.boss-defeated-badge,
+.quest-subject-name,
+.main-screen-english {
+
+  box-shadow: none !important;
+  text-shadow: none !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   画像
+------------------------------------------------------------ */
+
+body > main img {
+
+  filter: none !important;
+
+  box-shadow: none !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   スクロール
+------------------------------------------------------------ */
+
+html,
+body,
+body > main,
+body > main > section {
+
+  scroll-behavior:
+    auto !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   hover演出無効
+------------------------------------------------------------ */
+
+@media (hover: hover) {
+
+  body > main button:hover,
+  body > main a:hover {
+
+    transform: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+
+  }
+
+}
+
+
+/* ------------------------------------------------------------
+   モバイルではさらにタッチ優先
+------------------------------------------------------------ */
+
+@media (pointer: coarse) {
+
+  button,
+  a,
+  [role="button"] {
+
+    cursor: default !important;
+
+  }
+
+}
+
+</style>
+
+
+<style id="ascend-friend-presence-final">
+
+.friend-presence-status {
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  color:#737e90;
+
+  font-size:.72rem;
+  font-weight:750;
+}
+
+.friend-presence-dot {
+  width:7px;
+  height:7px;
+
+  flex:0 0 7px;
+
+  border-radius:999px;
+
+  background:#626b79;
+}
+
+.friend-presence-status.online {
+  color:#75e4b5;
+}
+
+.friend-presence-status.online
+.friend-presence-dot {
+  background:#42d392;
+
+  box-shadow:
+    0 0 7px rgba(66,211,146,.55);
+}
+
+</style>
+
+
+<style id="ascend-rich-friend-cards-v1">
+
+/* =========================================================
+   ASCEND FRIEND CARD
+========================================================= */
+
+#friend-list > .friend-card-rich {
+  display:grid !important;
+  gap:11px !important;
+
+  padding:14px !important;
+
+  background:#0a0f17 !important;
+
+  border:
+    1px solid rgba(255,255,255,.075) !important;
+
+  border-radius:14px !important;
+}
+
+
+/* -----------------------------------------
+   HEADER
+----------------------------------------- */
+
+.friend-card-rich-head {
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+
+  gap:10px;
+
+  min-width:0;
+}
+
+
+.friend-card-rich-user {
+  min-width:0;
+
+  display:grid;
+  gap:5px;
+}
+
+
+.friend-card-rich-name {
+  min-width:0;
+
+  color:#f3f5f8;
+
+  font-size:.98rem;
+  font-weight:900;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+
+/* 文理 */
+
+.friend-card-track {
+  flex:0 0 auto;
+
+  padding:4px 8px;
+
+  color:#b8abff;
+
+  background:
+    rgba(124,92,255,.10);
+
+  border:
+    1px solid rgba(124,92,255,.20);
+
+  border-radius:999px;
+
+  font-size:.65rem;
+  font-weight:850;
+}
+
+
+/* -----------------------------------------
+   TITLE
+----------------------------------------- */
+
+.friend-card-title {
+  min-width:0;
+
+  color:#aeb6c5;
+
+  font-size:.74rem;
+  font-weight:750;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+
+.friend-card-title.none {
+  color:#626c7c;
+}
+
+
+/* -----------------------------------------
+   STATS
+----------------------------------------- */
+
+.friend-card-stats {
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:7px;
+}
+
+
+.friend-card-stat {
+  min-width:0;
+
+  padding:9px 8px;
+
+  display:grid;
+  gap:3px;
+
+  background:#080c13;
+
+  border:
+    1px solid rgba(255,255,255,.055);
+
+  border-radius:10px;
+}
+
+
+.friend-card-stat-label {
+  color:#657083;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size:.61rem;
+  line-height:1;
+
+  font-weight:800;
+  letter-spacing:.08em;
+}
+
+
+.friend-card-stat-value {
+  min-width:0;
+
+  color:#e7eaf0;
+
+  font-size:.76rem;
+  font-weight:850;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+
+/* TODAYだけ少し強調 */
+
+.friend-card-stat.today
+.friend-card-stat-value {
+  color:#75e4b5;
+}
+
+
+/* -----------------------------------------
+   ID
+----------------------------------------- */
+
+.friend-card-id {
+  color:#596476;
+
+  font-size:.65rem;
+  font-weight:650;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+</style>
+
+
+<style id="party-cycle-premium-final">
+
+/* =========================================================
+   PARTY CYCLE PREMIUM
+========================================================= */
+
+/*
+  既存の
+  #party-main-tabs + div
+  CSSより強くして確実に上書き
+*/
+
+body:has(
+  #party-main-tabs
+  [data-party-tab="party"].active
+)
+#party-main-tabs
++ .party-cycle-premium {
+
+  position:relative !important;
+
+  display:grid !important;
+
+  gap:15px !important;
+
+  padding:16px !important;
+
+  overflow:hidden !important;
+
+  border-radius:15px !important;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(124,92,255,.16),
+      transparent 44%
+    ),
+    #090e16 !important;
+
+  border:
+    1px solid
+    rgba(124,92,255,.16) !important;
+}
+
+
+body:has(
+  #party-main-tabs
+  [data-party-tab="party"].active
+)
+#party-main-tabs
++ .party-cycle-premium.boss {
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(255,88,112,.16),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 0% 100%,
+      rgba(124,92,255,.10),
+      transparent 48%
+    ),
+    #090e16 !important;
+
+  border-color:
+    rgba(255,88,112,.16) !important;
+}
+
+
+/*
+  旧CSSの
+  #party-main-tabs + div > div
+  を無効化
+*/
+
+body:has(
+  #party-main-tabs
+  [data-party-tab="party"].active
+)
+#party-main-tabs
++ .party-cycle-premium
+> div {
+
+  padding:0 !important;
+
+  background:none !important;
+
+  border:none !important;
+
+  border-radius:0 !important;
+
+  color:inherit !important;
+
+  font-size:inherit !important;
+}
+
+
+/* HEADER */
+
+.party-cycle-top {
+
+  display:flex !important;
+
+  align-items:flex-start !important;
+
+  justify-content:space-between !important;
+
+  gap:12px !important;
+}
+
+
+.party-cycle-heading {
+
+  display:grid;
+
+  gap:4px;
+
+  min-width:0;
+}
+
+
+.party-cycle-kicker {
+
+  color:#667185;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size:.62rem;
+
+  font-weight:800;
+
+  line-height:1;
+
+  letter-spacing:.17em;
+}
+
+
+.party-cycle-title {
+
+  color:#f3f5f8 !important;
+
+  font-size:1rem !important;
+
+  font-weight:900 !important;
+}
+
+
+/* STATUS */
+
+.party-cycle-status {
+
+  flex:0 0 auto;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:6px;
+
+  padding:5px 8px;
+
+  border-radius:999px;
+
+  color:#73d7ff;
+
+  background:
+    rgba(53,201,255,.07);
+
+  border:
+    1px solid
+    rgba(53,201,255,.15);
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:.61rem;
+
+  font-weight:800;
+
+  letter-spacing:.07em;
+}
+
+
+.party-cycle-premium.boss
+.party-cycle-status {
+
+  color:#ff9aaa;
+
+  background:
+    rgba(255,88,112,.08);
+
+  border-color:
+    rgba(255,88,112,.17);
+}
+
+
+.party-cycle-dot {
+
+  width:6px;
+
+  height:6px;
+
+  flex:0 0 6px;
+
+  border-radius:50%;
+
+  background:#35c9ff;
+}
+
+
+.party-cycle-premium.boss
+.party-cycle-dot {
+
+  background:#ff5870;
+
+  box-shadow:
+    0 0 7px
+    rgba(255,88,112,.45);
+}
+
+
+/* DATES */
+
+.party-cycle-dates {
+
+  display:grid !important;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:7px !important;
+}
+
+
+.party-cycle-date {
+
+  min-width:0;
+
+  display:grid;
+
+  gap:4px;
+
+  padding:9px !important;
+
+  background:
+    rgba(0,0,0,.20) !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.055) !important;
+
+  border-radius:10px !important;
+}
+
+
+.party-cycle-date > span {
+
+  color:#5f697a;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:.56rem;
+
+  font-weight:800;
+
+  letter-spacing:.08em;
+}
+
+
+.party-cycle-date > strong {
+
+  min-width:0;
+
+  color:#c9ced7 !important;
+
+  font-size:.66rem !important;
+
+  font-weight:800 !important;
+
+  white-space:nowrap;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+}
+
+
+.party-cycle-date.reset > strong {
+
+  color:#b8a9ff !important;
+}
+
+
+/* =========================================================
+   PARTY MAIN ENGLISH LABEL
+========================================================= */
+
+#party-main-english {
+
+  margin-bottom:4px;
+}
+
+
+@media (max-width:370px) {
+
+  .party-cycle-dates {
+
+    grid-template-columns:
+      1fr 1fr;
+
+  }
+
+
+  .party-cycle-date.reset {
+
+    grid-column:
+      1 / -1;
+
+  }
+
+}
+
+</style>
+
+
+<style id="party-cycle-two-bug-fix">
+
+/* =========================================================
+   BUG 1 : BOSS表示見切れ対策
+========================================================= */
+
+.party-cycle-top {
+  display:grid !important;
+
+  grid-template-columns:
+    minmax(0,1fr) auto !important;
+
+  align-items:start !important;
+
+  gap:10px !important;
+}
+
+
+.party-cycle-heading {
+  min-width:0 !important;
+}
+
+
+.party-cycle-title {
+  display:block !important;
+
+  width:auto !important;
+
+  max-width:100% !important;
+
+  padding:0 !important;
+
+  margin:0 !important;
+
+  overflow:visible !important;
+
+  white-space:normal !important;
+
+  text-overflow:clip !important;
+
+  line-height:1.35 !important;
+}
+
+
+.party-cycle-status {
+  min-width:max-content !important;
+
+  max-width:none !important;
+
+  white-space:nowrap !important;
+
+  overflow:visible !important;
+}
+
+
+/*
+  かなり狭い端末では
+  ステータスを次の段へ
+*/
+@media (max-width:390px) {
+
+  .party-cycle-top {
+    grid-template-columns:
+      1fr !important;
+  }
+
+
+  .party-cycle-status {
+    justify-self:start !important;
+  }
+
+}
+
+
+/* =========================================================
+   BUG 2 : PARTY英語二重化防止
+========================================================= */
+
+#party-main-english.party-main-english-hidden {
+  display:none !important;
+}
+
+</style>
+
+
+<style id="party-cycle-no-clip-final">
+
+/* =========================================================
+   PARTY CYCLE - NO CLIP FINAL
+========================================================= */
+
+.party-cycle-top {
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  gap:9px !important;
+}
+
+.party-cycle-heading {
+  width:100% !important;
+  min-width:0 !important;
+}
+
+.party-cycle-title {
+  display:block !important;
+  width:100% !important;
+  max-width:none !important;
+
+  overflow:visible !important;
+  white-space:normal !important;
+  text-overflow:clip !important;
+
+  padding:0 !important;
+  margin:0 !important;
+}
+
+.party-cycle-status {
+  justify-self:start !important;
+
+  width:max-content !important;
+  max-width:100% !important;
+  min-width:0 !important;
+
+  overflow:visible !important;
+  white-space:nowrap !important;
+  text-overflow:clip !important;
+}
+
+.party-cycle-premium {
+  min-width:0 !important;
+}
+
+</style>
+
+
+<style id="party-cycle-header-v2-fix">
+
+/* =========================================================
+   PARTY CYCLE HEADER V2
+   横並びを廃止して見切れを完全回避
+========================================================= */
+
+.party-cycle-premium {
+  height:auto !important;
+  min-height:0 !important;
+
+  overflow:visible !important;
+}
+
+
+.party-cycle-header-v2 {
+  width:100% !important;
+  min-width:0 !important;
+
+  display:grid !important;
+
+  grid-template-columns:1fr !important;
+
+  gap:7px !important;
+
+  padding:0 !important;
+  margin:0 !important;
+
+  overflow:visible !important;
+
+  background:none !important;
+  border:none !important;
+}
+
+
+.party-cycle-kicker-v2 {
+  display:block !important;
+
+  width:100% !important;
+
+  color:#667185 !important;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size:.62rem !important;
+  line-height:1.1 !important;
+
+  font-weight:800 !important;
+
+  letter-spacing:.17em !important;
+
+  white-space:normal !important;
+
+  overflow:visible !important;
+}
+
+
+.party-cycle-title-v2 {
+  display:block !important;
+
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+
+  padding:0 !important;
+  margin:0 !important;
+
+  color:#f3f5f8 !important;
+
+  font-size:1rem !important;
+  line-height:1.4 !important;
+
+  font-weight:900 !important;
+
+  white-space:normal !important;
+
+  overflow:visible !important;
+
+  text-overflow:clip !important;
+}
+
+
+/* -----------------------------------------
+   PHASE BADGE
+----------------------------------------- */
+
+.party-cycle-phase-v2 {
+  width:max-content !important;
+  max-width:100% !important;
+
+  min-width:0 !important;
+
+  display:inline-flex !important;
+
+  align-items:center !important;
+
+  gap:6px !important;
+
+  padding:5px 9px !important;
+
+  margin-top:2px !important;
+
+  border-radius:999px !important;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size:.65rem !important;
+  line-height:1.2 !important;
+
+  font-weight:800 !important;
+
+  letter-spacing:.07em !important;
+
+  white-space:nowrap !important;
+
+  overflow:visible !important;
+}
+
+
+.party-cycle-phase-v2.boss {
+  color:#ff9aaa !important;
+
+  background:
+    rgba(255,88,112,.09) !important;
+
+  border:
+    1px solid
+    rgba(255,88,112,.20) !important;
+}
+
+
+.party-cycle-phase-v2.formation {
+  color:#73d7ff !important;
+
+  background:
+    rgba(53,201,255,.08) !important;
+
+  border:
+    1px solid
+    rgba(53,201,255,.18) !important;
+}
+
+
+.party-cycle-phase-dot-v2 {
+  display:block !important;
+
+  width:6px !important;
+  height:6px !important;
+
+  flex:0 0 6px !important;
+
+  border-radius:50% !important;
+
+  background:#35c9ff !important;
+}
+
+
+.party-cycle-phase-v2.boss
+.party-cycle-phase-dot-v2 {
+  background:#ff5870 !important;
+
+  box-shadow:
+    0 0 7px
+    rgba(255,88,112,.45) !important;
+}
+
+</style>
+
+
+<style id="party-cycle-header-v3-final">
+
+.party-cycle-header-v3 {
+  display:block !important;
+
+  width:100% !important;
+  min-width:0 !important;
+
+  padding:0 !important;
+  margin:0 !important;
+
+  background:none !important;
+  border:none !important;
+
+  overflow:visible !important;
+}
+
+
+.party-cycle-meta-v3 {
+  display:block !important;
+
+  width:100% !important;
+
+  margin:0 0 7px !important;
+  padding:0 !important;
+
+  color:#687487 !important;
+
+  background:none !important;
+  border:none !important;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif !important;
+
+  font-size:.66rem !important;
+  line-height:1.3 !important;
+
+  font-weight:800 !important;
+
+  letter-spacing:.12em !important;
+
+  white-space:normal !important;
+
+  overflow:visible !important;
+}
+
+
+.party-cycle-meta-separator {
+  margin:0 6px !important;
+
+  color:#495466 !important;
+}
+
+
+.party-cycle-meta-v3 .boss {
+  color:#ff8295 !important;
+}
+
+
+.party-cycle-meta-v3 .formation {
+  color:#66d4ff !important;
+}
+
+
+.party-cycle-title-v3 {
+  display:block !important;
+
+  width:100% !important;
+  min-width:0 !important;
+
+  padding:0 !important;
+  margin:0 !important;
+
+  color:#f3f5f8 !important;
+
+  font-size:1rem !important;
+  line-height:1.45 !important;
+
+  font-weight:900 !important;
+
+  white-space:normal !important;
+
+  overflow:visible !important;
+
+  text-overflow:clip !important;
+}
+
+
+/*
+  PARTYの旧「直下div」CSSに負けないよう
+  V3ヘッダーだけ明示的にリセット
+*/
+body:has(
+  #party-main-tabs
+  [data-party-tab="party"].active
+)
+#party-main-tabs
++ .party-cycle-premium
+> .party-cycle-header-v3 {
+
+  padding:0 !important;
+
+  background:none !important;
+
+  border:none !important;
+
+  border-radius:0 !important;
+}
+
+</style>
+
+
+<style id="party-cycle-escape-old-css-final">
+
+/*
+  旧 #party-main-tabs + div 系の
+  レイアウトから完全分離
+*/
+
+article.party-cycle-premium {
+  display:grid !important;
+
+  width:100% !important;
+  min-width:0 !important;
+
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+
+  gap:14px !important;
+
+  padding:16px !important;
+
+  margin:0 !important;
+
+  border-radius:16px !important;
+
+  overflow:visible !important;
+
+  box-sizing:border-box !important;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(255,88,112,.13),
+      transparent 44%
+    ),
+    #090e16 !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08) !important;
+}
+
+
+/* 編成期間 */
+
+article.party-cycle-premium.formation {
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(53,201,255,.11),
+      transparent 44%
+    ),
+    #090e16 !important;
+}
+
+
+/* ヘッダー */
+
+article.party-cycle-premium
+#party-cycle-header-final {
+  display:block !important;
+
+  width:100% !important;
+
+  height:auto !important;
+
+  overflow:visible !important;
+}
+
+
+/* PARTY CYCLE / BOSS ACTIVE */
+
+article.party-cycle-premium
+#party-cycle-meta-final {
+  display:flex !important;
+
+  width:100% !important;
+
+  height:auto !important;
+
+  overflow:visible !important;
+}
+
+
+/* ボス戦期間 */
+
+article.party-cycle-premium
+#party-cycle-title-final {
+  display:block !important;
+
+  width:100% !important;
+
+  height:auto !important;
+  min-height:1.4em !important;
+
+  overflow:visible !important;
+
+  color:#f3f5f8 !important;
+
+  opacity:1 !important;
+  visibility:visible !important;
+}
+
+
+/* 日付3項目 */
+
+article.party-cycle-premium
+.party-cycle-dates {
+  display:grid !important;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr)) !important;
+
+  gap:7px !important;
+
+  width:100% !important;
+
+  height:auto !important;
+
+  overflow:visible !important;
+}
+
+</style>
+
+
+<!-- ASCEND APP ICON START -->
+
+<link
+  rel="manifest"
+  href="./manifest.webmanifest"
+>
+
+<link
+  rel="apple-touch-icon"
+  sizes="180x180"
+  href="./assets/icons/ascend-180-v2.png"
+>
+
+<link
+  rel="icon"
+  type="image/png"
+  sizes="192x192"
+  href="./assets/icons/ascend-192-v2.png"
+>
+
+<meta
+  name="theme-color"
+  content="#080b12"
+>
+
+<meta
+  name="mobile-web-app-capable"
+  content="yes"
+>
+
+<meta
+  name="apple-mobile-web-app-capable"
+  content="yes"
+>
+
+<meta
+  name="apple-mobile-web-app-title"
+  content="ASCEND"
+>
+
+<meta
+  name="apple-mobile-web-app-status-bar-style"
+  content="black-translucent"
+>
+
+<!-- ASCEND APP ICON END -->
+
+
+<style id="ascend-home-hud-v2">
+
+/* =========================================================
+   ASCEND HOME HUD V2
+   visual only / no layout architecture changes
+========================================================= */
+
+#home-player-status {
+  padding:18px !important;
+
+  background:
+    radial-gradient(
+      circle at 92% 6%,
+      rgba(169,140,255,.17),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 5% 100%,
+      rgba(66,229,255,.07),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      #111723 0%,
+      #0a0f18 60%,
+      #090d14 100%
+    ) !important;
+
+  border:
+    1px solid rgba(169,140,255,.17) !important;
+
+  box-shadow:
+    0 12px 32px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.045) !important;
+}
+
+
+/* PLAYER */
+
+.home-player-top {
+  gap:14px !important;
+}
+
+.home-player-avatar {
+  border:
+    1px solid rgba(169,140,255,.24) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(169,140,255,.19),
+      rgba(66,229,255,.07)
+    ) !important;
+
+  box-shadow:
+    inset 0 0 18px rgba(169,140,255,.08),
+    0 0 18px rgba(169,140,255,.07) !important;
+}
+
+.home-player-name {
+  color:#f5f7fb !important;
+
+  font-weight:900 !important;
+  letter-spacing:.01em !important;
+}
+
+.home-player-title {
+  color:#b7a8ff !important;
+
+  font-weight:750 !important;
+}
+
+.home-player-id {
+  color:#687488 !important;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif !important;
+
+  font-weight:700 !important;
+  letter-spacing:.05em !important;
+}
+
+
+/* LEVEL */
+
+.home-player-level {
+  min-width:62px !important;
+
+  padding-left:12px !important;
+
+  border-left:
+    1px solid rgba(255,255,255,.07) !important;
+}
+
+.home-player-level small {
+  color:#6f7a8d !important;
+
+  font-family:
+    "Rajdhani",
+    sans-serif !important;
+
+  font-size:.63rem !important;
+  font-weight:800 !important;
+
+  letter-spacing:.14em !important;
+}
+
+.home-player-level strong {
+  color:#b8a8ff !important;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif !important;
+
+  font-weight:800 !important;
+
+  text-shadow:
+    0 0 9px rgba(169,140,255,.25) !important;
+}
+
+
+/* XP */
+
+.home-xp-section {
+  margin-top:18px !important;
+
+  padding-top:14px !important;
+
+  border-top:
+    1px solid rgba(255,255,255,.065) !important;
+}
+
+.home-xp-row {
+  margin-bottom:7px !important;
+
+  color:#8994a7 !important;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif !important;
+
+  font-size:.74rem !important;
+  font-weight:800 !important;
+
+  letter-spacing:.05em !important;
+}
+
+
+/* RANK */
+
+.home-rank-progress {
+  color:#8994a7 !important;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif !important;
+
+  font-size:.74rem !important;
+  font-weight:800 !important;
+}
+
+
+/* SUMMARY HUD */
+
+.home-summary-grid {
+  margin-top:15px !important;
+
+  gap:7px !important;
+}
+
+.home-summary-item {
+  min-width:0 !important;
+
+  padding:10px 8px !important;
+
+  border-radius:10px !important;
+
+  background:
+    rgba(5,9,15,.42) !important;
+
+  border:
+    1px solid rgba(255,255,255,.055) !important;
+}
+
+.home-summary-item > span:first-child {
+  display:block !important;
+
+  margin-bottom:3px !important;
+
+  color:#697589 !important;
+
+  font-family:
+    "Rajdhani",
+    sans-serif !important;
+
+  font-size:.61rem !important;
+  font-weight:800 !important;
+
+  letter-spacing:.10em !important;
+}
+
+.home-summary-item > strong,
+.home-summary-item > span:last-child {
+  color:#e8ebf1 !important;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif !important;
+
+  font-variant-numeric:
+    tabular-nums !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width:500px) {
+
+  #home-player-status {
+    padding:16px !important;
+  }
+
+  .home-player-level {
+    min-width:56px !important;
+    padding-left:9px !important;
+  }
+
+  .home-summary-grid {
+    gap:6px !important;
+  }
+
+  .home-summary-item {
+    padding:9px 7px !important;
+  }
+
+}
+
+</style>
+
+
+
+<style id="ascend-home-ui-v3">
+
+/* =========================================================
+   ASCEND HOME UI v3
+   HOME ONLY / STRUCTURE SAFE
+========================================================= */
+
+
+/* ===== PLAYER STATUS ===== */
+
+#home-player-status {
+  position: relative;
+
+  padding: 21px !important;
+
+  background:
+    radial-gradient(
+      circle at 92% 0%,
+      rgba(124, 92, 255, .13),
+      transparent 36%
+    ),
+    linear-gradient(
+      155deg,
+      rgba(20, 24, 37, .98),
+      rgba(12, 15, 23, .98)
+    ) !important;
+
+  border:
+    1px solid rgba(255,255,255,.09) !important;
+}
+
+
+#home-player-status::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 22px;
+  right: 22px;
+
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(124,92,255,.75),
+      rgba(53,201,255,.55),
+      transparent
+    );
+
+  opacity: .85;
+}
+
+
+/* ===== AVATAR ===== */
+
+#home-player-status .home-player-avatar {
+  width: 56px;
+  height: 56px;
+
+  flex-basis: 56px;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124,92,255,.20),
+      rgba(124,92,255,.06)
+    );
+
+  border:
+    1px solid rgba(155,131,255,.24);
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.07);
+
+  font-size: 25px;
+}
+
+
+/* ===== PLAYER NAME ===== */
+
+#home-player-status .home-player-name {
+  font-family:
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 19px;
+
+  font-weight: 900;
+
+  letter-spacing: -.02em;
+}
+
+
+#home-player-status .home-player-title {
+  display: inline-block;
+
+  margin-top: 5px;
+
+  padding: 3px 7px;
+
+  border-radius: 6px;
+
+  color: #b9aaff;
+
+  background:
+    rgba(124,92,255,.09);
+
+  border:
+    1px solid rgba(124,92,255,.13);
+
+  font-size: 10px;
+
+  font-weight: 800;
+}
+
+
+#home-player-status .home-player-id {
+  margin-top: 6px;
+
+  color: rgba(168,175,189,.55);
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 10px;
+
+  letter-spacing: .06em;
+}
+
+
+/* ===== LEVEL ===== */
+
+#home-player-status .home-player-level small {
+  color: rgba(168,175,189,.55);
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 9px;
+
+  letter-spacing: .18em;
+}
+
+
+#home-player-status .home-player-level strong {
+  color: #c1b5ff;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 31px;
+
+  font-weight: 700;
+
+  letter-spacing: -.04em;
+
+  text-shadow: none;
+}
+
+
+/* ===== XP ===== */
+
+#home-player-status .home-xp-section {
+  margin-top: 19px;
+}
+
+
+#home-player-status .home-xp-row {
+  margin-bottom: 7px;
+
+  color: rgba(168,175,189,.72);
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 11px;
+
+  letter-spacing: .03em;
+}
+
+
+#home-player-status .home-xp-track {
+  height: 9px;
+
+  padding: 2px;
+
+  background:
+    rgba(0,0,0,.48);
+
+  border:
+    1px solid rgba(255,255,255,.045);
+}
+
+
+#home-player-status .home-xp-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #7557f6,
+      #9c86ff,
+      #4bc8ff
+    );
+
+  box-shadow: none;
+}
+
+
+/* ===== SUMMARY ===== */
+
+#home-player-status .home-summary-grid {
+  margin-top: 18px;
+
+  padding-top: 15px;
+
+  gap: 0;
+
+  border-top:
+    1px solid rgba(255,255,255,.065);
+}
+
+
+#home-player-status .home-summary-item {
+  padding: 4px 8px;
+}
+
+
+#home-player-status .home-summary-item + .home-summary-item {
+  border-left:
+    1px solid rgba(255,255,255,.055);
+}
+
+
+#home-player-status .home-summary-item span {
+  margin-bottom: 5px;
+
+  color: rgba(168,175,189,.52);
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: .05em;
+}
+
+
+#home-player-status .home-summary-item strong {
+  color: #f4f5f8;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+
+#home-player-status .home-summary-item.coin strong {
+  color: #ffd166;
+}
+
+
+/* =========================================================
+   TODAY STUDY
+========================================================= */
+
+#home-study-status {
+  position: relative;
+
+  padding: 21px !important;
+
+  text-align: left !important;
+
+  background:
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(53,201,255,.065),
+      transparent 42%
+    ),
+    linear-gradient(
+      155deg,
+      rgba(17,23,33,.98),
+      rgba(11,15,22,.98)
+    ) !important;
+
+  border:
+    1px solid rgba(255,255,255,.085) !important;
+}
+
+
+#home-study-status::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 22px;
+
+  width: 72px;
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #35c9ff,
+      rgba(53,201,255,0)
+    );
+}
+
+
+#home-study-status .home-section-title {
+  margin-bottom: 8px;
+
+  color: rgba(168,175,189,.65);
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: .08em;
+}
+
+
+#home-study-status .home-study-time {
+  margin:
+    2px 0
+    18px;
+
+  color: #f4f9fc;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:
+    clamp(38px, 10vw, 55px);
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing: -.025em;
+
+  text-shadow: none;
+}
+
+
+#home-study-status .classic-primary-button {
+  min-height: 48px;
+
+  border:
+    1px solid rgba(155,131,255,.22);
+
+  border-radius:
+    11px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7659f3,
+      #6347da
+    );
+
+  box-shadow:
+    0 6px 18px rgba(75,55,160,.16);
+
+  font-family:
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 13px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   QUICK MENU
+========================================================= */
+
+.home-quick-grid {
+  gap: 9px !important;
+}
+
+
+.home-quick-grid .home-menu-card {
+  position: relative;
+
+  min-height: 105px;
+
+  padding: 16px;
+
+  gap: 4px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.037),
+      rgba(255,255,255,.012)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.072);
+
+  border-radius: 14px;
+
+  box-shadow: none;
+}
+
+
+.home-quick-grid .home-menu-card:hover {
+  transform:
+    translateY(-1px);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124,92,255,.075),
+      rgba(255,255,255,.018)
+    );
+
+  border-color:
+    rgba(124,92,255,.18);
+}
+
+
+.home-quick-grid .home-menu-icon {
+  margin-bottom: 5px;
+
+  font-size: 21px;
+
+  opacity: .92;
+}
+
+
+.home-quick-grid .home-menu-card strong {
+  color: #f0f2f6;
+
+  font-family:
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size: 13px;
+
+  font-weight: 800;
+}
+
+
+.home-quick-grid .home-menu-card small {
+  margin-top: 1px;
+
+  color: rgba(168,175,189,.50);
+
+  font-size: 9px;
+
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  #home-player-status,
+  #home-study-status {
+    padding: 17px !important;
+  }
+
+
+  #home-player-status::before {
+    left: 17px;
+    right: 17px;
+  }
+
+
+  #home-player-status .home-player-top {
+    gap: 12px;
+  }
+
+
+  #home-player-status .home-player-avatar {
+    width: 50px;
+    height: 50px;
+
+    flex-basis: 50px;
+
+    font-size: 22px;
+  }
+
+
+  #home-player-status .home-player-name {
+    font-size: 17px;
+  }
+
+
+  #home-player-status .home-player-level strong {
+    font-size: 28px;
+  }
+
+
+  #home-player-status .home-summary-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+
+  #home-player-status .home-summary-item {
+    padding: 9px 5px;
+  }
+
+
+  #home-player-status
+  .home-summary-item:nth-child(even) {
+    border-left:
+      1px solid rgba(255,255,255,.055);
+  }
+
+
+  #home-player-status
+  .home-summary-item:nth-child(n+3) {
+    border-top:
+      1px solid rgba(255,255,255,.055);
+  }
+
+
+  #home-study-status .home-study-time {
+    font-size:
+      clamp(39px, 12vw, 51px);
+  }
+
+
+  .home-quick-grid .home-menu-card {
+    min-height: 98px;
+
+    padding: 14px;
+  }
+
+}
+
+</style>
+
+
+<style id="ascend-rank-png-emblems">
+  .asc-rank-hero-emblem,
+  .asc-rank-ladder-emblem {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: visible !important;
+  }
+
+  .asc-rank-emblem {
+    display: block;
+    width: auto !important;
+    height: auto !important;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center center;
+    margin: 0 auto;
+    user-select: none;
+    -webkit-user-drag: none;
+    transform: translate(0, 0);
+  }
+
+  .asc-rank-emblem.hero {
+    max-width: 148px;
+    max-height: 148px;
+  }
+
+  .asc-rank-emblem.small {
+    max-width: 42px;
+    max-height: 42px;
+  }
+
+  @media (max-width: 600px) {
+    .asc-rank-emblem.hero {
+      max-width: 128px;
+      max-height: 128px;
+    }
+
+    .asc-rank-emblem.small {
+      max-width: 38px;
+      max-height: 38px;
+    }
+  }
+</style>
+
+
+<style id="ascend-home-rank-emblem-v1">
+
+  #home-player-status .home-player-name {
+    position: relative !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    padding-right: 104px !important;
+
+    overflow: visible !important;
+  }
+
+  #home-player-status .home-player-name-text {
+    display: block;
+
+    min-width: 0;
+    flex: 1 1 auto;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #home-player-status .home-player-rank-emblem {
+    position: absolute !important;
+
+    right: 0 !important;
+    top: 0 !important;
+
+    width: 96px !important;
+    height: 96px !important;
+
+    max-width: none !important;
+    max-height: none !important;
+
+    object-fit: contain;
+    object-position: center;
+
+    user-select: none;
+    -webkit-user-drag: none;
+
+    pointer-events: none;
+  }
+
+  @media (max-width: 600px) {
+
+    #home-player-status .home-player-name {
+      padding-right: 96px !important;
+    }
+
+    #home-player-status .home-player-rank-emblem {
+      width: 88px !important;
+      height: 88px !important;
+
+      top: 0 !important;
+      right: 0 !important;
+    }
+
+  }
+
+</style>
+
+
+<style id="ascend-home-rank-force-position">
+  #home-player-status img.home-player-rank-emblem {
+    transform: translate(-90px, -13px) !important;
+  }
+</style>
+
+
+<style id="ascend-friend-rank-emblem-v1">
+
+  .friend-card-rank-value {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 5px !important;
+
+    overflow: visible !important;
+  }
+
+  .friend-card-rank-emblem {
+    display: block;
+
+    width: 36px;
+    height: 36px;
+
+    flex: 0 0 36px;
+
+    object-fit: contain;
+    object-position: center;
+
+    user-select: none;
+    -webkit-user-drag: none;
+
+    pointer-events: none;
+  }
+
+  .friend-card-rank-value > span {
+    min-width: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 600px) {
+
+    .friend-card-rank-emblem {
+      width: 32px;
+      height: 32px;
+
+      flex-basis: 32px;
+    }
+
+    .friend-card-rank-value {
+      gap: 3px !important;
+    }
+
+  }
+
+</style>
+
+
+<style id="ascend-study-link-force-v2">
+
+#study-link-card-v2 {
+  margin-top: 16px;
+  padding: 18px;
+
+  border: 1px solid rgba(124,92,255,.24);
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,23,34,.97),
+      rgba(11,14,22,.97)
+    );
+}
+
+.study-link-v2-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.study-link-v2-kicker {
+  color:#9b83ff;
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.16em;
+}
+
+.study-link-v2-title {
+  margin:2px 0 0;
+
+  color:#f4f5fa;
+
+  font-size:20px;
+  font-weight:900;
+}
+
+.study-link-v2-chip {
+  padding:5px 9px;
+
+  border:
+    1px solid rgba(124,92,255,.23);
+
+  border-radius:999px;
+
+  color:#b9aaff;
+  background:rgba(124,92,255,.07);
+
+  font-family:"Rajdhani",sans-serif;
+
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.14em;
+}
+
+.study-link-v2-desc {
+  margin:9px 0 15px;
+
+  color:#858e9e;
+
+  font-size:12px;
+  line-height:1.6;
+}
+
+#study-link-v2-create {
+  width:100%;
+  min-height:46px;
+
+  color:#fff !important;
+
+  border:
+    1px solid rgba(124,92,255,.34) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7355ef,
+      #5940d8
+    ) !important;
+
+  font-weight:800 !important;
+  letter-spacing:.08em;
+}
+
+.study-link-v2-or {
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  margin:13px 0;
+
+  color:#596272;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.15em;
+}
+
+.study-link-v2-or::before,
+.study-link-v2-or::after {
+  content:"";
+  height:1px;
+  flex:1;
+  background:rgba(255,255,255,.07);
+}
+
+.study-link-v2-join-row {
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    auto;
+
+  gap:8px;
+}
+
+#study-link-v2-code {
+  text-align:center;
+  text-transform:uppercase;
+
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    monospace !important;
+
+  font-weight:800 !important;
+  letter-spacing:.14em;
+}
+
+#study-link-v2-join {
+  min-width:92px;
+
+  color:#e8eaf1 !important;
+
+  border:
+    1px solid rgba(255,255,255,.1) !important;
+
+  background:
+    rgba(255,255,255,.045) !important;
+
+  font-weight:800 !important;
+}
+
+.study-link-v2-active {
+  padding:14px;
+
+  border:
+    1px solid rgba(66,211,146,.17);
+
+  border-radius:13px;
+
+  background:
+    rgba(66,211,146,.035);
+}
+
+.study-link-v2-connected {
+  display:flex;
+  align-items:center;
+  gap:7px;
+
+  margin-bottom:10px;
+
+  color:#75e4b5;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.13em;
+}
+
+.study-link-v2-dot {
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:#42d392;
+}
+
+.study-link-v2-label {
+  color:#626c7d;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.16em;
+}
+
+#study-link-v2-room-code {
+  margin-top:2px;
+
+  color:#f3f5ff;
+
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    monospace;
+
+  font-size:28px;
+  font-weight:800;
+  letter-spacing:.14em;
+}
+
+.study-link-v2-actions {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+
+  gap:8px;
+
+  margin-top:13px;
+}
+
+.study-link-v2-actions button {
+  min-height:40px;
+
+  color:#cbd0da !important;
+
+  border:
+    1px solid rgba(255,255,255,.09) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+
+  font-weight:800 !important;
+}
+
+#study-link-v2-leave {
+  color:#ff8496 !important;
+
+  border-color:
+    rgba(255,93,115,.16) !important;
+}
+
+#study-link-v2-status {
+  min-height:17px;
+
+  margin-top:9px;
+
+  color:#7d8798;
+
+  font-size:11px;
+
+  text-align:center;
+}
+
+#study-link-v2-status.success {
+  color:#75e4b5;
+}
+
+#study-link-v2-status.error {
+  color:#ff8496;
+}
+
+</style>
+
+
+<style id="ascend-study-link-members-v1">
+
+.study-link-v2-members-wrap {
+  margin-top: 16px;
+  padding-top: 14px;
+
+  border-top:
+    1px solid rgba(255,255,255,.07);
+}
+
+.study-link-v2-members-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:9px;
+}
+
+.study-link-v2-members-label {
+  color:#747e90;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:10px;
+  font-weight:800;
+
+  letter-spacing:.15em;
+}
+
+#study-link-v2-member-count {
+  color:#9b83ff;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:11px;
+  font-weight:800;
+}
+
+#study-link-v2-members {
+  display:grid;
+  gap:7px;
+}
+
+.study-link-v2-member {
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    auto;
+
+  align-items:center;
+  gap:12px;
+
+  min-height:48px;
+
+  padding:9px 11px;
+
+  border:
+    1px solid rgba(255,255,255,.065);
+
+  border-radius:11px;
+
+  background:
+    rgba(255,255,255,.025);
+}
+
+.study-link-v2-member-main {
+  min-width:0;
+}
+
+.study-link-v2-member-name {
+  overflow:hidden;
+
+  color:#eef0f5;
+
+  font-size:13px;
+  font-weight:800;
+
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.study-link-v2-you {
+  margin-left:6px;
+
+  color:#9b83ff;
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:9px;
+  font-weight:800;
+
+  letter-spacing:.12em;
+}
+
+.study-link-v2-member-sub {
+  margin-top:2px;
+
+  color:#626c7c;
+
+  font-size:10px;
+}
+
+.study-link-v2-member-state {
+  min-width:58px;
+
+  padding:5px 8px;
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  border-radius:999px;
+
+  color:#818b9b;
+
+  background:
+    rgba(255,255,255,.035);
+
+  font-family:"Rajdhani",sans-serif;
+  font-size:10px;
+  font-weight:800;
+
+  text-align:center;
+  letter-spacing:.08em;
+}
+
+.study-link-v2-member-state.studying {
+  color:#75e4b5;
+
+  border-color:
+    rgba(66,211,146,.18);
+
+  background:
+    rgba(66,211,146,.055);
+}
+
+.study-link-v2-member-state.paused {
+  color:#ffd166;
+
+  border-color:
+    rgba(255,209,102,.17);
+
+  background:
+    rgba(255,209,102,.045);
+}
+
+.study-link-v2-members-empty {
+  padding:12px;
+
+  color:#687283;
+
+  font-size:11px;
+  text-align:center;
+}
+
+</style>
+
+
+
+<style id="ascend-study-link-room-mode-v1">
+
+/* =========================================================
+   ASCEND STUDY LINK ROOM — CLEAN V2
+   ROOM is completely independent from main > section scroll
+========================================================= */
+
+body.study-link-room-mode-v1{
+  overflow:hidden!important;
+}
+
+/* 背面アプリは固定 */
+body.study-link-room-mode-v1 > main{
+  pointer-events:none!important;
+}
+
+
+/* =========================================================
+   ROOM PORTAL
+========================================================= */
+
+body.study-link-room-mode-v1
+#study-link-card-v2.study-link-room-portal-v2{
+
+  position:fixed!important;
+  inset:0!important;
+  z-index:25000!important;
+
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+
+  height:100dvh!important;
+  min-height:0!important;
+  max-height:100dvh!important;
+
+  margin:0!important;
+
+  padding:
+    max(14px,env(safe-area-inset-top))
+    max(28px,env(safe-area-inset-right))
+    max(24px,env(safe-area-inset-bottom))
+    max(14px,env(safe-area-inset-left))
+    !important;
+
+  box-sizing:border-box!important;
+
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch;
+
+  border:0!important;
+  border-radius:0!important;
+
+  background:#070910!important;
+}
+
+
+/* ROOM内の横幅 */
+body.study-link-room-mode-v1
+#study-link-card-v2.study-link-room-portal-v2 > *{
+  width:min(100%,560px)!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+
+
+/* =========================================================
+   ACTIVE ROOM
+========================================================= */
+
+body.study-link-room-mode-v1
+#study-link-v2-active{
+  margin-top:8px!important;
+  padding:12px!important;
+
+  border:1px solid rgba(0,243,255,.20)!important;
+  border-radius:16px!important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(16,22,32,.98),
+      rgba(9,13,20,.98)
+    )!important;
+
+  box-shadow:
+    0 14px 34px rgba(0,0,0,.34),
+    0 0 20px rgba(0,243,255,.06)!important;
+}
+
+
+/* ROOM CODE */
+body.study-link-room-mode-v1
+#study-link-v2-room-code{
+  margin:4px 0 10px!important;
+
+  font-size:28px!important;
+  line-height:1.1!important;
+  letter-spacing:.10em!important;
+
+  text-shadow:
+    0 0 14px rgba(0,243,255,.30)!important;
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+body.study-link-room-mode-v1
+#study-link-room-timer-v1{
+  width:100%!important;
+
+  margin:8px 0!important;
+  padding:11px!important;
+
+  box-sizing:border-box!important;
+  border-radius:14px!important;
+}
+
+body.study-link-room-mode-v1
+#study-link-room-clock-v1{
+  padding:12px 0 10px!important;
+
+  font-size:34px!important;
+  line-height:1!important;
+  letter-spacing:0!important;
+
+  text-shadow:
+    0 0 15px rgba(0,243,255,.25)!important;
+}
+
+body.study-link-room-mode-v1
+#study-link-room-subject-v1{
+  min-height:38px!important;
+  font-size:12px!important;
+}
+
+body.study-link-room-mode-v1
+.study-link-room-timer-buttons-v1 button{
+  min-height:36px!important;
+  padding:6px 9px!important;
+  font-size:12px!important;
+}
+
+
+/* =========================================================
+   THE ONLY SCROLLBAR
+========================================================= */
+
+body.study-link-room-mode-v1
+#study-link-card-v2.study-link-room-portal-v2{
+  scrollbar-width:thin;
+  scrollbar-color:
+    rgba(0,243,255,.30)
+    transparent;
+}
+
+body.study-link-room-mode-v1
+#study-link-card-v2.study-link-room-portal-v2::-webkit-scrollbar{
+  width:5px;
+}
+
+body.study-link-room-mode-v1
+#study-link-card-v2.study-link-room-portal-v2::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+body.study-link-room-mode-v1
+#study-link-card-v2.study-link-room-portal-v2::-webkit-scrollbar-thumb{
+  background:rgba(0,243,255,.26);
+  border-radius:999px;
+}
+
+</style>
+
+
+
+<style id="ascend-study-link-room-timer-v1">
+
+#study-link-room-timer-v1 {
+  margin: 18px 0;
+  padding: 18px;
+
+  border:
+    1px solid rgba(124,92,255,.17);
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124,92,255,.055),
+      rgba(255,255,255,.018)
+    );
+}
+
+.study-link-room-timer-label-v1 {
+  margin-bottom: 7px;
+
+  color: #747f92;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: .15em;
+}
+
+#study-link-room-subject-v1 {
+  width: 100%;
+}
+
+#study-link-room-clock-v1 {
+  padding: 28px 0 23px;
+
+  color: #f5f6ff;
+
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    monospace;
+
+  font-size:
+    clamp(38px, 9vw, 62px);
+
+  font-weight: 800;
+
+  line-height: 1;
+
+  text-align: center;
+
+  letter-spacing: .04em;
+}
+
+#study-link-room-timer-state-v1 {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  margin-bottom: 17px;
+
+  color: #788295;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: .1em;
+}
+
+.study-link-room-timer-dot-v1 {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #596273;
+}
+
+#study-link-room-timer-state-v1.studying {
+  color: #75e4b5;
+}
+
+#study-link-room-timer-state-v1.studying
+.study-link-room-timer-dot-v1 {
+  background: #42d392;
+}
+
+#study-link-room-timer-state-v1.paused {
+  color: #ffd166;
+}
+
+#study-link-room-timer-state-v1.paused
+.study-link-room-timer-dot-v1 {
+  background: #ffd166;
+}
+
+.study-link-room-timer-buttons-v1 {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 9px;
+}
+
+.study-link-room-timer-buttons-v1 button {
+  min-height: 46px;
+
+  font-weight: 800 !important;
+
+  letter-spacing: .06em;
+}
+
+#study-link-room-start-v1 {
+  grid-column:
+    1 / -1;
+
+  color: white !important;
+
+  border:
+    1px solid rgba(124,92,255,.34) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7355ef,
+      #5940d8
+    ) !important;
+}
+
+#study-link-room-pause-v1 {
+  color:
+    #f0d787 !important;
+
+  border:
+    1px solid rgba(255,209,102,.16) !important;
+
+  background:
+    rgba(255,209,102,.04) !important;
+}
+
+#study-link-room-finish-v1 {
+  color:
+    #ff8a9b !important;
+
+  border:
+    1px solid rgba(255,93,115,.17) !important;
+
+  background:
+    rgba(255,93,115,.045) !important;
+}
+
+#study-link-room-timer-error-v1 {
+  min-height: 17px;
+
+  margin-top: 9px;
+
+  color: #ff8496;
+
+  font-size: 11px;
+
+  text-align: center;
+}
+
+@media (max-width:600px) {
+
+  #study-link-room-timer-v1 {
+    padding: 15px;
+  }
+
+}
+
+</style>
+
+
+<style id="ascend-study-link-active-status-v1">
+
+#study-link-status-panel-v1 {
+  margin: 18px 0;
+  padding: 16px 18px;
+
+  border:
+    1px solid rgba(255,255,255,.075);
+
+  border-radius: 15px;
+
+  background:
+    rgba(255,255,255,.022);
+}
+
+
+.study-link-status-head-v1 {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 13px;
+}
+
+
+.study-link-status-label-v1 {
+  color: #7d8799;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: .15em;
+}
+
+
+#study-link-status-state-v1 {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: #929bad;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: .09em;
+}
+
+
+.study-link-status-dot-v1 {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #5b6475;
+}
+
+
+#study-link-status-panel-v1.active {
+  border-color:
+    rgba(66,211,146,.18);
+
+  background:
+    rgba(66,211,146,.035);
+}
+
+
+#study-link-status-panel-v1.active
+#study-link-status-state-v1 {
+  color: #75e4b5;
+}
+
+
+#study-link-status-panel-v1.active
+.study-link-status-dot-v1 {
+  background: #42d392;
+}
+
+
+.study-link-status-count-v1 {
+  margin-bottom: 12px;
+
+  color: #747f92;
+
+  font-size: 11px;
+}
+
+
+.study-link-status-count-v1 strong {
+  color: #f3f5f8;
+}
+
+
+.study-link-status-bonuses-v1 {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0,1fr)
+    );
+
+  gap: 8px;
+}
+
+
+.study-link-status-bonus-v1 {
+  padding: 10px 8px;
+
+  border:
+    1px solid rgba(255,255,255,.06);
+
+  border-radius: 10px;
+
+  background:
+    rgba(0,0,0,.13);
+
+  text-align: center;
+}
+
+
+.study-link-status-bonus-name-v1 {
+  color: #717b8d;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: .08em;
+}
+
+
+.study-link-status-bonus-value-v1 {
+  margin-top: 2px;
+
+  color: #eff2f7;
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+
+.study-link-status-wait-v1 {
+  color: #7f899c;
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+
+#study-link-status-personal-v1 {
+  margin-top: 11px;
+
+  padding-top: 10px;
+
+  border-top:
+    1px solid rgba(255,255,255,.055);
+
+  color: #788295;
+
+  font-size: 10px;
+}
+
+
+#study-link-status-personal-v1.eligible {
+  color: #75e4b5;
+}
+
+
+@media (max-width:600px) {
+
+  .study-link-status-bonuses-v1 {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0,1fr)
+      );
+  }
+
+}
+
+</style>
+
+
+
+
+</head>
+
+
+
+<body>
+
+<div id="boot-screen">
+
+  <div class="ascend-boot-inner">
+
+    <div class="ascend-boot-status">
+      <span class="ascend-boot-dot"></span>
+      SYSTEM INITIALIZING
+    </div>
+
+    <h1 class="ascend-boot-logo">
+      ASCEND
+    </h1>
+
+    <div class="ascend-boot-copy">
+      受験を、攻略する。
+    </div>
+
+    <div class="ascend-boot-loading">
+
+      <div class="ascend-boot-track">
+        <div class="ascend-boot-bar"></div>
+      </div>
+
+      <div class="ascend-boot-loading-text">
+        INITIALIZING CORE SYSTEMS...
+      </div>
+
+    </div>
+
+    <div class="ascend-boot-systems">
+
+      <div class="ascend-boot-system">
+        XP
+      </div>
+
+      <div class="ascend-boot-system">
+        QUEST
+      </div>
+
+      <div class="ascend-boot-system">
+        RANK
+      </div>
+
+      <div class="ascend-boot-system">
+        BOSS
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<style id="room-hide-nav-final">
+body.study-link-room-mode-v1 #main-navigation{
+  display:none!important;
+}
+</style>
+
+
+
+
+
+<style id="study-link-tabs-click-fix">
+body.study-link-room-mode-v1 #study-link-card-v2,
+body.study-link-room-mode-v1 #study-link-v2-active,
+body.study-link-room-mode-v1 #study-link-room-tabs-v1,
+body.study-link-room-mode-v1 #study-link-room-tabs-v1 button{
+  pointer-events:auto!important;
+}
+#study-link-room-tabs-v1{
+  position:relative!important;
+  z-index:99999!important;
+}
+</style>
+
+<script>setTimeout(()=>{let b=document.querySelector("#study-link-room-tabs-v1 button"),r=b.getBoundingClientRect(),e=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);alert(e.id||e.className||e.tagName)},700)</script>

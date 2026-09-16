@@ -3884,218 +3884,6 @@ body:has(#main-navigation):not(:has(.boss-battle-card)):not(:has(#boss-back-btn)
 
 
 
-
-<style id="ascend-priority-targets-v1">
-
-.home-priority-v1 {
-  margin-top: 18px;
-  display: grid;
-  gap: 10px;
-}
-
-.home-priority-header-v1 {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.home-priority-header-v1 > div {
-  display: grid;
-  gap: 2px;
-}
-
-.home-priority-header-v1 span {
-  font-size: .56rem;
-  font-weight: 900;
-  letter-spacing: .15em;
-  opacity: .4;
-}
-
-.home-priority-header-v1 strong {
-  font-size: .92rem;
-  letter-spacing: .04em;
-}
-
-.home-priority-header-v1 small {
-  font-size: .62rem;
-  font-weight: 900;
-  opacity: .42;
-}
-
-.home-priority-list-v1 {
-  display: grid;
-  gap: 7px;
-}
-
-.home-priority-item-v1 {
-  display: grid;
-  grid-template-columns: 28px minmax(0,1fr);
-  gap: 8px;
-
-  padding: 11px;
-
-  border:
-    1px solid rgba(255,255,255,.075);
-
-  border-radius: 13px;
-
-  background:
-    rgba(255,255,255,.025);
-}
-
-.home-priority-rank-v1 {
-  padding-top: 2px;
-
-  font-size: .58rem;
-  font-weight: 900;
-
-  opacity: .28;
-}
-
-.home-priority-body-v1 {
-  min-width: 0;
-
-  display: grid;
-  gap: 3px;
-}
-
-.home-priority-badge-v1 {
-  width: fit-content;
-
-  padding: 3px 6px;
-
-  border-radius: 999px;
-
-  font-size: .54rem;
-  font-weight: 900;
-  letter-spacing: .06em;
-
-  border:
-    1px solid rgba(255,255,255,.08);
-}
-
-.home-priority-item-v1[data-kind="weak"]
-.home-priority-badge-v1 {
-  color: #ff8b9b;
-}
-
-.home-priority-item-v1[data-kind="unstable"]
-.home-priority-badge-v1 {
-  color: #ffd76a;
-}
-
-.home-priority-item-v1[data-kind="review"]
-.home-priority-badge-v1,
-.home-priority-item-v1[data-kind="review-soon"]
-.home-priority-badge-v1 {
-  color: #8bdcff;
-}
-
-.home-priority-unit-v1 {
-  font-size: .88rem;
-}
-
-.home-priority-path-v1 {
-  font-size: .66rem;
-  opacity: .48;
-}
-
-.home-priority-last-v1 {
-  font-size: .59rem;
-  font-weight: 700;
-  opacity: .36;
-}
-
-.home-priority-empty-v1 {
-  padding: 15px;
-
-  border:
-    1px dashed rgba(255,255,255,.09);
-
-  border-radius: 13px;
-
-  font-size: .71rem;
-  line-height: 1.7;
-
-  opacity: .5;
-}
-
-.home-priority-more-v1 {
-  border:
-    1px solid rgba(255,255,255,.07);
-
-  border-radius: 12px;
-
-  background:
-    rgba(255,255,255,.018);
-}
-
-.home-priority-more-v1 > summary {
-  cursor: pointer;
-
-  padding: 11px;
-
-  list-style: none;
-
-  text-align: center;
-
-  font-size: .66rem;
-  font-weight: 900;
-
-  opacity: .58;
-}
-
-.home-priority-more-v1 > summary::-webkit-details-marker {
-  display: none;
-}
-
-.home-priority-more-v1
-.home-priority-list-v1 {
-  padding:
-    0 8px 8px;
-}
-
-
-
-.home-priority-item-v1 {
-  grid-template-columns:
-    28px minmax(0,1fr) auto;
-}
-
-.home-priority-start-v1 {
-  align-self: center;
-
-  min-width: 62px;
-  min-height: 38px;
-
-  padding: 7px 10px;
-
-  border:
-    1px solid rgba(140,115,255,.22);
-
-  border-radius: 10px;
-
-  background:
-    rgba(115,85,235,.12);
-
-  color: inherit;
-
-  font: inherit;
-
-  font-size: .62rem;
-  font-weight: 900;
-  letter-spacing: .07em;
-
-  cursor: pointer;
-}
-
-.home-priority-start-v1:active {
-  transform: scale(.96);
-}
-
-</style>
-
 <style id="ascend-weakness-map-ui-v1">
 
 /* ============================================================
@@ -5067,97 +4855,6 @@ body:has(#main-navigation):not(:has(.boss-battle-card)):not(:has(#boss-back-btn)
 .weakness-map-inline-back-v5:active {
   transform:
     translateX(-2px);
-}
-
-
-
-/* ============================================================
-   WEAKNESS MAP / UNIT DETAIL v1
-============================================================ */
-
-.weakness-status-stats-v1 {
-  display:
-    grid;
-
-  grid-template-columns:
-    repeat(2,minmax(0,1fr));
-
-  gap:
-    8px;
-}
-
-.weakness-status-stat-v1 {
-  min-width:
-    0;
-
-  padding:
-    11px;
-
-  border-radius:
-    13px;
-
-  border:
-    1px solid rgba(255,255,255,.07);
-
-  background:
-    rgba(255,255,255,.028);
-
-  display:
-    grid;
-
-  gap:
-    4px;
-}
-
-.weakness-status-stat-v1 span {
-  font-size:
-    .58rem;
-
-  font-weight:
-    900;
-
-  letter-spacing:
-    .10em;
-
-  opacity:
-    .44;
-}
-
-.weakness-status-stat-v1 strong {
-  min-width:
-    0;
-
-  font-size:
-    .88rem;
-
-  font-weight:
-    900;
-
-  line-height:
-    1.35;
-
-  overflow-wrap:
-    anywhere;
-}
-
-.weakness-review-state-v1[data-review="fresh"] {
-  color:
-    #78f1bd;
-}
-
-.weakness-review-state-v1[data-review="soon"] {
-  color:
-    #ffd76a;
-}
-
-.weakness-review-state-v1[data-review="due"] {
-  color:
-    #ff8b9b;
-}
-
-.weakness-review-state-v1[data-review="none"] {
-  opacity:
-    .58;
 }
 
 </style>
@@ -33580,192 +33277,6 @@ async function showWeaknessMapPageV1(user) {
     allUnits.length;
 
 
-
-  function weaknessDateV1(
-    value
-  ) {
-
-    if (!value) {
-      return null;
-    }
-
-    if (
-      typeof value.toDate === "function"
-    ) {
-
-      const date =
-        value.toDate();
-
-      return (
-        Number.isNaN(
-          date.getTime()
-        )
-          ? null
-          : date
-      );
-
-    }
-
-
-    if (
-      typeof value === "object" &&
-      Number.isFinite(
-        Number(value.seconds)
-      )
-    ) {
-
-      const date =
-        new Date(
-          Number(value.seconds) *
-          1000
-        );
-
-      return (
-        Number.isNaN(
-          date.getTime()
-        )
-          ? null
-          : date
-      );
-
-    }
-
-
-    const date =
-      new Date(value);
-
-    return (
-      Number.isNaN(
-        date.getTime()
-      )
-        ? null
-        : date
-    );
-
-  }
-
-
-  function formatWeaknessMinutesV1(
-    minutes
-  ) {
-
-    const total =
-      Math.max(
-        0,
-        Math.floor(
-          Number(minutes || 0)
-        )
-      );
-
-    const h =
-      Math.floor(
-        total / 60
-      );
-
-    const m =
-      total % 60;
-
-
-    if (h <= 0) {
-      return `${m}m`;
-    }
-
-
-    if (m <= 0) {
-      return `${h}h`;
-    }
-
-
-    return `${h}h ${m}m`;
-
-  }
-
-
-  function formatWeaknessDateV1(
-    value
-  ) {
-
-    const date =
-      weaknessDateV1(
-        value
-      );
-
-    if (!date) {
-      return "—";
-    }
-
-
-    return (
-      new Intl.DateTimeFormat(
-        "ja-JP",
-        {
-          month: "2-digit",
-          day: "2-digit",
-        }
-      )
-        .format(date)
-    );
-
-  }
-
-
-  function getWeaknessReviewStateV1(
-    unitData
-  ) {
-
-    const last =
-      weaknessDateV1(
-        unitData?.lastStudiedAt
-      );
-
-    if (!last) {
-
-      return {
-        key: "none",
-        label: "NOT STUDIED",
-      };
-
-    }
-
-
-    const elapsedDays =
-      Math.floor(
-        (
-          Date.now() -
-          last.getTime()
-        ) /
-        86400000
-      );
-
-
-    if (elapsedDays >= 14) {
-
-      return {
-        key: "due",
-        label: "REVIEW DUE",
-      };
-
-    }
-
-
-    if (elapsedDays >= 7) {
-
-      return {
-        key: "soon",
-        label: "REVIEW SOON",
-      };
-
-    }
-
-
-    return {
-      key: "fresh",
-      label: "FRESH",
-    };
-
-  }
-
-
   function statusForUnit(
     unitId
   ) {
@@ -34315,86 +33826,6 @@ async function showWeaknessMapPageV1(user) {
 
           <div
             class="
-              weakness-status-stats-v1
-            "
-          >
-
-            <div
-              class="
-                weakness-status-stat-v1
-              "
-            >
-              <span>
-                TOTAL STUDY
-              </span>
-
-              <strong
-                id="weakness-detail-total-v1"
-              >
-                0m
-              </strong>
-            </div>
-
-
-            <div
-              class="
-                weakness-status-stat-v1
-              "
-            >
-              <span>
-                SESSIONS
-              </span>
-
-              <strong
-                id="weakness-detail-sessions-v1"
-              >
-                0
-              </strong>
-            </div>
-
-
-            <div
-              class="
-                weakness-status-stat-v1
-              "
-            >
-              <span>
-                LAST STUDIED
-              </span>
-
-              <strong
-                id="weakness-detail-last-v1"
-              >
-                —
-              </strong>
-            </div>
-
-
-            <div
-              class="
-                weakness-status-stat-v1
-              "
-            >
-              <span>
-                REVIEW
-              </span>
-
-              <strong
-                id="weakness-detail-review-v1"
-                class="
-                  weakness-review-state-v1
-                "
-                data-review="none"
-              >
-                NOT STUDIED
-              </strong>
-            </div>
-
-          </div>
-
-
-          <div
-            class="
               weakness-status-options-v1
             "
           >
@@ -34503,19 +33934,6 @@ async function showWeaknessMapPageV1(user) {
   const saveMessage =
     $("weakness-status-save-message-v1");
 
-  const weaknessDetailTotalV1 =
-    $("weakness-detail-total-v1");
-
-  const weaknessDetailSessionsV1 =
-    $("weakness-detail-sessions-v1");
-
-  const weaknessDetailLastV1 =
-    $("weakness-detail-last-v1");
-
-  const weaknessDetailReviewV1 =
-    $("weakness-detail-review-v1");
-
-
   let activeUnitId =
     "";
 
@@ -34595,49 +34013,6 @@ async function showWeaknessMapPageV1(user) {
   }
 
 
-
-  function renderWeaknessUnitDetailV1(
-    unitId
-  ) {
-
-    const unitData =
-      weaknessMap?.[unitId] || {};
-
-    weaknessDetailTotalV1.textContent =
-      formatWeaknessMinutesV1(
-        unitData.totalMinutes
-      );
-
-    weaknessDetailSessionsV1.textContent =
-      String(
-        Math.max(
-          0,
-          Number(
-            unitData.sessions || 0
-          )
-        )
-      );
-
-    weaknessDetailLastV1.textContent =
-      formatWeaknessDateV1(
-        unitData.lastStudiedAt
-      );
-
-
-    const review =
-      getWeaknessReviewStateV1(
-        unitData
-      );
-
-    weaknessDetailReviewV1.textContent =
-      review.label;
-
-    weaknessDetailReviewV1.dataset.review =
-      review.key;
-
-  }
-
-
   function closeStatusModal() {
 
     modal.hidden =
@@ -34681,12 +34056,6 @@ async function showWeaknessMapPageV1(user) {
       statusBadgeHtml(
         status
       );
-
-
-    renderWeaknessUnitDetailV1(
-      unit.id
-    );
-
 
     saveMessage.textContent =
       "";
@@ -37797,313 +37166,6 @@ function scheduleHomeMaintenance(user, data) {
 }
 
 
-
-// ============================================================
-// ASCEND / PRIORITY TARGETS v1
-// ============================================================
-
-let ascendPendingStudyTargetV1 =
-  null;
-
-
-function ascendPriorityTimeMsV1(value) {
-  if (!value) return null;
-
-  if (typeof value.toMillis === "function") {
-    return Number(value.toMillis());
-  }
-
-  if (typeof value.toDate === "function") {
-    return value.toDate().getTime();
-  }
-
-  if (
-    typeof value === "object" &&
-    Number.isFinite(Number(value.seconds))
-  ) {
-    return Number(value.seconds) * 1000;
-  }
-
-  const ms = new Date(value).getTime();
-  return Number.isFinite(ms) ? ms : null;
-}
-
-
-function ascendPriorityDaysAgoV1(value) {
-  const ms = ascendPriorityTimeMsV1(value);
-
-  if (ms == null) return null;
-
-  return Math.max(
-    0,
-    Math.floor(
-      (Date.now() - ms) / 86400000
-    )
-  );
-}
-
-
-function getAscendPriorityTargetsV1(data) {
-
-  const weaknessMap =
-    data?.weaknessMap &&
-    typeof data.weaknessMap === "object"
-      ? data.weaknessMap
-      : {};
-
-  const result = [];
-
-  getAscendWeaknessUnitsV1().forEach(unit => {
-
-    const record =
-      weaknessMap[unit.id] || {};
-
-    const status =
-      normalizeAscendWeaknessStatusV1(
-        record.status
-      );
-
-    const daysAgo =
-      ascendPriorityDaysAgoV1(
-        record.lastStudiedAt
-      );
-
-    let rank = null;
-    let kind = "";
-    let label = "";
-
-    if (status === "weak") {
-      rank = 1;
-      kind = "weak";
-      label = "WEAK";
-    }
-
-    else if (status === "unstable") {
-      rank = 2;
-      kind = "unstable";
-      label = "UNSTABLE";
-    }
-
-    else if (
-      status === "clear" &&
-      daysAgo != null &&
-      daysAgo >= 14
-    ) {
-      rank = 3;
-      kind = "review";
-      label = "REVIEW DUE";
-    }
-
-    else if (
-      status === "clear" &&
-      daysAgo != null &&
-      daysAgo >= 7
-    ) {
-      rank = 4;
-      kind = "review-soon";
-      label = "REVIEW SOON";
-    }
-
-    if (rank == null) return;
-
-    result.push({
-      ...unit,
-      rank,
-      kind,
-      label,
-      daysAgo,
-      lastMs:
-        ascendPriorityTimeMsV1(
-          record.lastStudiedAt
-        ) ?? 0,
-    });
-
-  });
-
-
-  result.sort((a, b) => {
-    if (a.rank !== b.rank) {
-      return a.rank - b.rank;
-    }
-
-    return a.lastMs - b.lastMs;
-  });
-
-
-  return result;
-}
-
-
-function ascendPriorityLastTextV1(target) {
-
-  if (target.daysAgo == null) {
-    return "NOT STUDIED";
-  }
-
-  if (target.daysAgo === 0) {
-    return "LAST STUDIED TODAY";
-  }
-
-  if (target.daysAgo === 1) {
-    return "LAST STUDIED 1 DAY AGO";
-  }
-
-  return `LAST STUDIED ${target.daysAgo} DAYS AGO`;
-}
-
-
-function ascendPriorityItemHtmlV1(
-  target,
-  number
-) {
-
-  return `
-    <div
-      class="home-priority-item-v1"
-      data-kind="${target.kind}"
-    >
-
-      <div class="home-priority-rank-v1">
-        #${number}
-      </div>
-
-      <div class="home-priority-body-v1">
-
-        <div class="home-priority-badge-v1">
-          ${target.label}
-        </div>
-
-        <strong class="home-priority-unit-v1">
-          ${target.name}
-        </strong>
-
-        <span class="home-priority-path-v1">
-          ${target.courseName}
-          /
-          ${target.chapterName}
-        </span>
-
-        <span class="home-priority-last-v1">
-          ${ascendPriorityLastTextV1(target)}
-        </span>
-
-      </div>
-
-
-      <button
-        type="button"
-        class="home-priority-start-v1"
-        data-priority-start-unit="${target.id}"
-      >
-        START
-      </button>
-
-    </div>
-  `;
-}
-
-
-function renderAscendPriorityTargetsV1(data) {
-
-  const targets =
-    getAscendPriorityTargetsV1(data);
-
-  if (targets.length === 0) {
-    return `
-      <section class="home-priority-v1">
-
-        <div class="home-priority-header-v1">
-          <div>
-            <span>ASCEND / STUDY ANALYSIS</span>
-            <strong>PRIORITY TARGETS</strong>
-          </div>
-        </div>
-
-        <div class="home-priority-empty-v1">
-          現在、優先攻略対象はありません。
-          WEAKNESS MAPで苦手単元を登録すると
-          ここに表示されます。
-        </div>
-
-      </section>
-    `;
-  }
-
-
-  const first =
-    targets.slice(0, 6);
-
-  const rest =
-    targets.slice(6);
-
-
-  return `
-    <section class="home-priority-v1">
-
-      <div class="home-priority-header-v1">
-
-        <div>
-          <span>
-            ASCEND / STUDY ANALYSIS
-          </span>
-
-          <strong>
-            PRIORITY TARGETS
-          </strong>
-        </div>
-
-        <small>
-          ${targets.length} TARGET
-        </small>
-
-      </div>
-
-
-      <div class="home-priority-list-v1">
-        ${
-          first.map(
-            (target, i) =>
-              ascendPriorityItemHtmlV1(
-                target,
-                i + 1
-              )
-          ).join("")
-        }
-      </div>
-
-
-      ${
-        rest.length
-          ? `
-            <details class="home-priority-more-v1">
-
-              <summary>
-                すべて表示
-                （${targets.length}）
-              </summary>
-
-              <div class="home-priority-list-v1">
-                ${
-                  rest.map(
-                    (target, i) =>
-                      ascendPriorityItemHtmlV1(
-                        target,
-                        i + 7
-                      )
-                  ).join("")
-                }
-              </div>
-
-            </details>
-          `
-          : ""
-      }
-
-    </section>
-  `;
-}
-
-
 async function showHome(user) {
 
   try {
@@ -38740,10 +37802,51 @@ const xpPercent =
 
 
         <!-- =====================================
-             PRIORITY TARGETS
+             QUICK MENU
         ====================================== -->
 
-        ${renderAscendPriorityTargetsV1(data)}
+        <div class="home-quick-grid">
+
+          <button
+            id="home-open-quests"
+            class="home-menu-card"
+          >
+
+            <span class="home-menu-icon">
+              📜
+            </span>
+
+            <strong>
+              クエスト
+            </strong>
+
+            <small>
+              今日の目標を確認
+            </small>
+
+          </button>
+
+
+          <button
+            id="home-open-boss"
+            class="home-menu-card"
+          >
+
+            <span class="home-menu-icon">
+              ⚔
+            </span>
+
+            <strong>
+              ボスバトル
+            </strong>
+
+            <small>
+              今週のボスを確認
+            </small>
+
+          </button>
+
+        </div>
 
 
         ${mainBottomNav("home")}
@@ -38751,55 +37854,6 @@ const xpPercent =
       </div>
     `)
   );
-
-
-
-  document
-    .querySelectorAll(
-      "[data-priority-start-unit]"
-    )
-    .forEach(
-      button => {
-
-        button.onclick =
-          async () => {
-
-            const unit =
-              findAscendWeaknessUnitV1(
-                button.dataset
-                  .priorityStartUnit
-              );
-
-            if (!unit) {
-              return;
-            }
-
-
-            ascendPendingStudyTargetV1 = {
-              courseId:
-                unit.courseId,
-
-              chapterId:
-                unit.chapterId,
-
-              unitId:
-                unit.id,
-            };
-
-
-            await showTimerPage(
-              user
-            );
-
-
-            mountClassicNavigation(
-              user
-            );
-
-          };
-
-      }
-    );
 
 
   $("home-start-study").onclick =
@@ -38811,32 +37865,22 @@ const xpPercent =
     };
 
 
-  const homeOpenQuests =
-    $("home-open-quests");
-
-  if (homeOpenQuests) {
-    homeOpenQuests.onclick =
-      async () => {
-        await showQuestBossMainPage(
-          user,
-          "quest"
-        );
-      };
-  }
+  $("home-open-quests").onclick =
+    async () => {
+      await showQuestBossMainPage(
+        user,
+        "quest"
+      );
+    };
 
 
-  const homeOpenBoss =
-    $("home-open-boss");
-
-  if (homeOpenBoss) {
-    homeOpenBoss.onclick =
-      async () => {
-        await showQuestBossMainPage(
-          user,
-          "boss"
-        );
-      };
-  }
+  $("home-open-boss").onclick =
+    async () => {
+      await showQuestBossMainPage(
+        user,
+        "boss"
+      );
+    };
 
 
   bindMainBottomNav(user);
@@ -46284,71 +45328,6 @@ async function showTimerPage(user) {
   restoreWeaknessSelectionV1();
 
 
-
-  // ========================================================
-  // PRIORITY TARGET -> TIMER
-  // ========================================================
-
-  if (
-    ascendPendingStudyTargetV1 &&
-    !timerState.subject
-  ) {
-
-    const target =
-      ascendPendingStudyTargetV1;
-
-
-    const mathOption =
-      [
-        ...$("timer-subject").options
-      ].find(
-        option =>
-          isMathSubjectV1(
-            option.value
-          )
-      );
-
-
-    if (mathOption) {
-
-      $("timer-subject").value =
-        mathOption.value;
-
-
-      syncWeaknessVisibilityV1();
-
-
-      weaknessCourseV1.value =
-        target.courseId || "";
-
-
-      renderWeaknessChaptersV1(
-        target.courseId
-      );
-
-
-      weaknessChapterV1.value =
-        target.chapterId || "";
-
-
-      renderWeaknessUnitsV1(
-        target.courseId,
-        target.chapterId
-      );
-
-
-      weaknessUnitV1.value =
-        target.unitId || "";
-
-    }
-
-
-    ascendPendingStudyTargetV1 =
-      null;
-
-  }
-
-
   $("timer-back").onclick = async () => {
     stopTimerInterval();
     await returnAfterStudyLinkTimerV1(user);
@@ -46501,201 +45480,12 @@ async function showTimerPage(user) {
 
     const totalMinutes = Math.floor(elapsedMs / 60000);
 
-    const linkedWeaknessUnitV1 =
-      findAscendWeaknessUnitV1(
-        timerState.weaknessUnitId
-      );
-
     page(
       card(`
         <h1 style="margin:0">勉強記録の確認</h1>
 
         <p>教科：<strong>${timerState.subject}</strong></p>
         <p>勉強時間：<strong>${totalMinutes}分</strong></p>
-
-
-        ${
-          linkedWeaknessUnitV1
-            ? `
-              <div
-                style="
-                  margin:16px 0;
-                  padding:15px;
-                  border-radius:16px;
-                  border:
-                    1px solid rgba(255,255,255,.09);
-                  background:
-                    rgba(255,255,255,.035);
-                "
-              >
-
-                <div
-                  style="
-                    font-size:.64rem;
-                    font-weight:900;
-                    letter-spacing:.12em;
-                    opacity:.52;
-                    margin-bottom:5px;
-                  "
-                >
-                  WEAKNESS MAP / UNIT
-                </div>
-
-                <div
-                  style="
-                    font-size:.78rem;
-                    opacity:.58;
-                    margin-bottom:3px;
-                  "
-                >
-                  ${linkedWeaknessUnitV1.courseName}
-                  /
-                  ${linkedWeaknessUnitV1.chapterName}
-                </div>
-
-                <div
-                  style="
-                    font-size:1rem;
-                    font-weight:900;
-                    margin-bottom:15px;
-                  "
-                >
-                  ${linkedWeaknessUnitV1.name}
-                </div>
-
-
-                <div
-                  style="
-                    font-size:.68rem;
-                    font-weight:900;
-                    letter-spacing:.09em;
-                    opacity:.55;
-                    margin-bottom:8px;
-                  "
-                >
-                  AFTER STUDY
-                </div>
-
-
-                <div
-                  style="
-                    display:grid;
-                    grid-template-columns:
-                      repeat(2,minmax(0,1fr));
-                    gap:8px;
-                  "
-                >
-
-                  <label
-                    style="
-                      cursor:pointer;
-                      display:flex;
-                      align-items:center;
-                      gap:7px;
-                      padding:10px;
-                      border-radius:11px;
-                      border:
-                        1px solid rgba(255,255,255,.08);
-                      background:
-                        rgba(255,255,255,.03);
-                      font-size:.76rem;
-                      font-weight:800;
-                    "
-                  >
-                    <input
-                      type="radio"
-                      name="timer-weakness-status-v1"
-                      value="unchanged"
-                      checked
-                    >
-                    変更なし
-                  </label>
-
-
-                  <label
-                    style="
-                      cursor:pointer;
-                      display:flex;
-                      align-items:center;
-                      gap:7px;
-                      padding:10px;
-                      border-radius:11px;
-                      border:
-                        1px solid rgba(255,76,104,.20);
-                      background:
-                        rgba(255,76,104,.055);
-                      font-size:.76rem;
-                      font-weight:800;
-                      color:#ff8b9b;
-                    "
-                  >
-                    <input
-                      type="radio"
-                      name="timer-weakness-status-v1"
-                      value="weak"
-                    >
-                    WEAK
-                  </label>
-
-
-                  <label
-                    style="
-                      cursor:pointer;
-                      display:flex;
-                      align-items:center;
-                      gap:7px;
-                      padding:10px;
-                      border-radius:11px;
-                      border:
-                        1px solid rgba(255,208,76,.20);
-                      background:
-                        rgba(255,208,76,.05);
-                      font-size:.76rem;
-                      font-weight:800;
-                      color:#ffd76a;
-                    "
-                  >
-                    <input
-                      type="radio"
-                      name="timer-weakness-status-v1"
-                      value="unstable"
-                    >
-                    UNSTABLE
-                  </label>
-
-
-                  <label
-                    style="
-                      cursor:pointer;
-                      display:flex;
-                      align-items:center;
-                      gap:7px;
-                      padding:10px;
-                      border-radius:11px;
-                      border:
-                        1px solid rgba(80,232,174,.20);
-                      background:
-                        rgba(80,232,174,.05);
-                      font-size:.76rem;
-                      font-weight:800;
-                      color:#78f1bd;
-                    "
-                  >
-                    <input
-                      type="radio"
-                      name="timer-weakness-status-v1"
-                      value="clear"
-                    >
-                    CLEAR
-                  </label>
-
-                </div>
-
-              </div>
-            `
-            : ""
-        }
-
 
         ${
           timerState.xpItem
@@ -46720,11 +45510,6 @@ async function showTimerPage(user) {
 
       timerState = {
         subject: "",
-
-        weaknessCourseId: "",
-        weaknessChapterId: "",
-        weaknessUnitId: "",
-
         xpItem: "",
         startedAt: null,
         elapsedBeforePause: 0,
@@ -46784,20 +45569,6 @@ async function showTimerPage(user) {
         }
 
         const current = userSnap.data();
-
-
-        const weaknessStatusInputV1 =
-          document.querySelector(
-            'input[name="timer-weakness-status-v1"]:checked'
-          );
-
-        const weaknessStatusChoiceV1 =
-          weaknessStatusInputV1
-            ? String(
-                weaknessStatusInputV1.value || "unchanged"
-              )
-            : "unchanged";
-
 
         const inventoryBeforeUse = {
           ...(current.inventory || {}),
@@ -47605,110 +46376,6 @@ async function showTimerPage(user) {
           { merge: true }
         );
 
-
-        // ==================================================
-        // WEAKNESS MAP / STUDY RESULT v1
-        // ==================================================
-
-        const weaknessUnitForSaveV1 =
-          findAscendWeaknessUnitV1(
-            timerState.weaknessUnitId
-          );
-
-
-        if (
-          weaknessUnitForSaveV1 &&
-          totalMinutes > 0
-        ) {
-
-          const previousWeaknessUnitV1 =
-            (
-              current.weaknessMap &&
-              typeof current.weaknessMap === "object" &&
-              current.weaknessMap[
-                weaknessUnitForSaveV1.id
-              ]
-            )
-              ? current.weaknessMap[
-                  weaknessUnitForSaveV1.id
-                ]
-              : {};
-
-
-          const weaknessPatchV1 = {
-
-            [
-              `weaknessMap.${weaknessUnitForSaveV1.id}.courseId`
-            ]:
-              weaknessUnitForSaveV1.courseId,
-
-            [
-              `weaknessMap.${weaknessUnitForSaveV1.id}.chapterId`
-            ]:
-              weaknessUnitForSaveV1.chapterId,
-
-            [
-              `weaknessMap.${weaknessUnitForSaveV1.id}.totalMinutes`
-            ]:
-              Number(
-                previousWeaknessUnitV1.totalMinutes || 0
-              ) +
-              totalMinutes,
-
-            [
-              `weaknessMap.${weaknessUnitForSaveV1.id}.sessions`
-            ]:
-              Number(
-                previousWeaknessUnitV1.sessions || 0
-              ) +
-              1,
-
-            [
-              `weaknessMap.${weaknessUnitForSaveV1.id}.lastStudiedAt`
-            ]:
-              serverTimestamp(),
-
-            [
-              `weaknessMap.${weaknessUnitForSaveV1.id}.updatedAt`
-            ]:
-              serverTimestamp(),
-
-          };
-
-
-          if (
-            weaknessStatusChoiceV1 !==
-            "unchanged"
-          ) {
-
-            const normalizedStatusV1 =
-              normalizeAscendWeaknessStatusV1(
-                weaknessStatusChoiceV1
-              );
-
-
-            weaknessPatchV1[
-              `weaknessMap.${weaknessUnitForSaveV1.id}.status`
-            ] =
-              normalizedStatusV1;
-
-
-            weaknessPatchV1[
-              `weaknessMap.${weaknessUnitForSaveV1.id}.lastEvaluatedAt`
-            ] =
-              serverTimestamp();
-
-          }
-
-
-          await updateDoc(
-            userRef,
-            weaknessPatchV1
-          );
-
-        }
-
-
         // ------------------------------
         // ボスダメージ
         // ------------------------------
@@ -48008,11 +46675,6 @@ async function showTimerPage(user) {
 
         timerState = {
           subject: "",
-
-          weaknessCourseId: "",
-          weaknessChapterId: "",
-          weaknessUnitId: "",
-
           xpItem: "",
           startedAt: null,
           elapsedBeforePause: 0,
