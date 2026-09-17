@@ -34245,13 +34245,15 @@ function page(content) {
   const nextPage =
     `
     <main style="
-      min-height:100vh;
+      min-height:100dvh;
       display:grid;
-      place-items:center;
+      place-items:start center;
+      align-content:start;
       background:var(--main-stage-bg,var(--asc-bg));
       color:var(--text-main,#fff);
       font-family:system-ui,sans-serif;
       padding:24px;
+      box-sizing:border-box;
     ">
       ${content}
     </main>
