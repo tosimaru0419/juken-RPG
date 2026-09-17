@@ -29102,6 +29102,999 @@ html[data-asc-theme="light"]
 
 <!-- ASCEND NEXUS LAYOUT V8.4 -->
 
+
+<style id="ascend-nexus-invites-v85-style">
+
+/* =========================================================
+   ASCEND NEXUS INVITES V8.5
+========================================================= */
+
+
+/* ===== ACTIVE / INVITE TOGGLE ===== */
+
+.asc-nx85-invite-zone {
+  padding:
+    0 9px 9px;
+}
+
+#asc-nx85-invite-toggle {
+  width:100%;
+
+  min-height:46px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:8px;
+
+  border:
+    1px solid rgba(62,190,214,.14);
+
+  border-radius:11px;
+
+  background:
+    rgba(55,177,202,.045);
+
+  color:
+    var(--asc-text);
+
+  font-size:.66rem;
+  font-weight:900;
+
+  letter-spacing:.065em;
+
+  cursor:pointer;
+}
+
+#asc-nx85-invite-toggle span {
+  color:#63cfdf;
+
+  font-size:1rem;
+  line-height:1;
+}
+
+#asc-nx85-invite-toggle.active {
+  border-color:
+    rgba(114,89,220,.19);
+
+  background:
+    rgba(110,84,216,.055);
+}
+
+
+/* ===== INVITE PANEL ===== */
+
+.asc-nx85-invite-panel {
+  margin-top:8px;
+
+  overflow:hidden;
+
+  border:
+    1px solid rgba(255,255,255,.065);
+
+  border-radius:11px;
+
+  background:
+    rgba(0,0,0,.055);
+}
+
+.asc-nx85-invite-panel[hidden] {
+  display:none !important;
+}
+
+.asc-nx85-invite-panel-head {
+  padding:
+    10px 12px;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.055);
+
+  color:
+    var(--asc-muted);
+
+  font-size:.53rem;
+  font-weight:900;
+
+  letter-spacing:.08em;
+}
+
+.asc-nx85-friend-list {
+  display:grid;
+
+  gap:4px;
+
+  padding:6px;
+}
+
+
+/* ===== FRIEND ROW ===== */
+
+.asc-nx85-friend {
+  min-width:0;
+
+  display:grid;
+
+  grid-template-columns:
+    auto minmax(0,1fr) auto;
+
+  align-items:center;
+
+  gap:10px;
+
+  min-height:56px;
+
+  padding:
+    8px 9px;
+
+  border-radius:9px;
+
+  background:
+    rgba(255,255,255,.024);
+}
+
+.asc-nx85-friend-avatar {
+  width:35px;
+  height:35px;
+
+  display:grid;
+
+  place-items:center;
+
+  border:
+    1px solid rgba(60,190,216,.13);
+
+  border-radius:10px;
+
+  background:
+    rgba(57,180,205,.065);
+
+  color:#65cedf;
+
+  font-family:
+    "Orbitron",
+    sans-serif;
+
+  font-size:.68rem;
+  font-weight:900;
+}
+
+.asc-nx85-friend-name {
+  min-width:0;
+
+  display:grid;
+
+  gap:2px;
+}
+
+.asc-nx85-friend-name strong {
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+  white-space:nowrap;
+
+  color:
+    var(--asc-text);
+
+  font-size:.78rem;
+}
+
+.asc-nx85-friend-name span {
+  color:
+    var(--asc-muted);
+
+  font-size:.49rem;
+  font-weight:900;
+
+  letter-spacing:.07em;
+}
+
+.asc-nx85-friend button {
+  min-width:82px;
+  min-height:37px;
+
+  padding:
+    0 10px;
+
+  border:
+    1px solid rgba(61,191,215,.15);
+
+  border-radius:9px;
+
+  background:
+    rgba(58,178,202,.055);
+
+  color:
+    var(--asc-text);
+
+  font-size:.55rem;
+  font-weight:900;
+
+  cursor:pointer;
+}
+
+.asc-nx85-friend button:disabled {
+  opacity:.62;
+
+  cursor:default;
+}
+
+.asc-nx85-friend button.sent {
+  color:#6bd4b2;
+}
+
+.asc-nx85-no-friends {
+  padding:16px;
+
+  text-align:center;
+
+  color:
+    var(--asc-muted);
+
+  font-size:.63rem;
+}
+
+
+/* =========================================================
+   INCOMING INVITES
+========================================================= */
+
+.asc-nx85-incoming {
+  overflow:hidden;
+
+  border:
+    1px solid rgba(112,88,221,.14);
+
+  border-radius:15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(108,83,216,.055),
+      rgba(55,181,205,.035)
+    );
+}
+
+.asc-nx85-incoming-head {
+  min-height:57px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:12px;
+
+  padding:
+    11px 14px;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.055);
+}
+
+.asc-nx85-incoming-head > div {
+  display:grid;
+
+  gap:2px;
+}
+
+.asc-nx85-incoming-head span {
+  color:#aa99ec;
+
+  font-size:.52rem;
+  font-weight:900;
+
+  letter-spacing:.12em;
+}
+
+.asc-nx85-incoming-head strong {
+  color:
+    var(--asc-text);
+
+  font-size:.79rem;
+}
+
+.asc-nx85-incoming-head b {
+  min-width:32px;
+  height:32px;
+
+  display:grid;
+
+  place-items:center;
+
+  border:
+    1px solid rgba(112,88,221,.16);
+
+  border-radius:9px;
+
+  background:
+    rgba(111,86,218,.06);
+
+  color:#aa9aec;
+
+  font-size:.7rem;
+}
+
+.asc-nx85-incoming-list {
+  display:grid;
+
+  gap:5px;
+
+  padding:7px;
+}
+
+.asc-nx85-incoming-row {
+  min-width:0;
+
+  display:grid;
+
+  grid-template-columns:
+    auto minmax(0,1fr) auto auto;
+
+  align-items:center;
+
+  gap:8px;
+
+  min-height:62px;
+
+  padding:9px;
+
+  border-radius:10px;
+
+  background:
+    rgba(255,255,255,.025);
+}
+
+.asc-nx85-incoming-mark {
+  width:38px;
+  height:38px;
+
+  display:grid;
+
+  place-items:center;
+
+  border:
+    1px solid rgba(110,86,219,.16);
+
+  border-radius:11px;
+
+  background:
+    rgba(109,84,216,.07);
+
+  color:#ae9def;
+
+  font-family:
+    "Orbitron",
+    sans-serif;
+
+  font-weight:900;
+}
+
+.asc-nx85-incoming-copy {
+  min-width:0;
+
+  display:grid;
+
+  gap:3px;
+}
+
+.asc-nx85-incoming-copy strong {
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+  white-space:nowrap;
+
+  color:
+    var(--asc-text);
+
+  font-size:.78rem;
+}
+
+.asc-nx85-incoming-copy span {
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+  white-space:nowrap;
+
+  color:
+    var(--asc-muted);
+
+  font-size:.54rem;
+}
+
+.asc-nx85-join {
+  min-height:38px;
+
+  padding:
+    0 12px;
+
+  border:
+    1px solid rgba(62,190,214,.17);
+
+  border-radius:9px;
+
+  background:
+    rgba(55,179,204,.065);
+
+  color:
+    var(--asc-text);
+
+  font-size:.56rem;
+  font-weight:900;
+
+  cursor:pointer;
+}
+
+.asc-nx85-decline {
+  width:38px;
+  height:38px;
+
+  padding:0;
+
+  border:
+    1px solid rgba(221,76,100,.13);
+
+  border-radius:9px;
+
+  background:
+    rgba(220,66,91,.035);
+
+  color:#d77b8b;
+
+  font-size:1rem;
+
+  cursor:pointer;
+}
+
+
+/* =========================================================
+   LIGHT
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-nx85-invite-panel,
+
+html[data-asc-theme="light"]
+.asc-nx85-friend,
+
+html[data-asc-theme="light"]
+.asc-nx85-incoming-row {
+
+  border-color:
+    rgba(40,126,145,.08);
+
+  background:
+    rgba(232,244,246,.70);
+}
+
+html[data-asc-theme="light"]
+.asc-nx85-incoming {
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(116,91,221,.055),
+      rgba(65,185,208,.055)
+    );
+
+  border-color:
+    rgba(105,83,205,.11);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:600px) {
+
+  #asc-nx85-invite-toggle {
+    min-height:49px;
+  }
+
+  .asc-nx85-friend {
+    min-height:58px;
+  }
+
+  .asc-nx85-friend button {
+    min-width:76px;
+  }
+
+  .asc-nx85-incoming-row {
+    grid-template-columns:
+      auto minmax(0,1fr) auto;
+  }
+
+  .asc-nx85-decline {
+    grid-column:
+      3;
+
+    width:100%;
+    height:31px;
+
+    font-size:.85rem;
+  }
+
+}
+
+</style>
+
+<!-- ASCEND NEXUS INVITES V8.5 -->
+
+
+<style id="ascend-nexus-boost-v86-style">
+
+/* =========================================================
+   ASCEND NEXUS BOOST NETWORK V8.6
+========================================================= */
+
+.asc-nx86-boost {
+  display:grid;
+
+  gap:13px;
+
+  padding:16px;
+
+  border:
+    1px solid rgba(112,88,220,.13);
+
+  border-radius:15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(111,86,218,.055),
+      rgba(57,182,207,.025)
+    );
+}
+
+
+/* ===== HEADER ===== */
+
+.asc-nx86-boost-head {
+  display:flex;
+
+  align-items:flex-start;
+  justify-content:space-between;
+
+  gap:12px;
+}
+
+.asc-nx86-boost-head > div:first-child {
+  display:grid;
+
+  gap:3px;
+}
+
+.asc-nx86-boost-head span {
+  color:
+    var(--asc-muted);
+
+  font-size:.55rem;
+  font-weight:900;
+
+  letter-spacing:.11em;
+}
+
+.asc-nx86-boost-head strong {
+  color:
+    var(--asc-text);
+
+  font-size:.88rem;
+  font-weight:900;
+}
+
+.asc-nx86-boost-status {
+  flex:0 0 auto;
+
+  padding:
+    6px 9px;
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  color:
+    var(--asc-muted);
+
+  font-size:.53rem;
+  font-weight:900;
+
+  letter-spacing:.06em;
+}
+
+.asc-nx86-boost-status.active {
+  color:#5fd4ad;
+
+  border-color:
+    rgba(74,207,164,.17);
+
+  background:
+    rgba(66,197,155,.055);
+}
+
+
+/* ===== FUND TEXT ===== */
+
+.asc-nx86-progress-top {
+  display:flex;
+
+  align-items:flex-end;
+  justify-content:space-between;
+
+  gap:10px;
+}
+
+.asc-nx86-progress-top span {
+  color:
+    var(--asc-muted);
+
+  font-size:.52rem;
+  font-weight:900;
+
+  letter-spacing:.09em;
+}
+
+.asc-nx86-progress-top strong {
+  color:
+    var(--asc-text);
+
+  font-family:
+    "Rajdhani",
+    "Noto Sans JP",
+    sans-serif;
+
+  font-size:1.06rem;
+  font-weight:900;
+}
+
+.asc-nx86-progress-top em {
+  margin:0 3px;
+
+  color:
+    var(--asc-muted);
+
+  font-size:.72rem;
+  font-style:normal;
+}
+
+
+/* ===== PROGRESS ===== */
+
+.asc-nx86-progress {
+  width:100%;
+  height:10px;
+
+  overflow:hidden;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.055);
+}
+
+.asc-nx86-progress > div {
+  height:100%;
+
+  min-width:0;
+
+  border-radius:inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #45bfd7,
+      #7963df
+    );
+
+  transition:
+    width 180ms ease;
+}
+
+
+/* ===== STATS ===== */
+
+.asc-nx86-stats {
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:8px;
+}
+
+.asc-nx86-stats > div {
+  min-width:0;
+
+  display:grid;
+
+  gap:4px;
+
+  padding:
+    10px 11px;
+
+  border:
+    1px solid rgba(255,255,255,.055);
+
+  border-radius:10px;
+
+  background:
+    rgba(255,255,255,.02);
+}
+
+.asc-nx86-stats span {
+  color:
+    var(--asc-muted);
+
+  font-size:.49rem;
+  font-weight:900;
+
+  letter-spacing:.08em;
+}
+
+.asc-nx86-stats strong {
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+  color:
+    var(--asc-text);
+
+  font-size:.81rem;
+  font-weight:900;
+}
+
+
+/* ===== PRESETS ===== */
+
+.asc-nx86-presets {
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:7px;
+}
+
+.asc-nx86-presets button {
+  min-height:40px;
+
+  border:
+    1px solid rgba(65,187,211,.12);
+
+  border-radius:9px;
+
+  background:
+    rgba(58,177,201,.045);
+
+  color:
+    var(--asc-text);
+
+  font-size:.6rem;
+  font-weight:900;
+
+  cursor:pointer;
+}
+
+
+/* ===== INPUT / SUBMIT ===== */
+
+.asc-nx86-contribute {
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    minmax(120px,.55fr);
+
+  gap:8px;
+}
+
+#asc-nx86-amount {
+  min-width:0;
+  min-height:46px;
+
+  padding:
+    0 13px;
+
+  border:
+    1px solid rgba(255,255,255,.09);
+
+  border-radius:10px;
+
+  outline:none;
+
+  background:
+    rgba(0,0,0,.10);
+
+  color:
+    var(--asc-text);
+
+  font:inherit;
+
+  font-size:.78rem;
+  font-weight:800;
+}
+
+#asc-nx86-amount:focus {
+  border-color:
+    rgba(65,192,216,.25);
+}
+
+#asc-nx86-submit {
+  min-height:46px;
+
+  padding:
+    0 12px;
+
+  border:
+    1px solid rgba(111,88,221,.18);
+
+  border-radius:10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(58,183,207,.09),
+      rgba(111,87,219,.09)
+    );
+
+  color:
+    var(--asc-text);
+
+  font-size:.59rem;
+  font-weight:900;
+
+  letter-spacing:.045em;
+
+  cursor:pointer;
+}
+
+#asc-nx86-submit:disabled {
+  opacity:.65;
+
+  cursor:default;
+}
+
+
+/* ===== NOTE ===== */
+
+.asc-nx86-note {
+  color:
+    var(--asc-muted);
+
+  font-size:.5rem;
+  font-weight:850;
+
+  letter-spacing:.06em;
+
+  text-align:center;
+}
+
+
+/* =========================================================
+   LIGHT
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-nx86-boost {
+
+  border-color:
+    rgba(105,83,205,.10);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(115,91,220,.055),
+      rgba(61,184,207,.045)
+    );
+}
+
+html[data-asc-theme="light"]
+.asc-nx86-stats > div {
+
+  border-color:
+    rgba(39,126,145,.08);
+
+  background:
+    rgba(232,244,246,.68);
+}
+
+html[data-asc-theme="light"]
+#asc-nx86-amount {
+
+  background:#fbfdfd;
+
+  border-color:
+    rgba(39,126,145,.13);
+
+  color:#193d47;
+}
+
+html[data-asc-theme="light"]
+.asc-nx86-progress {
+
+  background:
+    rgba(48,118,135,.10);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:600px) {
+
+  .asc-nx86-boost {
+    padding:14px;
+
+    gap:12px;
+  }
+
+  .asc-nx86-progress {
+    height:11px;
+  }
+
+  .asc-nx86-presets button {
+    min-height:43px;
+  }
+
+  .asc-nx86-contribute {
+    grid-template-columns:1fr;
+  }
+
+  #asc-nx86-amount,
+  #asc-nx86-submit {
+    min-height:48px;
+  }
+
+}
+
+</style>
+
+<!-- ASCEND NEXUS BOOST V8.6 -->
+
+
+<style id="ascend-nexus-boost-smooth-v861-style">
+
+/* =========================================================
+   ASCEND NEXUS BOOST SMOOTH V8.6.1
+========================================================= */
+
+#asc-nx861-fill {
+  transition:
+    width 420ms
+    cubic-bezier(.22,1,.36,1) !important;
+}
+
+#asc-nx861-pool,
+#asc-nx861-cost,
+#asc-nx861-remaining,
+#asc-nx861-coins {
+
+  transition:
+    opacity 140ms ease,
+    transform 180ms ease;
+}
+
+#asc-nx86-submit {
+  transition:
+    transform 120ms ease,
+    opacity 120ms ease,
+    background 160ms ease !important;
+}
+
+</style>
+
+<!-- ASCEND NEXUS BOOST SMOOTH V8.6.1 -->
+
 </head>
 
 
@@ -42956,6 +43949,250 @@ async function showNexusPage(user) {
 
   if (!code || !nexusSnap) {
 
+    /*
+      ========================================================
+      NEXUS INVITES V8.5
+      未所属時に受信招待を表示
+      ========================================================
+    */
+
+    let incomingNexusInvitesV85 =
+      [];
+
+
+    try {
+
+      const inviteQueryV85 =
+        query(
+          collection(
+            db,
+            "studyLinkInvites"
+          ),
+          where(
+            "toUid",
+            "==",
+            user.uid
+          )
+        );
+
+
+      const inviteSnapV85 =
+        await getDocs(
+          inviteQueryV85
+        );
+
+
+      const loadedV85 =
+        await Promise.all(
+          inviteSnapV85.docs.map(
+            async inviteDoc => {
+
+              const invite =
+                inviteDoc.data();
+
+
+              const inviteCode =
+                normalizeStudyLinkV2Code(
+                  invite.roomCode ||
+                  ""
+                );
+
+
+              if (
+                inviteCode.length !== 6
+              ) {
+
+                return null;
+
+              }
+
+
+              try {
+
+                const roomSnap =
+                  await getDoc(
+                    studyLinkV2RoomRef(
+                      inviteCode
+                    )
+                  );
+
+
+                if (
+                  !roomSnap.exists() ||
+                  roomSnap.data().active === false
+                ) {
+
+                  return null;
+
+                }
+
+
+                const roomData =
+                  roomSnap.data();
+
+
+                return {
+
+                  id:
+                    inviteDoc.id,
+
+                  code:
+                    inviteCode,
+
+                  fromUsername:
+                    String(
+                      invite.fromUsername ||
+                      "PLAYER"
+                    ),
+
+                  nexusName:
+                    String(
+                      roomData.name ||
+                      "ASCEND NEXUS"
+                    )
+
+                };
+
+              }
+
+              catch {
+
+                return null;
+
+              }
+
+            }
+          )
+        );
+
+
+      incomingNexusInvitesV85 =
+        loadedV85.filter(Boolean);
+
+    }
+
+    catch (error) {
+
+      console.warn(
+        "NEXUS INVITES V8.5:",
+        error
+      );
+
+    }
+
+
+    const incomingNexusInvitesHtmlV85 =
+      incomingNexusInvitesV85.length
+        ? `
+          <div
+            class="asc-nx85-incoming"
+          >
+
+            <div
+              class="asc-nx85-incoming-head"
+            >
+
+              <div>
+
+                <span>
+                  INVITATIONS
+                </span>
+
+                <strong>
+                  NEXUS INVITES
+                </strong>
+
+              </div>
+
+              <b>
+                ${incomingNexusInvitesV85.length}
+              </b>
+
+            </div>
+
+
+            <div
+              class="asc-nx85-incoming-list"
+            >
+
+              ${
+                incomingNexusInvitesV85
+                  .map(
+                    invite => `
+                      <div
+                        class="asc-nx85-incoming-row"
+                      >
+
+                        <div
+                          class="asc-nx85-incoming-mark"
+                        >
+                          N
+                        </div>
+
+                        <div
+                          class="asc-nx85-incoming-copy"
+                        >
+
+                          <strong>
+                            ${escapeAscNexusV8(
+                              invite.nexusName
+                            )}
+                          </strong>
+
+                          <span>
+                            ${
+                              escapeAscNexusV8(
+                                invite.fromUsername
+                              )
+                            }
+                            ·
+                            ${
+                              escapeAscNexusV8(
+                                invite.code
+                              )
+                            }
+                          </span>
+
+                        </div>
+
+                        <button
+                          type="button"
+                          class="asc-nx85-join"
+                          data-asc-nx85-join="${
+                            escapeAscNexusV8(
+                              invite.code
+                            )
+                          }"
+                        >
+                          JOIN
+                        </button>
+
+                        <button
+                          type="button"
+                          class="asc-nx85-decline"
+                          data-asc-nx85-decline="${
+                            escapeAscNexusV8(
+                              invite.id
+                            )
+                          }"
+                          aria-label="Decline invitation"
+                        >
+                          ×
+                        </button>
+
+                      </div>
+                    `
+                  )
+                  .join("")
+              }
+
+            </div>
+
+          </div>
+        `
+        : "";
+
+
     page(
       card(`
 
@@ -42990,6 +44227,9 @@ async function showNexusPage(user) {
             </div>
 
           </div>
+
+
+          ${incomingNexusInvitesHtmlV85}
 
 
           <div class="asc-nx8-entry-grid">
@@ -43487,6 +44727,115 @@ async function showNexusPage(user) {
         }
       );
 
+    /*
+      招待から参加
+    */
+
+    document
+      .querySelectorAll(
+        "[data-asc-nx85-join]"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              const inviteCode =
+                normalizeStudyLinkV2Code(
+                  button.dataset
+                    .ascNx85Join ||
+                  ""
+                );
+
+
+              const input =
+                document.getElementById(
+                  "asc-nx8-join-code"
+                );
+
+
+              if (
+                input &&
+                inviteCode
+              ) {
+
+                input.value =
+                  inviteCode;
+
+                joinBtn.click();
+
+              }
+
+            }
+          );
+
+        }
+      );
+
+
+    /*
+      招待拒否
+    */
+
+    document
+      .querySelectorAll(
+        "[data-asc-nx85-decline]"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            async () => {
+
+              button.disabled =
+                true;
+
+
+              try {
+
+                await deleteDoc(
+                  doc(
+                    db,
+                    "studyLinkInvites",
+                    button.dataset
+                      .ascNx85Decline
+                  )
+                );
+
+
+                await showPartyFriendsMainPage(
+                  user,
+                  "nexus"
+                );
+
+              }
+
+              catch (error) {
+
+                console.error(
+                  error
+                );
+
+                button.disabled =
+                  false;
+
+                setMessage(
+                  "招待の削除に失敗しました",
+                  "error"
+                );
+
+              }
+
+            }
+          );
+
+        }
+      );
+
+
 
     return;
 
@@ -43680,6 +45029,346 @@ async function showNexusPage(user) {
         `;
 
 
+
+  /*
+    ==========================================================
+    NEXUS FRIEND INVITES V8.5
+    ==========================================================
+  */
+
+  let nexusInviteFriendsV85 =
+    [];
+
+
+  try {
+
+    const friendshipQueryAV85 =
+      query(
+        collection(
+          db,
+          "friends"
+        ),
+        where(
+          "userA",
+          "==",
+          user.uid
+        )
+      );
+
+
+    const friendshipQueryBV85 =
+      query(
+        collection(
+          db,
+          "friends"
+        ),
+        where(
+          "userB",
+          "==",
+          user.uid
+        )
+      );
+
+
+    const [
+      friendSnapAV85,
+      friendSnapBV85
+    ] =
+      await Promise.all([
+        getDocs(
+          friendshipQueryAV85
+        ),
+        getDocs(
+          friendshipQueryBV85
+        )
+      ]);
+
+
+    const friendUidsV85 =
+      new Set();
+
+
+    friendSnapAV85.docs.forEach(
+      friendDoc => {
+
+        const data =
+          friendDoc.data();
+
+
+        if (data.userB) {
+
+          friendUidsV85.add(
+            data.userB
+          );
+
+        }
+
+      }
+    );
+
+
+    friendSnapBV85.docs.forEach(
+      friendDoc => {
+
+        const data =
+          friendDoc.data();
+
+
+        if (data.userA) {
+
+          friendUidsV85.add(
+            data.userA
+          );
+
+        }
+
+      }
+    );
+
+
+    friendUidsV85.delete(
+      user.uid
+    );
+
+
+    const memberUidsV85 =
+      new Set(
+        members.map(
+          member =>
+            member.uid
+        )
+      );
+
+
+    const loadedFriendsV85 =
+      await Promise.all(
+        [...friendUidsV85].map(
+          async uid => {
+
+            try {
+
+              /*
+                V8.5.1
+
+                招待済み判定のために
+                studyLinkInvites/{code_uid}
+                を読む処理は行わない。
+
+                Firestore Rulesによって
+                送信側READが許可されていない場合、
+                フレンド全員がnull扱いになるため。
+              */
+
+              const friendSnap =
+                await getDoc(
+                  doc(
+                    db,
+                    "users",
+                    uid
+                  )
+                );
+
+
+              if (!friendSnap.exists()) {
+
+                return null;
+
+              }
+
+
+              const friendData =
+                friendSnap.data();
+
+
+              const friendNexusCode =
+                normalizeStudyLinkV2Code(
+                  friendData
+                    .studyLinkRoomCode ||
+                  ""
+                );
+
+
+              return {
+
+                uid,
+
+                username:
+                  String(
+                    friendData.username ||
+                    friendData.displayName ||
+                    "USER"
+                  ),
+
+                inNexus:
+                  memberUidsV85.has(
+                    uid
+                  ),
+
+                inOtherNexus:
+                  Boolean(
+                    friendNexusCode &&
+                    friendNexusCode !== code
+                  ),
+
+                /*
+                  SENTは送信直後のUIだけで表示。
+                  再読み込み後は再度INVITE可能。
+                  setDoc mergeなので再送しても安全。
+                */
+                pending:false
+
+              };
+
+            }
+
+            catch (error) {
+
+              console.warn(
+                "NEXUS FRIEND LOAD:",
+                uid,
+                error
+              );
+
+              return null;
+
+            }
+
+          }
+        )
+      );
+
+
+    nexusInviteFriendsV85 =
+      loadedFriendsV85
+        .filter(Boolean)
+        .sort(
+          (a,b) =>
+            a.username.localeCompare(
+              b.username,
+              "ja"
+            )
+        );
+
+  }
+
+  catch (error) {
+
+    console.warn(
+      "NEXUS FRIEND INVITES:",
+      error
+    );
+
+  }
+
+
+  const nexusInviteFriendsHtmlV85 =
+    nexusInviteFriendsV85.length
+      ? nexusInviteFriendsV85
+          .map(
+            friend => {
+
+              let state =
+                "INVITE";
+
+              let disabled =
+                false;
+
+
+              if (friend.inNexus) {
+
+                state =
+                  "IN NEXUS";
+
+                disabled =
+                  true;
+
+              }
+
+              else if (
+                friend.inOtherNexus
+              ) {
+
+                state =
+                  "OTHER NEXUS";
+
+                disabled =
+                  true;
+
+              }
+
+              else if (
+                friend.pending
+              ) {
+
+                state =
+                  "SENT";
+
+                disabled =
+                  true;
+
+              }
+
+
+              return `
+                <div
+                  class="asc-nx85-friend"
+                >
+
+                  <div
+                    class="asc-nx85-friend-avatar"
+                  >
+                    ${
+                      escapeAscNexusV8(
+                        friend.username
+                          .slice(0,1)
+                          .toUpperCase()
+                      )
+                    }
+                  </div>
+
+                  <div
+                    class="asc-nx85-friend-name"
+                  >
+
+                    <strong>
+                      ${escapeAscNexusV8(
+                        friend.username
+                      )}
+                    </strong>
+
+                    <span>
+                      FRIEND
+                    </span>
+
+                  </div>
+
+                  <button
+                    type="button"
+                    data-asc-nx85-send-invite="${
+                      escapeAscNexusV8(
+                        friend.uid
+                      )
+                    }"
+                    ${disabled ? "disabled" : ""}
+                  >
+                    ${state}
+                  </button>
+
+                </div>
+              `;
+
+            }
+          )
+          .join("")
+      : `
+          <div
+            class="asc-nx85-no-friends"
+          >
+            招待できるフレンドがいません
+          </div>
+        `;
+
+
   const boostPool =
     Math.max(
       0,
@@ -43698,6 +45387,97 @@ async function showNexusPage(user) {
       Math.floor(
         Number(
           nexusData.boostActiveLevel ??
+          0
+        )
+      )
+    );
+
+
+
+  /*
+    ==========================================================
+    NEXUS BOOST NETWORK V8.6
+    既存BOOST ENGINEをV8 UIへ接続
+    ==========================================================
+  */
+
+  const boostStateV86 =
+    getStudyLinkBoostStateV1(
+      nexusData
+    );
+
+
+  const boostTargetLevelV86 =
+    boostStateV86.targetLevel;
+
+
+  const boostTargetCostV86 =
+    Math.max(
+      1,
+      Math.floor(
+        Number(
+          boostStateV86.targetCost ||
+          1
+        )
+      )
+    );
+
+
+  const boostPoolV86 =
+    Math.max(
+      0,
+      Math.floor(
+        Number(
+          boostStateV86.pool ||
+          0
+        )
+      )
+    );
+
+
+  const boostRemainingV86 =
+    Math.max(
+      0,
+      Math.floor(
+        Number(
+          boostStateV86.remaining ||
+          0
+        )
+      )
+    );
+
+
+  const boostProgressV86 =
+    Math.max(
+      0,
+      Math.min(
+        100,
+        (
+          boostPoolV86 /
+          boostTargetCostV86
+        ) * 100
+      )
+    );
+
+
+  const boostActiveLevelV86 =
+    Math.max(
+      0,
+      Math.floor(
+        Number(
+          boostStateV86.activeLevel ||
+          0
+        )
+      )
+    );
+
+
+  const userCoinsV86 =
+    Math.max(
+      0,
+      Math.floor(
+        Number(
+          ownData.coins ||
           0
         )
       )
@@ -43798,6 +45578,45 @@ async function showNexusPage(user) {
             ${memberHtml}
           </div>
 
+
+          <div
+            class="asc-nx85-invite-zone"
+          >
+
+            <button
+              type="button"
+              id="asc-nx85-invite-toggle"
+            >
+              <span>＋</span>
+              INVITE FRIENDS
+            </button>
+
+
+            <div
+              id="asc-nx85-invite-panel"
+              class="asc-nx85-invite-panel"
+              hidden
+            >
+
+              <div
+                class="asc-nx85-invite-panel-head"
+              >
+                INVITE TO
+                ${escapeAscNexusV8(
+                  nexusName
+                )}
+              </div>
+
+              <div
+                class="asc-nx85-friend-list"
+              >
+                ${nexusInviteFriendsHtmlV85}
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
 
@@ -43835,34 +45654,170 @@ async function showNexusPage(user) {
           </div>
 
 
-          <div class="asc-nx8-feature boost">
+          <div
+            class="asc-nx86-boost"
+          >
 
-            <div class="asc-nx8-feature-icon">
-              B
+            <div
+              class="asc-nx86-boost-head"
+            >
+
+              <div>
+
+                <span>
+                  BOOST NETWORK
+                </span>
+
+                <strong id="asc-nx861-target-title">
+                  LV.${boostTargetLevelV86} FUND
+                </strong>
+
+              </div>
+
+
+              <div
+                id="asc-nx861-status"
+                class="asc-nx86-boost-status ${
+                  boostActiveLevelV86 > 0
+                    ? "active"
+                    : ""
+                }"
+              >
+
+                ${
+                  boostActiveLevelV86 > 0
+                    ? `ACTIVE LV.${boostActiveLevelV86}`
+                    : "STANDBY"
+                }
+
+              </div>
+
             </div>
 
-            <div>
+
+            <div
+              class="asc-nx86-progress-top"
+            >
 
               <span>
-                BOOST NETWORK
+                SHARED FUND
               </span>
 
               <strong>
-                ${
-                  boostLevel > 0
-                    ? `ACTIVE LV.${boostLevel}`
-                    : "STANDBY"
-                }
+                <span id="asc-nx861-pool">${boostPoolV86}</span>
+                <em>/</em>
+                <span id="asc-nx861-cost">${boostTargetCostV86}</span>
               </strong>
-
-              <small>
-                FUND ${boostPool}
-              </small>
 
             </div>
 
-            <div class="asc-nx8-feature-value">
-              ${boostPool}
+
+            <div
+              class="asc-nx86-progress"
+            >
+
+              <div
+                id="asc-nx861-fill"
+                style="
+                  width:${boostProgressV86}%;
+                "
+              ></div>
+
+            </div>
+
+
+            <div
+              class="asc-nx86-stats"
+            >
+
+              <div>
+
+                <span>
+                  REMAINING
+                </span>
+
+                <strong id="asc-nx861-remaining">
+                  ${boostRemainingV86}
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>
+                  YOUR COINS
+                </span>
+
+                <strong id="asc-nx861-coins">
+                  ${userCoinsV86}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div
+              class="asc-nx86-presets"
+            >
+
+              <button
+                type="button"
+                data-asc-nx86-preset="100"
+              >
+                +100
+              </button>
+
+              <button
+                type="button"
+                data-asc-nx86-preset="500"
+              >
+                +500
+              </button>
+
+              <button
+                type="button"
+                data-asc-nx86-preset="max"
+              >
+                MAX
+              </button>
+
+            </div>
+
+
+            <div
+              class="asc-nx86-contribute"
+            >
+
+              <input
+                type="number"
+                id="asc-nx86-amount"
+                min="1"
+                step="1"
+                inputmode="numeric"
+                placeholder="COINS"
+              >
+
+              <button
+                type="button"
+                id="asc-nx86-submit"
+              >
+                CONTRIBUTE
+              </button>
+
+            </div>
+
+
+            <div
+              id="asc-nx861-note"
+              class="asc-nx86-note"
+            >
+              ${
+                boostActiveLevelV86 > 0
+                  ? `BOOST LV.${boostActiveLevelV86} ACTIVE · NEXT LV.${boostTargetLevelV86}`
+                  : `REACH ${boostTargetCostV86} TO ACTIVATE LV.${boostTargetLevelV86}`
+              }
             </div>
 
           </div>
@@ -43963,6 +45918,510 @@ async function showNexusPage(user) {
     };
 
 
+
+  /*
+    ==========================================================
+    BOOST NETWORK EVENTS V8.6
+    ==========================================================
+  */
+
+  /*
+    ページ再描画なしでBOOST UIを更新するための
+    ローカル状態
+  */
+
+  let boostUiPoolV861 =
+    boostPoolV86;
+
+  let boostUiCoinsV861 =
+    userCoinsV86;
+
+  let boostUiTargetLevelV861 =
+    boostTargetLevelV86;
+
+  let boostUiTargetCostV861 =
+    boostTargetCostV86;
+
+  let boostUiActiveLevelV861 =
+    boostActiveLevelV86;
+
+
+  const boostFillV861 =
+    document.getElementById(
+      "asc-nx861-fill"
+    );
+
+  const boostPoolTextV861 =
+    document.getElementById(
+      "asc-nx861-pool"
+    );
+
+  const boostCostTextV861 =
+    document.getElementById(
+      "asc-nx861-cost"
+    );
+
+  const boostRemainingTextV861 =
+    document.getElementById(
+      "asc-nx861-remaining"
+    );
+
+  const boostCoinsTextV861 =
+    document.getElementById(
+      "asc-nx861-coins"
+    );
+
+  const boostTargetTitleV861 =
+    document.getElementById(
+      "asc-nx861-target-title"
+    );
+
+  const boostStatusV861 =
+    document.getElementById(
+      "asc-nx861-status"
+    );
+
+  const boostNoteV861 =
+    document.getElementById(
+      "asc-nx861-note"
+    );
+
+
+  const renderBoostUiV861 =
+    ({
+      animate = true
+    } = {}) => {
+
+      const remaining =
+        Math.max(
+          0,
+          boostUiTargetCostV861 -
+          boostUiPoolV861
+        );
+
+
+      const progress =
+        Math.max(
+          0,
+          Math.min(
+            100,
+            (
+              boostUiPoolV861 /
+              boostUiTargetCostV861
+            ) * 100
+          )
+        );
+
+
+      if (boostPoolTextV861) {
+        boostPoolTextV861.textContent =
+          String(
+            boostUiPoolV861
+          );
+      }
+
+
+      if (boostCostTextV861) {
+        boostCostTextV861.textContent =
+          String(
+            boostUiTargetCostV861
+          );
+      }
+
+
+      if (boostRemainingTextV861) {
+        boostRemainingTextV861.textContent =
+          String(
+            remaining
+          );
+      }
+
+
+      if (boostCoinsTextV861) {
+        boostCoinsTextV861.textContent =
+          String(
+            boostUiCoinsV861
+          );
+      }
+
+
+      if (boostTargetTitleV861) {
+        boostTargetTitleV861.textContent =
+          `LV.${boostUiTargetLevelV861} FUND`;
+      }
+
+
+      if (boostStatusV861) {
+
+        boostStatusV861.textContent =
+          boostUiActiveLevelV861 > 0
+            ? `ACTIVE LV.${boostUiActiveLevelV861}`
+            : "STANDBY";
+
+
+        boostStatusV861.classList.toggle(
+          "active",
+          boostUiActiveLevelV861 > 0
+        );
+
+      }
+
+
+      if (boostNoteV861) {
+
+        boostNoteV861.textContent =
+          boostUiActiveLevelV861 > 0
+            ? (
+                `BOOST LV.${boostUiActiveLevelV861} ACTIVE · ` +
+                `NEXT LV.${boostUiTargetLevelV861}`
+              )
+            : (
+                `REACH ${boostUiTargetCostV861} ` +
+                `TO ACTIVATE LV.${boostUiTargetLevelV861}`
+              );
+
+      }
+
+
+      if (boostFillV861) {
+
+        if (!animate) {
+
+          boostFillV861.style.transition =
+            "none";
+
+        }
+
+
+        boostFillV861.style.width =
+          `${progress}%`;
+
+
+        if (!animate) {
+
+          requestAnimationFrame(
+            () => {
+
+              boostFillV861.style.transition =
+                "";
+
+            }
+          );
+
+        }
+
+      }
+
+    };
+
+
+  const boostInputV86 =
+    document.getElementById(
+      "asc-nx86-amount"
+    );
+
+
+  const boostSubmitV86 =
+    document.getElementById(
+      "asc-nx86-submit"
+    );
+
+
+  document
+    .querySelectorAll(
+      "[data-asc-nx86-preset]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            if (!boostInputV86) {
+              return;
+            }
+
+
+            const preset =
+              button.dataset
+                .ascNx86Preset;
+
+
+            let amount = 0;
+
+
+            if (preset === "max") {
+
+              amount =
+                Math.min(
+                  boostUiCoinsV861,
+                  Math.max(
+                    0,
+                    boostUiTargetCostV861 -
+                    boostUiPoolV861
+                  )
+                );
+
+            }
+
+            else {
+
+              amount =
+                Math.min(
+                  Math.max(
+                    0,
+                    Math.floor(
+                      Number(
+                        preset ||
+                        0
+                      )
+                    )
+                  ),
+                  boostUiCoinsV861,
+                  Math.max(
+                    0,
+                    boostUiTargetCostV861 -
+                    boostUiPoolV861
+                  )
+                );
+
+            }
+
+
+            boostInputV86.value =
+              amount > 0
+                ? String(amount)
+                : "";
+
+          }
+        );
+
+      }
+    );
+
+
+  boostSubmitV86
+    ?.addEventListener(
+      "click",
+      async () => {
+
+        if (!boostInputV86) {
+          return;
+        }
+
+
+        const requested =
+          Math.floor(
+            Number(
+              boostInputV86.value ||
+              0
+            )
+          );
+
+
+        if (
+          !Number.isFinite(
+            requested
+          ) ||
+          requested <= 0
+        ) {
+
+          setMessage(
+            "出資するCOINSを入力してください",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        boostSubmitV86.disabled =
+          true;
+
+        boostSubmitV86.textContent =
+          "PROCESSING";
+
+
+        try {
+
+          const result =
+            await contributeStudyLinkBoostV1(
+              user,
+              code,
+              requested
+            );
+
+
+          /*
+            コイン表示は即更新
+          */
+
+          boostUiCoinsV861 =
+            Math.max(
+              0,
+              boostUiCoinsV861 -
+              result.amount
+            );
+
+
+          if (result.activated) {
+
+            /*
+              満額時：
+              まず100%まで滑らかに伸ばす
+            */
+
+            boostUiPoolV861 =
+              boostUiTargetCostV861;
+
+            renderBoostUiV861();
+
+
+            boostSubmitV86.textContent =
+              `LV.${result.activatedLevel} ACTIVE`;
+
+
+            setMessage(
+              `BOOST LV.${result.activatedLevel} が発動しました`,
+              "success"
+            );
+
+
+            await new Promise(
+              resolve =>
+                setTimeout(
+                  resolve,
+                  430
+                )
+            );
+
+
+            /*
+              次のBOOST FUNDへ切り替える
+            */
+
+            boostUiActiveLevelV861 =
+              result.activatedLevel;
+
+
+            boostUiTargetLevelV861 =
+              result.activatedLevel < 3
+                ? result.activatedLevel + 1
+                : 3;
+
+
+            boostUiTargetCostV861 =
+              STUDY_LINK_BOOST_COSTS_V1[
+                boostUiTargetLevelV861
+              ];
+
+
+            boostUiPoolV861 =
+              0;
+
+
+            /*
+              100% → 0%は一瞬でリセット。
+              その後の出資からまた滑らかに伸びる。
+            */
+
+            renderBoostUiV861({
+              animate:false
+            });
+
+          }
+
+          else {
+
+            boostUiPoolV861 +=
+              result.amount;
+
+
+            renderBoostUiV861();
+
+
+            boostSubmitV86.textContent =
+              `+${result.amount}`;
+
+
+            setMessage(
+              `${result.amount} COINSをBOOST FUNDへ出資しました`,
+              "success"
+            );
+
+          }
+
+
+          boostInputV86.value =
+            "";
+
+
+          setTimeout(
+            () => {
+
+              if (
+                boostSubmitV86
+              ) {
+
+                boostSubmitV86.disabled =
+                  false;
+
+                boostSubmitV86.textContent =
+                  "CONTRIBUTE";
+
+              }
+
+            },
+            520
+          );
+
+        }
+
+        catch (error) {
+
+          console.error(
+            error
+          );
+
+
+          boostSubmitV86.disabled =
+            false;
+
+          boostSubmitV86.textContent =
+            "CONTRIBUTE";
+
+
+          setMessage(
+            error?.message ||
+            "BOOST FUNDへの出資に失敗しました",
+            "error"
+          );
+
+        }
+
+      }
+    );
+
+
+  boostInputV86
+    ?.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          boostSubmitV86?.click();
+
+        }
+
+      }
+    );
+
+
   document
     .getElementById(
       "asc-nx8-copy"
@@ -43993,6 +46452,156 @@ async function showNexusPage(user) {
           );
 
         }
+
+      }
+    );
+
+
+
+  /*
+    INVITE FRIENDS 展開
+  */
+
+  const inviteToggleV85 =
+    document.getElementById(
+      "asc-nx85-invite-toggle"
+    );
+
+
+  const invitePanelV85 =
+    document.getElementById(
+      "asc-nx85-invite-panel"
+    );
+
+
+  inviteToggleV85
+    ?.addEventListener(
+      "click",
+      () => {
+
+        if (!invitePanelV85) {
+          return;
+        }
+
+
+        invitePanelV85.hidden =
+          !invitePanelV85.hidden;
+
+
+        inviteToggleV85.classList.toggle(
+          "active",
+          !invitePanelV85.hidden
+        );
+
+      }
+    );
+
+
+  /*
+    INVITE送信
+  */
+
+  document
+    .querySelectorAll(
+      "[data-asc-nx85-send-invite]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          async () => {
+
+            const toUid =
+              button.dataset
+                .ascNx85SendInvite;
+
+
+            if (!toUid) {
+              return;
+            }
+
+
+            button.disabled =
+              true;
+
+            button.textContent =
+              "SENDING";
+
+
+            try {
+
+              const fromUsername =
+                String(
+                  ownData.username ||
+                  ownData.displayName ||
+                  "PLAYER"
+                );
+
+
+              await setDoc(
+                doc(
+                  db,
+                  "studyLinkInvites",
+                  `${code}_${toUid}`
+                ),
+                {
+                  roomCode:
+                    code,
+
+                  fromUid:
+                    user.uid,
+
+                  fromUsername,
+
+                  toUid,
+
+                  createdAt:
+                    serverTimestamp()
+                },
+                {
+                  merge:true
+                }
+              );
+
+
+              button.textContent =
+                "SENT";
+
+              button.classList.add(
+                "sent"
+              );
+
+
+              setMessage(
+                "NEXUS招待を送信しました",
+                "success"
+              );
+
+            }
+
+            catch (error) {
+
+              console.error(
+                error
+              );
+
+              button.disabled =
+                false;
+
+              button.textContent =
+                "INVITE";
+
+
+              setMessage(
+                "招待の送信に失敗しました",
+                "error"
+              );
+
+            }
+
+          }
+        );
 
       }
     );
@@ -63408,5 +66017,7 @@ setTimeout(()=>{
      Completely independent SOCIAL NEXUS UI.
 -->
 
+
+<!-- ASCEND NEXUS INVITE HOTFIX V8.5.1 -->
 </body>
 </html>
