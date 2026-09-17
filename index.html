@@ -33922,6 +33922,60 @@ body.study-link-room-mode-v1
 
 <!-- ASCEND MOBILE SOCIAL HOTFIX V1 -->
 
+
+<style id="ascend-mobile-top-clip-fix-v1">
+
+/* =========================================================
+   ASCEND MOBILE TOP CLIP FIX V1
+
+   上部の軽い見切れだけ修正。
+   bottom navigationには一切触れない。
+========================================================= */
+
+@media (max-width:700px) {
+
+  body:has(#main-navigation) > main {
+
+    /*
+      既存 12px → 20px
+      上側に8pxだけ余裕を追加
+    */
+
+    padding-top:
+      20px !important;
+
+  }
+
+
+  body:has(#main-navigation)
+  > main
+  > section {
+
+    /*
+      既存:
+      100dvh - 88px
+
+      上余白を8px増やしたので
+      スクロール領域も8pxだけ縮める。
+    */
+
+    height:
+      calc(100dvh - 96px) !important;
+
+    min-height:
+      calc(100dvh - 96px) !important;
+
+    max-height:
+      calc(100dvh - 96px) !important;
+
+  }
+
+}
+
+</style>
+
+<!-- ASCEND MOBILE TOP CLIP FIX V1 -->
+
 </head>
 
 
