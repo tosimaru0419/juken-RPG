@@ -33624,6 +33624,202 @@ body.study-link-room-mode-v1
 
 <!-- ASCEND NEXUS FOCUS SCROLL V9.3.3 -->
 
+
+<style id="ascend-focus-boost-status-v94-style">
+
+/* =========================================================
+   ASCEND FOCUS BOOST STATUS V9.4
+========================================================= */
+
+#asc-focus-boost-v94 {
+
+  display:none;
+
+}
+
+
+/*
+  FOCUS中だけ表示
+*/
+
+body.study-link-room-mode-v1
+#asc-focus-boost-v94 {
+
+  min-height:
+    48px;
+
+  padding:
+    9px 12px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:
+    12px;
+
+  box-sizing:
+    border-box;
+
+  border:
+    1px solid rgba(111,87,220,.11);
+
+  border-radius:
+    12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(108,84,216,.045),
+      rgba(49,181,207,.025)
+    );
+
+}
+
+
+.asc-focus-boost-copy-v94 {
+
+  min-width:0;
+
+  display:grid;
+
+  gap:
+    2px;
+
+}
+
+
+.asc-focus-boost-copy-v94 span {
+
+  color:
+    var(--asc-muted);
+
+  font-size:
+    .46rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .11em;
+
+}
+
+
+.asc-focus-boost-copy-v94 strong {
+
+  color:
+    var(--asc-text);
+
+  font-size:
+    .68rem;
+
+  font-weight:
+    900;
+
+}
+
+
+.asc-focus-boost-badge-v94,
+.asc-focus-boost-fund-v94 {
+
+  flex:
+    0 0 auto;
+
+  min-height:
+    28px;
+
+  padding:
+    0 9px;
+
+  display:flex;
+
+  align-items:center;
+
+  border-radius:
+    999px;
+
+  font-size:
+    .48rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .05em;
+
+}
+
+
+.asc-focus-boost-badge-v94.active {
+
+  color:
+    #58cfa7;
+
+  border:
+    1px solid rgba(66,202,156,.16);
+
+  background:
+    rgba(58,193,148,.05);
+
+}
+
+
+.asc-focus-boost-fund-v94 {
+
+  color:
+    #a89be6;
+
+  border:
+    1px solid rgba(111,87,220,.13);
+
+  background:
+    rgba(108,84,216,.045);
+
+}
+
+
+/* LIGHT */
+
+html[data-asc-theme="light"]
+body.study-link-room-mode-v1
+#asc-focus-boost-v94 {
+
+  border-color:
+    rgba(94,75,186,.09);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(111,87,220,.045),
+      rgba(52,183,207,.045)
+    );
+
+}
+
+
+/* MOBILE */
+
+@media (max-width:600px) {
+
+  body.study-link-room-mode-v1
+  #asc-focus-boost-v94 {
+
+    min-height:
+      44px;
+
+    padding:
+      7px 9px;
+
+  }
+
+}
+
+</style>
+
+<!-- ASCEND FOCUS BOOST STATUS V9.4 -->
+
 </head>
 
 
@@ -42883,6 +43079,207 @@ function mountStudyLinkManualRecordV1(user) {
 }
 
 
+
+/* ============================================================
+   ASCEND FOCUS BOOST STATUS V9.4
+   READ ONLY
+============================================================ */
+
+async function mountAscFocusBoostStatusV94(
+  user,
+  code
+) {
+
+  const active =
+    document.getElementById(
+      "study-link-v2-active"
+    );
+
+
+  if (
+    !active ||
+    !code
+  ) {
+    return;
+  }
+
+
+  let box =
+    document.getElementById(
+      "asc-focus-boost-v94"
+    );
+
+
+  if (!box) {
+
+    box =
+      document.createElement(
+        "div"
+      );
+
+
+    box.id =
+      "asc-focus-boost-v94";
+
+
+    const timer =
+      document.getElementById(
+        "study-link-room-timer-v1"
+      );
+
+
+    if (timer) {
+
+      timer.insertAdjacentElement(
+        "afterend",
+        box
+      );
+
+    }
+
+    else {
+
+      active.appendChild(
+        box
+      );
+
+    }
+
+  }
+
+
+  try {
+
+    const roomSnap =
+      await getDoc(
+        studyLinkV2RoomRef(
+          code
+        )
+      );
+
+
+    if (!roomSnap.exists()) {
+
+      box.hidden =
+        true;
+
+      return;
+
+    }
+
+
+    const roomData =
+      roomSnap.data();
+
+
+    const state =
+      getStudyLinkBoostStateV1(
+        roomData
+      );
+
+
+    const activeLevel =
+      Number(
+        state.activeLevel ||
+        0
+      );
+
+
+    const targetLevel =
+      Number(
+        state.targetLevel ||
+        1
+      );
+
+
+    const pool =
+      Math.max(
+        0,
+        Number(
+          state.pool ||
+          0
+        )
+      );
+
+
+    const cost =
+      Math.max(
+        0,
+        Number(
+          state.targetCost ||
+          0
+        )
+      );
+
+
+    if (activeLevel > 0) {
+
+      box.innerHTML = `
+        <div class="asc-focus-boost-copy-v94">
+
+          <span>
+            BOOST NETWORK
+          </span>
+
+          <strong>
+            ACTIVE LV.${activeLevel}
+          </strong>
+
+        </div>
+
+        <div class="asc-focus-boost-badge-v94 active">
+          ACTIVE
+        </div>
+      `;
+
+    }
+
+    else {
+
+      box.innerHTML = `
+        <div class="asc-focus-boost-copy-v94">
+
+          <span>
+            BOOST NETWORK
+          </span>
+
+          <strong>
+            LV.${targetLevel} FUND
+          </strong>
+
+        </div>
+
+        <div class="asc-focus-boost-fund-v94">
+          ${Math.round(pool).toLocaleString()}
+          /
+          ${Math.round(cost).toLocaleString()}
+        </div>
+      `;
+
+    }
+
+
+    box.hidden =
+      false;
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "FOCUS BOOST STATUS:",
+      error
+    );
+
+
+    box.hidden =
+      true;
+
+  }
+
+}
+
+
 async function mountStudyLinkPanelV2(user) {
 
   /*
@@ -44382,6 +44779,12 @@ async function mountStudyLinkPanelV2(user) {
     );
 
     await mountStudyLinkStatusV1(
+      user,
+      code
+    );
+
+
+    await mountAscFocusBoostStatusV94(
       user,
       code
     );
@@ -70410,5 +70813,990 @@ setTimeout(()=>{
 
 
 <!-- ASCEND NEXUS INVITE HOTFIX V8.5.1 -->
+
+<script id="ascend-swipe-back-v1" type="text/plain">
+
+/* ============================================================
+   ASCEND SWIPE BACK V1
+
+   左側から右へスワイプ
+   → 現在画面の既存 BACK / EXIT 操作を実行
+
+   既存ルーティングを再実装しない安全設計。
+============================================================ */
+
+(() => {
+
+  const MARKER =
+    "ASCEND SWIPE BACK V1";
+
+
+  let startX = 0;
+  let startY = 0;
+
+  let currentX = 0;
+  let currentY = 0;
+
+  let startTime = 0;
+
+  let tracking = false;
+  let horizontalLock = false;
+
+
+  /* ========================================================
+     VISIBLE CHECK
+  ======================================================== */
+
+  function isVisible(el) {
+
+    if (
+      !el ||
+      !(el instanceof HTMLElement)
+    ) {
+      return false;
+    }
+
+
+    const style =
+      getComputedStyle(el);
+
+
+    if (
+      style.display === "none" ||
+      style.visibility === "hidden" ||
+      Number(style.opacity) === 0
+    ) {
+      return false;
+    }
+
+
+    const rect =
+      el.getBoundingClientRect();
+
+
+    return (
+      rect.width > 0 &&
+      rect.height > 0
+    );
+
+  }
+
+
+  /* ========================================================
+     FORM / INTERACTIVE GUARD
+  ======================================================== */
+
+  function shouldIgnoreTarget(target) {
+
+    if (
+      !target ||
+      !(target instanceof Element)
+    ) {
+      return false;
+    }
+
+
+    return Boolean(
+      target.closest(
+        [
+          "input",
+          "textarea",
+          "select",
+          "[contenteditable='true']",
+          ".no-swipe-back",
+          "[data-no-swipe-back]"
+        ].join(",")
+      )
+    );
+
+  }
+
+
+  /* ========================================================
+     FIND CURRENT SCREEN BACK ACTION
+  ======================================================== */
+
+  function findBackAction() {
+
+    /*
+      明示的に優先したいASCEND操作
+    */
+
+    const preferredSelectors = [
+
+      "#asc-focus-exit-v92",
+
+      "[data-asc-back]",
+
+      "[data-back]",
+
+      "button[id$='-back']",
+      "button[id*='-back-']",
+
+      "a[id$='-back']",
+      "a[id*='-back-']",
+
+      ".back-button",
+      ".back-btn",
+      ".page-back",
+      ".asc-back"
+
+    ];
+
+
+    for (
+      const selector
+      of preferredSelectors
+    ) {
+
+      const nodes =
+        document.querySelectorAll(
+          selector
+        );
+
+
+      for (
+        const node
+        of nodes
+      ) {
+
+        if (isVisible(node)) {
+          return node;
+        }
+
+      }
+
+    }
+
+
+    /*
+      ID/classが統一されていない古い画面用。
+      表示中のボタン文言から拾う。
+    */
+
+    const controls =
+      document.querySelectorAll(
+        "button, a, [role='button']"
+      );
+
+
+    const exactBackLabels =
+      new Set([
+        "BACK",
+        "← BACK",
+        "‹ BACK",
+        "戻る",
+        "← 戻る",
+        "←戻る",
+        "もどる"
+      ]);
+
+
+    for (
+      const control
+      of controls
+    ) {
+
+      if (!isVisible(control)) {
+        continue;
+      }
+
+
+      const label =
+        (
+          control.getAttribute(
+            "aria-label"
+          ) ||
+          control.textContent ||
+          ""
+        )
+        .replace(/\s+/g, " ")
+        .trim();
+
+
+      if (
+        exactBackLabels.has(
+          label.toUpperCase()
+        ) ||
+        exactBackLabels.has(
+          label
+        )
+      ) {
+
+        return control;
+
+      }
+
+    }
+
+
+    return null;
+
+  }
+
+
+  /* ========================================================
+     EXECUTE
+  ======================================================== */
+
+  function performBack() {
+
+    const action =
+      findBackAction();
+
+
+    if (!action) {
+
+      /*
+        TOP LEVEL画面では何もしない。
+        browser history.back() は使わない。
+        外部ページへ戻る事故防止。
+      */
+
+      return false;
+
+    }
+
+
+    action.click();
+
+    return true;
+
+  }
+
+
+  /* ========================================================
+     TOUCH START
+  ======================================================== */
+
+  document.addEventListener(
+    "touchstart",
+    event => {
+
+      if (
+        event.touches.length !== 1
+      ) {
+
+        tracking = false;
+        return;
+
+      }
+
+
+      if (
+        shouldIgnoreTarget(
+          event.target
+        )
+      ) {
+
+        tracking = false;
+        return;
+
+      }
+
+
+      const touch =
+        event.touches[0];
+
+
+      /*
+        Safariの完全な画面端ジェスチャーと
+        競合しにくいよう、
+        左側約25%をASCENDのスワイプ領域にする。
+      */
+
+      const maxStartX =
+        Math.min(
+          window.innerWidth * 0.25,
+          110
+        );
+
+
+      if (
+        touch.clientX >
+        maxStartX
+      ) {
+
+        tracking = false;
+        return;
+
+      }
+
+
+      startX =
+        touch.clientX;
+
+      startY =
+        touch.clientY;
+
+      currentX =
+        startX;
+
+      currentY =
+        startY;
+
+      startTime =
+        performance.now();
+
+      horizontalLock =
+        false;
+
+      tracking =
+        true;
+
+    },
+    {
+      passive:true
+    }
+  );
+
+
+  /* ========================================================
+     TOUCH MOVE
+  ======================================================== */
+
+  document.addEventListener(
+    "touchmove",
+    event => {
+
+      if (
+        !tracking ||
+        event.touches.length !== 1
+      ) {
+        return;
+      }
+
+
+      const touch =
+        event.touches[0];
+
+
+      currentX =
+        touch.clientX;
+
+      currentY =
+        touch.clientY;
+
+
+      const dx =
+        currentX - startX;
+
+      const dy =
+        currentY - startY;
+
+
+      if (
+        !horizontalLock &&
+        dx > 18 &&
+        Math.abs(dx) >
+          Math.abs(dy) * 1.35
+      ) {
+
+        horizontalLock =
+          true;
+
+      }
+
+
+      /*
+        横スワイプ確定後だけ、
+        縦スクロールとの競合を止める。
+      */
+
+      if (
+        horizontalLock &&
+        dx > 0
+      ) {
+
+        event.preventDefault();
+
+      }
+
+    },
+    {
+      passive:false
+    }
+  );
+
+
+  /* ========================================================
+     TOUCH END
+  ======================================================== */
+
+  document.addEventListener(
+    "touchend",
+    () => {
+
+      if (!tracking) {
+        return;
+      }
+
+
+      const dx =
+        currentX - startX;
+
+      const dy =
+        currentY - startY;
+
+      const elapsed =
+        performance.now() -
+        startTime;
+
+
+      const valid =
+        horizontalLock &&
+
+        dx >= 72 &&
+
+        Math.abs(dx) >
+          Math.abs(dy) * 1.45 &&
+
+        elapsed <= 850;
+
+
+      tracking =
+        false;
+
+      horizontalLock =
+        false;
+
+
+      if (!valid) {
+        return;
+      }
+
+
+      performBack();
+
+    },
+    {
+      passive:true
+    }
+  );
+
+
+  document.addEventListener(
+    "touchcancel",
+    () => {
+
+      tracking =
+        false;
+
+      horizontalLock =
+        false;
+
+    },
+    {
+      passive:true
+    }
+  );
+
+
+  console.log(
+    MARKER,
+    "ready"
+  );
+
+})();
+
+</script>
+
+<!-- ASCEND SWIPE BACK V1 -->
+
+
+<script id="ascend-swipe-back-v2">
+
+/* ============================================================
+   ASCEND SWIPE BACK V2
+
+   RIGHT SWIPE = ONE SCREEN BACK
+   TOUCH + POINTER
+============================================================ */
+
+(() => {
+
+  let active = false;
+
+  let startX = 0;
+  let startY = 0;
+
+  let lastX = 0;
+  let lastY = 0;
+
+  let startTime = 0;
+
+
+  function visible(el) {
+
+    if (
+      !el ||
+      !(el instanceof HTMLElement)
+    ) {
+      return false;
+    }
+
+    const style =
+      getComputedStyle(el);
+
+    const rect =
+      el.getBoundingClientRect();
+
+    return (
+      style.display !== "none" &&
+      style.visibility !== "hidden" &&
+      rect.width > 0 &&
+      rect.height > 0
+    );
+
+  }
+
+
+  function ignoredTarget(target) {
+
+    if (
+      !target ||
+      !(target instanceof Element)
+    ) {
+      return false;
+    }
+
+    return Boolean(
+      target.closest(
+        [
+          "input",
+          "textarea",
+          "select",
+          "[contenteditable='true']",
+          "[data-no-swipe-back]",
+          ".no-swipe-back"
+        ].join(",")
+      )
+    );
+
+  }
+
+
+  function findBackButton() {
+
+    /*
+      FOCUSを最優先
+    */
+
+    const focusExit =
+      document.getElementById(
+        "asc-focus-exit-v92"
+      );
+
+    if (visible(focusExit)) {
+      return focusExit;
+    }
+
+
+    /*
+      ID / class系
+    */
+
+    const selectors = [
+
+      "[data-asc-back]",
+      "[data-back]",
+
+      "#back-btn",
+      "#back-button",
+
+      "[id*='back']",
+
+      ".back-btn",
+      ".back-button",
+      ".page-back",
+      ".asc-back"
+
+    ];
+
+
+    for (
+      const selector
+      of selectors
+    ) {
+
+      const list =
+        document.querySelectorAll(
+          selector
+        );
+
+      for (
+        const el
+        of list
+      ) {
+
+        if (visible(el)) {
+          return el;
+        }
+
+      }
+
+    }
+
+
+    /*
+      表示テキスト系
+    */
+
+    const controls =
+      document.querySelectorAll(
+        "button, a, [role='button']"
+      );
+
+
+    for (
+      const el
+      of controls
+    ) {
+
+      if (!visible(el)) {
+        continue;
+      }
+
+
+      const text =
+        (
+          el.getAttribute(
+            "aria-label"
+          ) ||
+          el.textContent ||
+          ""
+        )
+        .replace(/\s+/g, " ")
+        .trim()
+        .toUpperCase();
+
+
+      if (
+        text === "BACK" ||
+        text === "戻る" ||
+        text.includes("← BACK") ||
+        text.includes("←戻る") ||
+        text.includes("← 戻る") ||
+        text === "EXIT"
+      ) {
+
+        return el;
+
+      }
+
+    }
+
+
+    return null;
+
+  }
+
+
+  function goBack() {
+
+    const button =
+      findBackButton();
+
+
+    if (!button) {
+
+      console.log(
+        "ASCEND SWIPE BACK: no back action"
+      );
+
+      return;
+
+    }
+
+
+    console.log(
+      "ASCEND SWIPE BACK:",
+      button.id ||
+      button.textContent.trim()
+    );
+
+
+    button.click();
+
+  }
+
+
+  function begin(x, y, target) {
+
+    if (
+      ignoredTarget(target)
+    ) {
+
+      active = false;
+      return;
+
+    }
+
+
+    /*
+      左60%から開始。
+      Safariの完全な左端ジェスチャー依存を回避。
+    */
+
+    if (
+      x >
+      window.innerWidth * 0.60
+    ) {
+
+      active = false;
+      return;
+
+    }
+
+
+    active =
+      true;
+
+    startX =
+      lastX =
+      x;
+
+    startY =
+      lastY =
+      y;
+
+    startTime =
+      performance.now();
+
+  }
+
+
+  function move(x, y) {
+
+    if (!active) {
+      return;
+    }
+
+    lastX = x;
+    lastY = y;
+
+  }
+
+
+  function end() {
+
+    if (!active) {
+      return;
+    }
+
+
+    active =
+      false;
+
+
+    const dx =
+      lastX - startX;
+
+    const dy =
+      lastY - startY;
+
+    const elapsed =
+      performance.now() -
+      startTime;
+
+
+    const horizontal =
+      dx > Math.abs(dy) * 1.35;
+
+
+    const enoughDistance =
+      dx >= 70;
+
+
+    const enoughVelocity =
+      (
+        dx >= 48 &&
+        elapsed <= 350
+      );
+
+
+    if (
+      dx > 0 &&
+      horizontal &&
+      (
+        enoughDistance ||
+        enoughVelocity
+      ) &&
+      elapsed <= 1000
+    ) {
+
+      goBack();
+
+    }
+
+  }
+
+
+  /* ========================================================
+     TOUCH
+  ======================================================== */
+
+  document.addEventListener(
+    "touchstart",
+    event => {
+
+      if (
+        event.touches.length !== 1
+      ) {
+        return;
+      }
+
+      const t =
+        event.touches[0];
+
+      begin(
+        t.clientX,
+        t.clientY,
+        event.target
+      );
+
+    },
+    {
+      passive:true
+    }
+  );
+
+
+  document.addEventListener(
+    "touchmove",
+    event => {
+
+      if (
+        !active ||
+        event.touches.length !== 1
+      ) {
+        return;
+      }
+
+      const t =
+        event.touches[0];
+
+      move(
+        t.clientX,
+        t.clientY
+      );
+
+    },
+    {
+      passive:true
+    }
+  );
+
+
+  document.addEventListener(
+    "touchend",
+    end,
+    {
+      passive:true
+    }
+  );
+
+
+  document.addEventListener(
+    "touchcancel",
+    () => {
+      active = false;
+    },
+    {
+      passive:true
+    }
+  );
+
+
+  /* ========================================================
+     POINTER
+     PCテスト用
+  ======================================================== */
+
+  if (
+    window.PointerEvent
+  ) {
+
+    document.addEventListener(
+      "pointerdown",
+      event => {
+
+        /*
+          Touchは上のtouch系に任せる。
+          Mouse/Penだけここで拾う。
+        */
+
+        if (
+          event.pointerType === "touch"
+        ) {
+          return;
+        }
+
+
+        if (
+          event.button !== 0
+        ) {
+          return;
+        }
+
+
+        begin(
+          event.clientX,
+          event.clientY,
+          event.target
+        );
+
+      }
+    );
+
+
+    document.addEventListener(
+      "pointermove",
+      event => {
+
+        if (
+          !active ||
+          event.pointerType === "touch"
+        ) {
+          return;
+        }
+
+        move(
+          event.clientX,
+          event.clientY
+        );
+
+      }
+    );
+
+
+    document.addEventListener(
+      "pointerup",
+      event => {
+
+        if (
+          event.pointerType === "touch"
+        ) {
+          return;
+        }
+
+        end();
+
+      }
+    );
+
+  }
+
+
+  console.log(
+    "ASCEND SWIPE BACK V2 READY"
+  );
+
+})();
+
+</script>
+
+<!-- ASCEND SWIPE BACK V2 -->
+
 </body>
 </html>
