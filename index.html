@@ -33976,6 +33976,81 @@ body.study-link-room-mode-v1
 
 <!-- ASCEND MOBILE TOP CLIP FIX V1 -->
 
+
+<style id="ascend-standalone-safe-area-top-v1">
+
+/* =========================================================
+   ASCEND STANDALONE SAFE AREA TOP V1
+
+   iPhone「ホーム画面に追加」版だけ対象。
+   Safari版・下部ナビには触れない。
+========================================================= */
+
+@media (max-width:700px) {
+
+  html.ascend-standalone
+  body > main {
+
+    padding-top:
+      calc(
+        16px +
+        env(safe-area-inset-top, 0px)
+      ) !important;
+
+  }
+
+
+  html.ascend-standalone
+  body:has(#main-navigation) > main {
+
+    padding-top:
+      calc(
+        12px +
+        env(safe-area-inset-top, 0px)
+      ) !important;
+
+  }
+
+
+  /*
+    上にsafe-areaを追加した分だけ
+    中の固定スクロール領域を縮める。
+  */
+
+  html.ascend-standalone
+  body:has(#main-navigation)
+  > main
+  > section {
+
+    height:
+      calc(
+        100dvh
+        - 88px
+        - env(safe-area-inset-top, 0px)
+      ) !important;
+
+    min-height:
+      calc(
+        100dvh
+        - 88px
+        - env(safe-area-inset-top, 0px)
+      ) !important;
+
+    max-height:
+      calc(
+        100dvh
+        - 88px
+        - env(safe-area-inset-top, 0px)
+      ) !important;
+
+  }
+
+}
+
+</style>
+
+<!-- ASCEND STANDALONE SAFE AREA TOP V1 -->
+
 </head>
 
 
@@ -71955,6 +72030,29 @@ setTimeout(()=>{
 </script>
 
 <!-- ASCEND SWIPE BACK V2 -->
+
+
+<script id="ascend-standalone-detect-v1">
+
+(() => {
+
+  const standalone =
+    window.navigator.standalone === true ||
+    window.matchMedia(
+      "(display-mode: standalone)"
+    ).matches;
+
+  if (standalone) {
+
+    document.documentElement.classList.add(
+      "ascend-standalone"
+    );
+
+  }
+
+})();
+
+</script>
 
 </body>
 </html>
