@@ -1,0 +1,95 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow create, update, delete: if isOwner(uid);
+
+      match /{document=**} {
+        allow read, write: if isOwner(uid);
+      }
+    }
+
+    match /presence/{uid} {
+      allow read: if signedIn();
+      allow create, update, delete: if isOwner(uid);
+    }
+
+    match /friendRequests/{requestId} {
+      allow read, write: if signedIn();
+    }
+
+    match /friends/{friendId} {
+      allow read, write: if signedIn();
+    }
+
+    match /partyInvites/{inviteId} {
+      allow read, write: if signedIn();
+    }
+
+    match /parties/{partyId} {
+      allow read, write: if signedIn();
+    }
+
+    // ========================================================
+    // STUDY LINK
+    // ========================================================
+
+    match /studyLinkRooms/{roomCode} {
+
+      // ログインユーザーならROOMを読める
+      allow read:
+        if signedIn();
+
+      // ログインユーザーならROOM作成可能
+      allow create:
+        if signedIn();
+
+      // ROOM更新はログインユーザー
+      // BOOST等は後でより厳しくする
+      allow update:
+        if signedIn();
+
+      // ROOM削除は作成者のみ
+      allow delete:
+        if signedIn()
+        && resource.data.createdBy == request.auth.uid;
+
+
+      match /members/{uid} {
+
+        // ROOM参加者一覧はログインユーザーが読める
+        allow read:
+          if signedIn();
+
+        // 自分のmember documentだけ操作可能
+        allow create, update, delete:
+          if signedIn()
+          && request.auth.uid == uid;
+
+      }
+
+    }
+
+
+
+    match /config/{document=**} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
