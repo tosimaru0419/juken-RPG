@@ -72054,5 +72054,96 @@ setTimeout(()=>{
 
 </script>
 
+
+<script id="ascend-standalone-top-offset-v2">
+
+/* =========================================================
+   ASCEND STANDALONE TOP OFFSET V2
+
+   iPhoneホーム画面版のみ。
+   mainを8px下へずらす。
+   bottom navigationには一切触れない。
+========================================================= */
+
+(() => {
+
+  const standalone =
+    navigator.standalone === true ||
+    window.matchMedia("(display-mode: standalone)").matches;
+
+  if (!standalone) {
+    return;
+  }
+
+
+  function applyStandaloneTopOffsetV2() {
+
+    const main =
+      document.querySelector(
+        "body > main"
+      );
+
+    if (!main) {
+      return;
+    }
+
+
+    main.style.setProperty(
+      "top",
+      "8px",
+      "important"
+    );
+
+
+    main.style.setProperty(
+      "height",
+      "calc(100dvh - 8px)",
+      "important"
+    );
+
+
+    main.style.setProperty(
+      "max-height",
+      "calc(100dvh - 8px)",
+      "important"
+    );
+
+  }
+
+
+  applyStandaloneTopOffsetV2();
+
+
+  /*
+    ASCENDは画面遷移でbodyを書き換えるので
+    mainが再生成されたら毎回当て直す。
+  */
+
+  const observer =
+    new MutationObserver(
+      applyStandaloneTopOffsetV2
+    );
+
+
+  observer.observe(
+    document.body,
+    {
+      childList:true
+    }
+  );
+
+
+  window.addEventListener(
+    "resize",
+    applyStandaloneTopOffsetV2,
+    { passive:true }
+  );
+
+})();
+
+</script>
+
+<!-- ASCEND STANDALONE TOP OFFSET V2 -->
+
 </body>
 </html>
