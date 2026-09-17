@@ -5072,7 +5072,7 @@ body:has(#main-navigation):not(:has(.boss-battle-card)):not(:has(#boss-back-btn)
 
 
 /* ============================================================
-   WEAKNESS MAP / UNIT DETAIL v1
+   WEAKNESS MAP / TARGET DETAIL v1
 ============================================================ */
 
 .weakness-status-stats-v1 {
@@ -33470,7 +33470,7 @@ async function showStudyMainPage(user) {
             </strong>
 
             <span>
-              苦手単元を可視化
+              苦手単元・スキルを可視化
             </span>
 
           </div>
@@ -33859,149 +33859,387 @@ async function showWeaknessMapPageV1(user) {
   // COURSE HTML
   // ========================================================
 
+  // ========================================================
+  // SUBJECT GROUPS v7
+  // ========================================================
+
+  const weaknessSubjectGroupsV7 = [
+
+    {
+      id: "japanese",
+      name: "国語",
+      kicker: "JAPANESE",
+      courseIds: [
+        "japanese_modern",
+        "japanese_classical",
+        "japanese_kanbun",
+      ],
+    },
+
+    {
+      id: "math",
+      name: "数学",
+      kicker: "MATHEMATICS",
+      courseIds: [
+        "math1",
+        "matha",
+        "math2",
+        "mathb",
+        "math3",
+        "mathc",
+      ],
+    },
+
+    {
+      id: "english",
+      name: "英語",
+      kicker: "ENGLISH",
+      courseIds: [
+        "english",
+      ],
+    },
+
+    {
+      id: "science",
+      name: "理科",
+      kicker: "SCIENCE",
+      courseIds: [
+        "physics_basic",
+        "physics",
+        "chemistry_basic",
+        "chemistry",
+        "biology_basic",
+        "biology",
+        "earth_basic",
+        "earth",
+      ],
+    },
+
+    {
+      id: "humanities",
+      name: "地歴公民",
+      kicker: "HUMANITIES",
+      courseIds: [
+        "geography",
+        "japanese_history",
+        "world_history",
+        "public",
+        "ethics",
+        "politics_economics",
+      ],
+    },
+
+    {
+      id: "information",
+      name: "情報",
+      kicker: "INFORMATION",
+      courseIds: [
+        "info1",
+      ],
+    },
+
+  ];
+
+
+  function renderWeaknessCourseV7(
+    course
+  ) {
+
+    const courseUnitCount =
+      course.chapters.reduce(
+        (sum, chapter) =>
+          sum +
+          chapter.units.length,
+        0
+      );
+
+
+    const chapterHtml =
+      course.chapters.map(
+        chapter => {
+
+          const unitHtml =
+            chapter.units.map(
+              unit => {
+
+                const status =
+                  statusForUnit(
+                    unit.id
+                  );
+
+
+                return `
+                  <button
+                    type="button"
+                    class="
+                      weakness-map-v1-unit
+                    "
+                    data-unit-id="${unit.id}"
+                  >
+
+                    <div
+                      class="
+                        weakness-map-v1-unit-name
+                      "
+                    >
+                      ${unit.name}
+                    </div>
+
+                    ${statusBadgeHtml(status)}
+
+                  </button>
+                `;
+
+              }
+            ).join("");
+
+
+          return `
+            <section
+              class="
+                weakness-map-v1-chapter
+              "
+            >
+
+              <div
+                class="
+                  weakness-map-v1-chapter-title
+                "
+              >
+
+                <strong>
+                  ${chapter.name}
+                </strong>
+
+                <span>
+                  ${chapter.units.length}
+                  ${getAscendWeaknessCourseItemLabelV1(course)}
+                </span>
+
+              </div>
+
+
+              <div
+                class="
+                  weakness-map-v1-unit-list
+                "
+              >
+                ${unitHtml}
+              </div>
+
+            </section>
+          `;
+
+        }
+      ).join("");
+
+
+    return `
+      <details
+        class="
+          weakness-map-v1-course
+        "
+        ${course.id === "math2"
+          ? "open"
+          : ""}
+      >
+
+        <summary>
+
+          <div
+            class="
+              weakness-map-v1-course-name
+            "
+          >
+
+            <span>
+              ${getAscendWeaknessCourseGroupLabelV1(course)}
+            </span>
+
+            <strong>
+              ${course.name}
+            </strong>
+
+          </div>
+
+
+          <div
+            class="
+              weakness-map-v1-course-count
+            "
+          >
+            ${courseUnitCount}
+            ${getAscendWeaknessCourseItemLabelV1(course)}
+          </div>
+
+        </summary>
+
+
+        <div
+          class="
+            weakness-map-v1-course-body
+          "
+        >
+          ${chapterHtml}
+        </div>
+
+      </details>
+    `;
+
+  }
+
+
+  const assignedCourseIdsV7 =
+    new Set(
+      weaknessSubjectGroupsV7
+        .flatMap(
+          group =>
+            group.courseIds
+        )
+    );
+
+
+  const fallbackCoursesV7 =
+    courses.filter(
+      course =>
+        !assignedCourseIdsV7.has(
+          course.id
+        )
+    );
+
+
+  const groupsToRenderV7 =
+    [
+      ...weaknessSubjectGroupsV7,
+
+      ...(
+        fallbackCoursesV7.length
+          ? [
+              {
+                id: "other",
+                name: "その他",
+                kicker: "OTHER",
+                courseIds:
+                  fallbackCoursesV7.map(
+                    course =>
+                      course.id
+                  ),
+              },
+            ]
+          : []
+      ),
+
+    ];
+
+
   const courseHtml =
-    courses.map(
-      course => {
+    groupsToRenderV7
+      .map(
+        group => {
 
-        const courseUnitCount =
-          course.chapters.reduce(
-            (sum, chapter) =>
-              sum +
-              chapter.units.length,
-            0
-          );
-
-
-        const chapterHtml =
-          course.chapters.map(
-            chapter => {
-
-              const unitHtml =
-                chapter.units.map(
-                  unit => {
-
-                    const status =
-                      statusForUnit(
-                        unit.id
-                      );
-
-                    return `
-                      <button
-                        type="button"
-                        class="
-                          weakness-map-v1-unit
-                        "
-                        data-unit-id="${unit.id}"
-                      >
-
-                        <div
-                          class="
-                            weakness-map-v1-unit-name
-                          "
-                        >
-                          ${unit.name}
-                        </div>
-
-                        ${statusBadgeHtml(status)}
-
-                      </button>
-                    `;
-
-                  }
-                ).join("");
+          const groupCourses =
+            courses.filter(
+              course =>
+                group.courseIds.includes(
+                  course.id
+                )
+            );
 
 
-              return `
-                <section
+          if (
+            groupCourses.length === 0
+          ) {
+            return "";
+          }
+
+
+          const groupTargetCount =
+            groupCourses.reduce(
+              (
+                total,
+                course
+              ) => {
+
+                return (
+                  total +
+                  course.chapters.reduce(
+                    (
+                      courseTotal,
+                      chapter
+                    ) =>
+                      courseTotal +
+                      chapter.units.length,
+                    0
+                  )
+                );
+
+              },
+              0
+            );
+
+
+          return `
+            <section
+              class="
+                weakness-map-subject-group-v7
+              "
+            >
+
+              <div
+                class="
+                  weakness-map-subject-head-v7
+                "
+              >
+
+                <div
                   class="
-                    weakness-map-v1-chapter
+                    weakness-map-subject-name-v7
                   "
                 >
 
-                  <div
-                    class="
-                      weakness-map-v1-chapter-title
-                    "
-                  >
+                  <span>
+                    ${group.kicker}
+                  </span>
 
-                    <strong>
-                      ${chapter.name}
-                    </strong>
+                  <strong>
+                    ${group.name}
+                  </strong>
 
-                    <span>
-                      ${chapter.units.length}
-                      UNIT
-                    </span>
-
-                  </div>
-
-                  <div
-                    class="
-                      weakness-map-v1-unit-list
-                    "
-                  >
-                    ${unitHtml}
-                  </div>
-
-                </section>
-              `;
-
-            }
-          ).join("");
+                </div>
 
 
-        return `
-          <details
-            class="
-              weakness-map-v1-course
-            "
-            ${course.id === "math2"
-              ? "open"
-              : ""}
-          >
-
-            <summary>
-
-              <div
-                class="
-                  weakness-map-v1-course-name
-                "
-              >
-
-                <span>
-                  MATHEMATICS
-                </span>
-
-                <strong>
-                  ${course.name}
-                </strong>
+                <div
+                  class="
+                    weakness-map-subject-count-v7
+                  "
+                >
+                  ${groupTargetCount}
+                  TARGETS
+                </div>
 
               </div>
 
+
               <div
                 class="
-                  weakness-map-v1-course-count
+                  weakness-map-subject-courses-v7
                 "
               >
-                ${courseUnitCount}
-                UNIT
+                ${
+                  groupCourses
+                    .map(
+                      renderWeaknessCourseV7
+                    )
+                    .join("")
+                }
               </div>
 
-            </summary>
+            </section>
+          `;
 
-            <div
-              class="
-                weakness-map-v1-course-body
-              "
-            >
-              ${chapterHtml}
-            </div>
-
-          </details>
-        `;
-
-      }
-    ).join("");
+        }
+      )
+      .join("");
 
 
   // ========================================================
@@ -34010,6 +34248,66 @@ async function showWeaknessMapPageV1(user) {
 
   page(
     card(`
+
+      <style id="weakness-map-subject-groups-v7">
+
+        .weakness-map-subject-group-v7 {
+          display:grid;
+          gap:10px;
+          margin-top:20px;
+        }
+
+        .weakness-map-subject-head-v7 {
+          display:flex;
+          align-items:flex-end;
+          justify-content:space-between;
+          gap:12px;
+          padding:0 3px 8px;
+          border-bottom:
+            1px solid rgba(124,92,255,.20);
+        }
+
+        .weakness-map-subject-name-v7 {
+          display:grid;
+          gap:1px;
+        }
+
+        .weakness-map-subject-name-v7 span {
+          font-family:
+            "Rajdhani",
+            "Noto Sans JP",
+            sans-serif;
+          font-size:.64rem;
+          font-weight:800;
+          letter-spacing:.16em;
+          opacity:.52;
+        }
+
+        .weakness-map-subject-name-v7 strong {
+          font-size:1.05rem;
+          font-weight:900;
+          letter-spacing:.02em;
+        }
+
+        .weakness-map-subject-count-v7 {
+          flex:0 0 auto;
+          font-family:
+            "Rajdhani",
+            "Noto Sans JP",
+            sans-serif;
+          font-size:.68rem;
+          font-weight:800;
+          letter-spacing:.08em;
+          opacity:.55;
+        }
+
+        .weakness-map-subject-courses-v7 {
+          display:grid;
+          gap:10px;
+        }
+
+      </style>
+
 
       <div class="weakness-map-v1">
 
@@ -34051,7 +34349,7 @@ async function showWeaknessMapPageV1(user) {
               weakness-map-v1-desc
             "
           >
-            単元をタップして理解度を記録。
+            単元・スキルをタップして理解度を記録。
             苦手を可視化します。
           </p>
 
@@ -34074,7 +34372,7 @@ async function showWeaknessMapPageV1(user) {
                 weakness-map-v1-summary-label
               "
             >
-              TOTAL UNIT
+              TOTAL TARGET
             </span>
 
             <strong
@@ -37978,6 +38276,13 @@ function ascendPriorityItemHtmlV1(
         </strong>
 
         <span class="home-priority-path-v1">
+          ${
+            getAscendWeaknessGroupForCourseV4(
+              target.courseId
+            )?.name ||
+            "OTHER"
+          }
+          /
           ${target.courseName}
           /
           ${target.chapterName}
@@ -38021,7 +38326,7 @@ function renderAscendPriorityTargetsV1(data) {
 
         <div class="home-priority-empty-v1">
           現在、優先攻略対象はありません。
-          WEAKNESS MAPで苦手単元を登録すると
+          WEAKNESS MAPで苦手項目を登録すると
           ここに表示されます。
         </div>
 
@@ -38776,6 +39081,11 @@ const xpPercent =
 
 
             ascendPendingStudyTargetV1 = {
+
+              subject:
+                unit.subject ||
+                "",
+
               courseId:
                 unit.courseId,
 
@@ -44899,7 +45209,7 @@ const ASCEND_WEAKNESS_STATUS = Object.freeze({
   CLEAR: "clear",
 });
 
-const ASCEND_UNIT_MASTER = Object.freeze({
+const ASCEND_UNIT_MASTER_MATH2B_V1 = Object.freeze({
 
   math2: {
     id: "math2",
@@ -45052,38 +45362,2798 @@ const ASCEND_UNIT_MASTER = Object.freeze({
 
 });
 
-function getAscendWeaknessUnitsV1() {
-  return Object.values(ASCEND_UNIT_MASTER)
-    .flatMap(course =>
-      course.chapters.flatMap(chapter =>
-        chapter.units.map(unit => ({
-          ...unit,
+const ASCEND_UNIT_MASTER_EXTRA_V2 = Object.freeze({
+  "japanese": {
+    "id": "japanese",
+    "subject": "国語",
+    "subjectAliases": [
+      "現代文",
+      "古文",
+      "漢文"
+    ],
+    "name": "国語",
+    "shortName": "国語",
+    "kicker": "JAPANESE",
+    "mapType": "skill",
+    "chapters": [
+      {
+        "id": "japanese_modern",
+        "name": "現代文・評論",
+        "units": [
+          {
+            "id": "japanese_logic",
+            "name": "論理構造・段落関係"
+          },
+          {
+            "id": "japanese_reference",
+            "name": "指示語・接続語"
+          },
+          {
+            "id": "japanese_contrast",
+            "name": "対比・因果関係"
+          },
+          {
+            "id": "japanese_summary",
+            "name": "要旨・筆者の主張"
+          },
+          {
+            "id": "japanese_choice",
+            "name": "選択肢の根拠"
+          }
+        ]
+      },
+      {
+        "id": "japanese_novel",
+        "name": "現代文・小説",
+        "units": [
+          {
+            "id": "japanese_character",
+            "name": "人物関係"
+          },
+          {
+            "id": "japanese_emotion",
+            "name": "心情変化"
+          },
+          {
+            "id": "japanese_scene",
+            "name": "場面・状況把握"
+          },
+          {
+            "id": "japanese_expression",
+            "name": "表現・語り手"
+          }
+        ]
+      },
+      {
+        "id": "japanese_classical",
+        "name": "古文",
+        "units": [
+          {
+            "id": "japanese_vocab",
+            "name": "古文単語"
+          },
+          {
+            "id": "japanese_auxiliary",
+            "name": "助動詞・助詞"
+          },
+          {
+            "id": "japanese_honorific",
+            "name": "敬語"
+          },
+          {
+            "id": "japanese_subject",
+            "name": "主語・人物関係"
+          },
+          {
+            "id": "japanese_reading",
+            "name": "内容読解・和歌"
+          }
+        ]
+      },
+      {
+        "id": "japanese_kanbun",
+        "name": "漢文",
+        "units": [
+          {
+            "id": "japanese_kundoku",
+            "name": "返り点・書き下し"
+          },
+          {
+            "id": "japanese_pattern",
+            "name": "重要句法"
+          },
+          {
+            "id": "japanese_vocab",
+            "name": "漢文語彙"
+          },
+          {
+            "id": "japanese_reading",
+            "name": "内容読解"
+          }
+        ]
+      }
+    ]
+  },
+  "english": {
+    "id": "english",
+    "subject": "英語",
+    "subjectAliases": [],
+    "name": "英語総合",
+    "shortName": "英語総合",
+    "kicker": "ENGLISH",
+    "mapType": "skill",
+    "chapters": [
+      {
+        "id": "english_vocabulary",
+        "name": "語彙・熟語",
+        "units": [
+          {
+            "id": "english_vocab",
+            "name": "英単語"
+          },
+          {
+            "id": "english_idiom",
+            "name": "英熟語"
+          },
+          {
+            "id": "english_polysemy",
+            "name": "多義語"
+          },
+          {
+            "id": "english_collocation",
+            "name": "語法・コロケーション"
+          }
+        ]
+      },
+      {
+        "id": "english_grammar",
+        "name": "英文法",
+        "units": [
+          {
+            "id": "english_tense",
+            "name": "時制"
+          },
+          {
+            "id": "english_modal",
+            "name": "助動詞・仮定法"
+          },
+          {
+            "id": "english_voice",
+            "name": "受動態"
+          },
+          {
+            "id": "english_verbal",
+            "name": "不定詞・動名詞・分詞"
+          },
+          {
+            "id": "english_relative",
+            "name": "関係詞"
+          },
+          {
+            "id": "english_comparison",
+            "name": "比較・語順・倒置"
+          }
+        ]
+      },
+      {
+        "id": "english_interpretation",
+        "name": "英文解釈",
+        "units": [
+          {
+            "id": "english_structure",
+            "name": "SVOC・文構造"
+          },
+          {
+            "id": "english_modifier",
+            "name": "修飾関係"
+          },
+          {
+            "id": "english_omission",
+            "name": "省略・挿入"
+          }
+        ]
+      },
+      {
+        "id": "english_reading",
+        "name": "長文読解",
+        "units": [
+          {
+            "id": "english_paragraph",
+            "name": "パラグラフ構造"
+          },
+          {
+            "id": "english_mainidea",
+            "name": "要旨・主張"
+          },
+          {
+            "id": "english_inference",
+            "name": "内容一致・推論"
+          }
+        ]
+      },
+      {
+        "id": "english_listening",
+        "name": "リスニング",
+        "units": [
+          {
+            "id": "english_listening",
+            "name": "リスニング・音声処理"
+          }
+        ]
+      },
+      {
+        "id": "english_writing",
+        "name": "英作文",
+        "units": [
+          {
+            "id": "english_writing",
+            "name": "和文英訳・自由英作文"
+          }
+        ]
+      }
+    ]
+  },
+  "math1": {
+    "id": "math1",
+    "subject": "数学",
+    "subjectAliases": [],
+    "name": "数学Ⅰ",
+    "shortName": "数Ⅰ",
+    "kicker": "MATHEMATICS",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "math1_numbers",
+        "name": "数と式",
+        "units": [
+          {
+            "id": "math1_expand",
+            "name": "展開・因数分解"
+          },
+          {
+            "id": "math1_real",
+            "name": "実数・根号"
+          },
+          {
+            "id": "math1_inequality",
+            "name": "1次不等式"
+          },
+          {
+            "id": "math1_set_proposition",
+            "name": "集合と命題"
+          }
+        ]
+      },
+      {
+        "id": "math1_quadratic",
+        "name": "二次関数",
+        "units": [
+          {
+            "id": "math1_graph",
+            "name": "二次関数のグラフ"
+          },
+          {
+            "id": "math1_maxmin",
+            "name": "最大・最小"
+          },
+          {
+            "id": "math1_equation",
+            "name": "二次方程式"
+          },
+          {
+            "id": "math1_inequality",
+            "name": "二次不等式"
+          }
+        ]
+      },
+      {
+        "id": "math1_measurement",
+        "name": "図形と計量",
+        "units": [
+          {
+            "id": "math1_trig_ratio",
+            "name": "三角比"
+          },
+          {
+            "id": "math1_sine_cosine",
+            "name": "正弦定理・余弦定理"
+          },
+          {
+            "id": "math1_area",
+            "name": "図形の計量"
+          }
+        ]
+      },
+      {
+        "id": "math1_data",
+        "name": "データの分析",
+        "units": [
+          {
+            "id": "math1_dispersion",
+            "name": "分散・標準偏差"
+          },
+          {
+            "id": "math1_correlation",
+            "name": "相関係数"
+          },
+          {
+            "id": "math1_hypothesis",
+            "name": "仮説検定の考え方"
+          }
+        ]
+      }
+    ]
+  },
+  "matha": {
+    "id": "matha",
+    "subject": "数学",
+    "subjectAliases": [],
+    "name": "数学A",
+    "shortName": "数A",
+    "kicker": "MATHEMATICS",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "matha_probability",
+        "name": "場合の数と確率",
+        "units": [
+          {
+            "id": "matha_counting",
+            "name": "場合の数"
+          },
+          {
+            "id": "matha_permutation_combination",
+            "name": "順列・組合せ"
+          },
+          {
+            "id": "matha_probability",
+            "name": "確率"
+          },
+          {
+            "id": "matha_conditional",
+            "name": "条件付き確率・期待値"
+          }
+        ]
+      },
+      {
+        "id": "matha_geometry",
+        "name": "図形の性質",
+        "units": [
+          {
+            "id": "matha_triangle",
+            "name": "三角形の性質"
+          },
+          {
+            "id": "matha_circle",
+            "name": "円の性質"
+          },
+          {
+            "id": "matha_space",
+            "name": "空間図形"
+          }
+        ]
+      },
+      {
+        "id": "matha_activity",
+        "name": "数学と人間の活動",
+        "units": [
+          {
+            "id": "matha_integer",
+            "name": "整数の性質"
+          },
+          {
+            "id": "matha_euclid",
+            "name": "ユークリッドの互除法"
+          },
+          {
+            "id": "matha_base",
+            "name": "記数法・数学的活動"
+          }
+        ]
+      }
+    ]
+  },
+  "math3": {
+    "id": "math3",
+    "subject": "数学",
+    "subjectAliases": [],
+    "name": "数学Ⅲ",
+    "shortName": "数Ⅲ",
+    "kicker": "MATHEMATICS",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "math3_limit",
+        "name": "極限",
+        "units": [
+          {
+            "id": "math3_sequence_limit",
+            "name": "数列の極限"
+          },
+          {
+            "id": "math3_series",
+            "name": "無限級数"
+          },
+          {
+            "id": "math3_function_limit",
+            "name": "関数の極限"
+          },
+          {
+            "id": "math3_continuity",
+            "name": "関数の連続性"
+          }
+        ]
+      },
+      {
+        "id": "math3_differentiation",
+        "name": "微分法",
+        "units": [
+          {
+            "id": "math3_derivative",
+            "name": "導関数"
+          },
+          {
+            "id": "math3_composite",
+            "name": "合成関数・逆関数の微分"
+          },
+          {
+            "id": "math3_trig_exp_log",
+            "name": "三角・指数・対数関数の微分"
+          },
+          {
+            "id": "math3_extrema",
+            "name": "増減・極値・凹凸"
+          },
+          {
+            "id": "math3_application",
+            "name": "接線・速度・方程式への応用"
+          }
+        ]
+      },
+      {
+        "id": "math3_integration",
+        "name": "積分法",
+        "units": [
+          {
+            "id": "math3_indefinite",
+            "name": "不定積分"
+          },
+          {
+            "id": "math3_substitution",
+            "name": "置換積分"
+          },
+          {
+            "id": "math3_parts",
+            "name": "部分積分"
+          },
+          {
+            "id": "math3_definite",
+            "name": "定積分"
+          },
+          {
+            "id": "math3_application",
+            "name": "面積・体積・曲線長"
+          }
+        ]
+      }
+    ]
+  },
+  "mathc": {
+    "id": "mathc",
+    "subject": "数学",
+    "subjectAliases": [],
+    "name": "数学C",
+    "shortName": "数C",
+    "kicker": "MATHEMATICS",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "mathc_vector",
+        "name": "ベクトル",
+        "units": [
+          {
+            "id": "mathc_plane",
+            "name": "平面ベクトル"
+          },
+          {
+            "id": "mathc_inner",
+            "name": "内積"
+          },
+          {
+            "id": "mathc_geometry",
+            "name": "図形への応用"
+          },
+          {
+            "id": "mathc_space",
+            "name": "空間ベクトル"
+          }
+        ]
+      },
+      {
+        "id": "mathc_curve",
+        "name": "平面上の曲線",
+        "units": [
+          {
+            "id": "mathc_conic",
+            "name": "二次曲線"
+          },
+          {
+            "id": "mathc_parameter",
+            "name": "媒介変数表示"
+          },
+          {
+            "id": "mathc_polar",
+            "name": "極座標"
+          }
+        ]
+      },
+      {
+        "id": "mathc_complex_plane",
+        "name": "複素数平面",
+        "units": [
+          {
+            "id": "mathc_plane",
+            "name": "複素数平面"
+          },
+          {
+            "id": "mathc_polar",
+            "name": "極形式"
+          },
+          {
+            "id": "mathc_geometry",
+            "name": "図形への応用"
+          }
+        ]
+      }
+    ]
+  },
+  "physics_basic": {
+    "id": "physics_basic",
+    "subject": "物理",
+    "subjectAliases": [],
+    "name": "物理基礎",
+    "shortName": "物基",
+    "kicker": "PHYSICS",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "physics_basic_motion",
+        "name": "運動と力",
+        "units": [
+          {
+            "id": "physics_basic_motion",
+            "name": "速度・加速度"
+          },
+          {
+            "id": "physics_basic_force",
+            "name": "力のつり合い"
+          },
+          {
+            "id": "physics_basic_equation",
+            "name": "運動方程式"
+          }
+        ]
+      },
+      {
+        "id": "physics_basic_energy",
+        "name": "仕事とエネルギー",
+        "units": [
+          {
+            "id": "physics_basic_work",
+            "name": "仕事"
+          },
+          {
+            "id": "physics_basic_energy",
+            "name": "力学的エネルギー"
+          }
+        ]
+      },
+      {
+        "id": "physics_basic_wave_heat_electric",
+        "name": "波・熱・電気",
+        "units": [
+          {
+            "id": "physics_basic_wave",
+            "name": "波の基本"
+          },
+          {
+            "id": "physics_basic_heat",
+            "name": "熱とエネルギー"
+          },
+          {
+            "id": "physics_basic_electric",
+            "name": "電気とエネルギー"
+          }
+        ]
+      }
+    ]
+  },
+  "physics": {
+    "id": "physics",
+    "subject": "物理",
+    "subjectAliases": [],
+    "name": "物理",
+    "shortName": "物理",
+    "kicker": "PHYSICS",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "physics_mechanics",
+        "name": "力学",
+        "units": [
+          {
+            "id": "physics_momentum",
+            "name": "運動量・衝突"
+          },
+          {
+            "id": "physics_circle",
+            "name": "円運動"
+          },
+          {
+            "id": "physics_oscillation",
+            "name": "単振動"
+          },
+          {
+            "id": "physics_gravity",
+            "name": "万有引力"
+          }
+        ]
+      },
+      {
+        "id": "physics_thermodynamics",
+        "name": "熱力学",
+        "units": [
+          {
+            "id": "physics_gas",
+            "name": "気体の状態方程式"
+          },
+          {
+            "id": "physics_molecular",
+            "name": "気体分子運動論"
+          },
+          {
+            "id": "physics_firstlaw",
+            "name": "熱力学第一法則"
+          }
+        ]
+      },
+      {
+        "id": "physics_wave",
+        "name": "波動",
+        "units": [
+          {
+            "id": "physics_standing",
+            "name": "定常波・干渉"
+          },
+          {
+            "id": "physics_sound",
+            "name": "音・ドップラー効果"
+          },
+          {
+            "id": "physics_light",
+            "name": "光・レンズ"
+          },
+          {
+            "id": "physics_diffraction",
+            "name": "光の干渉・回折"
+          }
+        ]
+      },
+      {
+        "id": "physics_electromagnetism",
+        "name": "電磁気",
+        "units": [
+          {
+            "id": "physics_electric_field",
+            "name": "電場・電位"
+          },
+          {
+            "id": "physics_capacitor",
+            "name": "コンデンサー"
+          },
+          {
+            "id": "physics_circuit",
+            "name": "直流回路"
+          },
+          {
+            "id": "physics_magnetic",
+            "name": "磁場・電磁誘導"
+          }
+        ]
+      },
+      {
+        "id": "physics_atom",
+        "name": "原子",
+        "units": [
+          {
+            "id": "physics_atom",
+            "name": "原子・原子核・量子"
+          }
+        ]
+      }
+    ]
+  },
+  "chemistry_basic": {
+    "id": "chemistry_basic",
+    "subject": "化学",
+    "subjectAliases": [],
+    "name": "化学基礎",
+    "shortName": "化基",
+    "kicker": "CHEMISTRY",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "chemistry_basic_matter",
+        "name": "物質の構成",
+        "units": [
+          {
+            "id": "chemistry_basic_atom",
+            "name": "原子・電子配置"
+          },
+          {
+            "id": "chemistry_basic_bond",
+            "name": "化学結合"
+          },
+          {
+            "id": "chemistry_basic_crystal",
+            "name": "結晶・物質の分類"
+          }
+        ]
+      },
+      {
+        "id": "chemistry_basic_reaction",
+        "name": "物質量と化学反応",
+        "units": [
+          {
+            "id": "chemistry_basic_mol",
+            "name": "物質量・モル"
+          },
+          {
+            "id": "chemistry_basic_equation",
+            "name": "化学反応式"
+          },
+          {
+            "id": "chemistry_basic_concentration",
+            "name": "濃度・量的関係"
+          }
+        ]
+      },
+      {
+        "id": "chemistry_basic_acid_redox",
+        "name": "酸塩基・酸化還元",
+        "units": [
+          {
+            "id": "chemistry_basic_acidbase",
+            "name": "酸・塩基"
+          },
+          {
+            "id": "chemistry_basic_redox",
+            "name": "酸化還元"
+          }
+        ]
+      }
+    ]
+  },
+  "chemistry": {
+    "id": "chemistry",
+    "subject": "化学",
+    "subjectAliases": [],
+    "name": "化学",
+    "shortName": "化学",
+    "kicker": "CHEMISTRY",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "chemistry_theory",
+        "name": "理論化学",
+        "units": [
+          {
+            "id": "chemistry_state",
+            "name": "物質の状態"
+          },
+          {
+            "id": "chemistry_solution",
+            "name": "溶液・溶解度"
+          },
+          {
+            "id": "chemistry_thermo",
+            "name": "熱化学"
+          },
+          {
+            "id": "chemistry_rate",
+            "name": "反応速度"
+          },
+          {
+            "id": "chemistry_equilibrium",
+            "name": "化学平衡"
+          }
+        ]
+      },
+      {
+        "id": "chemistry_inorganic",
+        "name": "無機化学",
+        "units": [
+          {
+            "id": "chemistry_nonmetal",
+            "name": "非金属元素"
+          },
+          {
+            "id": "chemistry_metal",
+            "name": "金属元素"
+          },
+          {
+            "id": "chemistry_precipitation",
+            "name": "沈殿・錯イオン"
+          },
+          {
+            "id": "chemistry_industrial",
+            "name": "無機工業化学"
+          }
+        ]
+      },
+      {
+        "id": "chemistry_organic",
+        "name": "有機化学",
+        "units": [
+          {
+            "id": "chemistry_structure",
+            "name": "有機化合物の構造・異性体"
+          },
+          {
+            "id": "chemistry_hydrocarbon",
+            "name": "炭化水素"
+          },
+          {
+            "id": "chemistry_oxygen",
+            "name": "酸素を含む有機化合物"
+          },
+          {
+            "id": "chemistry_aromatic",
+            "name": "芳香族化合物"
+          }
+        ]
+      },
+      {
+        "id": "chemistry_polymer",
+        "name": "高分子化合物",
+        "units": [
+          {
+            "id": "chemistry_synthetic",
+            "name": "合成高分子"
+          },
+          {
+            "id": "chemistry_natural",
+            "name": "天然高分子"
+          },
+          {
+            "id": "chemistry_polymer",
+            "name": "高分子総合"
+          }
+        ]
+      }
+    ]
+  },
+  "biology_basic": {
+    "id": "biology_basic",
+    "subject": "生物基礎",
+    "subjectAliases": [],
+    "name": "生物基礎",
+    "shortName": "生基",
+    "kicker": "BIOLOGY",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "biology_basic_cell_gene",
+        "name": "生物の特徴・遺伝子",
+        "units": [
+          {
+            "id": "biology_basic_cell",
+            "name": "細胞・代謝"
+          },
+          {
+            "id": "biology_basic_gene",
+            "name": "DNA・遺伝情報"
+          }
+        ]
+      },
+      {
+        "id": "biology_basic_homeostasis",
+        "name": "体内環境",
+        "units": [
+          {
+            "id": "biology_basic_nervous",
+            "name": "神経・ホルモン"
+          },
+          {
+            "id": "biology_basic_immunity",
+            "name": "免疫"
+          },
+          {
+            "id": "biology_basic_homeostasis",
+            "name": "恒常性"
+          }
+        ]
+      },
+      {
+        "id": "biology_basic_ecology",
+        "name": "生態系",
+        "units": [
+          {
+            "id": "biology_basic_vegetation",
+            "name": "植生・遷移"
+          },
+          {
+            "id": "biology_basic_ecosystem",
+            "name": "生態系"
+          },
+          {
+            "id": "biology_basic_environment",
+            "name": "生物多様性・環境保全"
+          }
+        ]
+      }
+    ]
+  },
+  "biology": {
+    "id": "biology",
+    "subject": "生物",
+    "subjectAliases": [],
+    "name": "生物",
+    "shortName": "生物",
+    "kicker": "BIOLOGY",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "biology_evolution",
+        "name": "進化",
+        "units": [
+          {
+            "id": "biology_evolution",
+            "name": "進化のしくみ"
+          },
+          {
+            "id": "biology_phylogeny",
+            "name": "系統・分類"
+          },
+          {
+            "id": "biology_origin",
+            "name": "生命の起源"
+          }
+        ]
+      },
+      {
+        "id": "biology_molecule",
+        "name": "生命現象と物質",
+        "units": [
+          {
+            "id": "biology_protein",
+            "name": "タンパク質・酵素"
+          },
+          {
+            "id": "biology_metabolism",
+            "name": "呼吸・光合成"
+          },
+          {
+            "id": "biology_cell",
+            "name": "細胞構造・膜輸送"
+          }
+        ]
+      },
+      {
+        "id": "biology_gene_development",
+        "name": "遺伝情報と発生",
+        "units": [
+          {
+            "id": "biology_expression",
+            "name": "遺伝情報の発現"
+          },
+          {
+            "id": "biology_regulation",
+            "name": "遺伝子発現調節"
+          },
+          {
+            "id": "biology_development",
+            "name": "発生・分化"
+          }
+        ]
+      },
+      {
+        "id": "biology_response",
+        "name": "生物の環境応答",
+        "units": [
+          {
+            "id": "biology_animal",
+            "name": "動物の反応・行動"
+          },
+          {
+            "id": "biology_plant",
+            "name": "植物の環境応答"
+          }
+        ]
+      },
+      {
+        "id": "biology_ecology",
+        "name": "生態と環境",
+        "units": [
+          {
+            "id": "biology_population",
+            "name": "個体群"
+          },
+          {
+            "id": "biology_community",
+            "name": "群集"
+          },
+          {
+            "id": "biology_ecosystem",
+            "name": "生態系・物質循環"
+          }
+        ]
+      }
+    ]
+  },
+  "earth_basic": {
+    "id": "earth_basic",
+    "subject": "地学基礎",
+    "subjectAliases": [],
+    "name": "地学基礎",
+    "shortName": "地基",
+    "kicker": "EARTH SCIENCE",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "earth_basic_earth",
+        "name": "地球",
+        "units": [
+          {
+            "id": "earth_basic_structure",
+            "name": "地球の構造"
+          },
+          {
+            "id": "earth_basic_plate",
+            "name": "プレート・地震・火山"
+          }
+        ]
+      },
+      {
+        "id": "earth_basic_atmosphere",
+        "name": "大気と海洋",
+        "units": [
+          {
+            "id": "earth_basic_atmosphere",
+            "name": "大気・気象"
+          },
+          {
+            "id": "earth_basic_ocean",
+            "name": "海洋"
+          }
+        ]
+      },
+      {
+        "id": "earth_basic_space",
+        "name": "宇宙",
+        "units": [
+          {
+            "id": "earth_basic_solar",
+            "name": "太陽系"
+          },
+          {
+            "id": "earth_basic_star",
+            "name": "恒星・宇宙"
+          }
+        ]
+      },
+      {
+        "id": "earth_basic_environment",
+        "name": "地球環境",
+        "units": [
+          {
+            "id": "earth_basic_history",
+            "name": "地球史"
+          },
+          {
+            "id": "earth_basic_environment",
+            "name": "自然災害・環境"
+          }
+        ]
+      }
+    ]
+  },
+  "earth": {
+    "id": "earth",
+    "subject": "地学",
+    "subjectAliases": [],
+    "name": "地学",
+    "shortName": "地学",
+    "kicker": "EARTH SCIENCE",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "earth_solid",
+        "name": "固体地球",
+        "units": [
+          {
+            "id": "earth_interior",
+            "name": "地球内部"
+          },
+          {
+            "id": "earth_plate",
+            "name": "プレートテクトニクス"
+          },
+          {
+            "id": "earth_mineral",
+            "name": "岩石・鉱物"
+          }
+        ]
+      },
+      {
+        "id": "earth_history",
+        "name": "地球史",
+        "units": [
+          {
+            "id": "earth_strata",
+            "name": "地層・地質構造"
+          },
+          {
+            "id": "earth_fossil",
+            "name": "化石・年代"
+          },
+          {
+            "id": "earth_history",
+            "name": "地球と生命の歴史"
+          }
+        ]
+      },
+      {
+        "id": "earth_atmosphere_ocean",
+        "name": "大気・海洋",
+        "units": [
+          {
+            "id": "earth_weather",
+            "name": "大気の運動・気象"
+          },
+          {
+            "id": "earth_climate",
+            "name": "気候変動"
+          },
+          {
+            "id": "earth_ocean",
+            "name": "海洋循環"
+          }
+        ]
+      },
+      {
+        "id": "earth_universe",
+        "name": "宇宙",
+        "units": [
+          {
+            "id": "earth_star",
+            "name": "恒星"
+          },
+          {
+            "id": "earth_galaxy",
+            "name": "銀河"
+          },
+          {
+            "id": "earth_cosmos",
+            "name": "宇宙の進化"
+          }
+        ]
+      }
+    ]
+  },
+  "geography": {
+    "id": "geography",
+    "subject": "地理",
+    "subjectAliases": [],
+    "name": "地理総合・地理探究",
+    "shortName": "地理",
+    "kicker": "GEOGRAPHY",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "geography_map",
+        "name": "地図・GIS",
+        "units": [
+          {
+            "id": "geography_map",
+            "name": "地図・地形図"
+          },
+          {
+            "id": "geography_gis",
+            "name": "GIS"
+          },
+          {
+            "id": "geography_statistics",
+            "name": "統計資料"
+          }
+        ]
+      },
+      {
+        "id": "geography_environment",
+        "name": "自然環境",
+        "units": [
+          {
+            "id": "geography_landform",
+            "name": "地形"
+          },
+          {
+            "id": "geography_climate",
+            "name": "気候"
+          },
+          {
+            "id": "geography_disaster",
+            "name": "自然災害"
+          },
+          {
+            "id": "geography_environment",
+            "name": "環境問題"
+          }
+        ]
+      },
+      {
+        "id": "geography_human",
+        "name": "人文地理",
+        "units": [
+          {
+            "id": "geography_population",
+            "name": "人口"
+          },
+          {
+            "id": "geography_city",
+            "name": "都市"
+          },
+          {
+            "id": "geography_agriculture",
+            "name": "農林水産業"
+          },
+          {
+            "id": "geography_industry",
+            "name": "工業・資源"
+          }
+        ]
+      },
+      {
+        "id": "geography_region",
+        "name": "地誌",
+        "units": [
+          {
+            "id": "geography_world",
+            "name": "世界地誌"
+          },
+          {
+            "id": "geography_japan",
+            "name": "日本地誌"
+          }
+        ]
+      },
+      {
+        "id": "geography_global",
+        "name": "現代世界",
+        "units": [
+          {
+            "id": "geography_trade",
+            "name": "交通・貿易"
+          },
+          {
+            "id": "geography_global",
+            "name": "グローバル化・地域課題"
+          }
+        ]
+      }
+    ]
+  },
+  "japanese_history": {
+    "id": "japanese_history",
+    "subject": "日本史",
+    "subjectAliases": [],
+    "name": "歴史総合・日本史探究",
+    "shortName": "日本史",
+    "kicker": "JAPANESE HISTORY",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "japanese_history_ancient",
+        "name": "原始・古代",
+        "units": [
+          {
+            "id": "japanese_history_primitive",
+            "name": "旧石器・縄文・弥生"
+          },
+          {
+            "id": "japanese_history_state",
+            "name": "古代国家の形成"
+          },
+          {
+            "id": "japanese_history_ritsuryo",
+            "name": "律令国家"
+          }
+        ]
+      },
+      {
+        "id": "japanese_history_medieval",
+        "name": "中世",
+        "units": [
+          {
+            "id": "japanese_history_kamakura",
+            "name": "鎌倉時代"
+          },
+          {
+            "id": "japanese_history_muromachi",
+            "name": "室町時代"
+          },
+          {
+            "id": "japanese_history_sengoku",
+            "name": "戦国時代"
+          }
+        ]
+      },
+      {
+        "id": "japanese_history_earlymodern",
+        "name": "近世",
+        "units": [
+          {
+            "id": "japanese_history_unification",
+            "name": "天下統一"
+          },
+          {
+            "id": "japanese_history_edo",
+            "name": "江戸幕府"
+          },
+          {
+            "id": "japanese_history_culture",
+            "name": "近世社会・文化"
+          }
+        ]
+      },
+      {
+        "id": "japanese_history_modern",
+        "name": "近代",
+        "units": [
+          {
+            "id": "japanese_history_meiji",
+            "name": "明治維新"
+          },
+          {
+            "id": "japanese_history_constitution",
+            "name": "立憲国家"
+          },
+          {
+            "id": "japanese_history_industry",
+            "name": "近代産業・社会"
+          },
+          {
+            "id": "japanese_history_imperialism",
+            "name": "帝国主義と日本"
+          }
+        ]
+      },
+      {
+        "id": "japanese_history_contemporary",
+        "name": "現代",
+        "units": [
+          {
+            "id": "japanese_history_war",
+            "name": "戦争と日本"
+          },
+          {
+            "id": "japanese_history_occupation",
+            "name": "占領・戦後改革"
+          },
+          {
+            "id": "japanese_history_postwar",
+            "name": "戦後日本"
+          }
+        ]
+      }
+    ]
+  },
+  "world_history": {
+    "id": "world_history",
+    "subject": "世界史",
+    "subjectAliases": [],
+    "name": "歴史総合・世界史探究",
+    "shortName": "世界史",
+    "kicker": "WORLD HISTORY",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "world_history_ancient",
+        "name": "古代世界",
+        "units": [
+          {
+            "id": "world_history_orient",
+            "name": "オリエント・地中海"
+          },
+          {
+            "id": "world_history_india",
+            "name": "南アジア"
+          },
+          {
+            "id": "world_history_china",
+            "name": "中国古代文明"
+          }
+        ]
+      },
+      {
+        "id": "world_history_medieval",
+        "name": "中世世界",
+        "units": [
+          {
+            "id": "world_history_islam",
+            "name": "イスラーム世界"
+          },
+          {
+            "id": "world_history_europe",
+            "name": "中世ヨーロッパ"
+          },
+          {
+            "id": "world_history_eastasia",
+            "name": "東アジア世界"
+          }
+        ]
+      },
+      {
+        "id": "world_history_earlymodern",
+        "name": "近世世界",
+        "units": [
+          {
+            "id": "world_history_ocean",
+            "name": "大航海時代"
+          },
+          {
+            "id": "world_history_empire",
+            "name": "アジア諸帝国"
+          },
+          {
+            "id": "world_history_absolutism",
+            "name": "ヨーロッパ主権国家"
+          }
+        ]
+      },
+      {
+        "id": "world_history_modern",
+        "name": "近代世界",
+        "units": [
+          {
+            "id": "world_history_revolution",
+            "name": "市民革命"
+          },
+          {
+            "id": "world_history_industrial",
+            "name": "産業革命"
+          },
+          {
+            "id": "world_history_nation",
+            "name": "国民国家"
+          },
+          {
+            "id": "world_history_imperialism",
+            "name": "帝国主義"
+          }
+        ]
+      },
+      {
+        "id": "world_history_contemporary",
+        "name": "現代世界",
+        "units": [
+          {
+            "id": "world_history_worldwar",
+            "name": "二つの世界大戦"
+          },
+          {
+            "id": "world_history_coldwar",
+            "name": "冷戦"
+          },
+          {
+            "id": "world_history_global",
+            "name": "現代世界・グローバル化"
+          }
+        ]
+      }
+    ]
+  },
+  "public": {
+    "id": "public",
+    "subject": "公民",
+    "subjectAliases": [
+      "公共"
+    ],
+    "name": "公共",
+    "shortName": "公共",
+    "kicker": "CIVICS",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "public_foundation",
+        "name": "公共の扉",
+        "units": [
+          {
+            "id": "public_human",
+            "name": "人間と社会"
+          },
+          {
+            "id": "public_rights",
+            "name": "基本的人権"
+          }
+        ]
+      },
+      {
+        "id": "public_politics",
+        "name": "政治・法",
+        "units": [
+          {
+            "id": "public_constitution",
+            "name": "日本国憲法"
+          },
+          {
+            "id": "public_institutions",
+            "name": "国会・内閣・司法"
+          },
+          {
+            "id": "public_local",
+            "name": "地方自治・選挙"
+          }
+        ]
+      },
+      {
+        "id": "public_economy",
+        "name": "経済・社会",
+        "units": [
+          {
+            "id": "public_market",
+            "name": "市場経済"
+          },
+          {
+            "id": "public_finance",
+            "name": "財政・金融"
+          },
+          {
+            "id": "public_labor",
+            "name": "労働・社会保障"
+          }
+        ]
+      },
+      {
+        "id": "public_international",
+        "name": "国際社会",
+        "units": [
+          {
+            "id": "public_politics",
+            "name": "国際政治"
+          },
+          {
+            "id": "public_economy",
+            "name": "国際経済"
+          }
+        ]
+      }
+    ]
+  },
+  "ethics": {
+    "id": "ethics",
+    "subject": "倫理",
+    "subjectAliases": [],
+    "name": "倫理",
+    "shortName": "倫理",
+    "kicker": "ETHICS",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "ethics_human",
+        "name": "青年期・人間",
+        "units": [
+          {
+            "id": "ethics_youth",
+            "name": "青年期"
+          },
+          {
+            "id": "ethics_human",
+            "name": "人間の尊厳"
+          }
+        ]
+      },
+      {
+        "id": "ethics_source",
+        "name": "源流思想",
+        "units": [
+          {
+            "id": "ethics_greek",
+            "name": "古代ギリシア思想"
+          },
+          {
+            "id": "ethics_religion",
+            "name": "キリスト教・イスラーム"
+          },
+          {
+            "id": "ethics_asian",
+            "name": "仏教・儒教"
+          }
+        ]
+      },
+      {
+        "id": "ethics_japanese",
+        "name": "日本思想",
+        "units": [
+          {
+            "id": "ethics_traditional",
+            "name": "日本の伝統思想"
+          },
+          {
+            "id": "ethics_modern",
+            "name": "近代日本思想"
+          }
+        ]
+      },
+      {
+        "id": "ethics_western",
+        "name": "西洋近現代思想",
+        "units": [
+          {
+            "id": "ethics_modern",
+            "name": "近代思想"
+          },
+          {
+            "id": "ethics_contemporary",
+            "name": "現代思想"
+          }
+        ]
+      },
+      {
+        "id": "ethics_issues",
+        "name": "現代倫理",
+        "units": [
+          {
+            "id": "ethics_issues",
+            "name": "生命・環境・科学技術倫理"
+          }
+        ]
+      }
+    ]
+  },
+  "politics_economics": {
+    "id": "politics_economics",
+    "subject": "政治経済",
+    "subjectAliases": [
+      "政治・経済"
+    ],
+    "name": "政治・経済",
+    "shortName": "政経",
+    "kicker": "POLITICS & ECONOMICS",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "politics_economics_politics",
+        "name": "政治",
+        "units": [
+          {
+            "id": "politics_economics_constitution",
+            "name": "憲法・基本的人権"
+          },
+          {
+            "id": "politics_economics_institution",
+            "name": "国会・内閣・司法"
+          },
+          {
+            "id": "politics_economics_election",
+            "name": "選挙・政党"
+          },
+          {
+            "id": "politics_economics_local",
+            "name": "地方自治"
+          }
+        ]
+      },
+      {
+        "id": "politics_economics_economics",
+        "name": "経済",
+        "units": [
+          {
+            "id": "politics_economics_market",
+            "name": "市場・企業"
+          },
+          {
+            "id": "politics_economics_national",
+            "name": "国民経済"
+          },
+          {
+            "id": "politics_economics_finance",
+            "name": "金融・財政"
+          },
+          {
+            "id": "politics_economics_labor",
+            "name": "労働・社会保障"
+          }
+        ]
+      },
+      {
+        "id": "politics_economics_international",
+        "name": "国際政治・経済",
+        "units": [
+          {
+            "id": "politics_economics_politics",
+            "name": "国際政治"
+          },
+          {
+            "id": "politics_economics_economy",
+            "name": "国際経済"
+          }
+        ]
+      }
+    ]
+  },
+  "info1": {
+    "id": "info1",
+    "subject": "情報",
+    "subjectAliases": [
+      "情報Ⅰ",
+      "情報I"
+    ],
+    "name": "情報Ⅰ",
+    "shortName": "情報Ⅰ",
+    "kicker": "INFORMATION",
+    "mapType": "unit",
+    "chapters": [
+      {
+        "id": "info1_society",
+        "name": "情報社会・情報デザイン",
+        "units": [
+          {
+            "id": "info1_society",
+            "name": "情報社会と問題解決"
+          },
+          {
+            "id": "info1_design",
+            "name": "情報デザイン"
+          }
+        ]
+      },
+      {
+        "id": "info1_digital",
+        "name": "コンピュータ",
+        "units": [
+          {
+            "id": "info1_binary",
+            "name": "2進数・デジタル表現"
+          },
+          {
+            "id": "info1_hardware",
+            "name": "コンピュータの仕組み"
+          }
+        ]
+      },
+      {
+        "id": "info1_programming",
+        "name": "プログラミング",
+        "units": [
+          {
+            "id": "info1_algorithm",
+            "name": "アルゴリズム"
+          },
+          {
+            "id": "info1_program",
+            "name": "プログラミング"
+          },
+          {
+            "id": "info1_simulation",
+            "name": "モデル化・シミュレーション"
+          }
+        ]
+      },
+      {
+        "id": "info1_network",
+        "name": "ネットワーク",
+        "units": [
+          {
+            "id": "info1_network",
+            "name": "ネットワーク"
+          },
+          {
+            "id": "info1_security",
+            "name": "情報セキュリティ"
+          }
+        ]
+      },
+      {
+        "id": "info1_data",
+        "name": "データ活用",
+        "units": [
+          {
+            "id": "info1_statistics",
+            "name": "データ分析"
+          },
+          {
+            "id": "info1_database",
+            "name": "データベース"
+          },
+          {
+            "id": "info1_interpretation",
+            "name": "データの解釈"
+          }
+        ]
+      }
+    ]
+  }
+});
 
-          courseId: course.id,
-          courseName: course.name,
 
-          chapterId: chapter.id,
-          chapterName: chapter.name,
-        }))
-      )
-    );
+
+function buildAscendJapaneseChaptersV5(
+  type
+) {
+
+  const source =
+    ASCEND_UNIT_MASTER_EXTRA_V2.japanese;
+
+
+  const allUnits =
+    source.chapters
+      .flatMap(
+        chapter =>
+          Array.isArray(chapter.units)
+            ? chapter.units
+            : []
+      );
+
+
+  const findUnit =
+    name =>
+      allUnits.find(
+        unit =>
+          unit.name === name
+      );
+
+
+  const pick =
+    names =>
+      names
+        .map(findUnit)
+        .filter(Boolean);
+
+
+  if (type === "modern") {
+
+    return [
+
+      {
+        id: "japanese_modern_review",
+        name: "評論",
+
+        units: pick([
+          "論理構造・段落関係",
+          "指示語・接続語",
+          "対比・因果関係",
+          "要旨・筆者の主張",
+          "選択肢の根拠",
+        ]),
+      },
+
+      {
+        id: "japanese_modern_novel",
+        name: "小説",
+
+        units: pick([
+          "人物関係",
+          "心情変化",
+          "場面・状況把握",
+          "表現・語り手",
+        ]),
+      },
+
+    ];
+
+  }
+
+
+  if (type === "classical") {
+
+    return [
+
+      {
+        id: "japanese_classical_vocab",
+        name: "語彙",
+
+        units: pick([
+          "古文単語",
+        ]),
+      },
+
+      {
+        id: "japanese_classical_grammar",
+        name: "文法",
+
+        units: pick([
+          "助動詞・助詞",
+          "敬語",
+        ]),
+      },
+
+      {
+        id: "japanese_classical_reading",
+        name: "読解",
+
+        units: pick([
+          "主語・人物関係",
+          "内容読解・和歌",
+        ]),
+      },
+
+    ];
+
+  }
+
+
+  if (type === "kanbun") {
+
+    return [
+
+      {
+        id: "japanese_kanbun_basic",
+        name: "基礎",
+
+        units: pick([
+          "返り点・書き下し",
+          "漢文語彙",
+        ]),
+      },
+
+      {
+        id: "japanese_kanbun_grammar",
+        name: "句法",
+
+        units: pick([
+          "重要句法",
+        ]),
+      },
+
+      {
+        id: "japanese_kanbun_reading",
+        name: "読解",
+
+        units: pick([
+          "内容読解",
+        ]),
+      },
+
+    ];
+
+  }
+
+
+  return [];
+
 }
 
-function findAscendWeaknessUnitV1(unitId) {
-  if (!unitId) return null;
+
+const ASCEND_UNIT_MASTER = Object.freeze({
+
+  japanese_modern: {
+    ...ASCEND_UNIT_MASTER_EXTRA_V2.japanese,
+
+    id: "japanese_modern",
+    name: "現代文",
+    shortName: "現代文",
+    subject: "現代文",
+    subjectAliases: ["現代文"],
+
+    chapters:
+      buildAscendJapaneseChaptersV5(
+        "modern"
+      ),
+  },
+
+  japanese_classical: {
+    ...ASCEND_UNIT_MASTER_EXTRA_V2.japanese,
+
+    id: "japanese_classical",
+    name: "古文",
+    shortName: "古文",
+    subject: "古文",
+    subjectAliases: ["古文"],
+
+    chapters:
+      buildAscendJapaneseChaptersV5(
+        "classical"
+      ),
+  },
+
+  japanese_kanbun: {
+    ...ASCEND_UNIT_MASTER_EXTRA_V2.japanese,
+
+    id: "japanese_kanbun",
+    name: "漢文",
+    shortName: "漢文",
+    subject: "漢文",
+    subjectAliases: ["漢文"],
+
+    chapters:
+      buildAscendJapaneseChaptersV5(
+        "kanbun"
+      ),
+  },
+
+  english:
+    ASCEND_UNIT_MASTER_EXTRA_V2.english,
+
+
+  math1:
+    ASCEND_UNIT_MASTER_EXTRA_V2.math1,
+
+  matha:
+    ASCEND_UNIT_MASTER_EXTRA_V2.matha,
+
+  ...ASCEND_UNIT_MASTER_MATH2B_V1,
+
+  math3:
+    ASCEND_UNIT_MASTER_EXTRA_V2.math3,
+
+  mathc:
+    ASCEND_UNIT_MASTER_EXTRA_V2.mathc,
+
+
+  physics_basic:
+    ASCEND_UNIT_MASTER_EXTRA_V2.physics_basic,
+
+  physics:
+    ASCEND_UNIT_MASTER_EXTRA_V2.physics,
+
+
+  chemistry_basic:
+    ASCEND_UNIT_MASTER_EXTRA_V2.chemistry_basic,
+
+  chemistry:
+    ASCEND_UNIT_MASTER_EXTRA_V2.chemistry,
+
+
+  biology_basic:
+    ASCEND_UNIT_MASTER_EXTRA_V2.biology_basic,
+
+  biology:
+    ASCEND_UNIT_MASTER_EXTRA_V2.biology,
+
+
+  earth_basic:
+    ASCEND_UNIT_MASTER_EXTRA_V2.earth_basic,
+
+  earth:
+    ASCEND_UNIT_MASTER_EXTRA_V2.earth,
+
+
+  geography:
+    ASCEND_UNIT_MASTER_EXTRA_V2.geography,
+
+  japanese_history:
+    ASCEND_UNIT_MASTER_EXTRA_V2.japanese_history,
+
+  world_history:
+    ASCEND_UNIT_MASTER_EXTRA_V2.world_history,
+
+
+  public:
+    ASCEND_UNIT_MASTER_EXTRA_V2.public,
+
+  ethics:
+    ASCEND_UNIT_MASTER_EXTRA_V2.ethics,
+
+  politics_economics:
+    ASCEND_UNIT_MASTER_EXTRA_V2.politics_economics,
+
+
+  info1:
+    ASCEND_UNIT_MASTER_EXTRA_V2.info1,
+
+});
+
+
+
+function normalizeAscendWeaknessSubjectV1(value) {
+
+  return String(
+    value || ""
+  )
+    .trim()
+    .replace(
+      /[\s　・･]/g,
+      ""
+    )
+    .toLowerCase();
+
+}
+
+
+
+
+const ASCEND_WEAKNESS_GROUPS_V4 =
+  Object.freeze([
+
+    {
+      id: "japanese",
+      name: "国語",
+      courseIds: [
+        "japanese_modern",
+        "japanese_classical",
+        "japanese_kanbun",
+      ],
+    },
+
+    {
+      id: "mathematics",
+      name: "数学",
+      courseIds: [
+        "math1",
+        "matha",
+        "math2",
+        "mathb",
+        "math3",
+        "mathc",
+      ],
+    },
+
+    {
+      id: "english",
+      name: "英語",
+      courseIds: [
+        "english",
+      ],
+    },
+
+    {
+      id: "science",
+      name: "理科",
+      courseIds: [
+        "physics_basic",
+        "physics",
+        "chemistry_basic",
+        "chemistry",
+        "biology_basic",
+        "biology",
+        "earth_basic",
+        "earth",
+      ],
+    },
+
+    {
+      id: "humanities",
+      name: "地歴公民",
+      courseIds: [
+        "geography",
+        "japanese_history",
+        "world_history",
+        "public",
+        "ethics",
+        "politics_economics",
+      ],
+    },
+
+    {
+      id: "information",
+      name: "情報",
+      courseIds: [
+        "info1",
+      ],
+    },
+
+  ]);
+
+
+const ASCEND_WEAKNESS_TRACKING_SUBJECT_V4 =
+  Object.freeze({
+
+    japanese_modern: "現代文",
+    japanese_classical: "古文",
+    japanese_kanbun: "漢文",
+
+    math1: "数学IA",
+    matha: "数学IA",
+
+    math2: "数学IIBC",
+    mathb: "数学IIBC",
+    mathc: "数学IIBC",
+
+    math3: "数学III",
+
+    english: "英語",
+
+    physics_basic: "物理基礎",
+    physics: "物理",
+
+    chemistry_basic: "化学基礎",
+    chemistry: "化学",
+
+    biology_basic: "生物基礎",
+    biology: "生物",
+
+    earth_basic: "地学基礎",
+    earth: "地学",
+
+    geography: "地理",
+    japanese_history: "日本史",
+    world_history: "世界史",
+
+    public: "公共",
+    ethics: "倫理",
+    politics_economics: "政治・経済",
+
+    info1: "情報",
+
+  });
+
+
+function getAscendWeaknessTrackingSubjectV4(
+  courseId
+) {
+
+  return (
+    ASCEND_WEAKNESS_TRACKING_SUBJECT_V4[
+      courseId
+    ] ||
+    ""
+  );
+
+}
+
+
+function getAscendWeaknessGroupForCourseV4(
+  courseId
+) {
+
+  return (
+    ASCEND_WEAKNESS_GROUPS_V4.find(
+      group =>
+        group.courseIds.includes(
+          courseId
+        )
+    ) ||
+    null
+  );
+
+}
+
+
+function getAscendWeaknessGroupForTrackingSubjectV4(
+  subject
+) {
+
+  const courseId =
+    Object.keys(
+      ASCEND_WEAKNESS_TRACKING_SUBJECT_V4
+    )
+      .find(
+        id =>
+          ASCEND_WEAKNESS_TRACKING_SUBJECT_V4[
+            id
+          ] === subject
+      );
+
+
+  return courseId
+    ? getAscendWeaknessGroupForCourseV4(
+        courseId
+      )
+    : null;
+
+}
+
+
+function getAscendWeaknessCoursesForGroupV4(
+  groupId,
+  selectedSubjects
+) {
+
+  const group =
+    ASCEND_WEAKNESS_GROUPS_V4.find(
+      item =>
+        item.id === groupId
+    );
+
+
+  if (!group) {
+    return [];
+  }
+
+
+  const allowed =
+    new Set(
+      normalizeSelectedSubjectsV1(
+        selectedSubjects
+      )
+    );
+
+
+  return group.courseIds
+    .map(
+      courseId =>
+        ASCEND_UNIT_MASTER[
+          courseId
+        ]
+    )
+    .filter(Boolean)
+    .filter(
+      course =>
+        allowed.has(
+          getAscendWeaknessTrackingSubjectV4(
+            course.id
+          )
+        )
+    );
+
+}
+
+
+function getAscendWeaknessGroupsForSubjectsV4(
+  selectedSubjects
+) {
+
+  return ASCEND_WEAKNESS_GROUPS_V4.filter(
+    group =>
+      getAscendWeaknessCoursesForGroupV4(
+        group.id,
+        selectedSubjects
+      ).length > 0
+  );
+
+}
+
+
+function getAscendWeaknessCanonicalSubjectV3(
+  value
+) {
+
+  const key =
+    normalizeAscendWeaknessSubjectV1(
+      value
+    );
+
+
+  if (!key) {
+    return "";
+  }
+
+
+  if (
+    [
+      "国語",
+      "現代文",
+      "古文",
+      "漢文",
+    ].includes(key)
+  ) {
+    return key;
+  }
+
+
+  if (
+    key === "数学" ||
+    key.startsWith("数学") ||
+    key.startsWith("数")
+  ) {
+    return "数学";
+  }
+
+
+  if (
+    key === "英語" ||
+    key.includes("英語")
+  ) {
+    return "英語";
+  }
+
+
+  if (
+    key.includes("物理")
+  ) {
+    return "物理";
+  }
+
+
+  if (
+    key.includes("化学")
+  ) {
+    return "化学";
+  }
+
+
+  if (
+    key.includes("生物基礎")
+  ) {
+    return "生物基礎";
+  }
+
+
+  if (
+    key.includes("生物")
+  ) {
+    return "生物";
+  }
+
+
+  if (
+    key.includes("地学基礎")
+  ) {
+    return "地学基礎";
+  }
+
+
+  if (
+    key.includes("地学")
+  ) {
+    return "地学";
+  }
+
+
+  if (
+    key.includes("地理")
+  ) {
+    return "地理";
+  }
+
+
+  if (
+    key.includes("日本史")
+  ) {
+    return "日本史";
+  }
+
+
+  if (
+    key.includes("世界史")
+  ) {
+    return "世界史";
+  }
+
+
+  if (
+    key.includes("政治経済") ||
+    key.includes("政治・経済") ||
+    key.includes("政経")
+  ) {
+    return "政治経済";
+  }
+
+
+  if (
+    key.includes("倫理")
+  ) {
+    return "倫理";
+  }
+
+
+  if (
+    key.includes("公共") ||
+    key.includes("公民")
+  ) {
+    return "公民";
+  }
+
+
+  if (
+    key.includes("情報")
+  ) {
+    return "情報";
+  }
+
+
+  return key;
+
+}
+
+
+
+function getAscendWeaknessCoursesForSubjectV1(
+  subject
+) {
+
+  const requested =
+    getAscendWeaknessCanonicalSubjectV3(
+      subject
+    );
+
+
+  if (!requested) {
+    return [];
+  }
+
+
+  return Object.values(
+    ASCEND_UNIT_MASTER
+  ).filter(
+    course => {
+
+      const candidates = [
+
+        course?.subject,
+
+        ...(
+          Array.isArray(
+            course?.subjectAliases
+          )
+            ? course.subjectAliases
+            : []
+        ),
+
+      ]
+        .map(
+          item =>
+            getAscendWeaknessCanonicalSubjectV3(
+              item
+            )
+        )
+        .filter(Boolean);
+
+
+      /*
+        国語は細分類も許可。
+        数学などは大分類一致。
+      */
+
+      if (
+        [
+          "現代文",
+          "古文",
+          "漢文",
+        ].includes(requested)
+      ) {
+
+        return candidates.includes(
+          requested
+        );
+
+      }
+
+
+      return candidates.includes(
+        requested
+      );
+
+    }
+  );
+
+}
+
+
+function getAscendWeaknessChaptersForSubjectV2(
+  course,
+  subject
+) {
+
+  const chapters =
+    Array.isArray(course?.chapters)
+      ? course.chapters
+      : [];
+
+
+  if (course?.id !== "japanese") {
+    return chapters;
+  }
+
+
+  const key =
+    normalizeAscendWeaknessSubjectV1(
+      subject
+    );
+
+
+  if (key === "現代文") {
+
+    return chapters.filter(
+      chapter =>
+        chapter.id === "japanese_modern" ||
+        chapter.id === "japanese_novel"
+    );
+
+  }
+
+
+  if (key === "古文") {
+
+    return chapters.filter(
+      chapter =>
+        chapter.id === "japanese_classical"
+    );
+
+  }
+
+
+  if (key === "漢文") {
+
+    return chapters.filter(
+      chapter =>
+        chapter.id === "japanese_kanbun"
+    );
+
+  }
+
+
+  /*
+    「国語」で記録する場合は
+    現代文・古文・漢文をすべて表示。
+  */
+  return chapters;
+
+}
+
+
+function getAscendWeaknessTrackingSubjectV2(
+  course,
+  chapter
+) {
+
+  if (course?.id !== "japanese") {
+    return course?.subject || "";
+  }
+
+
+  if (
+    chapter?.id === "japanese_modern" ||
+    chapter?.id === "japanese_novel"
+  ) {
+    return "現代文";
+  }
+
+
+  if (
+    chapter?.id === "japanese_classical"
+  ) {
+    return "古文";
+  }
+
+
+  if (
+    chapter?.id === "japanese_kanbun"
+  ) {
+    return "漢文";
+  }
+
+
+  return "国語";
+
+}
+
+
+function getAscendWeaknessCourseItemLabelV1(
+  course
+) {
+
+  return (
+    course?.mapType === "skill"
+      ? "SKILL"
+      : "UNIT"
+  );
+
+}
+
+
+function getAscendWeaknessCourseGroupLabelV1(
+  course
+) {
+
+  if (course?.kicker) {
+    return course.kicker;
+  }
+
+  const fallback = {
+
+    "国語": "JAPANESE",
+    "英語": "ENGLISH",
+    "数学": "MATHEMATICS",
+
+    "物理": "PHYSICS",
+    "化学": "CHEMISTRY",
+    "生物": "BIOLOGY",
+    "生物基礎": "BIOLOGY",
+    "地学": "EARTH SCIENCE",
+    "地学基礎": "EARTH SCIENCE",
+
+    "地理": "GEOGRAPHY",
+    "日本史": "JAPANESE HISTORY",
+    "世界史": "WORLD HISTORY",
+
+    "公民": "CIVICS",
+    "倫理": "ETHICS",
+    "政治経済":
+      "POLITICS & ECONOMICS",
+
+    "情報": "INFORMATION",
+
+  };
+
+
+  return (
+    fallback[
+      String(course?.subject || "")
+    ] ||
+    "SUBJECT"
+  );
+
+}
+
+
+function getAscendWeaknessUnitsV1() {
+
+  return Object.values(
+    ASCEND_UNIT_MASTER
+  )
+    .flatMap(
+      course =>
+        (
+          Array.isArray(
+            course?.chapters
+          )
+            ? course.chapters
+            : []
+        )
+          .flatMap(
+            chapter =>
+              (
+                Array.isArray(
+                  chapter?.units
+                )
+                  ? chapter.units
+                  : []
+              )
+                .map(
+                  unit => ({
+
+                    ...unit,
+
+                    subject:
+                      getAscendWeaknessTrackingSubjectV2(
+                        course,
+                        chapter
+                      ),
+
+                    mapType:
+                      course.mapType ||
+                      "unit",
+
+                    courseId:
+                      course.id,
+
+                    courseName:
+                      course.name,
+
+                    chapterId:
+                      chapter.id,
+
+                    chapterName:
+                      chapter.name,
+
+                  })
+                )
+          )
+    );
+
+}
+
+
+function findAscendWeaknessUnitV1(
+  unitId
+) {
+
+  if (!unitId) {
+    return null;
+  }
+
 
   return (
     getAscendWeaknessUnitsV1()
-      .find(unit => unit.id === unitId) ||
+      .find(
+        unit =>
+          unit.id === unitId
+      ) ||
     null
   );
+
 }
 
+
 console.log(
-  "[ASCEND] Weakness Map units:",
+  "[ASCEND] Weakness Map courses:",
+  Object.keys(
+    ASCEND_UNIT_MASTER
+  ).length,
+  "targets:",
   getAscendWeaknessUnitsV1().length
 );
-
 
 
 // ============================================================
@@ -45531,8 +48601,9 @@ async function showManualStudyPage(user) {
 
       <label>
         教科
+
         <select
-          id="manual-study-subject"
+          id="manual-study-group-v4"
           style="
             width:100%;
             margin-top:6px;
@@ -45540,21 +48611,48 @@ async function showManualStudyPage(user) {
             border-radius:10px;
           "
         >
-          <option value="">選択してください</option>
+          <option value="">
+            選択してください
+          </option>
 
           ${
-            subjects.map(subject => `
-              <option value="${subject}">
-                ${subject}
-              </option>
-            `).join("")
+            getAscendWeaknessGroupsForSubjectsV4(
+              subjects
+            )
+              .map(
+                group => `
+                  <option value="${group.id}">
+                    ${group.name}
+                  </option>
+                `
+              )
+              .join("")
           }
         </select>
       </label>
 
+
+      <!--
+        既存の勉強記録との互換用。
+        COURSE選択時に自動設定する。
+      -->
+      <select
+        id="manual-study-subject"
+        style="display:none"
+      >
+        <option value=""></option>
+
+        ${
+          subjects.map(subject => `
+            <option value="${subject}">
+              ${subject}
+            </option>
+          `).join("")
+        }
+      </select>
+
       <div
         id="manual-weakness-wrap-v1"
-        class="hidden"
         style="
           display:grid;
           gap:12px;
@@ -45584,7 +48682,7 @@ async function showManualStudyPage(user) {
               line-height:1.6;
             "
           >
-            単元への記録は任意です。
+            単元・スキルへの記録は任意です。
           </div>
         </div>
 
@@ -45604,7 +48702,7 @@ async function showManualStudyPage(user) {
         </label>
 
         <label>
-          CHAPTER
+          CATEGORY / CHAPTER
           <select
             id="manual-weakness-chapter-v1"
             disabled
@@ -45620,7 +48718,7 @@ async function showManualStudyPage(user) {
         </label>
 
         <label>
-          UNIT
+          SKILL / UNIT
           <select
             id="manual-weakness-unit-v1"
             disabled
@@ -45678,6 +48776,10 @@ async function showManualStudyPage(user) {
   const manualSubjectEl =
     $("manual-study-subject");
 
+  const manualGroupElV4 =
+    $("manual-study-group-v4");
+
+
   const manualWeaknessWrapV1 =
     $("manual-weakness-wrap-v1");
 
@@ -45691,17 +48793,18 @@ async function showManualStudyPage(user) {
     $("manual-weakness-unit-v1");
 
 
+
+
   function manualIsMathSubjectV1(subject) {
 
-    const value =
-      String(subject || "").trim();
-
     return (
-      value === "数学" ||
-      value.includes("数学")
+      getAscendWeaknessCoursesForSubjectV1(
+        subject
+      ).length > 0
     );
 
   }
+
 
 
   function manualWeaknessArrayV1(value) {
@@ -45742,14 +48845,7 @@ async function showManualStudyPage(user) {
   }
 
 
-  const manualWeaknessMasterV1 =
-    ASCEND_UNIT_MASTER?.courses ??
-    ASCEND_UNIT_MASTER;
-
-  const manualWeaknessCoursesV1 =
-    manualWeaknessArrayV1(
-      manualWeaknessMasterV1
-    );
+  let manualWeaknessCoursesV1 = [];
 
 
   function resetManualWeaknessV1() {
@@ -45784,9 +48880,25 @@ async function showManualStudyPage(user) {
       return;
     }
 
+
+    const groupId =
+      manualGroupElV4?.value ||
+      "";
+
+
+    manualWeaknessCoursesV1 =
+      getAscendWeaknessCoursesForGroupV4(
+        groupId,
+        subjects
+      );
+
+
     manualWeaknessCourseV1.innerHTML =
       `
-        <option value="">選択しない</option>
+        <option value="">
+          科目を選択
+        </option>
+
         ${
           manualWeaknessCoursesV1
             .map(course => `
@@ -45798,8 +48910,11 @@ async function showManualStudyPage(user) {
         }
       `;
 
-  }
 
+    manualWeaknessCourseV1.disabled =
+      manualWeaknessCoursesV1.length === 0;
+
+  }
 
   function findManualWeaknessCourseV1(courseId) {
 
@@ -45814,10 +48929,15 @@ async function showManualStudyPage(user) {
 
   function getManualWeaknessChaptersV1(course) {
 
+    const subject =
+      manualSubjectEl?.value ||
+      "";
+
     return manualWeaknessArrayV1(
-      course?.chapters ??
-      course?.chapter ??
-      []
+      getAscendWeaknessChaptersForSubjectV2(
+        course,
+        subject
+      )
     );
 
   }
@@ -45834,30 +48954,86 @@ async function showManualStudyPage(user) {
   }
 
 
+
   function syncManualWeaknessVisibilityV1() {
 
     if (!manualWeaknessWrapV1) {
       return;
     }
 
-    const subject =
-      manualSubjectEl?.value ||
+
+    const groupId =
+      manualGroupElV4?.value ||
       "";
 
-    const isMath =
-      manualIsMathSubjectV1(subject);
 
-    manualWeaknessWrapV1.classList.toggle(
-      "hidden",
-      !isMath
+    manualWeaknessCoursesV1 =
+      getAscendWeaknessCoursesForGroupV4(
+        groupId,
+        subjects
+      );
+
+
+    const supported =
+      manualWeaknessCoursesV1.length > 0;
+
+
+    /*
+      Weakness Map自体は常時表示。
+    */
+    manualWeaknessWrapV1.classList.remove(
+      "hidden"
     );
 
-    if (!isMath) {
+
+    if (!supported) {
+
+      manualSubjectEl.value =
+        "";
+
       resetManualWeaknessV1();
+
+
+      if (manualWeaknessCourseV1) {
+        manualWeaknessCourseV1.disabled =
+          true;
+      }
+
+
+      if (manualWeaknessChapterV1) {
+        manualWeaknessChapterV1.disabled =
+          true;
+      }
+
+
+      if (manualWeaknessUnitV1) {
+        manualWeaknessUnitV1.disabled =
+          true;
+      }
+
+
       return;
     }
 
+
     renderManualWeaknessCoursesV1();
+
+  }
+
+
+  if (manualGroupElV4) {
+
+    manualGroupElV4.onchange =
+      () => {
+
+        manualSubjectEl.value =
+          "";
+
+        resetManualWeaknessV1();
+
+        syncManualWeaknessVisibilityV1();
+
+      };
 
   }
 
@@ -45880,6 +49056,11 @@ async function showManualStudyPage(user) {
 
     manualWeaknessCourseV1.onchange =
       () => {
+
+        manualSubjectEl.value =
+          getAscendWeaknessTrackingSubjectV4(
+            manualWeaknessCourseV1.value
+          );
 
         if (
           !manualWeaknessChapterV1 ||
@@ -46076,7 +49257,7 @@ async function showManualStudyPage(user) {
       !selectedWeaknessUnitV1
     ) {
       errorEl.textContent =
-        "選択したUNITを読み込めませんでした。";
+        "選択した項目を読み込めませんでした。";
       return;
     }
 
@@ -46185,11 +49366,50 @@ async function showTimerPage(user) {
     card(`
       <h1 style="margin:0">勉強タイマー</h1>
 
-      <select id="timer-subject" style="${fieldStyle()}">
-        <option value="">教科を選択</option>
-        ${subjects.map(subject => `
-          <option value="${subject}">${subject}</option>
-        `).join("")}
+      <select
+        id="timer-subject-group-v4"
+        style="${fieldStyle()}"
+      >
+        <option value="">
+          教科を選択
+        </option>
+
+        ${
+          getAscendWeaknessGroupsForSubjectsV4(
+            subjects
+          )
+            .map(
+              group => `
+                <option value="${group.id}">
+                  ${group.name}
+                </option>
+              `
+            )
+            .join("")
+        }
+      </select>
+
+
+      <!--
+        既存システム保存用。
+        数学IIBC / 古文 / 物理などは
+        COURSEから自動決定する。
+      -->
+      <select
+        id="timer-subject"
+        style="display:none"
+      >
+        <option value=""></option>
+
+        ${
+          subjects.map(
+            subject => `
+              <option value="${subject}">
+                ${subject}
+              </option>
+            `
+          ).join("")
+        }
       </select>
 
 
@@ -46200,7 +49420,7 @@ async function showTimerPage(user) {
       <div
         id="timer-weakness-unit-wrap-v1"
         style="
-          display:none;
+          display:grid;
           gap:10px;
           margin-top:10px;
         "
@@ -46224,7 +49444,7 @@ async function showTimerPage(user) {
           style="${fieldStyle()}"
         >
           <option value="">
-            数学の科目を選択（任意）
+            科目 / 分野を選択（任意）
           </option>
         </select>
 
@@ -46235,7 +49455,7 @@ async function showTimerPage(user) {
           disabled
         >
           <option value="">
-            CHAPTERを選択
+            CATEGORY / CHAPTERを選択
           </option>
         </select>
 
@@ -46246,7 +49466,7 @@ async function showTimerPage(user) {
           disabled
         >
           <option value="">
-            UNITを選択
+            SKILL / UNITを選択
           </option>
         </select>
 
@@ -46258,7 +49478,7 @@ async function showTimerPage(user) {
             opacity:.52;
           "
         >
-          単元を選択すると、
+          単元・スキルを選択すると、
           WEAKNESS MAPと学習記録を連携できます。
           選択しなくてもタイマーは使用できます。
         </div>
@@ -46316,17 +49536,18 @@ async function showTimerPage(user) {
     $("timer-weakness-unit-v1");
 
 
+
+
   function isMathSubjectV1(subject) {
 
-    const value =
-      String(subject || "").trim();
-
     return (
-      value === "数学" ||
-      value.includes("数学")
+      getAscendWeaknessCoursesForSubjectV1(
+        subject
+      ).length > 0
     );
 
   }
+
 
 
   function weaknessOptionV1(
@@ -46348,21 +49569,21 @@ async function showTimerPage(user) {
     weaknessCourseV1.innerHTML =
       `
         <option value="">
-          数学の科目を選択（任意）
+          科目 / 分野を選択（任意）
         </option>
       `;
 
     weaknessChapterV1.innerHTML =
       `
         <option value="">
-          CHAPTERを選択
+          CATEGORY / CHAPTERを選択
         </option>
       `;
 
     weaknessUnitV1.innerHTML =
       `
         <option value="">
-          UNITを選択
+          SKILL / UNITを選択
         </option>
       `;
 
@@ -46375,17 +49596,28 @@ async function showTimerPage(user) {
   }
 
 
+
   function renderWeaknessCoursesV1() {
+
+    const groupId =
+      $("timer-subject-group-v4")?.value ||
+      "";
+
+
+    const courses =
+      getAscendWeaknessCoursesForGroupV4(
+        groupId,
+        subjects
+      );
+
 
     weaknessCourseV1.innerHTML =
       `
         <option value="">
-          数学の科目を選択（任意）
+          科目を選択
         </option>
       ` +
-      Object.values(
-        ASCEND_UNIT_MASTER
-      )
+      courses
         .map(
           course =>
             weaknessOptionV1(
@@ -46395,7 +49627,12 @@ async function showTimerPage(user) {
         )
         .join("");
 
+
+    weaknessCourseV1.disabled =
+      courses.length === 0;
+
   }
+
 
 
   function renderWeaknessChaptersV1(
@@ -46410,14 +49647,14 @@ async function showTimerPage(user) {
     weaknessChapterV1.innerHTML =
       `
         <option value="">
-          CHAPTERを選択
+          CATEGORY / CHAPTERを選択
         </option>
       `;
 
     weaknessUnitV1.innerHTML =
       `
         <option value="">
-          UNITを選択
+          SKILL / UNITを選択
         </option>
       `;
 
@@ -46435,8 +49672,15 @@ async function showTimerPage(user) {
     }
 
 
+    const visibleChaptersV2 =
+      getAscendWeaknessChaptersForSubjectV2(
+        course,
+        $("timer-subject")?.value || ""
+      );
+
+
     weaknessChapterV1.innerHTML +=
-      course.chapters
+      visibleChaptersV2
         .map(
           chapter =>
             weaknessOptionV1(
@@ -46473,7 +49717,7 @@ async function showTimerPage(user) {
     weaknessUnitV1.innerHTML =
       `
         <option value="">
-          UNITを選択
+          SKILL / UNITを選択
         </option>
       `;
 
@@ -46508,30 +49752,124 @@ async function showTimerPage(user) {
 
   function syncWeaknessVisibilityV1() {
 
-    const subject =
-      $("timer-subject").value;
+    const groupEl =
+      $("timer-subject-group-v4");
 
+
+    let groupId =
+      groupEl?.value ||
+      "";
+
+
+    /*
+      Priority / timer restoreなど、
+      旧subjectだけ先に決まっている場合も
+      GROUPを自動復元。
+    */
     if (
-      isMathSubjectV1(
-        subject
-      )
+      !groupId &&
+      $("timer-subject")?.value
     ) {
 
-      weaknessWrapV1.style.display =
-        "grid";
+      const restoredGroup =
+        getAscendWeaknessGroupForTrackingSubjectV4(
+          $("timer-subject").value
+        );
+
+
+      if (
+        restoredGroup &&
+        groupEl
+      ) {
+
+        groupEl.value =
+          restoredGroup.id;
+
+        groupId =
+          restoredGroup.id;
+
+      }
+
+    }
+
+
+    const supported =
+      getAscendWeaknessCoursesForGroupV4(
+        groupId,
+        subjects
+      ).length > 0;
+
+
+    /*
+      Weakness Map自体は常時表示。
+      教科未選択時は中身だけ操作不可。
+    */
+    weaknessWrapV1.style.display =
+      "grid";
+
+
+    if (supported) {
 
       renderWeaknessCoursesV1();
 
     } else {
 
-      weaknessWrapV1.style.display =
-        "none";
-
       resetWeaknessSelectsV1();
+
+
+      weaknessCourseV1.disabled =
+        true;
+
+      weaknessChapterV1.disabled =
+        true;
+
+      weaknessUnitV1.disabled =
+        true;
 
     }
 
   }
+
+
+
+  $("timer-subject-group-v4")
+    .addEventListener(
+      "change",
+      () => {
+
+        $("timer-subject").value =
+          "";
+
+
+        timerState.weaknessCourseId =
+          "";
+
+        timerState.weaknessChapterId =
+          "";
+
+        timerState.weaknessUnitId =
+          "";
+
+
+        resetWeaknessSelectsV1();
+
+        syncWeaknessVisibilityV1();
+
+      }
+    );
+
+
+  weaknessCourseV1.addEventListener(
+    "change",
+    () => {
+
+      $("timer-subject").value =
+        getAscendWeaknessTrackingSubjectV4(
+          weaknessCourseV1.value
+        );
+
+    }
+  );
 
 
   function syncWeaknessSelectionToTimerV1() {
@@ -46738,6 +50076,7 @@ async function showTimerPage(user) {
 
 
 
+
   // ========================================================
   // PRIORITY TARGET -> TIMER
   // ========================================================
@@ -46751,28 +50090,48 @@ async function showTimerPage(user) {
       ascendPendingStudyTargetV1;
 
 
-    const mathOption =
+    const targetUnit =
+      findAscendWeaknessUnitV1(
+        target.unitId
+      );
+
+
+    const targetSubject =
+      target.subject ||
+      targetUnit?.subject ||
+      "";
+
+
+    const targetSubjectKey =
+      normalizeAscendWeaknessSubjectV1(
+        targetSubject
+      );
+
+
+    const targetOption =
       [
         ...$("timer-subject").options
       ].find(
         option =>
-          isMathSubjectV1(
+          normalizeAscendWeaknessSubjectV1(
             option.value
-          )
+          ) ===
+          targetSubjectKey
       );
 
 
-    if (mathOption) {
+    if (targetOption) {
 
       $("timer-subject").value =
-        mathOption.value;
+        targetOption.value;
 
 
       syncWeaknessVisibilityV1();
 
 
       weaknessCourseV1.value =
-        target.courseId || "";
+        target.courseId ||
+        "";
 
 
       renderWeaknessChaptersV1(
@@ -46781,7 +50140,8 @@ async function showTimerPage(user) {
 
 
       weaknessChapterV1.value =
-        target.chapterId || "";
+        target.chapterId ||
+        "";
 
 
       renderWeaknessUnitsV1(
@@ -46791,7 +50151,8 @@ async function showTimerPage(user) {
 
 
       weaknessUnitV1.value =
-        target.unitId || "";
+        target.unitId ||
+        "";
 
     }
 
@@ -46838,10 +50199,30 @@ async function showTimerPage(user) {
   }
 
   $("timer-start").onclick = async () => {
-    const subject = $("timer-subject").value;
+
+    const groupId =
+      $("timer-subject-group-v4")?.value ||
+      "";
+
+
+    if (!groupId) {
+
+      $("timer-error").textContent =
+        "教科を選択してください。";
+
+      return;
+    }
+
+
+    const subject =
+      $("timer-subject").value;
+
 
     if (!subject) {
-      $("timer-error").textContent = "教科を選択してください。";
+
+      $("timer-error").textContent =
+        "科目を選択してください。";
+
       return;
     }
 
