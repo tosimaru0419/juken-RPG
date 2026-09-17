@@ -33820,6 +33820,108 @@ body.study-link-room-mode-v1
 
 <!-- ASCEND FOCUS BOOST STATUS V9.4 -->
 
+
+<style id="ascend-mobile-social-hotfix-v1-style">
+
+/* =========================================================
+   ASCEND MOBILE SOCIAL HOTFIX V1
+
+   - SOCIAL tabsを追従させない
+   - 縦中央寄せによる上側クリップを防止
+   - iPhone safe area対応
+========================================================= */
+
+@media (max-width:700px) {
+
+  /*
+    SOCIALページだけ上から自然に配置
+  */
+
+  body:has(#party-main-tabs)
+  > main {
+
+    width:100% !important;
+
+    min-height:100dvh !important;
+    height:auto !important;
+
+    place-items:start center !important;
+    align-content:start !important;
+
+    padding-top:
+      calc(
+        env(safe-area-inset-top, 0px)
+        + 10px
+      ) !important;
+
+    padding-right:
+      10px !important;
+
+    padding-left:
+      10px !important;
+
+    padding-bottom:
+      calc(
+        92px
+        + env(safe-area-inset-bottom, 0px)
+      ) !important;
+
+    overflow:visible !important;
+
+  }
+
+
+  /*
+    FRIENDS / NEXUS / PARTY / REQUESTS
+
+    スクロールしても上に居座らず、
+    ページと一緒に流れる。
+  */
+
+  #party-main-tabs {
+
+    position:static !important;
+
+    top:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+    left:auto !important;
+
+    inset:auto !important;
+
+    transform:none !important;
+
+    z-index:auto !important;
+
+    width:100% !important;
+
+  }
+
+
+  /*
+    親カードも画面上部で切れないようにする
+  */
+
+  body:has(#party-main-tabs)
+  > main
+  > section {
+
+    width:100% !important;
+
+    max-width:100% !important;
+
+    margin-top:0 !important;
+
+    box-sizing:border-box !important;
+
+  }
+
+}
+
+</style>
+
+<!-- ASCEND MOBILE SOCIAL HOTFIX V1 -->
+
 </head>
 
 
