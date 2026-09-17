@@ -30095,6 +30095,1140 @@ html[data-asc-theme="light"]
 
 <!-- ASCEND NEXUS BOOST SMOOTH V8.6.1 -->
 
+
+<style id="ascend-study-nexus-focus-v9-style">
+
+/* =========================================================
+   ASCEND STUDY NEXUS FOCUS V9
+   STUDY = FOCUS ONLY
+========================================================= */
+
+#study-link-card-v2 {
+  position:relative;
+}
+
+
+/* ROOM TAB完全撤去 */
+
+#sl-room-v2 {
+  display:none !important;
+}
+
+#study-link-room-tabs-v2 {
+  grid-template-columns:
+    1fr !important;
+}
+
+#study-link-room-tabs-v2 label {
+  width:100% !important;
+}
+
+
+/* =========================================================
+   未所属
+========================================================= */
+
+.asc-study-nexus-empty-v9 {
+  display:grid;
+
+  grid-template-columns:
+    auto minmax(0,1fr) auto;
+
+  align-items:center;
+
+  gap:13px;
+
+  padding:15px;
+
+  border:
+    1px solid rgba(62,190,215,.13);
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(56,181,206,.055),
+      rgba(111,86,219,.035)
+    );
+}
+
+.asc-study-nexus-empty-icon-v9 {
+  width:43px;
+  height:43px;
+
+  display:grid;
+
+  place-items:center;
+
+  border-radius:12px;
+
+  border:
+    1px solid rgba(59,191,215,.16);
+
+  background:
+    rgba(57,181,205,.07);
+
+  color:#66cede;
+
+  font-family:
+    "Orbitron",
+    sans-serif;
+
+  font-weight:900;
+}
+
+.asc-study-nexus-empty-copy-v9 {
+  min-width:0;
+
+  display:grid;
+
+  gap:3px;
+}
+
+.asc-study-nexus-empty-copy-v9 span {
+  color:#62c9dc;
+
+  font-size:.5rem;
+  font-weight:900;
+
+  letter-spacing:.1em;
+}
+
+.asc-study-nexus-empty-copy-v9 strong {
+  color:
+    var(--asc-text);
+
+  font-size:.78rem;
+}
+
+.asc-study-nexus-empty-copy-v9 small {
+  color:
+    var(--asc-muted);
+
+  font-size:.57rem;
+
+  line-height:1.45;
+}
+
+#asc-study-open-nexus-v9 {
+  min-height:42px;
+
+  padding:
+    0 13px;
+
+  border:
+    1px solid rgba(110,86,219,.17);
+
+  border-radius:10px;
+
+  background:
+    rgba(108,83,216,.055);
+
+  color:
+    var(--asc-text);
+
+  font-size:.57rem;
+  font-weight:900;
+
+  cursor:pointer;
+}
+
+
+/* =========================================================
+   ACTIVE NEXUS
+========================================================= */
+
+/*
+  STUDYではNEXUS管理をしない。
+*/
+
+#study-link-nexus-rename-v3,
+#study-link-v2-room-code,
+.study-link-v2-actions,
+#study-link-boost-fund-v1,
+#study-link-friend-invite-v1 {
+
+  display:none !important;
+}
+
+
+/*
+  OWNER表示も管理情報なのでSTUDYでは省略。
+*/
+
+.study-link-nexus-owner-v3 {
+  display:none !important;
+}
+
+
+/*
+  NEXUS名はFOCUS接続先として残す。
+*/
+
+#study-link-nexus-identity-v3 {
+  padding:
+    12px 13px !important;
+
+  border-radius:
+    12px !important;
+}
+
+.study-link-nexus-name-row-v3 {
+  margin:0 !important;
+}
+
+
+/*
+  CONNECTEDはFOCUSのステータスとして残す
+*/
+
+.study-link-v2-connected {
+  margin-top:
+    2px !important;
+}
+
+
+/* =========================================================
+   LEGACY BRIDGE
+========================================================= */
+
+.asc-study-nexus-legacy-v9 {
+  display:none !important;
+}
+
+
+/* =========================================================
+   LIGHT
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-study-nexus-empty-v9 {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(61,183,207,.07),
+      rgba(112,88,219,.035)
+    );
+
+  border-color:
+    rgba(40,126,145,.12);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:600px) {
+
+  .asc-study-nexus-empty-v9 {
+    grid-template-columns:
+      auto minmax(0,1fr);
+
+    gap:
+      11px;
+  }
+
+  #asc-study-open-nexus-v9 {
+    grid-column:
+      1 / -1;
+
+    width:100%;
+
+    min-height:
+      47px;
+  }
+
+}
+
+</style>
+
+<!-- ASCEND STUDY NEXUS FOCUS V9 -->
+
+
+<style id="ascend-explicit-nexus-focus-v91-style">
+
+/* =========================================================
+   ASCEND EXPLICIT NEXUS FOCUS V9.1
+========================================================= */
+
+
+/*
+  普通のSTUDYでは、
+  旧FOCUS本体を展開しない。
+
+  コンパクトな入口だけ表示。
+*/
+
+body:not(.asc-nexus-focus-active-v91)
+#study-link-v2-lobby,
+
+body:not(.asc-nexus-focus-active-v91)
+#study-link-v2-active {
+
+  display:none !important;
+}
+
+
+/*
+  FOCUSへ明示的にENTERしたら
+  launcherは消す。
+*/
+
+body.asc-nexus-focus-active-v91
+#asc-study-focus-launcher-v91 {
+
+  display:none !important;
+}
+
+
+/* =========================================================
+   NORMAL STUDY LAUNCHER
+========================================================= */
+
+.asc-study-focus-launcher-v91 {
+
+  display:grid;
+
+  grid-template-columns:
+    auto minmax(0,1fr) auto;
+
+  align-items:center;
+
+  gap:12px;
+
+  padding:14px;
+
+  border:
+    1px solid rgba(61,188,213,.13);
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(56,181,206,.055),
+      rgba(111,86,219,.035)
+    );
+}
+
+
+.asc-study-focus-launcher-icon-v91 {
+
+  width:42px;
+  height:42px;
+
+  display:grid;
+
+  place-items:center;
+
+  border-radius:12px;
+
+  border:
+    1px solid rgba(61,192,216,.17);
+
+  background:
+    rgba(57,181,205,.07);
+
+  color:#65cfdf;
+
+  font-family:
+    "Orbitron",
+    sans-serif;
+
+  font-size:.78rem;
+  font-weight:900;
+}
+
+
+.asc-study-focus-launcher-copy-v91 {
+
+  min-width:0;
+
+  display:grid;
+
+  gap:2px;
+}
+
+
+.asc-study-focus-launcher-copy-v91 span {
+
+  color:#5fc9dc;
+
+  font-size:.48rem;
+  font-weight:900;
+
+  letter-spacing:.11em;
+}
+
+
+.asc-study-focus-launcher-copy-v91 strong {
+
+  color:
+    var(--asc-text);
+
+  font-size:.8rem;
+  font-weight:900;
+}
+
+
+.asc-study-focus-launcher-copy-v91 small {
+
+  color:
+    var(--asc-muted);
+
+  font-size:.56rem;
+}
+
+
+#asc-study-enter-focus-v91 {
+
+  min-width:74px;
+  min-height:41px;
+
+  padding:
+    0 12px;
+
+  border:
+    1px solid rgba(111,87,220,.16);
+
+  border-radius:10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(55,182,206,.07),
+      rgba(110,85,218,.07)
+    );
+
+  color:
+    var(--asc-text);
+
+  font-size:.57rem;
+  font-weight:900;
+
+  cursor:pointer;
+}
+
+
+/* =========================================================
+   FOCUS HEADER / EXIT
+========================================================= */
+
+.asc-study-focus-head-actions-v91 {
+
+  display:flex;
+
+  align-items:center;
+
+  gap:7px;
+}
+
+
+#asc-study-exit-focus-v91 {
+
+  display:none;
+
+  min-height:34px;
+
+  padding:
+    0 10px;
+
+  border:
+    1px solid rgba(219,77,99,.13);
+
+  border-radius:9px;
+
+  background:
+    rgba(217,67,91,.035);
+
+  color:#d78391;
+
+  font-size:.52rem;
+  font-weight:900;
+
+  cursor:pointer;
+}
+
+
+body.asc-nexus-focus-active-v91
+#asc-study-exit-focus-v91 {
+
+  display:block;
+}
+
+
+/* =========================================================
+   FOCUS ACTIVE
+========================================================= */
+
+body.asc-nexus-focus-active-v91
+#study-link-v2-active {
+
+  display:grid !important;
+}
+
+
+body.asc-nexus-focus-active-v91
+#study-link-v2-lobby {
+
+  display:none !important;
+}
+
+
+/*
+  FOCUS中は従来ROOM MODEを使うが、
+  「所属しただけ」でここには来ない。
+*/
+
+
+/* =========================================================
+   LIGHT
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-study-focus-launcher-v91 {
+
+  border-color:
+    rgba(39,126,145,.12);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(60,184,208,.075),
+      rgba(112,88,219,.035)
+    );
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:600px) {
+
+  .asc-study-focus-launcher-v91 {
+
+    grid-template-columns:
+      auto minmax(0,1fr);
+
+    gap:
+      10px;
+  }
+
+
+  #asc-study-enter-focus-v91 {
+
+    grid-column:
+      1 / -1;
+
+    width:100%;
+
+    min-height:47px;
+  }
+
+}
+
+</style>
+
+<!-- ASCEND EXPLICIT NEXUS FOCUS V9.1 -->
+
+
+<style id="ascend-nexus-focus-action-v912-style">
+
+/* =========================================================
+   ASCEND NEXUS FOCUS ACTION V9.1.2
+   FOCUS CTA を必ず見える位置へ固定
+========================================================= */
+
+.asc-nx8-feature.focus {
+  display:grid !important;
+
+  grid-template-columns:
+    auto minmax(0,1fr) !important;
+
+  grid-template-rows:
+    auto auto !important;
+
+  align-items:center !important;
+
+  column-gap:13px !important;
+  row-gap:12px !important;
+
+  overflow:visible !important;
+}
+
+
+/* アイコン */
+
+.asc-nx8-feature.focus
+.asc-nx8-feature-icon {
+
+  grid-column:1 !important;
+  grid-row:1 !important;
+
+}
+
+
+/* テキスト */
+
+.asc-nx8-feature.focus
+> div:nth-child(2) {
+
+  grid-column:2 !important;
+  grid-row:1 !important;
+
+  min-width:0 !important;
+}
+
+
+/* ENTER FOCUS */
+
+#asc-nx8-focus {
+
+  grid-column:
+    1 / -1 !important;
+
+  grid-row:
+    2 !important;
+
+  display:flex !important;
+
+  align-items:center !important;
+  justify-content:center !important;
+
+  visibility:visible !important;
+
+  opacity:1 !important;
+
+  position:relative !important;
+
+  z-index:5 !important;
+
+  width:100% !important;
+
+  min-width:0 !important;
+  min-height:48px !important;
+
+  margin:0 !important;
+
+  padding:
+    0 16px !important;
+
+  border:
+    1px solid rgba(62,190,214,.20) !important;
+
+  border-radius:
+    11px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(54,182,207,.10),
+      rgba(110,85,219,.08)
+    ) !important;
+
+  color:
+    var(--asc-text) !important;
+
+  font-size:
+    .63rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .07em !important;
+
+  cursor:pointer !important;
+}
+
+
+#asc-nx8-focus:hover {
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+#asc-nx8-focus:active {
+
+  transform:
+    translateY(0);
+
+}
+
+
+/* LIGHT */
+
+html[data-asc-theme="light"]
+#asc-nx8-focus {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(58,181,205,.10),
+      rgba(112,88,219,.06)
+    ) !important;
+
+}
+
+
+/* MOBILE */
+
+@media (max-width:600px) {
+
+  .asc-nx8-feature.focus {
+
+    padding:
+      14px !important;
+
+  }
+
+
+  #asc-nx8-focus {
+
+    min-height:
+      50px !important;
+
+    font-size:
+      .65rem !important;
+
+  }
+
+}
+
+</style>
+
+<!-- ASCEND NEXUS FOCUS ACTION V9.1.2 -->
+
+
+<style id="ascend-nexus-focus-hard-gate-v913-style">
+
+/* =========================================================
+   ASCEND NEXUS FOCUS HARD GATE V9.1.3
+========================================================= */
+
+
+/*
+  通常STUDY上のNEXUSカードだけ。
+  既存デザインは維持。
+*/
+
+body:not(.study-link-room-mode-v1)
+#asc-study-nexus-enter-v913 {
+
+  width:
+    calc(100% - 48px);
+
+  min-height:
+    50px;
+
+  margin:
+    14px 24px 20px;
+
+  padding:
+    0 17px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:12px;
+
+  border:
+    1px solid rgba(54,187,211,.20);
+
+  border-radius:
+    12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(48,182,207,.10),
+      rgba(105,84,215,.055)
+    );
+
+  color:
+    var(--asc-text);
+
+  font-family:
+    inherit;
+
+  font-size:
+    .68rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .07em;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 8px 22px
+    rgba(40,161,186,.06);
+
+  transition:
+    transform .15s ease,
+    border-color .15s ease,
+    background .15s ease;
+}
+
+
+body:not(.study-link-room-mode-v1)
+#asc-study-nexus-enter-v913:hover {
+
+  transform:
+    translateY(-1px);
+
+  border-color:
+    rgba(50,189,215,.32);
+
+}
+
+
+body:not(.study-link-room-mode-v1)
+#asc-study-nexus-enter-v913:active {
+
+  transform:
+    translateY(0);
+
+}
+
+
+#asc-study-nexus-enter-v913 b {
+
+  font-size:
+    1.2rem;
+
+  line-height:
+    1;
+
+  color:
+    #49bdd3;
+
+}
+
+
+#asc-study-nexus-enter-v913:disabled {
+
+  opacity:
+    .55;
+
+  cursor:
+    default;
+
+}
+
+
+/*
+  FOCUS本体ではSTUDY用ENTERは不要
+*/
+
+body.study-link-room-mode-v1
+#asc-study-nexus-enter-v913 {
+
+  display:none !important;
+
+}
+
+
+/* LIGHT */
+
+html[data-asc-theme="light"]
+#asc-study-nexus-enter-v913 {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(48,182,207,.10),
+      rgba(113,90,218,.05)
+    );
+
+  border-color:
+    rgba(37,160,184,.18);
+
+}
+
+
+/* MOBILE */
+
+@media (max-width:600px) {
+
+  body:not(.study-link-room-mode-v1)
+  #asc-study-nexus-enter-v913 {
+
+    width:
+      calc(100% - 32px);
+
+    margin:
+      12px 16px 16px;
+
+    min-height:
+      52px;
+
+  }
+
+}
+
+</style>
+
+<!-- ASCEND NEXUS FOCUS HARD GATE V9.1.3 -->
+
+
+<style id="ascend-study-nexus-enter-v914-style">
+
+/* =========================================================
+   ASCEND STUDY NEXUS ENTER V9.1.4
+========================================================= */
+
+#study-link-card-v2.ascend-nexus-v2 {
+
+  height:auto !important;
+  max-height:none !important;
+
+  overflow:visible !important;
+
+}
+
+
+#asc-study-nexus-enter-v914 {
+
+  width:
+    calc(100% - 48px);
+
+  min-height:
+    54px;
+
+  margin:
+    15px 24px 20px;
+
+  padding:
+    0 17px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:12px;
+
+  border:
+    1px solid rgba(52,188,213,.22);
+
+  border-radius:
+    13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(50,185,210,.105),
+      rgba(111,87,219,.055)
+    );
+
+  color:
+    var(--asc-text);
+
+  font-family:
+    inherit;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 8px 24px
+    rgba(40,160,186,.055);
+
+  transition:
+    transform .16s ease,
+    border-color .16s ease,
+    background .16s ease;
+}
+
+
+#asc-study-nexus-enter-v914 > span {
+
+  display:grid;
+
+  gap:2px;
+
+  text-align:left;
+
+}
+
+
+#asc-study-nexus-enter-v914 small {
+
+  color:#52bdd2;
+
+  font-size:
+    .48rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .11em;
+
+}
+
+
+#asc-study-nexus-enter-v914 strong {
+
+  color:
+    var(--asc-text);
+
+  font-size:
+    .72rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .055em;
+
+}
+
+
+#asc-study-nexus-enter-v914 b {
+
+  color:#49bdd3;
+
+  font-size:
+    1.35rem;
+
+  line-height:1;
+
+}
+
+
+#asc-study-nexus-enter-v914:hover {
+
+  transform:
+    translateY(-1px);
+
+  border-color:
+    rgba(51,190,216,.34);
+
+}
+
+
+#asc-study-nexus-enter-v914:active {
+
+  transform:none;
+
+}
+
+
+#asc-study-nexus-enter-v914:disabled {
+
+  opacity:.55;
+
+  cursor:default;
+
+}
+
+
+/*
+  FOCUS本体に入ったら
+  通常STUDY用入口は隠す。
+*/
+
+body.study-link-room-mode-v1
+#asc-study-nexus-enter-v914 {
+
+  display:none !important;
+
+}
+
+
+/* LIGHT */
+
+html[data-asc-theme="light"]
+#asc-study-nexus-enter-v914 {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(49,184,208,.10),
+      rgba(112,89,219,.05)
+    );
+
+  border-color:
+    rgba(34,158,183,.18);
+
+}
+
+
+/* MOBILE */
+
+@media (max-width:600px) {
+
+  #asc-study-nexus-enter-v914 {
+
+    width:
+      calc(100% - 32px);
+
+    margin:
+      13px 16px 17px;
+
+    min-height:
+      56px;
+
+  }
+
+}
+
+</style>
+
+<!-- ASCEND STUDY NEXUS ENTER V9.1.4 -->
+
+
+<style id="ascend-focus-entry-cleanup-v915-style">
+
+/* =========================================================
+   ASCEND FOCUS ENTRY CLEANUP V9.1.5
+
+   STUDY側のFOCUS入口はV9.1.4だけ使用。
+========================================================= */
+
+#asc-study-focus-launcher-v91,
+#asc-study-nexus-enter-v913 {
+
+  display:none !important;
+
+}
+
+/*
+  正式な入口
+*/
+
+#asc-study-nexus-enter-v914 {
+
+  display:flex !important;
+
+}
+
+/*
+  FOCUS中は正式入口も非表示
+*/
+
+body.study-link-room-mode-v1
+#asc-study-nexus-enter-v914 {
+
+  display:none !important;
+
+}
+
+</style>
+
+<!-- ASCEND FOCUS ENTRY CLEANUP V9.1.5 -->
+
 </head>
 
 
@@ -35769,6 +36903,32 @@ function enableStudyLinkRoomModeV1(
   code = ""
 ) {
 
+  /*
+    ASCEND V9.1.3
+
+    NEXUSに所属しているだけでは
+    FOCUS / ROOM MODEへ絶対に入らない。
+
+    enterAscendNexusFocusV91() が
+    explicit flagを立てた場合のみ許可。
+  */
+
+  if (
+    !ascendNexusFocusExplicitV91
+  ) {
+
+    document.body.classList.remove(
+      "study-link-room-mode-v1"
+    );
+
+    document.body.classList.remove(
+      "asc-nexus-focus-active-v91"
+    );
+
+    return;
+
+  }
+
   document.body.classList.add(
     "study-link-room-mode-v1"
   );
@@ -35844,17 +37004,226 @@ function disableStudyLinkRoomModeV1() {
 }
 
 
+
+/* ============================================================
+   ASCEND EXPLICIT NEXUS FOCUS V9.1
+
+   NEXUS membership != FOCUS mode.
+
+   FOCUSはユーザーが明示的にENTERした時だけ開始する。
+============================================================ */
+
+let ascendNexusFocusExplicitV91 =
+  false;
+
+let ascendNexusFocusOriginV91 =
+  "study";
+
+
+async function enterAscendNexusFocusV91(
+  user,
+  origin = "study"
+) {
+
+  if (!user) {
+    return;
+  }
+
+
+  const userSnap =
+    await getDoc(
+      doc(
+        db,
+        "users",
+        user.uid
+      )
+    );
+
+
+  if (!userSnap.exists()) {
+
+    throw new Error(
+      "ユーザーデータが見つかりません"
+    );
+
+  }
+
+
+  const userData =
+    userSnap.data();
+
+
+  const code =
+    normalizeStudyLinkV2Code(
+      userData.studyLinkRoomCode ||
+      ""
+    );
+
+
+  /*
+    未所属ならNEXUS管理画面へ
+  */
+
+  if (!code) {
+
+    ascendNexusFocusExplicitV91 =
+      false;
+
+    ascendNexusFocusOriginV91 =
+      "study";
+
+
+    disableStudyLinkRoomModeV1();
+
+    document.body.classList.remove(
+      "asc-nexus-focus-active-v91"
+    );
+
+
+    await showPartyFriendsMainPage(
+      user,
+      "nexus"
+    );
+
+    return;
+
+  }
+
+
+  const roomSnap =
+    await getDoc(
+      studyLinkV2RoomRef(
+        code
+      )
+    );
+
+
+  if (
+    !roomSnap.exists() ||
+    roomSnap.data().active === false
+  ) {
+
+    await setDoc(
+      doc(
+        db,
+        "users",
+        user.uid
+      ),
+      {
+        studyLinkRoomCode:""
+      },
+      {
+        merge:true
+      }
+    );
+
+
+    ascendNexusFocusExplicitV91 =
+      false;
+
+
+    disableStudyLinkRoomModeV1();
+
+
+    await showPartyFriendsMainPage(
+      user,
+      "nexus"
+    );
+
+    return;
+
+  }
+
+
+  ascendNexusFocusExplicitV91 =
+    true;
+
+
+  ascendNexusFocusOriginV91 =
+    origin === "nexus"
+      ? "nexus"
+      : "study";
+
+
+  /*
+    STUDYを描画してから
+    FOCUS MODEだけ明示的に有効化
+  */
+
+  await showStudyMainPage(
+    user
+  );
+
+
+  document.body.classList.add(
+    "asc-nexus-focus-active-v91"
+  );
+
+
+  enableStudyLinkRoomModeV1(
+    code
+  );
+
+}
+
+
+async function exitAscendNexusFocusV91(
+  user
+) {
+
+  const origin =
+    ascendNexusFocusOriginV91;
+
+
+  ascendNexusFocusExplicitV91 =
+    false;
+
+  ascendNexusFocusOriginV91 =
+    "study";
+
+
+  disableStudyLinkRoomModeV1();
+
+
+  document.body.classList.remove(
+    "asc-nexus-focus-active-v91"
+  );
+
+
+  if (
+    origin === "nexus"
+  ) {
+
+    await showPartyFriendsMainPage(
+      user,
+      "nexus"
+    );
+
+    return;
+
+  }
+
+
+  await showStudyMainPage(
+    user
+  );
+
+}
+
+
+/*
+  旧restore処理。
+
+  所属しているだけではFOCUSへ入らない。
+  explicit flagが立っている場合だけ復元する。
+*/
+
 async function restoreStudyLinkRoomModeV1(
   user
 ) {
 
-  if (
-    !user ||
-    studyLinkRoomModeRedirectingV1
-  ) {
-
+  if (!user) {
     return;
-
   }
 
 
@@ -35871,7 +37240,11 @@ async function restoreStudyLinkRoomModeV1(
 
 
     if (!userSnap.exists()) {
+
+      disableStudyLinkRoomModeV1();
+
       return;
+
     }
 
 
@@ -35888,7 +37261,16 @@ async function restoreStudyLinkRoomModeV1(
 
     if (!code) {
 
+      ascendNexusFocusExplicitV91 =
+        false;
+
+
       disableStudyLinkRoomModeV1();
+
+
+      document.body.classList.remove(
+        "asc-nexus-focus-active-v91"
+      );
 
       return;
 
@@ -35923,36 +37305,76 @@ async function restoreStudyLinkRoomModeV1(
       );
 
 
+      ascendNexusFocusExplicitV91 =
+        false;
+
+
       disableStudyLinkRoomModeV1();
+
+
+      document.body.classList.remove(
+        "asc-nexus-focus-active-v91"
+      );
 
       return;
 
     }
 
 
-    const existingRoomCard =
+    /*
+      ★ここがV9.1の本体
+
+      NEXUS所属だけなら何もしない。
+    */
+
+    if (
+      !ascendNexusFocusExplicitV91
+    ) {
+
+      disableStudyLinkRoomModeV1();
+
+
+      document.body.classList.remove(
+        "asc-nexus-focus-active-v91"
+      );
+
+      return;
+
+    }
+
+
+    /*
+      明示的にFOCUS中だった場合だけ復元
+    */
+
+    let card =
       document.getElementById(
         "study-link-card-v2"
       );
 
 
-    if (existingRoomCard) {
+    if (!card) {
 
-      enableStudyLinkRoomModeV1(
-        code
+      await showStudyMainPage(
+        user
       );
 
-      return;
+
+      card =
+        document.getElementById(
+          "study-link-card-v2"
+        );
 
     }
 
 
-    studyLinkRoomModeRedirectingV1 =
-      true;
+    if (!card) {
+      return;
+    }
 
 
-    await showStudyMainPage(
-      user
+    document.body.classList.add(
+      "asc-nexus-focus-active-v91"
     );
 
 
@@ -35965,22 +37387,13 @@ async function restoreStudyLinkRoomModeV1(
   catch (error) {
 
     console.error(
-      "STUDY LINK room restore:",
+      "NEXUS FOCUS restore:",
       error
     );
 
   }
 
-  finally {
-
-    studyLinkRoomModeRedirectingV1 =
-      false;
-
-  }
-
 }
-
-
 
 
 // ============================================================
@@ -39030,6 +40443,18 @@ function mountStudyLinkManualRecordV1(user) {
 
 async function mountStudyLinkPanelV2(user) {
 
+  /*
+    ASCEND V9.1.4
+    enhanceNexusV2() が後から生成する
+    ENTER FOCUSをイベント委譲で拾う。
+  */
+
+  const existingStudyCardV914 =
+    document.getElementById(
+      "study-link-card-v2"
+    );
+
+
   const menu =
     document.querySelector(
       ".study-main-menu"
@@ -39069,75 +40494,166 @@ async function mountStudyLinkPanelV2(user) {
         <div>
 
           <div class="study-link-v2-kicker">
-            STUDY LINK
+            NEXUS FOCUS
           </div>
 
           <h2 class="study-link-v2-title">
-            一緒に勉強する
+            集中セッション
           </h2>
 
         </div>
 
-        <div class="study-link-v2-chip">
-          ROOM
+        <div
+          class="asc-study-focus-head-actions-v91"
+        >
+
+          <div class="study-link-v2-chip">
+            FOCUS
+          </div>
+
+          <button
+            type="button"
+            id="asc-study-exit-focus-v91"
+          >
+            EXIT
+          </button>
+
         </div>
 
       </div>
 
 
       <p class="study-link-v2-desc">
-        NEXUS IDを共有して、
-        仲間と同じNEXUSで勉強できます。
+        NEXUSメンバーと接続して、
+        同じセッションで集中できます。
       </p>
+
+
+      <div
+        id="asc-study-focus-launcher-v91"
+        class="asc-study-focus-launcher-v91"
+      >
+
+        <div
+          class="asc-study-focus-launcher-icon-v91"
+        >
+          F
+        </div>
+
+
+        <div
+          class="asc-study-focus-launcher-copy-v91"
+        >
+
+          <span>
+            NEXUS
+          </span>
+
+          <strong>
+            NEXUS FOCUS
+          </strong>
+
+          <small>
+            仲間と集中セッションを開始
+          </small>
+
+        </div>
+
+
+        <button
+          type="button"
+          id="asc-study-enter-focus-v91"
+        >
+          ENTER
+        </button>
+
+      </div>
 
 
       <div id="study-link-v2-lobby">
 
-        
-        <div class="nexus-create-name-v3">
+        <div class="asc-study-nexus-empty-v9">
 
-          <div class="nexus-create-name-label-v3">
-            NEXUS NAME
+          <div class="asc-study-nexus-empty-icon-v9">
+            N
           </div>
 
-          <input
-            id="study-link-v2-nexus-name"
-            type="text"
-            maxlength="24"
-            autocomplete="off"
-            placeholder="NEXUS名（あとから変更できます）"
-          />
+          <div class="asc-study-nexus-empty-copy-v9">
 
-        </div>
+            <span>
+              NOT CONNECTED
+            </span>
 
-<button
-          type="button"
-          id="study-link-v2-create"
-        >
-          CREATE NEXUS
-        </button>
+            <strong>
+              NEXUSに参加していません
+            </strong>
 
+            <small>
+              NEXUSの作成・参加は
+              SOCIAL > NEXUS から行えます。
+            </small>
 
-        <div class="study-link-v2-or">
-          OR JOIN
-        </div>
-
-
-        <div class="study-link-v2-join-row">
-
-          <input
-            id="study-link-v2-code"
-            maxlength="6"
-            autocomplete="off"
-            placeholder="NEXUS ID"
-          >
+          </div>
 
           <button
             type="button"
-            id="study-link-v2-join"
+            id="asc-study-open-nexus-v9"
           >
-            JOIN
+            OPEN NEXUS
           </button>
+
+        </div>
+
+
+        <!--
+          Legacy bridge:
+          旧イベント互換のためDOMだけ保持。
+          STUDY画面には表示しない。
+        -->
+
+        <div
+          class="asc-study-nexus-legacy-v9"
+          hidden
+        >
+
+          <div class="nexus-create-name-v3">
+
+            <div class="nexus-create-name-label-v3">
+              NEXUS NAME
+            </div>
+
+            <input
+              id="study-link-v2-nexus-name"
+              type="text"
+              maxlength="24"
+              autocomplete="off"
+            >
+
+          </div>
+
+          <button
+            type="button"
+            id="study-link-v2-create"
+          >
+            CREATE NEXUS
+          </button>
+
+          <div class="study-link-v2-join-row">
+
+            <input
+              id="study-link-v2-code"
+              maxlength="6"
+              autocomplete="off"
+            >
+
+            <button
+              type="button"
+              id="study-link-v2-join"
+            >
+              JOIN
+            </button>
+
+          </div>
 
         </div>
 
@@ -39166,14 +40682,13 @@ async function mountStudyLinkPanelV2(user) {
           id="sl-room-v2"
         >
 
-        <div id="study-link-room-tabs-v2">
+        <div
+          id="study-link-room-tabs-v2"
+          class="asc-study-focus-only-tabs-v9"
+        >
 
           <label for="sl-focus-v2">
-            FOCUS
-          </label>
-
-          <label for="sl-room-v2">
-            ROOM
+            NEXUS FOCUS
           </label>
 
         </div>
@@ -39310,6 +40825,180 @@ async function mountStudyLinkPanelV2(user) {
     document.getElementById(
       "study-link-v2-active"
     );
+
+  const enterFocusV91 =
+    document.getElementById(
+      "asc-study-enter-focus-v91"
+    );
+
+
+  enterFocusV91
+    ?.addEventListener(
+      "click",
+      async () => {
+
+        enterFocusV91.disabled =
+          true;
+
+
+        try {
+
+          await enterAscendNexusFocusV91(
+            user,
+            "study"
+          );
+
+        }
+
+        catch (error) {
+
+          console.error(
+            error
+          );
+
+
+          enterFocusV91.disabled =
+            false;
+
+        }
+
+      }
+    );
+
+
+  const exitFocusV91 =
+    document.getElementById(
+      "asc-study-exit-focus-v91"
+    );
+
+
+  exitFocusV91
+    ?.addEventListener(
+      "click",
+      async () => {
+
+        exitFocusV91.disabled =
+          true;
+
+
+        try {
+
+          await exitAscendNexusFocusV91(
+            user
+          );
+
+        }
+
+        catch (error) {
+
+          console.error(
+            error
+          );
+
+
+          exitFocusV91.disabled =
+            false;
+
+        }
+
+      }
+    );
+
+
+  const openNexusV9 =
+    document.getElementById(
+      "asc-study-open-nexus-v9"
+    );
+
+
+  openNexusV9
+    ?.addEventListener(
+      "click",
+      async () => {
+
+        disableStudyLinkRoomModeV1();
+
+        document.body.classList.remove(
+          "study-link-room-mode-v1"
+        );
+
+
+        await showPartyFriendsMainPage(
+          user,
+          "nexus"
+        );
+
+      }
+    );
+
+
+  /*
+    STUDY NEXUS -> ENTER FOCUS
+  */
+
+  if (
+    card &&
+    !card.dataset.ascFocusDelegateV914
+  ) {
+
+    card.dataset.ascFocusDelegateV914 =
+      "1";
+
+
+    card.addEventListener(
+      "click",
+      async (event) => {
+
+        const button =
+          event.target.closest(
+            "#asc-study-nexus-enter-v914"
+          );
+
+
+        if (!button) {
+          return;
+        }
+
+
+        event.preventDefault();
+
+
+        if (button.disabled) {
+          return;
+        }
+
+
+        button.disabled =
+          true;
+
+
+        try {
+
+          await enterAscendNexusFocusV91(
+            user,
+            "study"
+          );
+
+        }
+
+        catch (error) {
+
+          console.error(
+            "STUDY NEXUS FOCUS:",
+            error
+          );
+
+
+          button.disabled =
+            false;
+
+        }
+
+      }
+    );
+
+  }
+
 
   const create =
     document.getElementById(
@@ -40990,6 +42679,27 @@ async function mountStudyLinkPanelV2(user) {
 
 async function showStudyMainPage(user) {
 
+  /*
+    通常のSTUDY遷移では、
+    前回残ったROOM MODE classを完全除去。
+
+    explicit FOCUSとして呼ばれた場合だけ維持する。
+  */
+
+  if (
+    !ascendNexusFocusExplicitV91
+  ) {
+
+    document.body.classList.remove(
+      "study-link-room-mode-v1"
+    );
+
+    document.body.classList.remove(
+      "asc-nexus-focus-active-v91"
+    );
+
+  }
+
   currentMainTab = "study";
   classicNavUser = user;
 
@@ -41117,6 +42827,121 @@ async function showStudyMainPage(user) {
   updateClassicNavigationActive();
 
   await mountStudyLinkPanelV2(user);
+
+
+  /*
+    STUDY > NEXUS compact entry
+
+    NEXUS所属中だけENTER FOCUSを表示。
+    既存カードの見た目・内部ロジックには触れない。
+  */
+
+  const studyNexusCardV913 =
+    document.getElementById(
+      "study-link-card-v2"
+    );
+
+
+  const studyNexusActiveV913 =
+    document.getElementById(
+      "study-link-v2-active"
+    );
+
+
+  const studyNexusConnectedV913 =
+    !!(
+      studyNexusCardV913 &&
+      studyNexusActiveV913 &&
+      !studyNexusActiveV913.classList.contains(
+        "hidden"
+      )
+    );
+
+
+  if (
+    studyNexusCardV913 &&
+    studyNexusConnectedV913
+  ) {
+
+    let enterV913 =
+      document.getElementById(
+        "asc-study-nexus-enter-v913"
+      );
+
+
+    if (!enterV913) {
+
+      enterV913 =
+        document.createElement(
+          "button"
+        );
+
+
+      enterV913.type =
+        "button";
+
+
+      enterV913.id =
+        "asc-study-nexus-enter-v913";
+
+
+      enterV913.innerHTML = `
+        <span>
+          ENTER FOCUS
+        </span>
+
+        <b>
+          ›
+        </b>
+      `;
+
+
+      studyNexusCardV913.appendChild(
+        enterV913
+      );
+
+    }
+
+
+    enterV913.onclick =
+      async () => {
+
+        if (
+          enterV913.disabled
+        ) {
+          return;
+        }
+
+
+        enterV913.disabled =
+          true;
+
+
+        try {
+
+          await enterAscendNexusFocusV91(
+            user,
+            "study"
+          );
+
+        }
+
+        catch (error) {
+
+          console.error(
+            "NEXUS FOCUS enter:",
+            error
+          );
+
+
+          enterV913.disabled =
+            false;
+
+        }
+
+      };
+
+  }
 
 }
 
@@ -45648,7 +47473,7 @@ async function showNexusPage(user) {
               type="button"
               id="asc-nx8-focus"
             >
-              ENTER
+              ENTER FOCUS
             </button>
 
           </div>
@@ -46615,8 +48440,9 @@ async function showNexusPage(user) {
       "click",
       async () => {
 
-        await showStudyMainPage(
-          user
+        await enterAscendNexusFocusV91(
+          user,
+          "nexus"
         );
 
       }
@@ -65806,6 +67632,26 @@ setTimeout(()=>{
     );
 
 
+    /*
+      V9.1.5
+      過去パッチで増えた旧FOCUS入口を削除。
+      正式版は asc-study-nexus-enter-v914 のみ。
+    */
+
+    document
+      .getElementById(
+        "asc-study-focus-launcher-v91"
+      )
+      ?.remove();
+
+
+    document
+      .getElementById(
+        "asc-study-nexus-enter-v913"
+      )
+      ?.remove();
+
+
     setText(
       "#study-link-card-v2 .study-link-v2-kicker",
       "ASCEND / COMMUNITY"
@@ -65828,6 +67674,69 @@ setTimeout(()=>{
       "#study-link-card-v2 .study-link-v2-desc",
       "仲間と学習を共有し、BOOSTを育てる常設コミュニティ。"
     );
+
+
+    /*
+      ASCEND V9.1.4
+      STUDY画面のNEXUSカードにFOCUS入口を追加。
+    */
+
+    let focusEntryV914 =
+      document.getElementById(
+        "asc-study-nexus-enter-v914"
+      );
+
+
+    if (!focusEntryV914) {
+
+      focusEntryV914 =
+        document.createElement(
+          "button"
+        );
+
+
+      focusEntryV914.type =
+        "button";
+
+
+      focusEntryV914.id =
+        "asc-study-nexus-enter-v914";
+
+
+      focusEntryV914.innerHTML = `
+        <span>
+          <small>NEXUS SESSION</small>
+          <strong>ENTER FOCUS</strong>
+        </span>
+
+        <b>›</b>
+      `;
+
+
+      const descV914 =
+        card.querySelector(
+          ".study-link-v2-desc"
+        );
+
+
+      if (descV914) {
+
+        descV914.insertAdjacentElement(
+          "afterend",
+          focusEntryV914
+        );
+
+      }
+
+      else {
+
+        card.appendChild(
+          focusEntryV914
+        );
+
+      }
+
+    }
 
 
     setText(
