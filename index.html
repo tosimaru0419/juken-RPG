@@ -40396,18 +40396,20 @@ async function returnAfterStudyLinkTimerV1(
       : "";
 
 
-  if (code) {
+  /*
+    ASCEND STARTUP:
+    NEXUS所属中でも通常起動はHOME。
 
-    await showStudyMainPage(
-      user
-    );
+    NEXUS所属情報は維持し、
+    codeが無い場合だけROOM MODEを解除する。
+  */
 
-    return;
+  if (!code) {
+
+    disableStudyLinkRoomModeV1();
 
   }
 
-
-  disableStudyLinkRoomModeV1();
 
   await showHome(
     user
@@ -72090,21 +72092,21 @@ setTimeout(()=>{
 
     main.style.setProperty(
       "top",
-      "18px",
+      "30px",
       "important"
     );
 
 
     main.style.setProperty(
       "height",
-      "calc(100dvh - 18px)",
+      "calc(100dvh - 30px)",
       "important"
     );
 
 
     main.style.setProperty(
       "max-height",
-      "calc(100dvh - 18px)",
+      "calc(100dvh - 30px)",
       "important"
     );
 
@@ -72144,150 +72146,5 @@ setTimeout(()=>{
 </script>
 
 <!-- ASCEND STANDALONE TOP OFFSET V2 -->
-
-
-<script id="ascend-start-on-home-v1">
-
-/* =========================================================
-   ASCEND START ON HOME V1
-
-   アプリ起動時だけHOMEを1回選択。
-   その後のユーザー操作には干渉しない。
-========================================================= */
-
-(() => {
-
-  let completed = false;
-  let attempts = 0;
-
-  const MAX_ATTEMPTS = 50;
-
-
-  function findHomeButton() {
-
-    const nav =
-      document.getElementById(
-        "main-navigation"
-      );
-
-    if (!nav) {
-      return null;
-    }
-
-
-    const buttons =
-      nav.querySelectorAll(
-        "button, [role='button'], a"
-      );
-
-
-    for (const button of buttons) {
-
-      const label =
-        button.querySelector(
-          ".nav-label"
-        );
-
-
-      const text =
-        (
-          label?.textContent ||
-          button.textContent ||
-          ""
-        )
-        .replace(/\s+/g, " ")
-        .trim()
-        .toUpperCase();
-
-
-      if (text === "HOME") {
-        return button;
-      }
-
-    }
-
-
-    return null;
-
-  }
-
-
-  function openHomeOnce() {
-
-    if (completed) {
-      return;
-    }
-
-
-    attempts += 1;
-
-
-    const home =
-      findHomeButton();
-
-
-    if (home) {
-
-      completed = true;
-
-      /*
-        ナビ生成直後だとlistener登録前の可能性があるため
-        1フレーム待ってから実行。
-      */
-
-      requestAnimationFrame(() => {
-
-        requestAnimationFrame(() => {
-
-          home.click();
-
-        });
-
-      });
-
-      return;
-
-    }
-
-
-    if (attempts < MAX_ATTEMPTS) {
-
-      setTimeout(
-        openHomeOnce,
-        100
-      );
-
-    }
-
-  }
-
-
-  if (
-    document.readyState === "loading"
-  ) {
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      () => setTimeout(openHomeOnce, 100),
-      { once:true }
-    );
-
-  }
-
-  else {
-
-    setTimeout(
-      openHomeOnce,
-      100
-    );
-
-  }
-
-})();
-
-</script>
-
-<!-- ASCEND START ON HOME V1 -->
-
 </body>
 </html>
