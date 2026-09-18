@@ -70220,6 +70220,1168 @@ function startTimerInterval() {
 }
 
 
+
+/* ============================================================
+   ASCEND STUDY LEGACY UI V5
+
+   TIMER + QUICK LOG
+   UI ONLY
+   DARK / LIGHT THEME AWARE
+============================================================ */
+
+function ensureAscendStudyLegacyUiV5() {
+
+  let style =
+    document.getElementById(
+      "asc-study-legacy-ui-v5"
+    );
+
+
+  if (!style) {
+
+    style =
+      document.createElement(
+        "style"
+      );
+
+
+    style.id =
+      "asc-study-legacy-ui-v5";
+
+
+    document.head.appendChild(
+      style
+    );
+
+  }
+
+
+  style.textContent = `
+
+/* =========================================================
+   COMMON SHELL
+========================================================= */
+
+.asc-study-shell-v5 {
+
+  --study-bg:
+    var(--bg-dark);
+
+  --study-card:
+    var(--bg-card);
+
+  --study-raised:
+    var(--bg-card-hover);
+
+  --study-text:
+    var(--text-main);
+
+  --study-muted:
+    var(--text-muted);
+
+  --study-border:
+    var(--border-color);
+
+  --study-cyan:
+    var(--neon-cyan,#00f3ff);
+
+  --study-green:
+    var(--neon-green,#00ff66);
+
+
+  position:
+    relative !important;
+
+  width:
+    min(
+      100%,
+      680px
+    ) !important;
+
+  max-width:
+    680px !important;
+
+  margin-left:
+    auto !important;
+
+  margin-right:
+    auto !important;
+
+  padding:
+    22px !important;
+
+  border:
+    1px solid
+    var(--study-border) !important;
+
+  border-radius:
+    20px !important;
+
+  background:
+    var(--study-card) !important;
+
+  color:
+    var(--study-text) !important;
+
+  box-shadow:
+    0 18px 42px
+    rgba(0,0,0,.14) !important;
+
+  box-sizing:
+    border-box !important;
+
+  overflow:
+    hidden !important;
+
+}
+
+
+/* ASCEND ACCENT */
+
+.asc-study-shell-v5::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  top:
+    0;
+
+  left:
+    22px;
+
+  width:
+    58px;
+
+  height:
+    2px;
+
+  background:
+    var(--study-cyan);
+
+  box-shadow:
+    0 0 13px
+    rgba(0,243,255,.28);
+
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.asc-study-shell-v5
+.asc-study-title-v5 {
+
+  margin:
+    0 !important;
+
+  color:
+    var(--study-text) !important;
+
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    sans-serif !important;
+
+  font-size:
+    clamp(
+      1.65rem,
+      7vw,
+      2.25rem
+    ) !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .045em !important;
+
+}
+
+
+.asc-study-timer-v5
+.asc-study-title-v5::before {
+
+  content:
+    "STUDY / TIMER";
+
+  display:
+    block;
+
+  margin-bottom:
+    7px;
+
+  color:
+    var(--study-cyan);
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:
+    .58rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .19em;
+
+}
+
+
+.asc-study-manual-v5
+.asc-study-title-v5::before {
+
+  content:
+    "STUDY / QUICK LOG";
+
+  display:
+    block;
+
+  margin-bottom:
+    7px;
+
+  color:
+    var(--study-cyan);
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:
+    .58rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .19em;
+
+}
+
+
+.asc-study-v5-lead {
+
+  margin:
+    7px 0 19px !important;
+
+  color:
+    var(--study-muted) !important;
+
+  font-size:
+    .76rem !important;
+
+  line-height:
+    1.65 !important;
+
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.asc-study-shell-v5 label {
+
+  display:
+    grid !important;
+
+  gap:
+    7px !important;
+
+  color:
+    var(--study-muted) !important;
+
+  font-size:
+    .66rem !important;
+
+  font-weight:
+    850 !important;
+
+  letter-spacing:
+    .055em !important;
+
+}
+
+
+.asc-study-shell-v5 select,
+
+.asc-study-shell-v5 input {
+
+  width:
+    100% !important;
+
+  max-width:
+    100% !important;
+
+  min-width:
+    0 !important;
+
+  min-height:
+    46px !important;
+
+  margin:
+    0 !important;
+
+  padding:
+    0 13px !important;
+
+  border:
+    1px solid
+    var(--study-border) !important;
+
+  border-radius:
+    10px !important;
+
+  outline:
+    none !important;
+
+  background:
+    var(--study-raised) !important;
+
+  color:
+    var(--study-text) !important;
+
+  box-sizing:
+    border-box !important;
+
+  font-size:
+    .78rem !important;
+
+  font-weight:
+    750 !important;
+
+}
+
+
+.asc-study-shell-v5 select:focus,
+
+.asc-study-shell-v5 input:focus {
+
+  border-color:
+    var(--study-cyan) !important;
+
+  box-shadow:
+    0 0 0 2px
+    rgba(0,243,255,.075) !important;
+
+}
+
+
+.asc-study-shell-v5 select:disabled {
+
+  opacity:
+    .40 !important;
+
+}
+
+
+/* =========================================================
+   MAIN CATEGORY
+========================================================= */
+
+.asc-study-v5-primary-select {
+
+  margin:
+    18px 0 11px !important;
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--study-cyan) 25%,
+      var(--study-border)
+    ) !important;
+
+}
+
+
+/* =========================================================
+   WEAKNESS MAP / MISSION TARGET
+========================================================= */
+
+.asc-study-shell-v5
+.asc-study-target-v5 {
+
+  display:
+    grid !important;
+
+  gap:
+    11px !important;
+
+  width:
+    100% !important;
+
+  max-width:
+    100% !important;
+
+  margin:
+    11px 0 17px !important;
+
+  padding:
+    14px !important;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--study-cyan) 20%,
+      var(--study-border)
+    ) !important;
+
+  border-radius:
+    13px !important;
+
+  background:
+    var(--study-raised) !important;
+
+  box-sizing:
+    border-box !important;
+
+}
+
+
+.asc-study-target-v5 > div:first-child {
+
+  margin-bottom:
+    1px !important;
+
+}
+
+
+.asc-study-target-v5
+> div:first-child
+> div:first-child {
+
+  color:
+    var(--study-cyan) !important;
+
+  font-family:
+    "Rajdhani",
+    sans-serif !important;
+
+  font-size:
+    .59rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .16em !important;
+
+}
+
+
+.asc-study-target-v5
+> div:first-child
+> div:last-child {
+
+  color:
+    var(--study-muted) !important;
+
+  font-size:
+    .68rem !important;
+
+}
+
+
+/* =========================================================
+   TIMER HERO
+========================================================= */
+
+.asc-study-timer-v5
+#timer-display {
+
+  position:
+    relative !important;
+
+  margin:
+    14px 0 14px !important;
+
+  padding:
+    26px 4px 23px !important;
+
+  border-top:
+    1px solid
+    var(--study-border) !important;
+
+  border-bottom:
+    1px solid
+    var(--study-border) !important;
+
+  color:
+    var(--study-text) !important;
+
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    sans-serif !important;
+
+  font-size:
+    clamp(
+      2.8rem,
+      14vw,
+      4.8rem
+    ) !important;
+
+  font-weight:
+    700 !important;
+
+  letter-spacing:
+    .05em !important;
+
+  text-align:
+    center !important;
+
+  font-variant-numeric:
+    tabular-nums !important;
+
+}
+
+
+.asc-study-timer-v5
+#timer-display::before {
+
+  content:
+    "SESSION TIME";
+
+  display:
+    block;
+
+  margin-bottom:
+    8px;
+
+  color:
+    var(--study-muted);
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:
+    .55rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .19em;
+
+}
+
+
+/* =========================================================
+   TIMER BUTTONS
+========================================================= */
+
+.asc-study-timer-v5
+#timer-start,
+
+.asc-study-timer-v5
+#timer-pause,
+
+.asc-study-timer-v5
+#timer-end {
+
+  min-height:
+    48px !important;
+
+  margin-top:
+    8px !important;
+
+  border-radius:
+    10px !important;
+
+  background:
+    var(--study-raised) !important;
+
+  font-family:
+    "Rajdhani",
+    sans-serif !important;
+
+  font-size:
+    .78rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .10em !important;
+
+}
+
+
+.asc-study-timer-v5
+#timer-start {
+
+  border:
+    1px solid
+    rgba(0,243,255,.42) !important;
+
+  color:
+    var(--study-cyan) !important;
+
+}
+
+
+.asc-study-timer-v5
+#timer-pause {
+
+  border:
+    1px solid
+    rgba(255,190,65,.30) !important;
+
+  color:
+    #eeb646 !important;
+
+}
+
+
+.asc-study-timer-v5
+#timer-end {
+
+  border:
+    1px solid
+    rgba(255,75,100,.32) !important;
+
+  color:
+    #ff5d73 !important;
+
+}
+
+
+.asc-study-timer-v5
+#timer-start:disabled,
+
+.asc-study-timer-v5
+#timer-pause:disabled,
+
+.asc-study-timer-v5
+#timer-end:disabled {
+
+  opacity:
+    .30 !important;
+
+}
+
+
+.asc-study-shell-v5
+#timer-back,
+
+.asc-study-shell-v5
+#manual-study-back {
+
+  min-height:
+    44px !important;
+
+  margin-top:
+    8px !important;
+
+  border:
+    1px solid
+    var(--study-border) !important;
+
+  border-radius:
+    10px !important;
+
+  background:
+    transparent !important;
+
+  color:
+    var(--study-muted) !important;
+
+  font-family:
+    "Rajdhani",
+    sans-serif !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .08em !important;
+
+}
+
+
+/* =========================================================
+   QUICK LOG / MINUTES HERO
+========================================================= */
+
+.asc-study-manual-v5
+.asc-study-minutes-v5 {
+
+  position:
+    relative !important;
+
+  display:
+    grid !important;
+
+  gap:
+    8px !important;
+
+  margin:
+    17px 0 12px !important;
+
+  padding:
+    15px !important;
+
+  border:
+    1px solid
+    var(--study-border) !important;
+
+  border-radius:
+    13px !important;
+
+  background:
+    var(--study-raised) !important;
+
+  box-sizing:
+    border-box !important;
+
+}
+
+
+.asc-study-manual-v5
+.asc-study-minutes-v5::before {
+
+  content:
+    "SESSION LENGTH";
+
+  color:
+    var(--study-cyan);
+
+  font-family:
+    "Rajdhani",
+    sans-serif;
+
+  font-size:
+    .57rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .17em;
+
+}
+
+
+.asc-study-manual-v5
+#manual-study-minutes {
+
+  height:
+    68px !important;
+
+  padding:
+    0 12px !important;
+
+  border:
+    0 !important;
+
+  border-bottom:
+    1px solid
+    var(--study-border) !important;
+
+  border-radius:
+    0 !important;
+
+  background:
+    transparent !important;
+
+  color:
+    var(--study-text) !important;
+
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    sans-serif !important;
+
+  font-size:
+    2.15rem !important;
+
+  font-weight:
+    700 !important;
+
+  letter-spacing:
+    .04em !important;
+
+  text-align:
+    center !important;
+
+}
+
+
+/* =========================================================
+   QUICK LOG NEXT
+========================================================= */
+
+.asc-study-manual-v5
+#manual-study-next {
+
+  min-height:
+    49px !important;
+
+  margin-top:
+    3px !important;
+
+  border:
+    1px solid
+    rgba(0,243,255,.40) !important;
+
+  border-radius:
+    10px !important;
+
+  background:
+    rgba(0,243,255,.08) !important;
+
+  color:
+    var(--study-cyan) !important;
+
+  font-family:
+    "Rajdhani",
+    sans-serif !important;
+
+  font-size:
+    .77rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .08em !important;
+
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.asc-study-shell-v5
+#timer-error,
+
+.asc-study-shell-v5
+#manual-study-error {
+
+  margin-top:
+    8px !important;
+
+  font-size:
+    .70rem !important;
+
+}
+
+
+/* =========================================================
+   LIGHT MODE
+========================================================= */
+
+html[data-asc-theme="light"]
+.asc-study-shell-v5 {
+
+  box-shadow:
+    0 10px 30px
+    rgba(25,40,65,.07) !important;
+
+}
+
+
+html[data-asc-theme="light"]
+.asc-study-shell-v5::before {
+
+  box-shadow:
+    none !important;
+
+}
+
+
+html[data-asc-theme="light"]
+.asc-study-timer-v5
+#timer-display {
+
+  text-shadow:
+    none !important;
+
+}
+
+
+html[data-asc-theme="light"]
+.asc-study-manual-v5
+#manual-study-next {
+
+  background:
+    rgba(0,155,195,.055) !important;
+
+}
+
+
+/* =========================================================
+   SMALL PHONE
+========================================================= */
+
+@media (max-width:390px) {
+
+  .asc-study-shell-v5 {
+
+    padding:
+      17px !important;
+
+    border-radius:
+      17px !important;
+
+  }
+
+
+  .asc-study-timer-v5
+  #timer-display {
+
+    font-size:
+      2.65rem !important;
+
+  }
+
+
+  .asc-study-shell-v5
+  .asc-study-target-v5 {
+
+    padding:
+      12px !important;
+
+  }
+
+}
+
+  `;
+
+}
+
+
+
+function findAscendStudyCardV5(
+  anchor,
+  actionSelector
+) {
+
+  let node =
+    anchor;
+
+
+  while (
+    node &&
+    node !== document.body
+  ) {
+
+    if (
+      node.querySelector?.("h1") &&
+      node.querySelector?.(
+        actionSelector
+      )
+    ) {
+
+      return node;
+
+    }
+
+
+    node =
+      node.parentElement;
+
+  }
+
+
+  return null;
+
+}
+
+
+
+function mountAscendManualStudyUiV5() {
+
+  ensureAscendStudyLegacyUiV5();
+
+
+  const group =
+    document.getElementById(
+      "manual-study-group-v4"
+    );
+
+
+  if (!group) {
+    return;
+  }
+
+
+  const root =
+    findAscendStudyCardV5(
+      group,
+      "#manual-study-next"
+    );
+
+
+  if (!root) {
+    return;
+  }
+
+
+  root.classList.add(
+    "asc-study-shell-v5",
+    "asc-study-manual-v5"
+  );
+
+
+  const title =
+    root.querySelector(
+      "h1"
+    );
+
+
+  title?.classList.add(
+    "asc-study-title-v5"
+  );
+
+
+  const lead =
+    title
+      ?.nextElementSibling;
+
+
+  if (
+    lead &&
+    lead.tagName === "P"
+  ) {
+
+    lead.classList.add(
+      "asc-study-v5-lead"
+    );
+
+  }
+
+
+  group.classList.add(
+    "asc-study-v5-primary-select"
+  );
+
+
+  document
+    .getElementById(
+      "manual-weakness-wrap-v1"
+    )
+    ?.classList.add(
+      "asc-study-target-v5"
+    );
+
+
+  document
+    .getElementById(
+      "manual-study-minutes"
+    )
+    ?.closest(
+      "label"
+    )
+    ?.classList.add(
+      "asc-study-minutes-v5"
+    );
+
+}
+
+
+
+function mountAscendTimerStudyUiV5() {
+
+  ensureAscendStudyLegacyUiV5();
+
+
+  const group =
+    document.getElementById(
+      "timer-subject-group-v4"
+    );
+
+
+  if (!group) {
+    return;
+  }
+
+
+  const root =
+    findAscendStudyCardV5(
+      group,
+      "#timer-start"
+    );
+
+
+  if (!root) {
+    return;
+  }
+
+
+  root.classList.add(
+    "asc-study-shell-v5",
+    "asc-study-timer-v5"
+  );
+
+
+  const title =
+    root.querySelector(
+      "h1"
+    );
+
+
+  title?.classList.add(
+    "asc-study-title-v5"
+  );
+
+
+  if (
+    title &&
+    !root.querySelector(
+      ".asc-study-v5-lead"
+    )
+  ) {
+
+    const lead =
+      document.createElement(
+        "p"
+      );
+
+
+    lead.className =
+      "asc-study-v5-lead";
+
+
+    lead.textContent =
+      "学習内容を設定して、セッションを開始。";
+
+
+    title.insertAdjacentElement(
+      "afterend",
+      lead
+    );
+
+  }
+
+
+  group.classList.add(
+    "asc-study-v5-primary-select"
+  );
+
+
+  document
+    .getElementById(
+      "timer-weakness-unit-wrap-v1"
+    )
+    ?.classList.add(
+      "asc-study-target-v5"
+    );
+
+}
+
+
+/* ASCEND STUDY LEGACY UI V5 */
+
+
 async function showManualStudyPage(user) {
   const ref = doc(db, "users", user.uid);
   const snap = await getDoc(ref);
@@ -70251,7 +71413,7 @@ async function showManualStudyPage(user) {
       </p>
 
       <label>
-        教科
+        カテゴリ
 
         <select
           id="manual-study-group-v4"
@@ -70263,7 +71425,7 @@ async function showManualStudyPage(user) {
           "
         >
           <option value="">
-            選択してください
+            カテゴリを選択
           </option>
 
           ${
@@ -70322,7 +71484,7 @@ async function showManualStudyPage(user) {
               color:#9b83ff;
             "
           >
-            WEAKNESS MAP
+            WEAKNESS MAP / TARGET
           </div>
 
           <div
@@ -70353,7 +71515,7 @@ async function showManualStudyPage(user) {
         </label>
 
         <label>
-          CATEGORY / CHAPTER
+          分野
           <select
             id="manual-weakness-chapter-v1"
             disabled
@@ -70369,7 +71531,7 @@ async function showManualStudyPage(user) {
         </label>
 
         <label>
-          SKILL / UNIT
+          単元
           <select
             id="manual-weakness-unit-v1"
             disabled
@@ -70423,6 +71585,10 @@ async function showManualStudyPage(user) {
       ></p>
     `)
   );
+
+
+  mountAscendManualStudyUiV5();
+
 
   const manualSubjectEl =
     $("manual-study-subject");
@@ -71022,7 +72188,7 @@ async function showTimerPage(user) {
         style="${fieldStyle()}"
       >
         <option value="">
-          教科を選択
+          カテゴリを選択
         </option>
 
         ${
@@ -71065,7 +72231,7 @@ async function showTimerPage(user) {
 
 
       <!-- ================================================
-           WEAKNESS MAP / UNIT SELECT
+           WEAKNESS MAP / TARGET SELECT
       ================================================= -->
 
       <div
@@ -71168,6 +72334,9 @@ async function showTimerPage(user) {
       <p id="timer-error" style="margin:0;color:#ff8b8b"></p>
     `)
   );
+
+
+  mountAscendTimerStudyUiV5();
 
 
   // ========================================================
