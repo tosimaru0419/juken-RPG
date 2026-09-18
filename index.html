@@ -71285,6 +71285,13 @@ function mountAscendManualStudyUiV5() {
       "asc-study-minutes-v5"
     );
 
+
+  ensureAscendStudyCompactV6();
+
+  mountAscendStudyActionsV6(
+    "manual"
+  );
+
 }
 
 
@@ -71376,10 +71383,557 @@ function mountAscendTimerStudyUiV5() {
       "asc-study-target-v5"
     );
 
+
+  ensureAscendStudyCompactV6();
+
+  mountAscendStudyActionsV6(
+    "timer"
+  );
+
 }
 
 
 /* ASCEND STUDY LEGACY UI V5 */
+
+
+
+/* ============================================================
+   ASCEND STUDY COMPACT V6
+
+   ・縦方向を圧縮
+   ・TIMER操作を3列化
+   ・QUICK LOG操作を2列化
+   ・DARK / LIGHT共通
+============================================================ */
+
+function ensureAscendStudyCompactV6() {
+
+  let style =
+    document.getElementById(
+      "asc-study-compact-v6"
+    );
+
+
+  if (!style) {
+
+    style =
+      document.createElement(
+        "style"
+      );
+
+    style.id =
+      "asc-study-compact-v6";
+
+    document.head.appendChild(
+      style
+    );
+
+  }
+
+
+  style.textContent = `
+
+/* =========================================================
+   SHELL
+========================================================= */
+
+.asc-study-shell-v5 {
+
+  max-width:
+    620px !important;
+
+  padding:
+    16px !important;
+
+  border-radius:
+    16px !important;
+
+}
+
+
+.asc-study-shell-v5::before {
+
+  left:
+    16px !important;
+
+  width:
+    48px !important;
+
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.asc-study-shell-v5
+.asc-study-title-v5 {
+
+  font-size:
+    clamp(
+      1.35rem,
+      6vw,
+      1.8rem
+    ) !important;
+
+}
+
+
+.asc-study-timer-v5
+.asc-study-title-v5::before,
+
+.asc-study-manual-v5
+.asc-study-title-v5::before {
+
+  margin-bottom:
+    4px !important;
+
+  font-size:
+    .52rem !important;
+
+}
+
+
+.asc-study-v5-lead {
+
+  margin:
+    4px 0 11px !important;
+
+  font-size:
+    .69rem !important;
+
+  line-height:
+    1.45 !important;
+
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.asc-study-shell-v5 label {
+
+  gap:
+    4px !important;
+
+  font-size:
+    .61rem !important;
+
+}
+
+
+.asc-study-shell-v5 select,
+
+.asc-study-shell-v5 input {
+
+  min-height:
+    40px !important;
+
+  padding:
+    0 11px !important;
+
+  border-radius:
+    9px !important;
+
+  font-size:
+    .72rem !important;
+
+}
+
+
+.asc-study-v5-primary-select {
+
+  margin:
+    9px 0 7px !important;
+
+}
+
+
+/* =========================================================
+   TARGET
+========================================================= */
+
+.asc-study-shell-v5
+.asc-study-target-v5 {
+
+  gap:
+    7px !important;
+
+  margin:
+    7px 0 9px !important;
+
+  padding:
+    10px !important;
+
+  border-radius:
+    11px !important;
+
+}
+
+
+/*
+  説明文は情報としては残っているが、
+  通常表示では省いて高さを節約。
+*/
+
+.asc-study-target-v5
+> div:first-child
+> div:last-child {
+
+  display:
+    none !important;
+
+}
+
+
+.asc-study-target-v5
+> div:first-child
+> div:first-child {
+
+  font-size:
+    .54rem !important;
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+.asc-study-timer-v5
+#timer-display {
+
+  margin:
+    7px 0 8px !important;
+
+  padding:
+    15px 4px 13px !important;
+
+  font-size:
+    clamp(
+      2.45rem,
+      12vw,
+      3.8rem
+    ) !important;
+
+}
+
+
+.asc-study-timer-v5
+#timer-display::before {
+
+  margin-bottom:
+    5px !important;
+
+  font-size:
+    .50rem !important;
+
+}
+
+
+/* START / PAUSE / FINISH */
+
+.asc-study-actions-v6 {
+
+  display:
+    grid !important;
+
+  width:
+    100% !important;
+
+  gap:
+    6px !important;
+
+  box-sizing:
+    border-box !important;
+
+}
+
+
+.asc-study-actions-v6.timer {
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0,1fr)
+    ) !important;
+
+}
+
+
+.asc-study-actions-v6.manual {
+
+  grid-template-columns:
+    minmax(0,1.65fr)
+    minmax(0,1fr) !important;
+
+}
+
+
+.asc-study-actions-v6 button {
+
+  width:
+    100% !important;
+
+  min-width:
+    0 !important;
+
+  min-height:
+    41px !important;
+
+  margin:
+    0 !important;
+
+  padding:
+    7px 5px !important;
+
+  box-sizing:
+    border-box !important;
+
+}
+
+
+/* TIMER BACK */
+
+.asc-study-timer-v5
+#timer-back {
+
+  min-height:
+    37px !important;
+
+  margin-top:
+    6px !important;
+
+  font-size:
+    .67rem !important;
+
+}
+
+
+/* =========================================================
+   QUICK LOG
+========================================================= */
+
+.asc-study-manual-v5
+.asc-study-minutes-v5 {
+
+  gap:
+    4px !important;
+
+  margin:
+    8px 0 8px !important;
+
+  padding:
+    9px 11px !important;
+
+  border-radius:
+    11px !important;
+
+}
+
+
+.asc-study-manual-v5
+.asc-study-minutes-v5::before {
+
+  font-size:
+    .52rem !important;
+
+}
+
+
+.asc-study-manual-v5
+#manual-study-minutes {
+
+  height:
+    50px !important;
+
+  font-size:
+    1.72rem !important;
+
+}
+
+
+.asc-study-manual-v5
+#manual-study-next,
+
+.asc-study-manual-v5
+#manual-study-back {
+
+  min-height:
+    42px !important;
+
+  margin:
+    0 !important;
+
+  font-size:
+    .68rem !important;
+
+}
+
+
+/* =========================================================
+   PHONE
+========================================================= */
+
+@media (max-width:390px) {
+
+  .asc-study-shell-v5 {
+
+    padding:
+      13px !important;
+
+    border-radius:
+      14px !important;
+
+  }
+
+
+  .asc-study-shell-v5::before {
+
+    left:
+      13px !important;
+
+  }
+
+
+  .asc-study-v5-lead {
+
+    /*
+      タイトルだけで用途は分かるので
+      スマホではさらに短縮。
+    */
+
+    display:
+      none !important;
+
+  }
+
+
+  .asc-study-shell-v5
+  .asc-study-target-v5 {
+
+    padding:
+      9px !important;
+
+  }
+
+
+  .asc-study-shell-v5 select,
+
+  .asc-study-shell-v5 input {
+
+    min-height:
+      38px !important;
+
+  }
+
+
+  .asc-study-timer-v5
+  #timer-display {
+
+    padding:
+      13px 2px 11px !important;
+
+    font-size:
+      2.3rem !important;
+
+  }
+
+
+  .asc-study-actions-v6 button {
+
+    font-size:
+      .64rem !important;
+
+  }
+
+}
+
+  `;
+
+}
+
+
+
+function mountAscendStudyActionsV6(
+  mode
+) {
+
+  const ids =
+    mode === "timer"
+      ? [
+          "timer-start",
+          "timer-pause",
+          "timer-end",
+        ]
+      : [
+          "manual-study-next",
+          "manual-study-back",
+        ];
+
+
+  const buttons =
+    ids
+      .map(
+        id =>
+          document.getElementById(
+            id
+          )
+      )
+      .filter(Boolean);
+
+
+  if (
+    buttons.length !==
+    ids.length
+  ) {
+    return;
+  }
+
+
+  const existing =
+    buttons[0].closest(
+      ".asc-study-actions-v6"
+    );
+
+
+  if (existing) {
+    return;
+  }
+
+
+  const row =
+    document.createElement(
+      "div"
+    );
+
+
+  row.className =
+    "asc-study-actions-v6 " +
+    mode;
+
+
+  buttons[0]
+    .parentNode
+    .insertBefore(
+      row,
+      buttons[0]
+    );
+
+
+  buttons.forEach(
+    button =>
+      row.appendChild(
+        button
+      )
+  );
+
+}
+
+
+
+/* ASCEND STUDY COMPACT V6 */
 
 
 async function showManualStudyPage(user) {
@@ -71576,7 +72130,7 @@ async function showManualStudyPage(user) {
         id="manual-study-back"
         style="${buttonStyle(false)}"
       >
-        ホームへ戻る
+        勉強タブへ戻る
       </button>
 
       <p
@@ -71997,21 +72551,13 @@ async function showManualStudyPage(user) {
 
   if (manualStudyBack) {
 
-    const manualRoomCode =
-      normalizeStudyLinkV2Code(
-        data.studyLinkRoomCode ||
-        ""
-      );
-
     manualStudyBack.textContent =
-      manualRoomCode
-        ? "NEXUSへ戻る"
-        : "ホームへ戻る";
+      "勉強タブへ戻る";
 
     manualStudyBack.onclick =
       async () => {
 
-        await returnAfterStudyLinkTimerV1(
+        await showStudyMainPage(
           user
         );
 
@@ -72328,7 +72874,7 @@ async function showTimerPage(user) {
       </button>
 
       <button id="timer-back" style="${buttonStyle(false)}">
-        ホームへ戻る
+        勉強タブへ戻る
       </button>
 
       <p id="timer-error" style="margin:0;color:#ff8b8b"></p>
@@ -72984,8 +73530,13 @@ async function showTimerPage(user) {
 
 
   $("timer-back").onclick = async () => {
+
     stopTimerInterval();
-    await returnAfterStudyLinkTimerV1(user);
+
+    await showStudyMainPage(
+      user
+    );
+
   };
 
 
