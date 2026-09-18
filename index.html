@@ -72146,77 +72146,110 @@ setTimeout(()=>{
 
 <!-- ASCEND STANDALONE TOP OFFSET V2 -->
 
-<style id="ascend-focus-real-scroll-v4">
+<style id="ascend-focus-v10-style">
 
 /* =========================================================
-   ASCEND FOCUS REAL SCROLL V4
+   ASCEND FOCUS V10
+   ISOLATED FULLSCREEN SHELL
 
-   古いFOCUSクラスには依存しない。
-   実際にFOCUS DOMが表示中の時だけ有効化。
+   既存FOCUSのロジックは再利用。
+   レイアウトだけASCEND本体から完全分離する。
 ========================================================= */
 
 
-/* ROOT */
+/* =========================================================
+   OVERLAY
+========================================================= */
 
-html.asc-focus-real-scroll-v4 {
+#asc-focus-v10-overlay {
+
+  position:
+    fixed !important;
+
+  inset:
+    0 !important;
+
+  z-index:
+    2147483000 !important;
+
+  width:
+    100vw !important;
 
   height:
-    auto !important;
+    100dvh !important;
 
-  min-height:
-    100% !important;
-
-  overflow-x:
+  overflow:
     hidden !important;
 
-  overflow-y:
-    auto !important;
+  background:
+    var(
+      --main-stage-bg,
+      var(--asc-bg,#080b12)
+    ) !important;
 
-  -webkit-overflow-scrolling:
-    touch !important;
+  box-sizing:
+    border-box !important;
 
 }
 
 
-/* BODY */
+/* =========================================================
+   これだけがスクロール担当
+========================================================= */
 
-html.asc-focus-real-scroll-v4
-body {
+#asc-focus-v10-scroll {
 
   position:
-    static !important;
+    absolute !important;
 
   inset:
-    auto !important;
+    0 !important;
 
   width:
     100% !important;
 
   height:
-    auto !important;
-
-  min-height:
-    100dvh !important;
-
-  max-height:
-    none !important;
+    100% !important;
 
   overflow-x:
     hidden !important;
 
   overflow-y:
-    visible !important;
+    scroll !important;
+
+  -webkit-overflow-scrolling:
+    touch !important;
 
   touch-action:
     pan-y !important;
 
+  overscroll-behavior-y:
+    contain !important;
+
+  box-sizing:
+    border-box !important;
+
+  padding:
+    calc(
+      env(safe-area-inset-top)
+      + 16px
+    )
+    14px
+    calc(
+      env(safe-area-inset-bottom)
+      + 48px
+    )
+    !important;
+
 }
 
 
-/* MAIN */
+/* =========================================================
+   元カードを完全に普通のコンテンツ化
+========================================================= */
 
-html.asc-focus-real-scroll-v4
-body > main {
+#asc-focus-v10-overlay
+#study-link-card-v2 {
 
   position:
     static !important;
@@ -72227,82 +72260,13 @@ body > main {
   top:
     auto !important;
 
+  left:
+    auto !important;
+
+  right:
+    auto !important;
+
   bottom:
-    auto !important;
-
-  width:
-    100% !important;
-
-  height:
-    auto !important;
-
-  min-height:
-    100dvh !important;
-
-  max-height:
-    none !important;
-
-  display:
-    block !important;
-
-  overflow:
-    visible !important;
-
-  box-sizing:
-    border-box !important;
-
-  padding:
-    50px 16px
-    calc(
-      50px +
-      env(safe-area-inset-bottom)
-    )
-    !important;
-
-  touch-action:
-    pan-y !important;
-
-}
-
-
-/* SECTION */
-
-html.asc-focus-real-scroll-v4
-body > main > section {
-
-  position:
-    static !important;
-
-  width:
-    100% !important;
-
-  height:
-    auto !important;
-
-  min-height:
-    0 !important;
-
-  max-height:
-    none !important;
-
-  overflow:
-    visible !important;
-
-  touch-action:
-    pan-y !important;
-
-}
-
-
-/* FOCUS CARD */
-
-html.asc-focus-real-scroll-v4
-#study-link-card-v2 {
-
-  position:
-    static !important;
-
-  inset:
     auto !important;
 
   width:
@@ -72320,45 +72284,37 @@ html.asc-focus-real-scroll-v4
   margin:
     0 auto !important;
 
+  padding:
+    14px !important;
+
+  display:
+    block !important;
+
   overflow:
     visible !important;
 
   contain:
     none !important;
 
-}
-
-
-/* ACTIVE */
-
-html.asc-focus-real-scroll-v4
-#study-link-v2-active {
-
-  height:
-    auto !important;
-
-  min-height:
-    0 !important;
-
-  max-height:
+  transform:
     none !important;
 
-  overflow:
-    visible !important;
+  box-sizing:
+    border-box !important;
 
 }
 
 
-/* MEMBERS */
+/* ACTIVEだけ表示 */
 
-html.asc-focus-real-scroll-v4
-.study-link-v2-members-wrap {
+#asc-focus-v10-overlay
+#study-link-v2-active {
 
   display:
     grid !important;
 
-  grid-template-rows:
-    auto auto !important;
+  width:
+    100% !important;
 
   height:
     auto !important;
@@ -72372,20 +72328,112 @@ html.asc-focus-real-scroll-v4
   overflow:
     visible !important;
 
+  gap:
+    14px !important;
+
 }
 
 
-html.asc-focus-real-scroll-v4
+/* lobbyはFOCUSには不要 */
+
+#asc-focus-v10-overlay
+#study-link-v2-lobby {
+
+  display:
+    none !important;
+
+}
+
+
+/* =========================================================
+   MEMBERS
+========================================================= */
+
+#asc-focus-v10-overlay
+.study-link-v2-members-wrap {
+
+  display:
+    block !important;
+
+  width:
+    100% !important;
+
+  height:
+    auto !important;
+
+  min-height:
+    0 !important;
+
+  max-height:
+    none !important;
+
+  overflow:
+    visible !important;
+
+  box-sizing:
+    border-box !important;
+
+}
+
+
+#asc-focus-v10-overlay
 #study-link-v2-members {
 
   display:
     grid !important;
 
+  grid-template-columns:
+    repeat(2,minmax(0,1fr)) !important;
+
+  gap:
+    7px !important;
+
+  width:
+    100% !important;
+
   height:
     auto !important;
 
   min-height:
     0 !important;
+
+  max-height:
+    none !important;
+
+  overflow:
+    visible !important;
+
+}
+
+
+@media (max-width:520px) {
+
+  #asc-focus-v10-overlay
+  #study-link-v2-members {
+
+    grid-template-columns:
+      1fr !important;
+
+  }
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+#asc-focus-v10-overlay
+#study-link-room-timer-v1 {
+
+  display:
+    grid !important;
+
+  width:
+    100% !important;
+
+  height:
+    auto !important;
 
   max-height:
     none !important;
@@ -72397,10 +72445,10 @@ html.asc-focus-real-scroll-v4
 
 
 /* =========================================================
-   FOCUS専用画面なので下部ナビを消す
+   下部ナビはFOCUS中だけ完全に隠す
 ========================================================= */
 
-html.asc-focus-real-scroll-v4
+html.asc-focus-v10-open
 #main-navigation {
 
   display:
@@ -72409,59 +72457,95 @@ html.asc-focus-real-scroll-v4
 }
 
 
-/* 最後のメンバーまで余裕を確保 */
+/* 背景へのタッチ防止 */
 
-html.asc-focus-real-scroll-v4
-#study-link-v2-active {
+html.asc-focus-v10-open,
+html.asc-focus-v10-open body {
 
-  padding-bottom:
-    50px !important;
+  overscroll-behavior:
+    none !important;
+
+}
+
+
+/* 最後に余白 */
+
+#asc-focus-v10-overlay
+#study-link-v2-active::after {
+
+  content:
+    "";
+
+  display:
+    block;
+
+  height:
+    40px;
+
+  grid-column:
+    1 / -1;
 
 }
 
 </style>
 
 
-<script id="ascend-focus-real-scroll-v4-script">
+<script id="ascend-focus-v10-script">
 
 (() => {
 
   const ROOT_CLASS =
-    "asc-focus-real-scroll-v4";
+    "asc-focus-v10-open";
+
+  const OVERLAY_ID =
+    "asc-focus-v10-overlay";
+
+  const SCROLL_ID =
+    "asc-focus-v10-scroll";
 
 
-  function visible(el) {
+  let placeholder =
+    null;
+
+  let mountedCard =
+    null;
+
+
+  function isVisible(el) {
 
     if (!el) {
       return false;
     }
 
 
-    const css =
+    const style =
       getComputedStyle(el);
 
 
+    if (
+      style.display === "none" ||
+      style.visibility === "hidden"
+    ) {
+      return false;
+    }
+
+
     return (
-      css.display !== "none" &&
-      css.visibility !== "hidden"
+      el.getClientRects().length > 0
     );
 
   }
 
 
-  /*
-    古い asc-nexus-focus-active-v91 は使わない。
-
-    現在の実画面に
-      ・FOCUS ACTIVE
-      ・EXIT
-    が存在して表示されているかを見る。
-  */
-
-  function focusIsReallyOpen() {
+  function focusShouldOpen() {
 
     const body =
       document.body;
+
+    const card =
+      document.getElementById(
+        "study-link-card-v2"
+      );
 
     const active =
       document.getElementById(
@@ -72476,88 +72560,220 @@ html.asc-focus-real-scroll-v4
 
     if (
       !body ||
-      !body.classList.contains(
-        "study-link-room-mode-v1"
-      )
+      !card ||
+      !active ||
+      !exit
     ) {
       return false;
     }
 
 
+    /*
+      旧クラス1個だけには依存しない。
+
+      ROOM MODE + 実際にEXITが見えている
+      = FOCUSが開いている
+    */
+
     return (
-      visible(active) &&
-      visible(exit)
+      body.classList.contains(
+        "study-link-room-mode-v1"
+      ) &&
+      isVisible(exit)
     );
 
   }
 
 
-  function apply() {
+  function createOverlay() {
 
-    const active =
-      focusIsReallyOpen();
-
-
-    document.documentElement
-      .classList
-      .toggle(
-        ROOT_CLASS,
-        active
+    let overlay =
+      document.getElementById(
+        OVERLAY_ID
       );
 
 
-    const main =
-      document.querySelector(
-        "body > main"
+    if (overlay) {
+      return overlay;
+    }
+
+
+    overlay =
+      document.createElement(
+        "div"
       );
 
+    overlay.id =
+      OVERLAY_ID;
 
-    if (!main) {
+
+    const scroll =
+      document.createElement(
+        "div"
+      );
+
+    scroll.id =
+      SCROLL_ID;
+
+
+    overlay.appendChild(
+      scroll
+    );
+
+
+    document.body.appendChild(
+      overlay
+    );
+
+
+    return overlay;
+
+  }
+
+
+  function mountFocusV10() {
+
+    if (
+      document.getElementById(
+        OVERLAY_ID
+      )
+    ) {
       return;
     }
 
 
-    if (active) {
-
-      /*
-        standalone offset の
-        inline !importantもここで無効化。
-      */
-
-      main.dataset.ascFocusV4 =
-        "1";
-
-
-      main.style.setProperty(
-        "position",
-        "static",
-        "important"
+    const card =
+      document.getElementById(
+        "study-link-card-v2"
       );
 
-      main.style.setProperty(
-        "top",
-        "auto",
-        "important"
+
+    if (
+      !card ||
+      !card.parentNode
+    ) {
+      return;
+    }
+
+
+    /*
+      元位置を保存。
+      DOMそのものを移動するので
+      イベントリスナーもリアルタイム更新も保持される。
+    */
+
+    placeholder =
+      document.createComment(
+        "ASCEND FOCUS V10 CARD ORIGIN"
       );
 
-      main.style.setProperty(
-        "height",
-        "auto",
-        "important"
+
+    card.parentNode.insertBefore(
+      placeholder,
+      card
+    );
+
+
+    const overlay =
+      createOverlay();
+
+
+    const scroll =
+      overlay.querySelector(
+        "#" + SCROLL_ID
       );
 
-      main.style.setProperty(
-        "min-height",
-        "100dvh",
-        "important"
+
+    scroll.appendChild(
+      card
+    );
+
+
+    mountedCard =
+      card;
+
+
+    document.documentElement
+      .classList
+      .add(
+        ROOT_CLASS
       );
 
-      main.style.setProperty(
-        "max-height",
-        "none",
-        "important"
+
+    /*
+      必ず一番上から開始。
+    */
+
+    scroll.scrollTop =
+      0;
+
+  }
+
+
+  function unmountFocusV10() {
+
+    const overlay =
+      document.getElementById(
+        OVERLAY_ID
       );
 
+
+    if (
+      mountedCard &&
+      placeholder &&
+      placeholder.parentNode
+    ) {
+
+      placeholder.parentNode.insertBefore(
+        mountedCard,
+        placeholder
+      );
+
+
+      placeholder.remove();
+
+    }
+
+
+    overlay?.remove();
+
+
+    placeholder =
+      null;
+
+    mountedCard =
+      null;
+
+
+    document.documentElement
+      .classList
+      .remove(
+        ROOT_CLASS
+      );
+
+  }
+
+
+  function syncFocusV10() {
+
+    const shouldOpen =
+      focusShouldOpen();
+
+
+    const open =
+      Boolean(
+        document.getElementById(
+          OVERLAY_ID
+        )
+      );
+
+
+    if (
+      shouldOpen &&
+      !open
+    ) {
+
+      mountFocusV10();
 
       return;
 
@@ -72565,68 +72781,44 @@ html.asc-focus-real-scroll-v4
 
 
     if (
-      main.dataset.ascFocusV4 ===
-      "1"
+      !shouldOpen &&
+      open
     ) {
 
-      delete main.dataset.ascFocusV4;
-
-
-      main.style.removeProperty(
-        "position"
-      );
-
-      main.style.removeProperty(
-        "top"
-      );
-
-      main.style.removeProperty(
-        "height"
-      );
-
-      main.style.removeProperty(
-        "min-height"
-      );
-
-      main.style.removeProperty(
-        "max-height"
-      );
-
-
-      requestAnimationFrame(
-        () => {
-
-          window.dispatchEvent(
-            new Event("resize")
-          );
-
-        }
-      );
+      unmountFocusV10();
 
     }
 
   }
 
 
-  let queued = false;
+  /*
+    ASCENDは画面DOMを書き換えるので
+    observer + 軽いpollの二重保険。
+  */
+
+  let queued =
+    false;
 
 
-  function queueApply() {
+  function queueSync() {
 
     if (queued) {
       return;
     }
 
 
-    queued = true;
+    queued =
+      true;
 
 
     requestAnimationFrame(
       () => {
 
-        queued = false;
+        queued =
+          false;
 
-        apply();
+        syncFocusV10();
 
       }
     );
@@ -72636,14 +72828,14 @@ html.asc-focus-real-scroll-v4
 
   const observer =
     new MutationObserver(
-      queueApply
+      queueSync
     );
 
 
   function boot() {
 
     observer.observe(
-      document.documentElement,
+      document.body,
       {
         subtree:true,
         childList:true,
@@ -72657,7 +72849,13 @@ html.asc-focus-real-scroll-v4
     );
 
 
-    apply();
+    syncFocusV10();
+
+
+    setInterval(
+      syncFocusV10,
+      250
+    );
 
   }
 
@@ -72683,17 +72881,11 @@ html.asc-focus-real-scroll-v4
 
   }
 
-
-  window.addEventListener(
-    "resize",
-    queueApply
-  );
-
 })();
 
 </script>
 
-<!-- ASCEND FOCUS REAL SCROLL V4 -->
+<!-- ASCEND FOCUS V10 ISOLATED SHELL -->
 
 </body>
 </html>
