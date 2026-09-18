@@ -44485,10 +44485,473 @@ html[data-asc-theme="light"]
 }
 
 
+
+/* ============================================================
+   ASCEND FOCUS V10 FINAL UX FIXES
+
+   1. STUDY TARGET overflow
+   2. EXIT danger styling
+   3. Dedicated swipe-back
+============================================================ */
+
+let ascendFocusV10SwipeCleanup =
+  null;
+
+
+function ensureAscendFocusV10FinalUxStyle() {
+
+  let style =
+    document.getElementById(
+      "asc-focus-v10-final-ux-style"
+    );
+
+
+  if (!style) {
+
+    style =
+      document.createElement(
+        "style"
+      );
+
+
+    style.id =
+      "asc-focus-v10-final-ux-style";
+
+
+    document.head.appendChild(
+      style
+    );
+
+  }
+
+
+  style.textContent = `
+
+/* =========================================================
+   STUDY TARGET OVERFLOW FIX
+========================================================= */
+
+#asc-focus-v10-page
+#asc-focus-v10-subject-picker {
+
+  width:
+    100% !important;
+
+  max-width:
+    100% !important;
+
+  min-width:
+    0 !important;
+
+  box-sizing:
+    border-box !important;
+
+}
+
+
+#asc-focus-v10-page
+#asc-focus-v10-subject-picker * {
+
+  box-sizing:
+    border-box !important;
+
+}
+
+
+#asc-focus-v10-page
+#asc-focus-v10-subject-picker select {
+
+  width:
+    100% !important;
+
+  max-width:
+    100% !important;
+
+  min-width:
+    0 !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-hierarchy-head {
+
+  width:
+    100% !important;
+
+  min-width:
+    0 !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-hierarchy-path {
+
+  flex:
+    1 1 auto !important;
+
+  min-width:
+    0 !important;
+
+}
+
+
+/* =========================================================
+   EXIT = DANGER ACTION
+========================================================= */
+
+#asc-focus-v10-page
+#asc-focus-exit-v92 {
+
+  border:
+    1px solid
+    rgba(255,70,95,.34) !important;
+
+  background:
+    rgba(255,70,95,.075) !important;
+
+  color:
+    #ff5d73 !important;
+
+  box-shadow:
+    none !important;
+
+}
+
+
+#asc-focus-v10-page
+#asc-focus-exit-v92:active {
+
+  border-color:
+    rgba(255,70,95,.70) !important;
+
+  background:
+    rgba(255,70,95,.15) !important;
+
+  color:
+    #ff405d !important;
+
+}
+
+
+/* LIGHT MODE */
+
+html[data-asc-theme="light"]
+#asc-focus-v10-page
+#asc-focus-exit-v92 {
+
+  border-color:
+    rgba(210,45,70,.28) !important;
+
+  background:
+    rgba(210,45,70,.06) !important;
+
+  color:
+    #cc3049 !important;
+
+}
+
+
+/* =========================================================
+   EDGE SWIPE HINT AREA
+
+   見た目には何も出さない。
+   左端56pxだけを戻るジェスチャー領域として使う。
+========================================================= */
+
+#asc-focus-v10-page {
+
+  touch-action:
+    pan-y !important;
+
+}
+
+/* ASCEND FOCUS V10 FINAL UX FIXES */
+
+  `;
+
+}
+
+
+
+function mountAscendFocusV10SwipeBack(
+  user
+) {
+
+  if (ascendFocusV10SwipeCleanup) {
+
+    ascendFocusV10SwipeCleanup();
+
+    ascendFocusV10SwipeCleanup =
+      null;
+
+  }
+
+
+  const root =
+    document.getElementById(
+      "asc-focus-v10-page"
+    );
+
+
+  if (
+    !root ||
+    !user
+  ) {
+    return;
+  }
+
+
+  let startX =
+    0;
+
+  let startY =
+    0;
+
+  let startAt =
+    0;
+
+  let tracking =
+    false;
+
+  let exiting =
+    false;
+
+
+  function onTouchStart(
+    event
+  ) {
+
+    if (
+      exiting ||
+      event.touches.length !== 1
+    ) {
+      return;
+    }
+
+
+    const touch =
+      event.touches[0];
+
+
+    /*
+      iPhoneの「戻る」感に寄せるため、
+      左端から始まったジェスチャーだけ許可。
+    */
+
+    if (
+      touch.clientX > 56
+    ) {
+
+      tracking =
+        false;
+
+      return;
+
+    }
+
+
+    /*
+      select / buttonを操作中に
+      誤爆しない。
+    */
+
+    const target =
+      event.target;
+
+
+    if (
+      target?.closest?.(
+        "select,input,textarea,button,a"
+      )
+    ) {
+
+      tracking =
+        false;
+
+      return;
+
+    }
+
+
+    startX =
+      touch.clientX;
+
+    startY =
+      touch.clientY;
+
+    startAt =
+      Date.now();
+
+    tracking =
+      true;
+
+  }
+
+
+  async function onTouchEnd(
+    event
+  ) {
+
+    if (
+      !tracking ||
+      exiting
+    ) {
+
+      tracking =
+        false;
+
+      return;
+
+    }
+
+
+    tracking =
+      false;
+
+
+    const touch =
+      event.changedTouches?.[0];
+
+
+    if (!touch) {
+      return;
+    }
+
+
+    const dx =
+      touch.clientX -
+      startX;
+
+
+    const dy =
+      touch.clientY -
+      startY;
+
+
+    const elapsed =
+      Date.now() -
+      startAt;
+
+
+    /*
+      横移動72px以上
+      縦より明確に横
+      1.1秒以内
+
+      の時だけBACK。
+    */
+
+    const valid =
+      dx >= 72 &&
+      Math.abs(dx) >
+        Math.abs(dy) * 1.25 &&
+      elapsed <= 1100;
+
+
+    if (!valid) {
+      return;
+    }
+
+
+    exiting =
+      true;
+
+
+    try {
+
+      await exitAscendNexusFocusV91(
+        user
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "FOCUS V10 SWIPE BACK:",
+        error
+      );
+
+
+      exiting =
+        false;
+
+    }
+
+  }
+
+
+  function onTouchCancel() {
+
+    tracking =
+      false;
+
+  }
+
+
+  root.addEventListener(
+    "touchstart",
+    onTouchStart,
+    {
+      passive:true
+    }
+  );
+
+
+  root.addEventListener(
+    "touchend",
+    onTouchEnd,
+    {
+      passive:true
+    }
+  );
+
+
+  root.addEventListener(
+    "touchcancel",
+    onTouchCancel,
+    {
+      passive:true
+    }
+  );
+
+
+  ascendFocusV10SwipeCleanup =
+    () => {
+
+      root.removeEventListener(
+        "touchstart",
+        onTouchStart
+      );
+
+
+      root.removeEventListener(
+        "touchend",
+        onTouchEnd
+      );
+
+
+      root.removeEventListener(
+        "touchcancel",
+        onTouchCancel
+      );
+
+    };
+
+}
+
+
+/* ASCEND FOCUS V10 FINAL UX FIXES */
+
+
 async function showAscendFocusV10Page(
   user,
   code
 ) {
+
+  ensureAscendFocusV10FinalUxStyle();
 
   ensureAscendFocusV10ThemeSkin();
 
@@ -44794,6 +45257,15 @@ async function showAscendFocusV10Page(
 
   document.body.appendChild(
     root
+  );
+
+
+  /*
+    FOCUS V10専用SWIPE BACK
+  */
+
+  mountAscendFocusV10SwipeBack(
+    user
   );
 
 
