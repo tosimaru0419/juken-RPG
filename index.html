@@ -34050,93 +34050,6 @@ body.study-link-room-mode-v1
 </style>
 
 <!-- ASCEND STANDALONE SAFE AREA TOP V1 -->
-
-
-<style id="ascend-focus-scroll-fix-v1">
-
-/* =========================================================
-   ASCEND FOCUS SCROLL FIX V1
-
-   FOCUS画面全体を縦スクロール可能にする。
-   MEMBERSを固定高さに押し込まず全員表示する。
-========================================================= */
-
-body.study-link-room-mode-v1
-> main
-> section {
-
-  overflow-y:
-    auto !important;
-
-  overflow-x:
-    hidden !important;
-
-  -webkit-overflow-scrolling:
-    touch;
-
-  overscroll-behavior-y:
-    contain;
-
-  touch-action:
-    pan-y !important;
-
-}
-
-
-/* MEMBERSの内容を切らない */
-
-body.study-link-room-mode-v1
-.study-link-v2-members-wrap {
-
-  grid-template-rows:
-    auto auto !important;
-
-  height:
-    auto !important;
-
-  max-height:
-    none !important;
-
-  overflow:
-    visible !important;
-
-}
-
-
-/* メンバー一覧も全員分の高さを確保 */
-
-body.study-link-room-mode-v1
-#study-link-v2-members {
-
-  height:
-    auto !important;
-
-  max-height:
-    none !important;
-
-  min-height:
-    0 !important;
-
-  overflow:
-    visible !important;
-
-}
-
-
-/* 最後のメンバーが画面下に張り付かないよう余白 */
-
-body.study-link-room-mode-v1
-.study-link-v2-members-wrap {
-
-  margin-bottom:
-    18px !important;
-
-}
-
-</style>
-
-<!-- ASCEND FOCUS SCROLL FIX V1 -->
-
 </head>
 
 
@@ -72232,5 +72145,158 @@ setTimeout(()=>{
 </script>
 
 <!-- ASCEND STANDALONE TOP OFFSET V2 -->
+
+<style id="ascend-focus-scroll-fix-v2">
+
+/* =========================================================
+   ASCEND FOCUS SCROLL FIX V2
+
+   Actual scroll container:
+   #study-link-card-v2
+
+   FOCUS内のMEMBERSまで確実に縦スクロール可能にする。
+========================================================= */
+
+
+/* 外側は固定のまま */
+body.study-link-room-mode-v1 {
+  overflow:
+    hidden !important;
+}
+
+
+/* FOCUS本体をスクロール担当にする */
+body.study-link-room-mode-v1
+#study-link-card-v2 {
+
+  position:
+    fixed !important;
+
+  inset:
+    0 !important;
+
+  width:
+    100% !important;
+
+  height:
+    100dvh !important;
+
+  min-height:
+    0 !important;
+
+  max-height:
+    100dvh !important;
+
+  box-sizing:
+    border-box !important;
+
+  overflow-x:
+    hidden !important;
+
+  overflow-y:
+    auto !important;
+
+  -webkit-overflow-scrolling:
+    touch !important;
+
+  overscroll-behavior-y:
+    contain !important;
+
+  touch-action:
+    pan-y !important;
+
+  padding-bottom:
+    calc(
+      28px +
+      env(safe-area-inset-bottom)
+    ) !important;
+}
+
+
+/* ACTIVE部分を画面高に閉じ込めない */
+body.study-link-room-mode-v1
+#study-link-v2-active {
+
+  height:
+    auto !important;
+
+  min-height:
+    max-content !important;
+
+  max-height:
+    none !important;
+
+  overflow:
+    visible !important;
+
+}
+
+
+/* MEMBERS全体を切らない */
+body.study-link-room-mode-v1
+.study-link-v2-members-wrap {
+
+  height:
+    auto !important;
+
+  min-height:
+    0 !important;
+
+  max-height:
+    none !important;
+
+  grid-template-rows:
+    auto auto !important;
+
+  overflow:
+    visible !important;
+
+}
+
+
+/* メンバー一覧自体も全員分伸ばす */
+body.study-link-room-mode-v1
+#study-link-v2-members {
+
+  display:
+    grid !important;
+
+  height:
+    auto !important;
+
+  min-height:
+    0 !important;
+
+  max-height:
+    none !important;
+
+  overflow:
+    visible !important;
+
+}
+
+
+/* 最下部まで余裕を確保 */
+body.study-link-room-mode-v1
+#study-link-v2-active::after {
+
+  content:
+    "";
+
+  display:
+    block;
+
+  height:
+    24px;
+
+  grid-column:
+    1 / -1;
+
+}
+
+</style>
+
+<!-- ASCEND FOCUS SCROLL FIX V2 -->
+
 </body>
 </html>
