@@ -41111,6 +41111,617 @@ function mountAscendFocusV10SubjectPicker() {
 /* ASCEND FOCUS V10 SUBJECT PICKER */
 
 
+
+/* ============================================================
+   ASCEND FOCUS V10 LIVE STATUS
+
+   LINK:
+     2+ STUDYING = ACTIVE
+
+   PERSONAL BONUS:
+     LINK ACTIVE + YOU STUDYING
+
+   BOOST:
+     boostActiveLevel
+     boostActiveUntil
+
+   FUND:
+     boostPool
+     boostTargetLevel
+============================================================ */
+
+function ascendFocusV10TimestampMs(
+  value
+) {
+
+  if (!value) {
+    return 0;
+  }
+
+
+  if (
+    typeof value.toMillis ===
+    "function"
+  ) {
+
+    return Number(
+      value.toMillis() || 0
+    );
+
+  }
+
+
+  if (
+    typeof value.seconds ===
+    "number"
+  ) {
+
+    return (
+      Number(value.seconds) *
+      1000
+    );
+
+  }
+
+
+  const n =
+    Number(value);
+
+
+  return Number.isFinite(n)
+    ? n
+    : 0;
+
+}
+
+
+
+function ascendFocusV10BoostName(
+  level
+) {
+
+  const names = {
+    0:"NORMAL",
+    1:"BOOST I",
+    2:"BOOST II",
+    3:"BOOST III",
+  };
+
+
+  return (
+    names[level] ||
+    "NORMAL"
+  );
+
+}
+
+
+
+async function renderAscendFocusV10LiveStatus(
+  user,
+  code
+) {
+
+  const root =
+    document.getElementById(
+      "asc-focus-v10-live-status"
+    );
+
+
+  if (
+    !root ||
+    !user ||
+    !code
+  ) {
+    return;
+  }
+
+
+  try {
+
+    /* ==========================================
+       MEMBERS
+
+       既存member rendererのDOMから読む。
+       Firestore membersを二重取得しない。
+    ========================================== */
+
+    const memberRows =
+      [
+        ...document.querySelectorAll(
+          "#asc-focus-v10-page .study-link-v2-member"
+        )
+      ];
+
+
+    const studyingCount =
+      memberRows.filter(
+        row =>
+          Boolean(
+            row.querySelector(
+              ".study-link-v2-member-state.studying"
+            )
+          )
+      ).length;
+
+
+    const memberCount =
+      memberRows.length;
+
+
+    const yourRow =
+      memberRows.find(
+        row =>
+          Boolean(
+            row.querySelector(
+              ".study-link-v2-you"
+            )
+          )
+      );
+
+
+    const youStudying =
+      Boolean(
+        yourRow?.querySelector(
+          ".study-link-v2-member-state.studying"
+        )
+      );
+
+
+    /*
+      NEXUS LINK
+      2人以上 STUDYING でACTIVE
+    */
+
+    const linkActive =
+      studyingCount >= 2;
+
+
+    /*
+      自分に倍率が乗るのは
+      LINK ACTIVE + 自分もSTUDYING
+    */
+
+    const personalBonusActive =
+      linkActive &&
+      youStudying;
+
+
+    /* ==========================================
+       ROOM / BOOST / FUND
+    ========================================== */
+
+    const roomSnap =
+      await getDoc(
+        studyLinkV2RoomRef(
+          code
+        )
+      );
+
+
+    const room =
+      roomSnap.exists()
+        ? roomSnap.data()
+        : {};
+
+
+    const now =
+      Date.now();
+
+
+    const rawActiveLevel =
+      Math.max(
+        0,
+        Math.min(
+          3,
+          Math.floor(
+            Number(
+              room.boostActiveLevel ||
+              0
+            )
+          )
+        )
+      );
+
+
+    const activeUntil =
+      ascendFocusV10TimestampMs(
+        room.boostActiveUntil
+      );
+
+
+    const boostIsLive =
+      rawActiveLevel > 0 &&
+      activeUntil > now;
+
+
+    const activeLevel =
+      boostIsLive
+        ? rawActiveLevel
+        : 0;
+
+
+    const rawTargetLevel =
+      Math.floor(
+        Number(
+          room.boostTargetLevel ||
+          0
+        )
+      );
+
+
+    const targetLevel =
+      Math.max(
+        1,
+        Math.min(
+          3,
+          rawTargetLevel ||
+          (
+            activeLevel > 0
+              ? Math.min(
+                  3,
+                  activeLevel + 1
+                )
+              : 1
+          )
+        )
+      );
+
+
+    const fund =
+      Math.max(
+        0,
+        Math.floor(
+          Number(
+            room.boostPool ||
+            0
+          )
+        )
+      );
+
+
+    const costs = {
+      1:1000,
+      2:3000,
+      3:7500,
+    };
+
+
+    const targetCost =
+      costs[targetLevel] ||
+      7500;
+
+
+    const fundProgress =
+      Math.max(
+        0,
+        Math.min(
+          100,
+          (
+            fund /
+            Math.max(
+              1,
+              targetCost
+            )
+          ) *
+          100
+        )
+      );
+
+
+    /* ==========================================
+       RATE
+
+       PERSONAL BONUSが実際に有効な時だけ
+       実効倍率を表示。
+    ========================================== */
+
+    const rateTable = {
+
+      0:{
+        rank:1.20,
+        xp:1.10,
+        coins:1.10,
+      },
+
+      1:{
+        rank:1.30,
+        xp:1.15,
+        coins:1.15,
+      },
+
+      2:{
+        rank:1.40,
+        xp:1.20,
+        coins:1.20,
+      },
+
+      3:{
+        rank:1.50,
+        xp:1.25,
+        coins:1.25,
+      },
+
+    };
+
+
+    const bonusRate =
+      rateTable[activeLevel] ||
+      rateTable[0];
+
+
+    const effectiveRate =
+      personalBonusActive
+        ? bonusRate
+        : {
+            rank:1,
+            xp:1,
+            coins:1,
+          };
+
+
+    /* ==========================================
+       BOOST TIME
+    ========================================== */
+
+    let boostSub =
+      "NORMAL LINK";
+
+
+    if (
+      activeLevel > 0 &&
+      activeUntil > now
+    ) {
+
+      const remainingSec =
+        Math.max(
+          0,
+          Math.ceil(
+            (
+              activeUntil -
+              now
+            ) /
+            1000
+          )
+        );
+
+
+      const remainingMin =
+        Math.max(
+          1,
+          Math.ceil(
+            remainingSec /
+            60
+          )
+        );
+
+
+      boostSub =
+        ascendFocusV10BoostName(
+          activeLevel
+        ) +
+        " · " +
+        remainingMin +
+        "m LEFT";
+
+    }
+
+
+    /* ==========================================
+       DRAW
+    ========================================== */
+
+    const stateEl =
+      document.getElementById(
+        "asc-focus-v10-link-state"
+      );
+
+
+    const countEl =
+      document.getElementById(
+        "asc-focus-v10-link-count"
+      );
+
+
+    const personalEl =
+      document.getElementById(
+        "asc-focus-v10-personal-state"
+      );
+
+
+    const boostEl =
+      document.getElementById(
+        "asc-focus-v10-boost-state"
+      );
+
+
+    const rankEl =
+      document.getElementById(
+        "asc-focus-v10-rate-rank"
+      );
+
+
+    const xpEl =
+      document.getElementById(
+        "asc-focus-v10-rate-xp"
+      );
+
+
+    const coinEl =
+      document.getElementById(
+        "asc-focus-v10-rate-coins"
+      );
+
+
+    const fundValueEl =
+      document.getElementById(
+        "asc-focus-v10-fund-value"
+      );
+
+
+    const fundTargetEl =
+      document.getElementById(
+        "asc-focus-v10-fund-target"
+      );
+
+
+    const fundFillEl =
+      document.getElementById(
+        "asc-focus-v10-fund-fill"
+      );
+
+
+    if (stateEl) {
+
+      stateEl.textContent =
+        linkActive
+          ? "ACTIVE"
+          : "WAITING";
+
+
+      stateEl.classList.toggle(
+        "active",
+        linkActive
+      );
+
+    }
+
+
+    if (countEl) {
+
+      countEl.textContent =
+        studyingCount +
+        " / " +
+        memberCount +
+        " STUDYING";
+
+    }
+
+
+    if (personalEl) {
+
+      personalEl.textContent =
+        personalBonusActive
+          ? "YOUR BONUS ACTIVE"
+          : (
+              linkActive
+                ? "YOUR BONUS STANDBY"
+                : "BONUS WAITING"
+            );
+
+
+      personalEl.classList.toggle(
+        "active",
+        personalBonusActive
+      );
+
+    }
+
+
+    if (boostEl) {
+
+      boostEl.textContent =
+        boostSub;
+
+    }
+
+
+    if (rankEl) {
+
+      rankEl.textContent =
+        "×" +
+        effectiveRate.rank
+          .toFixed(2);
+
+    }
+
+
+    if (xpEl) {
+
+      xpEl.textContent =
+        "×" +
+        effectiveRate.xp
+          .toFixed(2);
+
+    }
+
+
+    if (coinEl) {
+
+      coinEl.textContent =
+        "×" +
+        effectiveRate.coins
+          .toFixed(2);
+
+    }
+
+
+    if (fundValueEl) {
+
+      fundValueEl.textContent =
+        new Intl.NumberFormat(
+          "ja-JP"
+        ).format(
+          fund
+        );
+
+    }
+
+
+    if (fundTargetEl) {
+
+      fundTargetEl.textContent =
+        "/ " +
+        new Intl.NumberFormat(
+          "ja-JP"
+        ).format(
+          targetCost
+        ) +
+        " · " +
+        ascendFocusV10BoostName(
+          targetLevel
+        );
+
+    }
+
+
+    if (fundFillEl) {
+
+      fundFillEl.style.width =
+        fundProgress +
+        "%";
+
+    }
+
+
+    root.dataset.link =
+      linkActive
+        ? "active"
+        : "waiting";
+
+
+    root.dataset.personal =
+      personalBonusActive
+        ? "active"
+        : "waiting";
+
+  }
+
+  catch (error) {
+
+    console.warn(
+      "FOCUS V10 LIVE STATUS:",
+      error
+    );
+
+  }
+
+}
+
+
+/* ASCEND FOCUS V10 LIVE STATUS */
+
+
 function clearAscendFocusV10Runtime() {
 
   if (ascendFocusV10MemberPoll) {
@@ -41752,6 +42363,177 @@ async function showAscendFocusV10Page(
         </header>
 
 
+        <section
+          id="asc-focus-v10-live-status"
+          class="asc-focus-v10-live-status"
+        >
+
+          <div
+            class="asc-focus-v10-live-head"
+          >
+
+            <div>
+
+              <div
+                class="asc-focus-v10-live-kicker"
+              >
+                NEXUS LINK
+              </div>
+
+              <div
+                class="asc-focus-v10-live-main"
+              >
+
+                <span
+                  class="asc-focus-v10-live-dot"
+                ></span>
+
+                <span
+                  id="asc-focus-v10-link-state"
+                >
+                  WAITING
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <div
+              class="asc-focus-v10-live-right"
+            >
+
+              <div
+                id="asc-focus-v10-link-count"
+              >
+                0 / 0 STUDYING
+              </div>
+
+              <div
+                id="asc-focus-v10-personal-state"
+              >
+                BONUS WAITING
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="asc-focus-v10-boost-line"
+          >
+
+            <span>
+              RATE SET
+            </span>
+
+            <strong
+              id="asc-focus-v10-boost-state"
+            >
+              NORMAL LINK
+            </strong>
+
+          </div>
+
+
+          <div
+            class="asc-focus-v10-rates"
+          >
+
+            <div>
+
+              <span>
+                RANK
+              </span>
+
+              <strong
+                id="asc-focus-v10-rate-rank"
+              >
+                ×1.00
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                XP
+              </span>
+
+              <strong
+                id="asc-focus-v10-rate-xp"
+              >
+                ×1.00
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                COINS
+              </span>
+
+              <strong
+                id="asc-focus-v10-rate-coins"
+              >
+                ×1.00
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="asc-focus-v10-fund"
+          >
+
+            <div
+              class="asc-focus-v10-fund-head"
+            >
+
+              <span>
+                FUND
+              </span>
+
+              <strong>
+
+                <span
+                  id="asc-focus-v10-fund-value"
+                >
+                  0
+                </span>
+
+                <small
+                  id="asc-focus-v10-fund-target"
+                >
+                  / 1,000 · BOOST I
+                </small>
+
+              </strong>
+
+            </div>
+
+
+            <div
+              class="asc-focus-v10-fund-track"
+            >
+
+              <div
+                id="asc-focus-v10-fund-fill"
+              ></div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
         <div
           id="study-link-v2-active"
         >
@@ -41840,6 +42622,12 @@ async function showAscendFocusV10Page(
   );
 
 
+  await renderAscendFocusV10LiveStatus(
+    user,
+    code
+  );
+
+
   /*
     状態更新:
     Firestoreは5秒ごと。
@@ -41864,6 +42652,12 @@ async function showAscendFocusV10Page(
           await renderStudyLinkMembersV2(
             code,
             user
+          );
+
+
+          await renderAscendFocusV10LiveStatus(
+            user,
+            code
           );
 
         }
@@ -75463,6 +76257,517 @@ body.study-link-room-mode-v1
 }
 
 /* ASCEND FOCUS V10 VISUAL POLISH */
+
+</style>
+
+
+<style id="asc-focus-v10-live-status-style">
+
+/* ============================================================
+   ASCEND FOCUS V10 LIVE STATUS
+============================================================ */
+
+#asc-focus-v10-live-status {
+
+  display:
+    grid !important;
+
+  gap:
+    13px !important;
+
+  width:
+    100% !important;
+
+  padding:
+    15px !important;
+
+  border:
+    1px solid rgba(255,255,255,.08) !important;
+
+  border-radius:
+    18px !important;
+
+  background:
+    rgba(255,255,255,.028) !important;
+
+  box-shadow:
+    0 14px 38px rgba(0,0,0,.10) !important;
+
+  box-sizing:
+    border-box !important;
+
+  backdrop-filter:
+    blur(12px) !important;
+
+  -webkit-backdrop-filter:
+    blur(12px) !important;
+
+}
+
+
+/* =========================
+   HEAD
+========================= */
+
+.asc-focus-v10-live-head {
+
+  display:
+    flex !important;
+
+  align-items:
+    center !important;
+
+  justify-content:
+    space-between !important;
+
+  gap:
+    14px !important;
+
+}
+
+
+.asc-focus-v10-live-kicker {
+
+  margin-bottom:
+    5px !important;
+
+  color:
+    var(--text-muted,#8c92a3) !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .59rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .15em !important;
+
+}
+
+
+.asc-focus-v10-live-main {
+
+  display:
+    flex !important;
+
+  align-items:
+    center !important;
+
+  gap:
+    7px !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    1.05rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .06em !important;
+
+}
+
+
+.asc-focus-v10-live-dot {
+
+  width:
+    8px !important;
+
+  height:
+    8px !important;
+
+  flex:
+    0 0 8px !important;
+
+  border-radius:
+    50% !important;
+
+  background:
+    rgba(255,255,255,.28) !important;
+
+  box-shadow:
+    none !important;
+
+}
+
+
+#asc-focus-v10-live-status[data-link="active"]
+.asc-focus-v10-live-dot {
+
+  background:
+    #55e9ad !important;
+
+  box-shadow:
+    0 0 13px rgba(85,233,173,.55) !important;
+
+}
+
+
+#asc-focus-v10-link-state.active {
+
+  color:
+    #70efb0 !important;
+
+}
+
+
+/* =========================
+   RIGHT STATUS
+========================= */
+
+.asc-focus-v10-live-right {
+
+  min-width:
+    0 !important;
+
+  text-align:
+    right !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+}
+
+
+#asc-focus-v10-link-count {
+
+  font-size:
+    .70rem !important;
+
+  font-weight:
+    850 !important;
+
+  letter-spacing:
+    .05em !important;
+
+}
+
+
+#asc-focus-v10-personal-state {
+
+  margin-top:
+    3px !important;
+
+  color:
+    var(--text-muted,#8c92a3) !important;
+
+  font-size:
+    .58rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .07em !important;
+
+}
+
+
+#asc-focus-v10-personal-state.active {
+
+  color:
+    #70efb0 !important;
+
+}
+
+
+/* =========================
+   BOOST
+========================= */
+
+.asc-focus-v10-boost-line {
+
+  display:
+    flex !important;
+
+  align-items:
+    center !important;
+
+  justify-content:
+    space-between !important;
+
+  gap:
+    10px !important;
+
+  padding-top:
+    10px !important;
+
+  border-top:
+    1px solid rgba(255,255,255,.055) !important;
+
+}
+
+
+.asc-focus-v10-boost-line > span {
+
+  color:
+    var(--text-muted,#8c92a3) !important;
+
+  font-size:
+    .58rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .12em !important;
+
+}
+
+
+#asc-focus-v10-boost-state {
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .72rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .05em !important;
+
+}
+
+
+/* =========================
+   RATES
+========================= */
+
+.asc-focus-v10-rates {
+
+  display:
+    grid !important;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr)) !important;
+
+  gap:
+    7px !important;
+
+}
+
+
+.asc-focus-v10-rates > div {
+
+  display:
+    grid !important;
+
+  gap:
+    3px !important;
+
+  padding:
+    9px 8px !important;
+
+  border:
+    1px solid rgba(255,255,255,.055) !important;
+
+  border-radius:
+    11px !important;
+
+  background:
+    rgba(255,255,255,.018) !important;
+
+  text-align:
+    center !important;
+
+}
+
+
+.asc-focus-v10-rates span {
+
+  color:
+    var(--text-muted,#8c92a3) !important;
+
+  font-size:
+    .54rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .10em !important;
+
+}
+
+
+.asc-focus-v10-rates strong {
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .88rem !important;
+
+  font-weight:
+    900 !important;
+
+  font-variant-numeric:
+    tabular-nums !important;
+
+}
+
+
+/* =========================
+   FUND
+========================= */
+
+.asc-focus-v10-fund {
+
+  display:
+    grid !important;
+
+  gap:
+    7px !important;
+
+}
+
+
+.asc-focus-v10-fund-head {
+
+  display:
+    flex !important;
+
+  align-items:
+    flex-end !important;
+
+  justify-content:
+    space-between !important;
+
+  gap:
+    10px !important;
+
+}
+
+
+.asc-focus-v10-fund-head > span {
+
+  color:
+    var(--text-muted,#8c92a3) !important;
+
+  font-size:
+    .58rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .13em !important;
+
+}
+
+
+.asc-focus-v10-fund-head strong {
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .78rem !important;
+
+  font-weight:
+    900 !important;
+
+}
+
+
+.asc-focus-v10-fund-head small {
+
+  margin-left:
+    3px !important;
+
+  color:
+    var(--text-muted,#8c92a3) !important;
+
+  font-size:
+    .58rem !important;
+
+  font-weight:
+    800 !important;
+
+}
+
+
+.asc-focus-v10-fund-track {
+
+  width:
+    100% !important;
+
+  height:
+    5px !important;
+
+  overflow:
+    hidden !important;
+
+  border-radius:
+    999px !important;
+
+  background:
+    rgba(255,255,255,.055) !important;
+
+}
+
+
+#asc-focus-v10-fund-fill {
+
+  width:
+    0%;
+
+  height:
+    100% !important;
+
+  border-radius:
+    inherit !important;
+
+  background:
+    currentColor !important;
+
+  opacity:
+    .72 !important;
+
+  transition:
+    width .3s ease !important;
+
+}
+
+
+@media (max-width:390px) {
+
+  #asc-focus-v10-live-status {
+
+    padding:
+      13px !important;
+
+  }
+
+
+  .asc-focus-v10-live-head {
+
+    align-items:
+      flex-start !important;
+
+  }
+
+
+  #asc-focus-v10-link-count {
+
+    font-size:
+      .64rem !important;
+
+  }
+
+}
+
+/* ASCEND FOCUS V10 LIVE STATUS */
 
 </style>
 
