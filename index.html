@@ -72604,5 +72604,300 @@ body.study-link-room-mode-v1
 
 <!-- ASCEND FOCUS DOCUMENT SCROLL V3 -->
 
+
+<style id="ascend-focus-scroll-debug-v1-style">
+
+#asc-focus-scroll-debug-v1 {
+  position:fixed;
+  left:8px;
+  right:8px;
+  bottom:8px;
+  z-index:2147483647;
+
+  max-height:42dvh;
+  overflow:auto;
+
+  padding:10px;
+
+  border:1px solid rgba(0,243,255,.45);
+  border-radius:12px;
+
+  background:rgba(5,8,15,.94);
+  color:#dffcff;
+
+  font:
+    11px/1.45 monospace;
+
+  white-space:pre-wrap;
+
+  box-shadow:
+    0 0 20px rgba(0,0,0,.45);
+}
+
+#asc-focus-scroll-debug-v1 button {
+  min-height:34px;
+  margin:5px 4px 0 0;
+  padding:0 10px;
+
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:8px;
+
+  background:#151c28;
+  color:#fff;
+}
+
+</style>
+
+
+<script id="ascend-focus-scroll-debug-v1-script">
+
+(() => {
+
+  const ID =
+    "asc-focus-scroll-debug-v1";
+
+
+  function val(el) {
+
+    if (!el) {
+      return "NOT FOUND";
+    }
+
+    const cs =
+      getComputedStyle(el);
+
+    return [
+      `client=${el.clientHeight}`,
+      `scroll=${el.scrollHeight}`,
+      `top=${el.scrollTop}`,
+      `overflowY=${cs.overflowY}`,
+      `position=${cs.position}`,
+      `height=${cs.height}`,
+      `maxH=${cs.maxHeight}`,
+      `touch=${cs.touchAction}`
+    ].join(" | ");
+
+  }
+
+
+  function update() {
+
+    const box =
+      document.getElementById(ID);
+
+    if (!box) {
+      return;
+    }
+
+
+    const section =
+      document.querySelector(
+        "body > main > section"
+      );
+
+
+    box.querySelector(
+      "[data-debug-output]"
+    ).textContent =
+`HTML
+${val(document.documentElement)}
+
+BODY
+${val(document.body)}
+
+MAIN
+${val(document.querySelector("body > main"))}
+
+SECTION
+${val(section)}
+
+CARD
+${val(document.getElementById("study-link-card-v2"))}
+
+ACTIVE
+${val(document.getElementById("study-link-v2-active"))}
+
+MEMBERS WRAP
+${val(document.querySelector(".study-link-v2-members-wrap"))}
+
+MEMBERS
+${val(document.getElementById("study-link-v2-members"))}
+
+window.scrollY=${window.scrollY}
+innerHeight=${window.innerHeight}`;
+  }
+
+
+  function mount() {
+
+    const active =
+      document.body?.classList.contains(
+        "asc-nexus-focus-active-v91"
+      );
+
+    let box =
+      document.getElementById(ID);
+
+
+    if (!active) {
+
+      box?.remove();
+
+      return;
+
+    }
+
+
+    if (!box) {
+
+      box =
+        document.createElement(
+          "div"
+        );
+
+      box.id = ID;
+
+      box.innerHTML = `
+        <strong>
+          FOCUS SCROLL DEBUG
+        </strong>
+
+        <div
+          data-debug-output
+          style="margin-top:6px"
+        ></div>
+
+        <button
+          type="button"
+          data-scroll-window
+        >
+          WINDOW +200
+        </button>
+
+        <button
+          type="button"
+          data-scroll-card
+        >
+          CARD +200
+        </button>
+
+        <button
+          type="button"
+          data-refresh
+        >
+          REFRESH
+        </button>
+      `;
+
+      document.body.appendChild(
+        box
+      );
+
+
+      box.querySelector(
+        "[data-scroll-window]"
+      ).onclick = () => {
+
+        window.scrollBy({
+          top:200,
+          behavior:"instant"
+        });
+
+        setTimeout(
+          update,
+          50
+        );
+
+      };
+
+
+      box.querySelector(
+        "[data-scroll-card]"
+      ).onclick = () => {
+
+        const card =
+          document.getElementById(
+            "study-link-card-v2"
+          );
+
+        if (card) {
+          card.scrollTop += 200;
+        }
+
+        setTimeout(
+          update,
+          50
+        );
+
+      };
+
+
+      box.querySelector(
+        "[data-refresh]"
+      ).onclick =
+        update;
+
+    }
+
+
+    update();
+
+  }
+
+
+  const observer =
+    new MutationObserver(
+      () => {
+        requestAnimationFrame(
+          mount
+        );
+      }
+    );
+
+
+  function boot() {
+
+    observer.observe(
+      document.documentElement,
+      {
+        attributes:true,
+        subtree:true,
+        childList:true,
+        attributeFilter:[
+          "class"
+        ]
+      }
+    );
+
+    mount();
+
+  }
+
+
+  if (
+    document.readyState ===
+    "loading"
+  ) {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      boot,
+      { once:true }
+    );
+
+  }
+
+  else {
+
+    boot();
+
+  }
+
+})();
+
+</script>
+
+<!-- ASCEND FOCUS SCROLL DEBUG V1 -->
+
 </body>
 </html>
