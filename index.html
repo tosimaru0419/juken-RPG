@@ -34385,6 +34385,162 @@ function calculateLevelFromTotalXp(totalXp) {
   };
 }
 
+
+/* ============================================================
+   ASCEND PAGE TRANSITION V1
+
+   軽量なページ進入演出。
+   opacity + transformのみ。
+============================================================ */
+
+function ensureAscendPageTransitionV1() {
+
+  if (
+    document.getElementById(
+      "asc-page-transition-v1-style"
+    )
+  ) {
+    return;
+  }
+
+
+  const style =
+    document.createElement(
+      "style"
+    );
+
+
+  style.id =
+    "asc-page-transition-v1-style";
+
+
+  style.textContent = `
+
+@keyframes ascPageEnterV1 {
+
+  0% {
+
+    opacity:
+      0;
+
+    transform:
+      translate3d(
+        0,
+        8px,
+        0
+      );
+
+  }
+
+
+  100% {
+
+    opacity:
+      1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
+
+  }
+
+}
+
+
+.asc-page-enter-v1 {
+
+  animation:
+    ascPageEnterV1
+    220ms
+    cubic-bezier(.22,.8,.25,1)
+    both !important;
+
+  will-change:
+    opacity,
+    transform;
+
+}
+
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .asc-page-enter-v1 {
+
+    animation:
+      none !important;
+
+  }
+
+}
+
+  `;
+
+
+  document.head.appendChild(
+    style
+  );
+
+}
+
+
+
+function animateAscendPageEnterV1(
+  element
+) {
+
+  if (!element) {
+    return;
+  }
+
+
+  ensureAscendPageTransitionV1();
+
+
+  if (
+    window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)"
+    )?.matches
+  ) {
+    return;
+  }
+
+
+  element.classList.remove(
+    "asc-page-enter-v1"
+  );
+
+
+  void element.offsetWidth;
+
+
+  element.classList.add(
+    "asc-page-enter-v1"
+  );
+
+
+  setTimeout(
+    () => {
+
+      element.classList.remove(
+        "asc-page-enter-v1"
+      );
+
+    },
+    280
+  );
+
+}
+
+
+/* ASCEND PAGE TRANSITION V1 */
+
+
 function page(content) {
 
   /*
@@ -34423,6 +34579,26 @@ function page(content) {
 
   document.body.innerHTML =
     nextPage + bootHtml;
+
+
+  ensureAscendPageTransitionV1();
+
+
+  /*
+    通常ページ遷移時だけ
+    新しいMAINを軽くフェードイン。
+    BOOT時は既存BOOT演出を優先する。
+  */
+
+  if (!bootHtml) {
+
+    animateAscendPageEnterV1(
+      document.querySelector(
+        "body > main"
+      )
+    );
+
+  }
 
 
   /*
@@ -42875,21 +43051,28 @@ async function renderAscendFocusV10LiveStatus(
       7500;
 
 
+    const fundMaxed =
+      rawActiveLevel >= 3 &&
+      targetLevel >= 3;
+
+
     const fundProgress =
-      Math.max(
-        0,
-        Math.min(
-          100,
-          (
-            fund /
-            Math.max(
-              1,
-              targetCost
+      fundMaxed
+        ? 100
+        : Math.max(
+            0,
+            Math.min(
+              100,
+              (
+                fund /
+                Math.max(
+                  1,
+                  targetCost
+                )
+              ) *
+              100
             )
-          ) *
-          100
-        )
-      );
+          );
 
 
     /* ==========================================
@@ -43145,7 +43328,9 @@ async function renderAscendFocusV10LiveStatus(
         new Intl.NumberFormat(
           "ja-JP"
         ).format(
-          fund
+          fundMaxed
+            ? targetCost
+            : fund
         );
 
     }
@@ -43161,8 +43346,12 @@ async function renderAscendFocusV10LiveStatus(
           targetCost
         ) +
         " · " +
-        ascendFocusV10BoostName(
-          targetLevel
+        (
+          fundMaxed
+            ? "MAX LEVEL"
+            : ascendFocusV10BoostName(
+                targetLevel
+              )
         );
 
     }
@@ -45256,6 +45445,11 @@ async function showAscendFocusV10Page(
 
 
   document.body.appendChild(
+    root
+  );
+
+
+  animateAscendPageEnterV1(
     root
   );
 
@@ -47615,6 +47809,8 @@ function startStudyLinkStatusPollingV1(
 //   Multipliers themselves are NOT applied here yet.
 // ============================================================
 
+/* ASCEND NEXUS FUND MAX V1 */
+
 const STUDY_LINK_BOOST_COSTS_V1 = {
   1: 1000,
   2: 3000,
@@ -47715,11 +47911,29 @@ function getStudyLinkBoostStateV1(
     ];
 
 
+  /*
+    LV.3到達後はFUND終了。
+
+    boostPoolはLV.3発動時に0へ戻るため、
+    targetLevelだけ見ていると
+    再び7,500 COINSを投入できてしまう。
+
+    activeLevel=3 + targetLevel=3 を
+    永続的な上限到達状態として扱う。
+  */
+
+  const maxed =
+    storedActiveLevel >= 3 &&
+    targetLevel >= 3;
+
+
   const remaining =
-    Math.max(
-      0,
-      targetCost - pool
-    );
+    maxed
+      ? 0
+      : Math.max(
+          0,
+          targetCost - pool
+        );
 
 
   return {
@@ -47730,6 +47944,7 @@ function getStudyLinkBoostStateV1(
     targetCost,
     pool,
     remaining,
+    maxed,
   };
 
 }
@@ -47918,6 +48133,20 @@ async function contributeStudyLinkBoostV1(
             )
           )
         );
+
+
+      /*
+        UIを迂回して直接呼ばれても
+        LV.3以降はCOINSを消費させない。
+      */
+
+      if (state.maxed) {
+
+        throw new Error(
+          "BOOST FUNDはLV.3で上限です"
+        );
+
+      }
 
 
       if (
@@ -56539,6 +56768,13 @@ async function showNexusPage(user) {
     boostActiveLevelV86;
 
 
+  const isBoostMaxedV861 =
+    () => (
+      boostUiActiveLevelV861 >= 3 &&
+      boostUiTargetLevelV861 >= 3
+    );
+
+
   const boostFillV861 =
     document.getElementById(
       "asc-nx861-fill"
@@ -56585,31 +56821,41 @@ async function showNexusPage(user) {
       animate = true
     } = {}) => {
 
+      const maxed =
+        isBoostMaxedV861();
+
+
       const remaining =
-        Math.max(
-          0,
-          boostUiTargetCostV861 -
-          boostUiPoolV861
-        );
+        maxed
+          ? 0
+          : Math.max(
+              0,
+              boostUiTargetCostV861 -
+              boostUiPoolV861
+            );
 
 
       const progress =
-        Math.max(
-          0,
-          Math.min(
-            100,
-            (
-              boostUiPoolV861 /
-              boostUiTargetCostV861
-            ) * 100
-          )
-        );
+        maxed
+          ? 100
+          : Math.max(
+              0,
+              Math.min(
+                100,
+                (
+                  boostUiPoolV861 /
+                  boostUiTargetCostV861
+                ) * 100
+              )
+            );
 
 
       if (boostPoolTextV861) {
         boostPoolTextV861.textContent =
           String(
-            boostUiPoolV861
+            maxed
+              ? boostUiTargetCostV861
+              : boostUiPoolV861
           );
       }
 
@@ -56640,16 +56886,22 @@ async function showNexusPage(user) {
 
       if (boostTargetTitleV861) {
         boostTargetTitleV861.textContent =
-          `LV.${boostUiTargetLevelV861} FUND`;
+          maxed
+            ? "MAX LEVEL"
+            : `LV.${boostUiTargetLevelV861} FUND`;
       }
 
 
       if (boostStatusV861) {
 
         boostStatusV861.textContent =
-          boostUiActiveLevelV861 > 0
-            ? `ACTIVE LV.${boostUiActiveLevelV861}`
-            : "STANDBY";
+          maxed
+            ? "LV.3 MAXED"
+            : (
+                boostUiActiveLevelV861 > 0
+                  ? `ACTIVE LV.${boostUiActiveLevelV861}`
+                  : "STANDBY"
+              );
 
 
         boostStatusV861.classList.toggle(
@@ -56663,14 +56915,18 @@ async function showNexusPage(user) {
       if (boostNoteV861) {
 
         boostNoteV861.textContent =
-          boostUiActiveLevelV861 > 0
-            ? (
-                `BOOST LV.${boostUiActiveLevelV861} ACTIVE · ` +
-                `NEXT LV.${boostUiTargetLevelV861}`
-              )
+          maxed
+            ? "BOOST NETWORK MAX LEVEL REACHED"
             : (
-                `REACH ${boostUiTargetCostV861} ` +
-                `TO ACTIVATE LV.${boostUiTargetLevelV861}`
+                boostUiActiveLevelV861 > 0
+                  ? (
+                      `BOOST LV.${boostUiActiveLevelV861} ACTIVE · ` +
+                      `NEXT LV.${boostUiTargetLevelV861}`
+                    )
+                  : (
+                      `REACH ${boostUiTargetCostV861} ` +
+                      `TO ACTIVATE LV.${boostUiTargetLevelV861}`
+                    )
               );
 
       }
@@ -56705,6 +56961,66 @@ async function showNexusPage(user) {
 
       }
 
+
+      /*
+        LV.3上限到達時は
+        UIからも追加投入できないよう完全ロック。
+      */
+
+      if (maxed) {
+
+        const liveInput =
+          document.getElementById(
+            "asc-nx86-amount"
+          );
+
+
+        const liveSubmit =
+          document.getElementById(
+            "asc-nx86-submit"
+          );
+
+
+        if (liveInput) {
+
+          liveInput.value =
+            "";
+
+          liveInput.disabled =
+            true;
+
+          liveInput.placeholder =
+            "MAX LEVEL";
+
+        }
+
+
+        if (liveSubmit) {
+
+          liveSubmit.disabled =
+            true;
+
+          liveSubmit.textContent =
+            "MAX LEVEL";
+
+        }
+
+
+        document
+          .querySelectorAll(
+            "[data-asc-nx86-preset]"
+          )
+          .forEach(
+            button => {
+
+              button.disabled =
+                true;
+
+            }
+          );
+
+      }
+
     };
 
 
@@ -56718,6 +57034,16 @@ async function showNexusPage(user) {
     document.getElementById(
       "asc-nx86-submit"
     );
+
+
+  /*
+    初回表示時点ですでにLV.3なら
+    即MAX UIへ切り替える。
+  */
+
+  renderBoostUiV861({
+    animate:false
+  });
 
 
   document
@@ -56958,11 +57284,17 @@ async function showNexusPage(user) {
                 boostSubmitV86
               ) {
 
+                const maxed =
+                  isBoostMaxedV861();
+
+
                 boostSubmitV86.disabled =
-                  false;
+                  maxed;
 
                 boostSubmitV86.textContent =
-                  "CONTRIBUTE";
+                  maxed
+                    ? "MAX LEVEL"
+                    : "CONTRIBUTE";
 
               }
 
