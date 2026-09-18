@@ -72604,127 +72604,306 @@ body.study-link-room-mode-v1
 
 <!-- ASCEND FOCUS DOCUMENT SCROLL V3 -->
 
+<style id="ascend-focus-scroll-debug-v2-style">
 
-<style id="ascend-focus-scroll-debug-v1-style">
+#asc-focus-scroll-debug-v2 {
 
-#asc-focus-scroll-debug-v1 {
-  position:fixed;
-  left:8px;
-  right:8px;
-  bottom:8px;
-  z-index:2147483647;
+  position:
+    fixed !important;
 
-  max-height:42dvh;
-  overflow:auto;
+  left:
+    50% !important;
 
-  padding:10px;
+  bottom:
+    calc(
+      10px +
+      env(safe-area-inset-bottom)
+    ) !important;
 
-  border:1px solid rgba(0,243,255,.45);
-  border-radius:12px;
+  transform:
+    translateX(-50%) !important;
 
-  background:rgba(5,8,15,.94);
-  color:#dffcff;
+  z-index:
+    2147483647 !important;
 
-  font:
-    11px/1.45 monospace;
+  width:
+    min(360px,calc(100vw - 20px)) !important;
 
-  white-space:pre-wrap;
+  padding:
+    8px !important;
+
+  border:
+    1px solid rgba(0,243,255,.45) !important;
+
+  border-radius:
+    12px !important;
+
+  background:
+    rgba(5,8,15,.96) !important;
 
   box-shadow:
-    0 0 20px rgba(0,0,0,.45);
+    0 8px 30px rgba(0,0,0,.6) !important;
+
+  display:
+    grid !important;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr)) !important;
+
+  gap:
+    6px !important;
+
 }
 
-#asc-focus-scroll-debug-v1 button {
-  min-height:34px;
-  margin:5px 4px 0 0;
-  padding:0 10px;
 
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:8px;
+#asc-focus-scroll-debug-v2 button {
 
-  background:#151c28;
-  color:#fff;
+  min-width:
+    0 !important;
+
+  min-height:
+    38px !important;
+
+  padding:
+    0 6px !important;
+
+  border:
+    1px solid rgba(255,255,255,.15) !important;
+
+  border-radius:
+    8px !important;
+
+  background:
+    #151c28 !important;
+
+  color:
+    #fff !important;
+
+  font:
+    700 11px/1 system-ui,sans-serif !important;
+
+}
+
+
+#asc-focus-debug-status-v2 {
+
+  grid-column:
+    1 / -1 !important;
+
+  min-height:
+    16px !important;
+
+  text-align:
+    center !important;
+
+  color:
+    #89f7ff !important;
+
+  font:
+    10px/1.2 monospace !important;
+
 }
 
 </style>
 
 
-<script id="ascend-focus-scroll-debug-v1-script">
+<script id="ascend-focus-scroll-debug-v2-script">
 
 (() => {
 
-  const ID =
-    "asc-focus-scroll-debug-v1";
+  const BOX_ID =
+    "asc-focus-scroll-debug-v2";
 
 
-  function val(el) {
+  function describe(
+    label,
+    el
+  ) {
 
     if (!el) {
-      return "NOT FOUND";
+      return `${label}: NOT FOUND`;
     }
 
-    const cs =
+
+    const css =
       getComputedStyle(el);
 
+
     return [
+      `${label}:`,
       `client=${el.clientHeight}`,
       `scroll=${el.scrollHeight}`,
       `top=${el.scrollTop}`,
-      `overflowY=${cs.overflowY}`,
-      `position=${cs.position}`,
-      `height=${cs.height}`,
-      `maxH=${cs.maxHeight}`,
-      `touch=${cs.touchAction}`
-    ].join(" | ");
+      `overflowY=${css.overflowY}`,
+      `position=${css.position}`,
+      `height=${css.height}`,
+      `maxHeight=${css.maxHeight}`,
+      `touch=${css.touchAction}`
+    ].join(" ");
 
   }
 
 
-  function update() {
+  function makeReport() {
 
-    const box =
-      document.getElementById(ID);
-
-    if (!box) {
-      return;
-    }
+    const scrolling =
+      document.scrollingElement;
 
 
-    const section =
-      document.querySelector(
-        "body > main > section"
+    return [
+
+      "===== ASCEND FOCUS SCROLL DEBUG V2 =====",
+
+      `window.innerHeight=${window.innerHeight}`,
+      `window.scrollY=${window.scrollY}`,
+
+      `scrollingElement=${
+        scrolling?.tagName || "NONE"
+      }`,
+
+      "",
+
+      describe(
+        "HTML",
+        document.documentElement
+      ),
+
+      describe(
+        "BODY",
+        document.body
+      ),
+
+      describe(
+        "MAIN",
+        document.querySelector(
+          "body > main"
+        )
+      ),
+
+      describe(
+        "SECTION",
+        document.querySelector(
+          "body > main > section"
+        )
+      ),
+
+      describe(
+        "CARD",
+        document.getElementById(
+          "study-link-card-v2"
+        )
+      ),
+
+      describe(
+        "ACTIVE",
+        document.getElementById(
+          "study-link-v2-active"
+        )
+      ),
+
+      describe(
+        "MEMBERS_WRAP",
+        document.querySelector(
+          ".study-link-v2-members-wrap"
+        )
+      ),
+
+      describe(
+        "MEMBERS",
+        document.getElementById(
+          "study-link-v2-members"
+        )
+      ),
+
+      "",
+
+      describe(
+        "SCROLLING_ELEMENT",
+        scrolling
+      ),
+
+      "",
+
+      `BODY classes=${
+        document.body?.className || ""
+      }`,
+
+      `HTML classes=${
+        document.documentElement.className || ""
+      }`
+
+    ].join("\n");
+
+  }
+
+
+  function status(text) {
+
+    const el =
+      document.getElementById(
+        "asc-focus-debug-status-v2"
       );
 
+    if (el) {
+      el.textContent = text;
+    }
 
-    box.querySelector(
-      "[data-debug-output]"
-    ).textContent =
-`HTML
-${val(document.documentElement)}
+  }
 
-BODY
-${val(document.body)}
 
-MAIN
-${val(document.querySelector("body > main"))}
+  async function copyReport() {
 
-SECTION
-${val(section)}
+    const report =
+      makeReport();
 
-CARD
-${val(document.getElementById("study-link-card-v2"))}
 
-ACTIVE
-${val(document.getElementById("study-link-v2-active"))}
+    try {
 
-MEMBERS WRAP
-${val(document.querySelector(".study-link-v2-members-wrap"))}
+      await navigator.clipboard.writeText(
+        report
+      );
 
-MEMBERS
-${val(document.getElementById("study-link-v2-members"))}
+      status(
+        "COPIED ✓"
+      );
 
-window.scrollY=${window.scrollY}
-innerHeight=${window.innerHeight}`;
+      return;
+
+    }
+
+    catch (_) {}
+
+
+    const area =
+      document.createElement(
+        "textarea"
+      );
+
+    area.value =
+      report;
+
+    area.style.position =
+      "fixed";
+
+    area.style.opacity =
+      "0";
+
+    document.body.appendChild(
+      area
+    );
+
+    area.select();
+
+    document.execCommand(
+      "copy"
+    );
+
+    area.remove();
+
+    status(
+      "COPIED ✓"
+    );
+
   }
 
 
@@ -72735,8 +72914,11 @@ innerHeight=${window.innerHeight}`;
         "asc-nexus-focus-active-v91"
       );
 
+
     let box =
-      document.getElementById(ID);
+      document.getElementById(
+        BOX_ID
+      );
 
 
     if (!active) {
@@ -72748,99 +72930,115 @@ innerHeight=${window.innerHeight}`;
     }
 
 
-    if (!box) {
-
-      box =
-        document.createElement(
-          "div"
-        );
-
-      box.id = ID;
-
-      box.innerHTML = `
-        <strong>
-          FOCUS SCROLL DEBUG
-        </strong>
-
-        <div
-          data-debug-output
-          style="margin-top:6px"
-        ></div>
-
-        <button
-          type="button"
-          data-scroll-window
-        >
-          WINDOW +200
-        </button>
-
-        <button
-          type="button"
-          data-scroll-card
-        >
-          CARD +200
-        </button>
-
-        <button
-          type="button"
-          data-refresh
-        >
-          REFRESH
-        </button>
-      `;
-
-      document.body.appendChild(
-        box
-      );
-
-
-      box.querySelector(
-        "[data-scroll-window]"
-      ).onclick = () => {
-
-        window.scrollBy({
-          top:200,
-          behavior:"instant"
-        });
-
-        setTimeout(
-          update,
-          50
-        );
-
-      };
-
-
-      box.querySelector(
-        "[data-scroll-card]"
-      ).onclick = () => {
-
-        const card =
-          document.getElementById(
-            "study-link-card-v2"
-          );
-
-        if (card) {
-          card.scrollTop += 200;
-        }
-
-        setTimeout(
-          update,
-          50
-        );
-
-      };
-
-
-      box.querySelector(
-        "[data-refresh]"
-      ).onclick =
-        update;
-
+    if (box) {
+      return;
     }
 
 
-    update();
+    box =
+      document.createElement(
+        "div"
+      );
+
+    box.id =
+      BOX_ID;
+
+
+    box.innerHTML = `
+      <button data-window>
+        WINDOW +200
+      </button>
+
+      <button data-card>
+        CARD +200
+      </button>
+
+      <button data-copy>
+        COPY DEBUG
+      </button>
+
+      <button data-top>
+        RESET TOP
+      </button>
+
+      <div id="asc-focus-debug-status-v2">
+        READY
+      </div>
+    `;
+
+
+    document.body.appendChild(
+      box
+    );
+
+
+    box.querySelector(
+      "[data-window]"
+    ).onclick = () => {
+
+      window.scrollBy(
+        0,
+        200
+      );
+
+      status(
+        `windowY=${window.scrollY}`
+      );
+
+    };
+
+
+    box.querySelector(
+      "[data-card]"
+    ).onclick = () => {
+
+      const card =
+        document.getElementById(
+          "study-link-card-v2"
+        );
+
+      if (card) {
+        card.scrollTop += 200;
+      }
+
+      status(
+        `cardTop=${
+          card?.scrollTop ?? "NONE"
+        }`
+      );
+
+    };
+
+
+    box.querySelector(
+      "[data-copy]"
+    ).onclick =
+      copyReport;
+
+
+    box.querySelector(
+      "[data-top]"
+    ).onclick = () => {
+
+      window.scrollTo(
+        0,
+        0
+      );
+
+      const card =
+        document.getElementById(
+          "study-link-card-v2"
+        );
+
+      if (card) {
+        card.scrollTop = 0;
+      }
+
+      status(
+        "RESET ✓"
+      );
+
+    };
 
   }
 
@@ -72860,9 +73058,9 @@ innerHeight=${window.innerHeight}`;
     observer.observe(
       document.documentElement,
       {
-        attributes:true,
         subtree:true,
         childList:true,
+        attributes:true,
         attributeFilter:[
           "class"
         ]
@@ -72875,8 +73073,7 @@ innerHeight=${window.innerHeight}`;
 
 
   if (
-    document.readyState ===
-    "loading"
+    document.readyState === "loading"
   ) {
 
     document.addEventListener(
@@ -72897,7 +73094,7 @@ innerHeight=${window.innerHeight}`;
 
 </script>
 
-<!-- ASCEND FOCUS SCROLL DEBUG V1 -->
+<!-- ASCEND FOCUS SCROLL DEBUG V2 -->
 
 </body>
 </html>
