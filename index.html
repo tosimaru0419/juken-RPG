@@ -72146,49 +72146,25 @@ setTimeout(()=>{
 
 <!-- ASCEND STANDALONE TOP OFFSET V2 -->
 
-<style id="ascend-focus-scroll-fix-v2">
+<style id="ascend-focus-document-scroll-v3">
 
 /* =========================================================
-   ASCEND FOCUS SCROLL FIX V2
+   ASCEND FOCUS DOCUMENT SCROLL V3
 
-   Actual scroll container:
-   #study-link-card-v2
-
-   FOCUS内のMEMBERSまで確実に縦スクロール可能にする。
+   FOCUS中だけ固定viewport構造を解除し、
+   documentそのものを縦スクロールさせる。
 ========================================================= */
 
 
-/* 外側は固定のまま */
-body.study-link-room-mode-v1 {
-  overflow:
-    hidden !important;
-}
+/* HTML ROOT */
 
-
-/* FOCUS本体をスクロール担当にする */
-body.study-link-room-mode-v1
-#study-link-card-v2 {
-
-  position:
-    fixed !important;
-
-  inset:
-    0 !important;
-
-  width:
-    100% !important;
+html.asc-focus-document-scroll-v3 {
 
   height:
-    100dvh !important;
+    auto !important;
 
   min-height:
-    0 !important;
-
-  max-height:
-    100dvh !important;
-
-  box-sizing:
-    border-box !important;
+    100% !important;
 
   overflow-x:
     hidden !important;
@@ -72196,45 +72172,113 @@ body.study-link-room-mode-v1
   overflow-y:
     auto !important;
 
+  overscroll-behavior-y:
+    auto !important;
+
   -webkit-overflow-scrolling:
     touch !important;
 
-  overscroll-behavior-y:
-    contain !important;
-
-  touch-action:
-    pan-y !important;
-
-  padding-bottom:
-    calc(
-      28px +
-      env(safe-area-inset-bottom)
-    ) !important;
 }
 
 
-/* ACTIVE部分を画面高に閉じ込めない */
-body.study-link-room-mode-v1
-#study-link-v2-active {
+/* BODY */
+
+html.asc-focus-document-scroll-v3
+body.study-link-room-mode-v1 {
+
+  position:
+    static !important;
+
+  inset:
+    auto !important;
+
+  width:
+    100% !important;
 
   height:
     auto !important;
 
   min-height:
-    max-content !important;
+    100dvh !important;
 
   max-height:
     none !important;
 
-  overflow:
+  overflow-x:
+    hidden !important;
+
+  overflow-y:
     visible !important;
+
+  overscroll-behavior-y:
+    auto !important;
+
+  touch-action:
+    pan-y !important;
 
 }
 
 
-/* MEMBERS全体を切らない */
+/* MAIN */
+
+html.asc-focus-document-scroll-v3
 body.study-link-room-mode-v1
-.study-link-v2-members-wrap {
+> main {
+
+  position:
+    static !important;
+
+  inset:
+    auto !important;
+
+  width:
+    100% !important;
+
+  height:
+    auto !important;
+
+  min-height:
+    100dvh !important;
+
+  max-height:
+    none !important;
+
+  display:
+    block !important;
+
+  overflow:
+    visible !important;
+
+  box-sizing:
+    border-box !important;
+
+  padding:
+    50px
+    16px
+    calc(
+      50px +
+      env(safe-area-inset-bottom)
+    )
+    !important;
+
+  touch-action:
+    pan-y !important;
+
+}
+
+
+/* SECTION */
+
+html.asc-focus-document-scroll-v3
+body.study-link-room-mode-v1
+> main
+> section {
+
+  position:
+    static !important;
+
+  width:
+    100% !important;
 
   height:
     auto !important;
@@ -72245,8 +72289,68 @@ body.study-link-room-mode-v1
   max-height:
     none !important;
 
-  grid-template-rows:
-    auto auto !important;
+  overflow:
+    visible !important;
+
+  touch-action:
+    pan-y !important;
+
+}
+
+
+/* FOCUS CARD */
+
+html.asc-focus-document-scroll-v3
+body.study-link-room-mode-v1
+#study-link-card-v2 {
+
+  position:
+    static !important;
+
+  inset:
+    auto !important;
+
+  width:
+    min(720px,100%) !important;
+
+  height:
+    auto !important;
+
+  min-height:
+    0 !important;
+
+  max-height:
+    none !important;
+
+  margin:
+    0 auto !important;
+
+  overflow:
+    visible !important;
+
+  contain:
+    none !important;
+
+  touch-action:
+    pan-y !important;
+
+}
+
+
+/* ACTIVE PANEL */
+
+html.asc-focus-document-scroll-v3
+body.study-link-room-mode-v1
+#study-link-v2-active {
+
+  height:
+    auto !important;
+
+  min-height:
+    0 !important;
+
+  max-height:
+    none !important;
 
   overflow:
     visible !important;
@@ -72254,7 +72358,34 @@ body.study-link-room-mode-v1
 }
 
 
-/* メンバー一覧自体も全員分伸ばす */
+/* MEMBERS */
+
+html.asc-focus-document-scroll-v3
+body.study-link-room-mode-v1
+.study-link-v2-members-wrap {
+
+  display:
+    grid !important;
+
+  grid-template-rows:
+    auto auto !important;
+
+  height:
+    auto !important;
+
+  min-height:
+    0 !important;
+
+  max-height:
+    none !important;
+
+  overflow:
+    visible !important;
+
+}
+
+
+html.asc-focus-document-scroll-v3
 body.study-link-room-mode-v1
 #study-link-v2-members {
 
@@ -72276,27 +72407,202 @@ body.study-link-room-mode-v1
 }
 
 
-/* 最下部まで余裕を確保 */
+/* 一番下までスクロールできる余白 */
+
+html.asc-focus-document-scroll-v3
 body.study-link-room-mode-v1
-#study-link-v2-active::after {
+#study-link-v2-active {
 
-  content:
-    "";
-
-  display:
-    block;
-
-  height:
-    24px;
-
-  grid-column:
-    1 / -1;
+  padding-bottom:
+    36px !important;
 
 }
 
 </style>
 
-<!-- ASCEND FOCUS SCROLL FIX V2 -->
+
+<script id="ascend-focus-document-scroll-v3-script">
+
+(() => {
+
+  const ROOT_CLASS =
+    "asc-focus-document-scroll-v3";
+
+
+  function focusIsActive() {
+
+    return Boolean(
+      document.body &&
+      document.body.classList.contains(
+        "study-link-room-mode-v1"
+      ) &&
+      document.body.classList.contains(
+        "asc-nexus-focus-active-v91"
+      )
+    );
+
+  }
+
+
+  function applyFocusDocumentScrollV3() {
+
+    const active =
+      focusIsActive();
+
+
+    document.documentElement
+      .classList
+      .toggle(
+        ROOT_CLASS,
+        active
+      );
+
+
+    const main =
+      document.querySelector(
+        "body > main"
+      );
+
+
+    if (!main) {
+      return;
+    }
+
+
+    if (active) {
+
+      /*
+        Standalone top-offset V2 が
+        inline !important で設定する高さを
+        FOCUS中だけ無効化。
+      */
+
+      main.dataset.ascFocusScrollV3 =
+        "1";
+
+      main.style.setProperty(
+        "height",
+        "auto",
+        "important"
+      );
+
+      main.style.setProperty(
+        "min-height",
+        "100dvh",
+        "important"
+      );
+
+      main.style.setProperty(
+        "max-height",
+        "none",
+        "important"
+      );
+
+      return;
+
+    }
+
+
+    if (
+      main.dataset.ascFocusScrollV3 ===
+      "1"
+    ) {
+
+      delete main.dataset.ascFocusScrollV3;
+
+      main.style.removeProperty(
+        "height"
+      );
+
+      main.style.removeProperty(
+        "min-height"
+      );
+
+      main.style.removeProperty(
+        "max-height"
+      );
+
+
+      /*
+        通常画面へ戻ったら
+        standalone offset側に再計算させる。
+      */
+
+      requestAnimationFrame(
+        () => {
+          window.dispatchEvent(
+            new Event("resize")
+          );
+        }
+      );
+
+    }
+
+  }
+
+
+  const observer =
+    new MutationObserver(
+      applyFocusDocumentScrollV3
+    );
+
+
+  function boot() {
+
+    if (!document.body) {
+      return;
+    }
+
+
+    observer.observe(
+      document.body,
+      {
+        attributes:true,
+        attributeFilter:[
+          "class"
+        ],
+        childList:true
+      }
+    );
+
+
+    applyFocusDocumentScrollV3();
+
+  }
+
+
+  if (
+    document.readyState ===
+    "loading"
+  ) {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      boot,
+      {
+        once:true
+      }
+    );
+
+  }
+
+  else {
+
+    boot();
+
+  }
+
+
+  window.addEventListener(
+    "resize",
+    applyFocusDocumentScrollV3
+  );
+
+})();
+
+</script>
+
+<!-- ASCEND FOCUS DOCUMENT SCROLL V3 -->
 
 </body>
 </html>
