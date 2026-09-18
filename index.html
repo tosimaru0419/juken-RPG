@@ -72146,19 +72146,19 @@ setTimeout(()=>{
 
 <!-- ASCEND STANDALONE TOP OFFSET V2 -->
 
-<style id="ascend-focus-document-scroll-v3">
+<style id="ascend-focus-real-scroll-v4">
 
 /* =========================================================
-   ASCEND FOCUS DOCUMENT SCROLL V3
+   ASCEND FOCUS REAL SCROLL V4
 
-   FOCUS中だけ固定viewport構造を解除し、
-   documentそのものを縦スクロールさせる。
+   古いFOCUSクラスには依存しない。
+   実際にFOCUS DOMが表示中の時だけ有効化。
 ========================================================= */
 
 
-/* HTML ROOT */
+/* ROOT */
 
-html.asc-focus-document-scroll-v3 {
+html.asc-focus-real-scroll-v4 {
 
   height:
     auto !important;
@@ -72172,9 +72172,6 @@ html.asc-focus-document-scroll-v3 {
   overflow-y:
     auto !important;
 
-  overscroll-behavior-y:
-    auto !important;
-
   -webkit-overflow-scrolling:
     touch !important;
 
@@ -72183,8 +72180,8 @@ html.asc-focus-document-scroll-v3 {
 
 /* BODY */
 
-html.asc-focus-document-scroll-v3
-body.study-link-room-mode-v1 {
+html.asc-focus-real-scroll-v4
+body {
 
   position:
     static !important;
@@ -72210,9 +72207,6 @@ body.study-link-room-mode-v1 {
   overflow-y:
     visible !important;
 
-  overscroll-behavior-y:
-    auto !important;
-
   touch-action:
     pan-y !important;
 
@@ -72221,14 +72215,19 @@ body.study-link-room-mode-v1 {
 
 /* MAIN */
 
-html.asc-focus-document-scroll-v3
-body.study-link-room-mode-v1
-> main {
+html.asc-focus-real-scroll-v4
+body > main {
 
   position:
     static !important;
 
   inset:
+    auto !important;
+
+  top:
+    auto !important;
+
+  bottom:
     auto !important;
 
   width:
@@ -72253,8 +72252,7 @@ body.study-link-room-mode-v1
     border-box !important;
 
   padding:
-    50px
-    16px
+    50px 16px
     calc(
       50px +
       env(safe-area-inset-bottom)
@@ -72269,10 +72267,8 @@ body.study-link-room-mode-v1
 
 /* SECTION */
 
-html.asc-focus-document-scroll-v3
-body.study-link-room-mode-v1
-> main
-> section {
+html.asc-focus-real-scroll-v4
+body > main > section {
 
   position:
     static !important;
@@ -72300,8 +72296,7 @@ body.study-link-room-mode-v1
 
 /* FOCUS CARD */
 
-html.asc-focus-document-scroll-v3
-body.study-link-room-mode-v1
+html.asc-focus-real-scroll-v4
 #study-link-card-v2 {
 
   position:
@@ -72331,16 +72326,12 @@ body.study-link-room-mode-v1
   contain:
     none !important;
 
-  touch-action:
-    pan-y !important;
-
 }
 
 
-/* ACTIVE PANEL */
+/* ACTIVE */
 
-html.asc-focus-document-scroll-v3
-body.study-link-room-mode-v1
+html.asc-focus-real-scroll-v4
 #study-link-v2-active {
 
   height:
@@ -72360,8 +72351,7 @@ body.study-link-room-mode-v1
 
 /* MEMBERS */
 
-html.asc-focus-document-scroll-v3
-body.study-link-room-mode-v1
+html.asc-focus-real-scroll-v4
 .study-link-v2-members-wrap {
 
   display:
@@ -72385,8 +72375,7 @@ body.study-link-room-mode-v1
 }
 
 
-html.asc-focus-document-scroll-v3
-body.study-link-room-mode-v1
+html.asc-focus-real-scroll-v4
 #study-link-v2-members {
 
   display:
@@ -72407,47 +72396,106 @@ body.study-link-room-mode-v1
 }
 
 
-/* 一番下までスクロールできる余白 */
+/* =========================================================
+   FOCUS専用画面なので下部ナビを消す
+========================================================= */
 
-html.asc-focus-document-scroll-v3
-body.study-link-room-mode-v1
+html.asc-focus-real-scroll-v4
+#main-navigation {
+
+  display:
+    none !important;
+
+}
+
+
+/* 最後のメンバーまで余裕を確保 */
+
+html.asc-focus-real-scroll-v4
 #study-link-v2-active {
 
   padding-bottom:
-    36px !important;
+    50px !important;
 
 }
 
 </style>
 
 
-<script id="ascend-focus-document-scroll-v3-script">
+<script id="ascend-focus-real-scroll-v4-script">
 
 (() => {
 
   const ROOT_CLASS =
-    "asc-focus-document-scroll-v3";
+    "asc-focus-real-scroll-v4";
 
 
-  function focusIsActive() {
+  function visible(el) {
 
-    return Boolean(
-      document.body &&
-      document.body.classList.contains(
-        "study-link-room-mode-v1"
-      ) &&
-      document.body.classList.contains(
-        "asc-nexus-focus-active-v91"
-      )
+    if (!el) {
+      return false;
+    }
+
+
+    const css =
+      getComputedStyle(el);
+
+
+    return (
+      css.display !== "none" &&
+      css.visibility !== "hidden"
     );
 
   }
 
 
-  function applyFocusDocumentScrollV3() {
+  /*
+    古い asc-nexus-focus-active-v91 は使わない。
+
+    現在の実画面に
+      ・FOCUS ACTIVE
+      ・EXIT
+    が存在して表示されているかを見る。
+  */
+
+  function focusIsReallyOpen() {
+
+    const body =
+      document.body;
 
     const active =
-      focusIsActive();
+      document.getElementById(
+        "study-link-v2-active"
+      );
+
+    const exit =
+      document.getElementById(
+        "asc-focus-exit-v92"
+      );
+
+
+    if (
+      !body ||
+      !body.classList.contains(
+        "study-link-room-mode-v1"
+      )
+    ) {
+      return false;
+    }
+
+
+    return (
+      visible(active) &&
+      visible(exit)
+    );
+
+  }
+
+
+  function apply() {
+
+    const active =
+      focusIsReallyOpen();
 
 
     document.documentElement
@@ -72472,13 +72520,25 @@ body.study-link-room-mode-v1
     if (active) {
 
       /*
-        Standalone top-offset V2 が
-        inline !important で設定する高さを
-        FOCUS中だけ無効化。
+        standalone offset の
+        inline !importantもここで無効化。
       */
 
-      main.dataset.ascFocusScrollV3 =
+      main.dataset.ascFocusV4 =
         "1";
+
+
+      main.style.setProperty(
+        "position",
+        "static",
+        "important"
+      );
+
+      main.style.setProperty(
+        "top",
+        "auto",
+        "important"
+      );
 
       main.style.setProperty(
         "height",
@@ -72498,17 +72558,27 @@ body.study-link-room-mode-v1
         "important"
       );
 
+
       return;
 
     }
 
 
     if (
-      main.dataset.ascFocusScrollV3 ===
+      main.dataset.ascFocusV4 ===
       "1"
     ) {
 
-      delete main.dataset.ascFocusScrollV3;
+      delete main.dataset.ascFocusV4;
+
+
+      main.style.removeProperty(
+        "position"
+      );
+
+      main.style.removeProperty(
+        "top"
+      );
 
       main.style.removeProperty(
         "height"
@@ -72523,16 +72593,13 @@ body.study-link-room-mode-v1
       );
 
 
-      /*
-        通常画面へ戻ったら
-        standalone offset側に再計算させる。
-      */
-
       requestAnimationFrame(
         () => {
+
           window.dispatchEvent(
             new Event("resize")
           );
+
         }
       );
 
@@ -72541,32 +72608,56 @@ body.study-link-room-mode-v1
   }
 
 
+  let queued = false;
+
+
+  function queueApply() {
+
+    if (queued) {
+      return;
+    }
+
+
+    queued = true;
+
+
+    requestAnimationFrame(
+      () => {
+
+        queued = false;
+
+        apply();
+
+      }
+    );
+
+  }
+
+
   const observer =
     new MutationObserver(
-      applyFocusDocumentScrollV3
+      queueApply
     );
 
 
   function boot() {
 
-    if (!document.body) {
-      return;
-    }
-
-
     observer.observe(
-      document.body,
+      document.documentElement,
       {
+        subtree:true,
+        childList:true,
         attributes:true,
         attributeFilter:[
-          "class"
-        ],
-        childList:true
+          "class",
+          "style",
+          "hidden"
+        ]
       }
     );
 
 
-    applyFocusDocumentScrollV3();
+    apply();
 
   }
 
@@ -72595,506 +72686,14 @@ body.study-link-room-mode-v1
 
   window.addEventListener(
     "resize",
-    applyFocusDocumentScrollV3
+    queueApply
   );
 
 })();
 
 </script>
 
-<!-- ASCEND FOCUS DOCUMENT SCROLL V3 -->
-
-<style id="ascend-focus-scroll-debug-v2-style">
-
-#asc-focus-scroll-debug-v2 {
-
-  position:
-    fixed !important;
-
-  left:
-    50% !important;
-
-  bottom:
-    calc(
-      10px +
-      env(safe-area-inset-bottom)
-    ) !important;
-
-  transform:
-    translateX(-50%) !important;
-
-  z-index:
-    2147483647 !important;
-
-  width:
-    min(360px,calc(100vw - 20px)) !important;
-
-  padding:
-    8px !important;
-
-  border:
-    1px solid rgba(0,243,255,.45) !important;
-
-  border-radius:
-    12px !important;
-
-  background:
-    rgba(5,8,15,.96) !important;
-
-  box-shadow:
-    0 8px 30px rgba(0,0,0,.6) !important;
-
-  display:
-    grid !important;
-
-  grid-template-columns:
-    repeat(2,minmax(0,1fr)) !important;
-
-  gap:
-    6px !important;
-
-}
-
-
-#asc-focus-scroll-debug-v2 button {
-
-  min-width:
-    0 !important;
-
-  min-height:
-    38px !important;
-
-  padding:
-    0 6px !important;
-
-  border:
-    1px solid rgba(255,255,255,.15) !important;
-
-  border-radius:
-    8px !important;
-
-  background:
-    #151c28 !important;
-
-  color:
-    #fff !important;
-
-  font:
-    700 11px/1 system-ui,sans-serif !important;
-
-}
-
-
-#asc-focus-debug-status-v2 {
-
-  grid-column:
-    1 / -1 !important;
-
-  min-height:
-    16px !important;
-
-  text-align:
-    center !important;
-
-  color:
-    #89f7ff !important;
-
-  font:
-    10px/1.2 monospace !important;
-
-}
-
-</style>
-
-
-<script id="ascend-focus-scroll-debug-v2-script">
-
-(() => {
-
-  const BOX_ID =
-    "asc-focus-scroll-debug-v2";
-
-
-  function describe(
-    label,
-    el
-  ) {
-
-    if (!el) {
-      return `${label}: NOT FOUND`;
-    }
-
-
-    const css =
-      getComputedStyle(el);
-
-
-    return [
-      `${label}:`,
-      `client=${el.clientHeight}`,
-      `scroll=${el.scrollHeight}`,
-      `top=${el.scrollTop}`,
-      `overflowY=${css.overflowY}`,
-      `position=${css.position}`,
-      `height=${css.height}`,
-      `maxHeight=${css.maxHeight}`,
-      `touch=${css.touchAction}`
-    ].join(" ");
-
-  }
-
-
-  function makeReport() {
-
-    const scrolling =
-      document.scrollingElement;
-
-
-    return [
-
-      "===== ASCEND FOCUS SCROLL DEBUG V2 =====",
-
-      `window.innerHeight=${window.innerHeight}`,
-      `window.scrollY=${window.scrollY}`,
-
-      `scrollingElement=${
-        scrolling?.tagName || "NONE"
-      }`,
-
-      "",
-
-      describe(
-        "HTML",
-        document.documentElement
-      ),
-
-      describe(
-        "BODY",
-        document.body
-      ),
-
-      describe(
-        "MAIN",
-        document.querySelector(
-          "body > main"
-        )
-      ),
-
-      describe(
-        "SECTION",
-        document.querySelector(
-          "body > main > section"
-        )
-      ),
-
-      describe(
-        "CARD",
-        document.getElementById(
-          "study-link-card-v2"
-        )
-      ),
-
-      describe(
-        "ACTIVE",
-        document.getElementById(
-          "study-link-v2-active"
-        )
-      ),
-
-      describe(
-        "MEMBERS_WRAP",
-        document.querySelector(
-          ".study-link-v2-members-wrap"
-        )
-      ),
-
-      describe(
-        "MEMBERS",
-        document.getElementById(
-          "study-link-v2-members"
-        )
-      ),
-
-      "",
-
-      describe(
-        "SCROLLING_ELEMENT",
-        scrolling
-      ),
-
-      "",
-
-      `BODY classes=${
-        document.body?.className || ""
-      }`,
-
-      `HTML classes=${
-        document.documentElement.className || ""
-      }`
-
-    ].join("\n");
-
-  }
-
-
-  function status(text) {
-
-    const el =
-      document.getElementById(
-        "asc-focus-debug-status-v2"
-      );
-
-    if (el) {
-      el.textContent = text;
-    }
-
-  }
-
-
-  async function copyReport() {
-
-    const report =
-      makeReport();
-
-
-    try {
-
-      await navigator.clipboard.writeText(
-        report
-      );
-
-      status(
-        "COPIED ✓"
-      );
-
-      return;
-
-    }
-
-    catch (_) {}
-
-
-    const area =
-      document.createElement(
-        "textarea"
-      );
-
-    area.value =
-      report;
-
-    area.style.position =
-      "fixed";
-
-    area.style.opacity =
-      "0";
-
-    document.body.appendChild(
-      area
-    );
-
-    area.select();
-
-    document.execCommand(
-      "copy"
-    );
-
-    area.remove();
-
-    status(
-      "COPIED ✓"
-    );
-
-  }
-
-
-  function mount() {
-
-    const active =
-      document.body?.classList.contains(
-        "asc-nexus-focus-active-v91"
-      );
-
-
-    let box =
-      document.getElementById(
-        BOX_ID
-      );
-
-
-    if (!active) {
-
-      box?.remove();
-
-      return;
-
-    }
-
-
-    if (box) {
-      return;
-    }
-
-
-    box =
-      document.createElement(
-        "div"
-      );
-
-    box.id =
-      BOX_ID;
-
-
-    box.innerHTML = `
-      <button data-window>
-        WINDOW +200
-      </button>
-
-      <button data-card>
-        CARD +200
-      </button>
-
-      <button data-copy>
-        COPY DEBUG
-      </button>
-
-      <button data-top>
-        RESET TOP
-      </button>
-
-      <div id="asc-focus-debug-status-v2">
-        READY
-      </div>
-    `;
-
-
-    document.body.appendChild(
-      box
-    );
-
-
-    box.querySelector(
-      "[data-window]"
-    ).onclick = () => {
-
-      window.scrollBy(
-        0,
-        200
-      );
-
-      status(
-        `windowY=${window.scrollY}`
-      );
-
-    };
-
-
-    box.querySelector(
-      "[data-card]"
-    ).onclick = () => {
-
-      const card =
-        document.getElementById(
-          "study-link-card-v2"
-        );
-
-      if (card) {
-        card.scrollTop += 200;
-      }
-
-      status(
-        `cardTop=${
-          card?.scrollTop ?? "NONE"
-        }`
-      );
-
-    };
-
-
-    box.querySelector(
-      "[data-copy]"
-    ).onclick =
-      copyReport;
-
-
-    box.querySelector(
-      "[data-top]"
-    ).onclick = () => {
-
-      window.scrollTo(
-        0,
-        0
-      );
-
-      const card =
-        document.getElementById(
-          "study-link-card-v2"
-        );
-
-      if (card) {
-        card.scrollTop = 0;
-      }
-
-      status(
-        "RESET ✓"
-      );
-
-    };
-
-  }
-
-
-  const observer =
-    new MutationObserver(
-      () => {
-        requestAnimationFrame(
-          mount
-        );
-      }
-    );
-
-
-  function boot() {
-
-    observer.observe(
-      document.documentElement,
-      {
-        subtree:true,
-        childList:true,
-        attributes:true,
-        attributeFilter:[
-          "class"
-        ]
-      }
-    );
-
-    mount();
-
-  }
-
-
-  if (
-    document.readyState === "loading"
-  ) {
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      boot,
-      { once:true }
-    );
-
-  }
-
-  else {
-
-    boot();
-
-  }
-
-})();
-
-</script>
-
-<!-- ASCEND FOCUS SCROLL DEBUG V2 -->
+<!-- ASCEND FOCUS REAL SCROLL V4 -->
 
 </body>
 </html>
