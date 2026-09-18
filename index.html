@@ -34050,6 +34050,93 @@ body.study-link-room-mode-v1
 </style>
 
 <!-- ASCEND STANDALONE SAFE AREA TOP V1 -->
+
+
+<style id="ascend-focus-scroll-fix-v1">
+
+/* =========================================================
+   ASCEND FOCUS SCROLL FIX V1
+
+   FOCUS画面全体を縦スクロール可能にする。
+   MEMBERSを固定高さに押し込まず全員表示する。
+========================================================= */
+
+body.study-link-room-mode-v1
+> main
+> section {
+
+  overflow-y:
+    auto !important;
+
+  overflow-x:
+    hidden !important;
+
+  -webkit-overflow-scrolling:
+    touch;
+
+  overscroll-behavior-y:
+    contain;
+
+  touch-action:
+    pan-y !important;
+
+}
+
+
+/* MEMBERSの内容を切らない */
+
+body.study-link-room-mode-v1
+.study-link-v2-members-wrap {
+
+  grid-template-rows:
+    auto auto !important;
+
+  height:
+    auto !important;
+
+  max-height:
+    none !important;
+
+  overflow:
+    visible !important;
+
+}
+
+
+/* メンバー一覧も全員分の高さを確保 */
+
+body.study-link-room-mode-v1
+#study-link-v2-members {
+
+  height:
+    auto !important;
+
+  max-height:
+    none !important;
+
+  min-height:
+    0 !important;
+
+  overflow:
+    visible !important;
+
+}
+
+
+/* 最後のメンバーが画面下に張り付かないよう余白 */
+
+body.study-link-room-mode-v1
+.study-link-v2-members-wrap {
+
+  margin-bottom:
+    18px !important;
+
+}
+
+</style>
+
+<!-- ASCEND FOCUS SCROLL FIX V1 -->
+
 </head>
 
 
@@ -39843,6 +39930,1181 @@ let ascendNexusFocusOriginV91 =
   "study";
 
 
+
+/* ============================================================
+   ASCEND FOCUS V10 CORE
+
+   旧ROOM / FOCUSレイアウトは使用しない。
+
+   再利用するもの:
+   - existing timer logic
+   - existing member renderer
+   - existing exit routing
+============================================================ */
+
+let ascendFocusV10MemberPoll =
+  null;
+
+let ascendFocusV10ClockTimer =
+  null;
+
+
+function ensureAscendFocusV10Style() {
+
+  if (
+    document.getElementById(
+      "asc-focus-v10-core-style"
+    )
+  ) {
+    return;
+  }
+
+
+  const style =
+    document.createElement(
+      "style"
+    );
+
+  style.id =
+    "asc-focus-v10-core-style";
+
+
+  style.textContent = `
+
+/* =========================================================
+   ASCEND FOCUS V10 CORE
+========================================================= */
+
+#asc-focus-v10-page {
+
+  position:fixed !important;
+  inset:0 !important;
+
+  z-index:2147483000 !important;
+
+  width:100vw !important;
+  height:100dvh !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  overflow:hidden !important;
+
+  background:
+    var(
+      --main-stage-bg,
+      var(--asc-bg,#080b12)
+    ) !important;
+
+  color:
+    var(--text-main,#f5f7fb) !important;
+
+  box-sizing:border-box !important;
+
+}
+
+
+/* これだけがスクロール担当 */
+
+#asc-focus-v10-scroll {
+
+  position:absolute !important;
+  inset:0 !important;
+
+  width:100% !important;
+  height:100% !important;
+
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+
+  -webkit-overflow-scrolling:
+    touch !important;
+
+  touch-action:
+    pan-y !important;
+
+  overscroll-behavior-y:
+    contain !important;
+
+  box-sizing:border-box !important;
+
+  padding:
+    50px
+    14px
+    calc(
+      54px +
+      env(safe-area-inset-bottom)
+    )
+    !important;
+
+}
+
+
+#asc-focus-v10-card {
+
+  width:
+    min(680px,100%) !important;
+
+  margin:
+    0 auto !important;
+
+  padding:
+    0 !important;
+
+  display:
+    grid !important;
+
+  gap:
+    14px !important;
+
+  box-sizing:
+    border-box !important;
+
+}
+
+
+/* ===============================
+   HEADER
+================================ */
+
+.asc-focus-v10-header {
+
+  display:flex !important;
+
+  align-items:center !important;
+
+  justify-content:
+    space-between !important;
+
+  gap:
+    12px !important;
+
+  min-width:
+    0 !important;
+
+}
+
+
+.asc-focus-v10-header-copy {
+
+  min-width:
+    0 !important;
+
+}
+
+
+.asc-focus-v10-kicker {
+
+  display:block !important;
+
+  margin-bottom:
+    3px !important;
+
+  color:
+    var(--text-muted,#8c92a3) !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .68rem !important;
+
+  font-weight:
+    700 !important;
+
+  letter-spacing:
+    .15em !important;
+
+}
+
+
+.asc-focus-v10-title {
+
+  margin:
+    0 !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    2rem !important;
+
+  line-height:
+    1 !important;
+
+  letter-spacing:
+    .05em !important;
+
+}
+
+
+#asc-focus-exit-v92 {
+
+  flex:
+    0 0 auto !important;
+
+  min-width:
+    70px !important;
+
+  min-height:
+    40px !important;
+
+  padding:
+    0 15px !important;
+
+  border:
+    1px solid rgba(255,255,255,.12) !important;
+
+  border-radius:
+    11px !important;
+
+  background:
+    rgba(255,255,255,.04) !important;
+
+  color:
+    inherit !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .08em !important;
+
+}
+
+
+/* ===============================
+   PANELS
+================================ */
+
+.asc-focus-v10-panel {
+
+  width:
+    100% !important;
+
+  padding:
+    14px !important;
+
+  border:
+    1px solid rgba(255,255,255,.07) !important;
+
+  border-radius:
+    16px !important;
+
+  background:
+    rgba(255,255,255,.025) !important;
+
+  box-sizing:
+    border-box !important;
+
+}
+
+
+.asc-focus-v10-panel-title {
+
+  margin-bottom:
+    10px !important;
+
+  color:
+    var(--text-muted,#8c92a3) !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .7rem !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .14em !important;
+
+}
+
+
+/* ===============================
+   ACTIVE ROOT
+================================ */
+
+#asc-focus-v10-page
+#study-link-v2-active {
+
+  display:
+    grid !important;
+
+  grid-template-columns:
+    minmax(0,1fr) !important;
+
+  gap:
+    14px !important;
+
+  width:
+    100% !important;
+
+  height:
+    auto !important;
+
+  min-height:
+    0 !important;
+
+  max-height:
+    none !important;
+
+  overflow:
+    visible !important;
+
+}
+
+
+/* ===============================
+   TIMER
+================================ */
+
+#asc-focus-v10-page
+#study-link-room-timer-v1 {
+
+  display:
+    grid !important;
+
+  gap:
+    10px !important;
+
+  width:
+    100% !important;
+
+  height:
+    auto !important;
+
+  padding:
+    14px !important;
+
+  border:
+    1px solid rgba(255,255,255,.07) !important;
+
+  border-radius:
+    16px !important;
+
+  background:
+    rgba(255,255,255,.025) !important;
+
+  box-sizing:
+    border-box !important;
+
+  overflow:
+    visible !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-room-timer-label-v1 {
+
+  color:
+    var(--text-muted,#8c92a3) !important;
+
+  font-size:
+    .65rem !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .12em !important;
+
+}
+
+
+#asc-focus-v10-page
+#study-link-room-subject-v1 {
+
+  width:
+    100% !important;
+
+  min-height:
+    44px !important;
+
+  padding:
+    0 12px !important;
+
+  border:
+    1px solid rgba(255,255,255,.1) !important;
+
+  border-radius:
+    11px !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+
+  color:
+    inherit !important;
+
+}
+
+
+#asc-focus-v10-page
+#study-link-room-clock-v1 {
+
+  padding:
+    14px 4px !important;
+
+  text-align:
+    center !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    clamp(2.4rem,13vw,4.2rem) !important;
+
+  font-weight:
+    700 !important;
+
+  line-height:
+    .95 !important;
+
+  letter-spacing:
+    .025em !important;
+
+}
+
+
+#asc-focus-v10-page
+#study-link-room-timer-state-v1 {
+
+  display:flex !important;
+
+  align-items:center !important;
+
+  justify-content:center !important;
+
+  min-height:
+    26px !important;
+
+  gap:
+    7px !important;
+
+  color:
+    var(--text-muted,#8c92a3) !important;
+
+  font-size:
+    .68rem !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .1em !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-room-timer-buttons-v1 {
+
+  display:grid !important;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr)) !important;
+
+  gap:
+    7px !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-room-timer-buttons-v1 button {
+
+  min-width:
+    0 !important;
+
+  min-height:
+    42px !important;
+
+  padding:
+    0 6px !important;
+
+  border:
+    1px solid rgba(255,255,255,.11) !important;
+
+  border-radius:
+    10px !important;
+
+  background:
+    rgba(255,255,255,.045) !important;
+
+  color:
+    inherit !important;
+
+  font-size:
+    .7rem !important;
+
+  font-weight:
+    850 !important;
+
+  letter-spacing:
+    .06em !important;
+
+}
+
+
+/* ===============================
+   MEMBERS
+================================ */
+
+#asc-focus-v10-page
+.study-link-v2-members-wrap {
+
+  display:
+    block !important;
+
+  width:
+    100% !important;
+
+  height:
+    auto !important;
+
+  min-height:
+    0 !important;
+
+  max-height:
+    none !important;
+
+  margin:
+    0 !important;
+
+  padding:
+    14px !important;
+
+  border:
+    1px solid rgba(255,255,255,.07) !important;
+
+  border-radius:
+    16px !important;
+
+  background:
+    rgba(255,255,255,.025) !important;
+
+  overflow:
+    visible !important;
+
+  box-sizing:
+    border-box !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-v2-members-head {
+
+  display:flex !important;
+
+  align-items:center !important;
+
+  justify-content:
+    space-between !important;
+
+  margin-bottom:
+    10px !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-v2-members-label {
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .75rem !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .12em !important;
+
+}
+
+
+#asc-focus-v10-page
+#study-link-v2-member-count {
+
+  display:grid !important;
+
+  place-items:center !important;
+
+  min-width:
+    28px !important;
+
+  height:
+    28px !important;
+
+  border-radius:
+    9px !important;
+
+  background:
+    rgba(255,255,255,.055) !important;
+
+  font-weight:
+    800 !important;
+
+}
+
+
+#asc-focus-v10-page
+#study-link-v2-members {
+
+  display:
+    grid !important;
+
+  grid-template-columns:
+    1fr !important;
+
+  gap:
+    7px !important;
+
+  width:
+    100% !important;
+
+  height:
+    auto !important;
+
+  min-height:
+    0 !important;
+
+  max-height:
+    none !important;
+
+  overflow:
+    visible !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-v2-member {
+
+  display:flex !important;
+
+  align-items:center !important;
+
+  justify-content:
+    space-between !important;
+
+  gap:
+    10px !important;
+
+  min-height:
+    58px !important;
+
+  padding:
+    10px 11px !important;
+
+  border:
+    1px solid rgba(255,255,255,.06) !important;
+
+  border-radius:
+    12px !important;
+
+  background:
+    rgba(255,255,255,.02) !important;
+
+  box-sizing:
+    border-box !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-v2-member-main {
+
+  min-width:
+    0 !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-v2-member-name {
+
+  font-weight:
+    800 !important;
+
+  overflow:
+    hidden !important;
+
+  text-overflow:
+    ellipsis !important;
+
+  white-space:
+    nowrap !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-v2-member-sub {
+
+  margin-top:
+    3px !important;
+
+  color:
+    var(--text-muted,#8c92a3) !important;
+
+  font-size:
+    .7rem !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-v2-member-status-wrap-v1 {
+
+  flex:
+    0 0 auto !important;
+
+  text-align:
+    right !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-v2-member-state {
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .7rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .08em !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-v2-member-state.studying {
+
+  color:
+    #70efb0 !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-v2-member-state.paused {
+
+  color:
+    #f1c76a !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-v2-member-time-v1 {
+
+  margin-top:
+    3px !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .68rem !important;
+
+  opacity:
+    .78 !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-v2-you {
+
+  margin-left:
+    5px !important;
+
+  font-size:
+    .55rem !important;
+
+  opacity:
+    .65 !important;
+
+}
+
+  `;
+
+
+  document.head.appendChild(
+    style
+  );
+
+}
+
+
+
+function clearAscendFocusV10Runtime() {
+
+  if (ascendFocusV10MemberPoll) {
+
+    clearInterval(
+      ascendFocusV10MemberPoll
+    );
+
+    ascendFocusV10MemberPoll =
+      null;
+
+  }
+
+
+  if (ascendFocusV10ClockTimer) {
+
+    clearInterval(
+      ascendFocusV10ClockTimer
+    );
+
+    ascendFocusV10ClockTimer =
+      null;
+
+  }
+
+}
+
+
+
+function tickAscendFocusV10MemberClocks() {
+
+  document
+    .querySelectorAll(
+      "#asc-focus-v10-page .study-link-v2-member-time-v1"
+    )
+    .forEach(el => {
+
+      const base =
+        Math.max(
+          0,
+          Number(
+            el.dataset.baseMs ||
+            0
+          )
+        );
+
+
+      const started =
+        Math.max(
+          0,
+          Number(
+            el.dataset.startedAt ||
+            0
+          )
+        );
+
+
+      const running =
+        el.dataset.running ===
+        "1";
+
+
+      const ms =
+        base +
+        (
+          running &&
+          started > 0
+            ? Math.max(
+                0,
+                Date.now() - started
+              )
+            : 0
+        );
+
+
+      const sec =
+        Math.floor(
+          ms / 1000
+        );
+
+
+      const h =
+        Math.floor(
+          sec / 3600
+        );
+
+
+      const m =
+        Math.floor(
+          (sec % 3600) / 60
+        );
+
+
+      const s =
+        sec % 60;
+
+
+      el.textContent =
+        String(h).padStart(2,"0") +
+        ":" +
+        String(m).padStart(2,"0") +
+        ":" +
+        String(s).padStart(2,"0");
+
+    });
+
+}
+
+
+
+function closeAscendFocusV10Shell() {
+
+  clearAscendFocusV10Runtime();
+
+
+  document
+    .getElementById(
+      "asc-focus-v10-page"
+    )
+    ?.remove();
+
+}
+
+
+
+async function showAscendFocusV10Page(
+  user,
+  code
+) {
+
+  clearAscendFocusV10Runtime();
+
+  closeAscendFocusV10Shell();
+
+  ensureAscendFocusV10Style();
+
+
+  /*
+    STUDY上に残っている旧NEXUSカードを削除。
+
+    EXIT時には元画面を再描画するため、
+    復元処理は不要。
+  */
+
+  document
+    .getElementById(
+      "study-link-card-v2"
+    )
+    ?.remove();
+
+
+  document.body.classList.remove(
+    "study-link-room-mode-v1"
+  );
+
+  document.body.classList.remove(
+    "asc-nexus-focus-active-v91"
+  );
+
+
+  const root =
+    document.createElement(
+      "div"
+    );
+
+
+  root.id =
+    "asc-focus-v10-page";
+
+
+  root.innerHTML = `
+
+    <div id="asc-focus-v10-scroll">
+
+      <main id="asc-focus-v10-card">
+
+        <header class="asc-focus-v10-header">
+
+          <div class="asc-focus-v10-header-copy">
+
+            <span class="asc-focus-v10-kicker">
+              NEXUS / LIVE SESSION
+            </span>
+
+            <h1 class="asc-focus-v10-title">
+              FOCUS
+            </h1>
+
+          </div>
+
+
+          <button
+            type="button"
+            id="asc-focus-exit-v92"
+          >
+            EXIT
+          </button>
+
+        </header>
+
+
+        <div
+          id="study-link-v2-active"
+        >
+
+          <div
+            id="study-link-room-timer-v1"
+          ></div>
+
+
+          <section
+            class="study-link-v2-members-wrap"
+          >
+
+            <div
+              class="study-link-v2-members-head"
+            >
+
+              <div
+                class="study-link-v2-members-label"
+              >
+                NEXUS MEMBERS
+              </div>
+
+              <div
+                id="study-link-v2-member-count"
+              >
+                0
+              </div>
+
+            </div>
+
+
+            <div
+              id="study-link-v2-members"
+            >
+
+              <div
+                class="study-link-v2-members-empty"
+              >
+                Loading...
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+
+      </main>
+
+    </div>
+
+  `;
+
+
+  document.body.appendChild(
+    root
+  );
+
+
+  /*
+    既存タイマー処理をそのまま接続。
+    EXITイベントもこの関数が設定する。
+  */
+
+  await mountStudyLinkRoomTimerV1(
+    user,
+    code
+  );
+
+
+  /*
+    既存メンバー描画をそのまま接続。
+  */
+
+  await renderStudyLinkMembersV2(
+    code,
+    user
+  );
+
+
+  /*
+    状態更新:
+    Firestoreは5秒ごと。
+    表示中の経過時間はローカルで毎秒更新。
+  */
+
+  ascendFocusV10MemberPoll =
+    setInterval(
+      async () => {
+
+        if (
+          !document.getElementById(
+            "asc-focus-v10-page"
+          )
+        ) {
+          return;
+        }
+
+
+        try {
+
+          await renderStudyLinkMembersV2(
+            code,
+            user
+          );
+
+        }
+
+        catch (error) {
+
+          console.warn(
+            "FOCUS V10 member refresh:",
+            error
+          );
+
+        }
+
+      },
+      5000
+    );
+
+
+  ascendFocusV10ClockTimer =
+    setInterval(
+      tickAscendFocusV10MemberClocks,
+      1000
+    );
+
+
+  tickAscendFocusV10MemberClocks();
+
+
+  /*
+    初期位置は必ず一番上。
+  */
+
+  const scroller =
+    document.getElementById(
+      "asc-focus-v10-scroll"
+    );
+
+
+  if (scroller) {
+    scroller.scrollTop = 0;
+  }
+
+}
+
+
+/* ASCEND FOCUS V10 CORE */
+
+
 async function enterAscendNexusFocusV91(
   user,
   origin = "study"
@@ -39969,21 +41231,14 @@ async function enterAscendNexusFocusV91(
 
 
   /*
-    STUDYを描画してから
-    FOCUS MODEだけ明示的に有効化
+    ASCEND FOCUS V10
+
+    旧STUDY / ROOM MODEは経由しない。
+    専用FOCUS画面を直接開く。
   */
 
-  await showStudyMainPage(
-    user
-  );
-
-
-  document.body.classList.add(
-    "asc-nexus-focus-active-v91"
-  );
-
-
-  enableStudyLinkRoomModeV1(
+  await showAscendFocusV10Page(
+    user,
     code
   );
 
@@ -39996,6 +41251,13 @@ async function exitAscendNexusFocusV91(
 
   const origin =
     ascendNexusFocusOriginV91;
+
+
+  /*
+    V10専用画面を先に破棄。
+  */
+
+  closeAscendFocusV10Shell();
 
 
   ascendNexusFocusExplicitV91 =
@@ -72145,111 +73407,47 @@ setTimeout(()=>{
 </script>
 
 <!-- ASCEND STANDALONE TOP OFFSET V2 -->
+<<<<<<< HEAD
 
-<style id="ascend-focus-v10-style">
+<style id="ascend-focus-document-scroll-v3">
 
 /* =========================================================
-   ASCEND FOCUS V10
-   ISOLATED FULLSCREEN SHELL
+   ASCEND FOCUS DOCUMENT SCROLL V3
 
-   既存FOCUSのロジックは再利用。
-   レイアウトだけASCEND本体から完全分離する。
+   FOCUS中だけ固定viewport構造を解除し、
+   documentそのものを縦スクロールさせる。
 ========================================================= */
 
 
-/* =========================================================
-   OVERLAY
-========================================================= */
+/* HTML ROOT */
 
-#asc-focus-v10-overlay {
-
-  position:
-    fixed !important;
-
-  inset:
-    0 !important;
-
-  z-index:
-    2147483000 !important;
-
-  width:
-    100vw !important;
+html.asc-focus-document-scroll-v3 {
 
   height:
-    100dvh !important;
+    auto !important;
 
-  overflow:
-    hidden !important;
-
-  background:
-    var(
-      --main-stage-bg,
-      var(--asc-bg,#080b12)
-    ) !important;
-
-  box-sizing:
-    border-box !important;
-
-}
-
-
-/* =========================================================
-   これだけがスクロール担当
-========================================================= */
-
-#asc-focus-v10-scroll {
-
-  position:
-    absolute !important;
-
-  inset:
-    0 !important;
-
-  width:
-    100% !important;
-
-  height:
+  min-height:
     100% !important;
 
   overflow-x:
     hidden !important;
 
   overflow-y:
-    scroll !important;
+    auto !important;
+
+  overscroll-behavior-y:
+    auto !important;
 
   -webkit-overflow-scrolling:
     touch !important;
 
-  touch-action:
-    pan-y !important;
-
-  overscroll-behavior-y:
-    contain !important;
-
-  box-sizing:
-    border-box !important;
-
-  padding:
-    calc(
-      env(safe-area-inset-top)
-      + 16px
-    )
-    14px
-    calc(
-      env(safe-area-inset-bottom)
-      + 48px
-    )
-    !important;
-
 }
 
 
-/* =========================================================
-   元カードを完全に普通のコンテンツ化
-========================================================= */
+/* BODY */
 
-#asc-focus-v10-overlay
-#study-link-card-v2 {
+html.asc-focus-document-scroll-v3
+body.study-link-room-mode-v1 {
 
   position:
     static !important;
@@ -72257,16 +73455,122 @@ setTimeout(()=>{
   inset:
     auto !important;
 
-  top:
+  width:
+    100% !important;
+
+  height:
     auto !important;
 
-  left:
+  min-height:
+    100dvh !important;
+
+  max-height:
+    none !important;
+
+  overflow-x:
+    hidden !important;
+
+  overflow-y:
+    visible !important;
+
+  overscroll-behavior-y:
     auto !important;
 
-  right:
+  touch-action:
+    pan-y !important;
+
+}
+
+
+/* MAIN */
+
+html.asc-focus-document-scroll-v3
+body.study-link-room-mode-v1
+> main {
+
+  position:
+    static !important;
+
+  inset:
     auto !important;
 
-  bottom:
+  width:
+    100% !important;
+
+  height:
+    auto !important;
+
+  min-height:
+    100dvh !important;
+
+  max-height:
+    none !important;
+
+  display:
+    block !important;
+
+  overflow:
+    visible !important;
+
+  box-sizing:
+    border-box !important;
+
+  padding:
+    50px
+    16px
+    calc(
+      50px +
+      env(safe-area-inset-bottom)
+    )
+    !important;
+
+  touch-action:
+    pan-y !important;
+
+}
+
+
+/* SECTION */
+
+html.asc-focus-document-scroll-v3
+body.study-link-room-mode-v1
+> main
+> section {
+
+  position:
+    static !important;
+
+  width:
+    100% !important;
+
+  height:
+    auto !important;
+
+  min-height:
+    0 !important;
+
+  max-height:
+    none !important;
+
+  overflow:
+    visible !important;
+
+  touch-action:
+    pan-y !important;
+
+}
+
+
+/* FOCUS CARD */
+
+html.asc-focus-document-scroll-v3
+body.study-link-room-mode-v1
+#study-link-card-v2 {
+
+  position:
+    static !important;
+
+  inset:
     auto !important;
 
   width:
@@ -72284,37 +73588,50 @@ setTimeout(()=>{
   margin:
     0 auto !important;
 
-  padding:
-    14px !important;
-
-  display:
-    block !important;
-
   overflow:
     visible !important;
 
   contain:
     none !important;
 
-  transform:
-    none !important;
-
-  box-sizing:
-    border-box !important;
+  touch-action:
+    pan-y !important;
 
 }
 
 
-/* ACTIVEだけ表示 */
+/* ACTIVE PANEL */
 
-#asc-focus-v10-overlay
+html.asc-focus-document-scroll-v3
+body.study-link-room-mode-v1
 #study-link-v2-active {
+
+  height:
+    auto !important;
+
+  min-height:
+    0 !important;
+
+  max-height:
+    none !important;
+
+  overflow:
+    visible !important;
+
+}
+
+
+/* MEMBERS */
+
+html.asc-focus-document-scroll-v3
+body.study-link-room-mode-v1
+.study-link-v2-members-wrap {
 
   display:
     grid !important;
 
-  width:
-    100% !important;
+  grid-template-rows:
+    auto auto !important;
 
   height:
     auto !important;
@@ -72328,69 +73645,16 @@ setTimeout(()=>{
   overflow:
     visible !important;
 
-  gap:
-    14px !important;
-
 }
 
 
-/* lobbyはFOCUSには不要 */
-
-#asc-focus-v10-overlay
-#study-link-v2-lobby {
-
-  display:
-    none !important;
-
-}
-
-
-/* =========================================================
-   MEMBERS
-========================================================= */
-
-#asc-focus-v10-overlay
-.study-link-v2-members-wrap {
-
-  display:
-    block !important;
-
-  width:
-    100% !important;
-
-  height:
-    auto !important;
-
-  min-height:
-    0 !important;
-
-  max-height:
-    none !important;
-
-  overflow:
-    visible !important;
-
-  box-sizing:
-    border-box !important;
-
-}
-
-
-#asc-focus-v10-overlay
+html.asc-focus-document-scroll-v3
+body.study-link-room-mode-v1
 #study-link-v2-members {
 
   display:
     grid !important;
 
-  grid-template-columns:
-    repeat(2,minmax(0,1fr)) !important;
-
-  gap:
-    7px !important;
-
-  width:
-    100% !important;
-
   height:
     auto !important;
 
@@ -72406,374 +73670,96 @@ setTimeout(()=>{
 }
 
 
-@media (max-width:520px) {
+/* 一番下までスクロールできる余白 */
 
-  #asc-focus-v10-overlay
-  #study-link-v2-members {
+html.asc-focus-document-scroll-v3
+body.study-link-room-mode-v1
+#study-link-v2-active {
 
-    grid-template-columns:
-      1fr !important;
-
-  }
-
-}
-
-
-/* =========================================================
-   TIMER
-========================================================= */
-
-#asc-focus-v10-overlay
-#study-link-room-timer-v1 {
-
-  display:
-    grid !important;
-
-  width:
-    100% !important;
-
-  height:
-    auto !important;
-
-  max-height:
-    none !important;
-
-  overflow:
-    visible !important;
-
-}
-
-
-/* =========================================================
-   下部ナビはFOCUS中だけ完全に隠す
-========================================================= */
-
-html.asc-focus-v10-open
-#main-navigation {
-
-  display:
-    none !important;
-
-}
-
-
-/* 背景へのタッチ防止 */
-
-html.asc-focus-v10-open,
-html.asc-focus-v10-open body {
-
-  overscroll-behavior:
-    none !important;
-
-}
-
-
-/* 最後に余白 */
-
-#asc-focus-v10-overlay
-#study-link-v2-active::after {
-
-  content:
-    "";
-
-  display:
-    block;
-
-  height:
-    40px;
-
-  grid-column:
-    1 / -1;
+  padding-bottom:
+    36px !important;
 
 }
 
 </style>
 
 
-<script id="ascend-focus-v10-script">
+<script id="ascend-focus-document-scroll-v3-script">
 
 (() => {
 
   const ROOT_CLASS =
-    "asc-focus-v10-open";
-
-  const OVERLAY_ID =
-    "asc-focus-v10-overlay";
-
-  const SCROLL_ID =
-    "asc-focus-v10-scroll";
+    "asc-focus-document-scroll-v3";
 
 
-  let placeholder =
-    null;
+  function focusIsActive() {
 
-  let mountedCard =
-    null;
-
-
-  function isVisible(el) {
-
-    if (!el) {
-      return false;
-    }
-
-
-    const style =
-      getComputedStyle(el);
-
-
-    if (
-      style.display === "none" ||
-      style.visibility === "hidden"
-    ) {
-      return false;
-    }
-
-
-    return (
-      el.getClientRects().length > 0
-    );
-
-  }
-
-
-  function focusShouldOpen() {
-
-    const body =
-      document.body;
-
-    const card =
-      document.getElementById(
-        "study-link-card-v2"
-      );
-
-    const active =
-      document.getElementById(
-        "study-link-v2-active"
-      );
-
-    const exit =
-      document.getElementById(
-        "asc-focus-exit-v92"
-      );
-
-
-    if (
-      !body ||
-      !card ||
-      !active ||
-      !exit
-    ) {
-      return false;
-    }
-
-
-    /*
-      旧クラス1個だけには依存しない。
-
-      ROOM MODE + 実際にEXITが見えている
-      = FOCUSが開いている
-    */
-
-    return (
-      body.classList.contains(
+    return Boolean(
+      document.body &&
+      document.body.classList.contains(
         "study-link-room-mode-v1"
       ) &&
-      isVisible(exit)
-    );
-
-  }
-
-
-  function createOverlay() {
-
-    let overlay =
-      document.getElementById(
-        OVERLAY_ID
-      );
-
-
-    if (overlay) {
-      return overlay;
-    }
-
-
-    overlay =
-      document.createElement(
-        "div"
-      );
-
-    overlay.id =
-      OVERLAY_ID;
-
-
-    const scroll =
-      document.createElement(
-        "div"
-      );
-
-    scroll.id =
-      SCROLL_ID;
-
-
-    overlay.appendChild(
-      scroll
-    );
-
-
-    document.body.appendChild(
-      overlay
-    );
-
-
-    return overlay;
-
-  }
-
-
-  function mountFocusV10() {
-
-    if (
-      document.getElementById(
-        OVERLAY_ID
+      document.body.classList.contains(
+        "asc-nexus-focus-active-v91"
       )
-    ) {
-      return;
-    }
-
-
-    const card =
-      document.getElementById(
-        "study-link-card-v2"
-      );
-
-
-    if (
-      !card ||
-      !card.parentNode
-    ) {
-      return;
-    }
-
-
-    /*
-      元位置を保存。
-      DOMそのものを移動するので
-      イベントリスナーもリアルタイム更新も保持される。
-    */
-
-    placeholder =
-      document.createComment(
-        "ASCEND FOCUS V10 CARD ORIGIN"
-      );
-
-
-    card.parentNode.insertBefore(
-      placeholder,
-      card
     );
 
-
-    const overlay =
-      createOverlay();
+  }
 
 
-    const scroll =
-      overlay.querySelector(
-        "#" + SCROLL_ID
-      );
+  function applyFocusDocumentScrollV3() {
 
-
-    scroll.appendChild(
-      card
-    );
-
-
-    mountedCard =
-      card;
+    const active =
+      focusIsActive();
 
 
     document.documentElement
       .classList
-      .add(
-        ROOT_CLASS
+      .toggle(
+        ROOT_CLASS,
+        active
       );
 
 
-    /*
-      必ず一番上から開始。
-    */
-
-    scroll.scrollTop =
-      0;
-
-  }
-
-
-  function unmountFocusV10() {
-
-    const overlay =
-      document.getElementById(
-        OVERLAY_ID
+    const main =
+      document.querySelector(
+        "body > main"
       );
 
 
-    if (
-      mountedCard &&
-      placeholder &&
-      placeholder.parentNode
-    ) {
-
-      placeholder.parentNode.insertBefore(
-        mountedCard,
-        placeholder
-      );
-
-
-      placeholder.remove();
-
+    if (!main) {
+      return;
     }
 
 
-    overlay?.remove();
+    if (active) {
 
+      /*
+        Standalone top-offset V2 が
+        inline !important で設定する高さを
+        FOCUS中だけ無効化。
+      */
 
-    placeholder =
-      null;
+      main.dataset.ascFocusScrollV3 =
+        "1";
 
-    mountedCard =
-      null;
-
-
-    document.documentElement
-      .classList
-      .remove(
-        ROOT_CLASS
+      main.style.setProperty(
+        "height",
+        "auto",
+        "important"
       );
 
-  }
-
-
-  function syncFocusV10() {
-
-    const shouldOpen =
-      focusShouldOpen();
-
-
-    const open =
-      Boolean(
-        document.getElementById(
-          OVERLAY_ID
-        )
+      main.style.setProperty(
+        "min-height",
+        "100dvh",
+        "important"
       );
 
-
-    if (
-      shouldOpen &&
-      !open
-    ) {
-
-      mountFocusV10();
+      main.style.setProperty(
+        "max-height",
+        "none",
+        "important"
+      );
 
       return;
 
@@ -72781,81 +73767,69 @@ html.asc-focus-v10-open body {
 
 
     if (
-      !shouldOpen &&
-      open
+      main.dataset.ascFocusScrollV3 ===
+      "1"
     ) {
 
-      unmountFocusV10();
+      delete main.dataset.ascFocusScrollV3;
+
+      main.style.removeProperty(
+        "height"
+      );
+
+      main.style.removeProperty(
+        "min-height"
+      );
+
+      main.style.removeProperty(
+        "max-height"
+      );
+
+
+      /*
+        通常画面へ戻ったら
+        standalone offset側に再計算させる。
+      */
+
+      requestAnimationFrame(
+        () => {
+          window.dispatchEvent(
+            new Event("resize")
+          );
+        }
+      );
 
     }
-
-  }
-
-
-  /*
-    ASCENDは画面DOMを書き換えるので
-    observer + 軽いpollの二重保険。
-  */
-
-  let queued =
-    false;
-
-
-  function queueSync() {
-
-    if (queued) {
-      return;
-    }
-
-
-    queued =
-      true;
-
-
-    requestAnimationFrame(
-      () => {
-
-        queued =
-          false;
-
-        syncFocusV10();
-
-      }
-    );
 
   }
 
 
   const observer =
     new MutationObserver(
-      queueSync
+      applyFocusDocumentScrollV3
     );
 
 
   function boot() {
 
+    if (!document.body) {
+      return;
+    }
+
+
     observer.observe(
       document.body,
       {
-        subtree:true,
-        childList:true,
         attributes:true,
         attributeFilter:[
-          "class",
-          "style",
-          "hidden"
-        ]
+          "class"
+        ],
+        childList:true
       }
     );
 
 
-    syncFocusV10();
-
-
-    setInterval(
-      syncFocusV10,
-      250
-    );
+    applyFocusDocumentScrollV3();
 
   }
 
@@ -72881,11 +73855,19 @@ html.asc-focus-v10-open body {
 
   }
 
+
+  window.addEventListener(
+    "resize",
+    applyFocusDocumentScrollV3
+  );
+
 })();
 
 </script>
 
-<!-- ASCEND FOCUS V10 ISOLATED SHELL -->
+<!-- ASCEND FOCUS DOCUMENT SCROLL V3 -->
 
+=======
+>>>>>>> parent of 2ed44e8 (Fix Focus scrolling and member visibility)
 </body>
 </html>
