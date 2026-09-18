@@ -43768,10 +43768,730 @@ function mountAscendFocusV10ConfirmShell() {
 /* ASCEND FOCUS V10 CONFIRM FLOW */
 
 
+
+/* ============================================================
+   ASCEND FOCUS V10 THEME AWARE SKIN
+
+   ASCEND本体のテーマ変数に完全追従。
+   DARK / LIGHT両対応。
+============================================================ */
+
+function ensureAscendFocusV10ThemeSkin() {
+
+  let style =
+    document.getElementById(
+      "asc-focus-v10-theme-aware-skin"
+    );
+
+
+  if (!style) {
+
+    style =
+      document.createElement(
+        "style"
+      );
+
+
+    style.id =
+      "asc-focus-v10-theme-aware-skin";
+
+
+    document.head.appendChild(
+      style
+    );
+
+  }
+
+
+  style.textContent = `
+
+/* =========================================================
+   SHARED TOKENS
+========================================================= */
+
+#asc-focus-v10-page,
+#asc-focus-v10-confirm-page {
+
+  --focus-bg:
+    var(--bg-dark);
+
+  --focus-card:
+    var(--bg-card);
+
+  --focus-raised:
+    var(--bg-card-hover);
+
+  --focus-text:
+    var(--text-main);
+
+  --focus-muted:
+    var(--text-muted);
+
+  --focus-border:
+    var(--border-color);
+
+  --focus-cyan:
+    var(--neon-cyan,#00f3ff);
+
+  --focus-green:
+    var(--neon-green,#00ff66);
+
+}
+
+
+/* =========================================================
+   PAGE BACKGROUND
+========================================================= */
+
+#asc-focus-v10-page,
+#asc-focus-v10-confirm-page {
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0,243,255,.045),
+      transparent 220px
+    ),
+    var(--focus-bg)
+
+    !important;
+
+  color:
+    var(--focus-text) !important;
+
+}
+
+
+/* LIGHTはネオンを少し抑える */
+
+html[data-asc-theme="light"]
+#asc-focus-v10-page,
+
+html[data-asc-theme="light"]
+#asc-focus-v10-confirm-page {
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0,150,190,.055),
+      transparent 190px
+    ),
+    var(--focus-bg)
+
+    !important;
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+#asc-focus-v10-page
+.asc-focus-v10-kicker {
+
+  color:
+    var(--focus-cyan) !important;
+
+  opacity:
+    .72 !important;
+
+  font-family:
+    "Rajdhani",
+    sans-serif !important;
+
+  font-size:
+    .60rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .18em !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-title {
+
+  color:
+    var(--focus-text) !important;
+
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    sans-serif !important;
+
+  font-size:
+    clamp(
+      2.2rem,
+      11vw,
+      3.1rem
+    ) !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .08em !important;
+
+}
+
+
+#asc-focus-v10-page
+#asc-focus-exit-v92 {
+
+  border:
+    1px solid
+    var(--focus-border) !important;
+
+  border-radius:
+    9px !important;
+
+  background:
+    var(--focus-card) !important;
+
+  color:
+    var(--focus-muted) !important;
+
+  font-family:
+    "Rajdhani",
+    sans-serif !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .12em !important;
+
+}
+
+
+/* =========================================================
+   ASCEND CARD LANGUAGE
+========================================================= */
+
+#asc-focus-v10-page
+#asc-focus-v10-live-status,
+
+#asc-focus-v10-page
+#study-link-room-timer-v1,
+
+#asc-focus-v10-page
+.study-link-v2-members-wrap {
+
+  position:
+    relative !important;
+
+  border:
+    1px solid
+    var(--focus-border) !important;
+
+  border-radius:
+    16px !important;
+
+  background:
+    var(--focus-card) !important;
+
+  color:
+    var(--focus-text) !important;
+
+  box-shadow:
+    0 12px 32px
+    rgba(0,0,0,.12) !important;
+
+  overflow:
+    hidden !important;
+
+}
+
+
+/* LIGHTは影を軽く */
+
+html[data-asc-theme="light"]
+#asc-focus-v10-page
+#asc-focus-v10-live-status,
+
+html[data-asc-theme="light"]
+#asc-focus-v10-page
+#study-link-room-timer-v1,
+
+html[data-asc-theme="light"]
+#asc-focus-v10-page
+.study-link-v2-members-wrap {
+
+  box-shadow:
+    0 8px 24px
+    rgba(20,30,50,.07) !important;
+
+}
+
+
+/* 左上アクセント */
+
+#asc-focus-v10-page
+#asc-focus-v10-live-status::after,
+
+#asc-focus-v10-page
+#study-link-room-timer-v1::after,
+
+#asc-focus-v10-page
+.study-link-v2-members-wrap::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  top:
+    0;
+
+  left:
+    0;
+
+  width:
+    48px;
+
+  height:
+    2px;
+
+  background:
+    var(--focus-cyan);
+
+  box-shadow:
+    0 0 10px
+    rgba(0,243,255,.24);
+
+}
+
+
+/* =========================================================
+   LINK
+========================================================= */
+
+#asc-focus-v10-page
+#asc-focus-v10-live-status[data-link="active"] {
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--focus-green) 32%,
+      var(--focus-border)
+    ) !important;
+
+}
+
+
+#asc-focus-v10-page
+#asc-focus-v10-live-status[data-link="active"]::after {
+
+  background:
+    var(--focus-green) !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-rates > div,
+
+#asc-focus-v10-page
+.asc-focus-v10-fund,
+
+#asc-focus-v10-page
+#asc-focus-v10-boost-state {
+
+  border:
+    1px solid
+    var(--focus-border) !important;
+
+  background:
+    var(--focus-raised) !important;
+
+  color:
+    var(--focus-text) !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-rates > div {
+
+  border-radius:
+    10px !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-rates strong {
+
+  color:
+    var(--focus-text) !important;
+
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    sans-serif !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-rates span,
+
+#asc-focus-v10-page
+.asc-focus-v10-fund-head > span,
+
+#asc-focus-v10-page
+.asc-focus-v10-boost-line > span {
+
+  color:
+    var(--focus-muted) !important;
+
+}
+
+
+/* FUND */
+
+#asc-focus-v10-page
+.asc-focus-v10-fund {
+
+  border-radius:
+    11px !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-fund-track {
+
+  background:
+    var(--focus-border) !important;
+
+}
+
+
+#asc-focus-v10-page
+#asc-focus-v10-fund-fill {
+
+  background:
+    var(--focus-cyan) !important;
+
+}
+
+
+/* =========================================================
+   STUDY TARGET
+========================================================= */
+
+#asc-focus-v10-page
+#asc-focus-v10-subject-picker {
+
+  padding:
+    13px !important;
+
+  border:
+    1px solid
+    var(--focus-border) !important;
+
+  border-radius:
+    12px !important;
+
+  background:
+    var(--focus-raised) !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-hierarchy-title {
+
+  color:
+    var(--focus-cyan) !important;
+
+  font-family:
+    "Rajdhani",
+    sans-serif !important;
+
+  font-size:
+    .58rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .17em !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-hierarchy-path {
+
+  color:
+    var(--focus-muted) !important;
+
+}
+
+
+#asc-focus-v10-page
+#asc-focus-v10-subject-picker select {
+
+  border:
+    1px solid
+    var(--focus-border) !important;
+
+  border-radius:
+    9px !important;
+
+  background:
+    var(--focus-card) !important;
+
+  color:
+    var(--focus-text) !important;
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+#asc-focus-v10-page
+#study-link-room-clock-v1 {
+
+  color:
+    var(--focus-text) !important;
+
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    sans-serif !important;
+
+  font-variant-numeric:
+    tabular-nums !important;
+
+  letter-spacing:
+    .05em !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-room-timer-label-v1 {
+
+  color:
+    var(--focus-cyan) !important;
+
+  opacity:
+    .68 !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-room-timer-buttons-v1 button {
+
+  border:
+    1px solid
+    var(--focus-border) !important;
+
+  border-radius:
+    9px !important;
+
+  background:
+    var(--focus-raised) !important;
+
+  color:
+    var(--focus-text) !important;
+
+  font-family:
+    "Rajdhani",
+    sans-serif !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .08em !important;
+
+}
+
+
+#asc-focus-v10-page
+#study-link-room-start-v1:not(:disabled) {
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--focus-cyan) 46%,
+      var(--focus-border)
+    ) !important;
+
+  color:
+    var(--focus-cyan) !important;
+
+}
+
+
+/* =========================================================
+   MEMBERS
+========================================================= */
+
+#asc-focus-v10-page
+.study-link-v2-members-label {
+
+  color:
+    var(--focus-cyan) !important;
+
+  opacity:
+    .70 !important;
+
+  font-family:
+    "Rajdhani",
+    sans-serif !important;
+
+  letter-spacing:
+    .16em !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-v2-member {
+
+  border:
+    1px solid
+    var(--focus-border) !important;
+
+  border-radius:
+    10px !important;
+
+  background:
+    var(--focus-raised) !important;
+
+  color:
+    var(--focus-text) !important;
+
+}
+
+
+#asc-focus-v10-page
+.study-link-v2-member-sub {
+
+  color:
+    var(--focus-muted) !important;
+
+}
+
+
+#asc-focus-v10-page
+#study-link-v2-member-count {
+
+  border:
+    1px solid
+    var(--focus-border) !important;
+
+  background:
+    var(--focus-raised) !important;
+
+  color:
+    var(--focus-text) !important;
+
+}
+
+
+/* =========================================================
+   SAVE SESSION
+========================================================= */
+
+#asc-focus-v10-confirm-page
+#asc-focus-v10-confirm-content > * {
+
+  border:
+    1px solid
+    var(--focus-border) !important;
+
+  background:
+    var(--focus-card) !important;
+
+  color:
+    var(--focus-text) !important;
+
+}
+
+
+#asc-focus-v10-confirm-page
+.asc-focus-v10-confirm-kicker {
+
+  color:
+    var(--focus-cyan) !important;
+
+}
+
+
+#asc-focus-v10-confirm-page
+.asc-focus-v10-confirm-title {
+
+  color:
+    var(--focus-text) !important;
+
+  font-family:
+    "Orbitron",
+    "Rajdhani",
+    sans-serif !important;
+
+}
+
+
+/* =========================================================
+   LIGHT SPECIFIC TUNING
+========================================================= */
+
+html[data-asc-theme="light"]
+#asc-focus-v10-page
+#study-link-room-clock-v1 {
+
+  text-shadow:
+    none !important;
+
+}
+
+
+html[data-asc-theme="light"]
+#asc-focus-v10-page
+#asc-focus-v10-live-status::after,
+
+html[data-asc-theme="light"]
+#asc-focus-v10-page
+#study-link-room-timer-v1::after,
+
+html[data-asc-theme="light"]
+#asc-focus-v10-page
+.study-link-v2-members-wrap::after {
+
+  box-shadow:
+    none !important;
+
+}
+
+
+/* ASCEND FOCUS V10 THEME AWARE SKIN */
+
+  `;
+
+}
+
+
 async function showAscendFocusV10Page(
   user,
   code
 ) {
+
+  ensureAscendFocusV10ThemeSkin();
+
 
   closeAscendFocusV10ConfirmShell();
 
