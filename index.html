@@ -40755,11 +40755,9 @@ function ensureAscendFocusV10Style() {
 /* ============================================================
    ASCEND FOCUS V10 SUBJECT PICKER
 
-   native selectを直接操作せず、
-   ボタンで教科を選択する。
-
-   内部的には既存select.valueへ同期するため
-   タイマーロジックはそのまま再利用。
+   Weakness Map風:
+   通常は現在の教科だけ表示。
+   タップした時だけ候補を展開する。
 ============================================================ */
 
 function mountAscendFocusV10SubjectPicker() {
@@ -40799,19 +40797,13 @@ function mountAscendFocusV10SubjectPicker() {
 
 
   if (!subjects.length) {
-
-    console.warn(
-      "FOCUS V10: no subjects available"
-    );
-
     return;
-
   }
 
 
-  /*
-    CSS
-  */
+  /* ===============================
+     STYLE
+  =============================== */
 
   if (
     !document.getElementById(
@@ -40848,9 +40840,154 @@ function mountAscendFocusV10SubjectPicker() {
 }
 
 
+/* ROOT */
+
 #asc-focus-v10-subject-picker {
 
-  display:grid !important;
+  position:
+    relative !important;
+
+  width:
+    100% !important;
+
+}
+
+
+/* CURRENT SUBJECT */
+
+#asc-focus-v10-subject-current {
+
+  display:
+    flex !important;
+
+  align-items:
+    center !important;
+
+  justify-content:
+    space-between !important;
+
+  gap:
+    12px !important;
+
+  width:
+    100% !important;
+
+  min-height:
+    46px !important;
+
+  padding:
+    0 13px !important;
+
+  border:
+    1px solid rgba(255,255,255,.08) !important;
+
+  border-radius:
+    12px !important;
+
+  background:
+    rgba(255,255,255,.025) !important;
+
+  color:
+    inherit !important;
+
+  box-sizing:
+    border-box !important;
+
+  text-align:
+    left !important;
+
+}
+
+
+.asc-focus-v10-subject-current-copy {
+
+  display:
+    grid !important;
+
+  gap:
+    2px !important;
+
+  min-width:
+    0 !important;
+
+}
+
+
+.asc-focus-v10-subject-current-label {
+
+  color:
+    var(--text-muted,#8c92a3) !important;
+
+  font-size:
+    .55rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .12em !important;
+
+}
+
+
+#asc-focus-v10-subject-current-value {
+
+  overflow:
+    hidden !important;
+
+  text-overflow:
+    ellipsis !important;
+
+  white-space:
+    nowrap !important;
+
+  font-size:
+    .80rem !important;
+
+  font-weight:
+    850 !important;
+
+}
+
+
+#asc-focus-v10-subject-chevron {
+
+  flex:
+    0 0 auto !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    1rem !important;
+
+  opacity:
+    .55 !important;
+
+  transform:
+    rotate(0deg);
+
+  transition:
+    transform .16s ease !important;
+
+}
+
+
+#asc-focus-v10-subject-picker.open
+#asc-focus-v10-subject-chevron {
+
+  transform:
+    rotate(180deg);
+
+}
+
+
+/* OPTIONS */
+
+#asc-focus-v10-subject-options {
+
+  display:
+    none !important;
 
   grid-template-columns:
     repeat(2,minmax(0,1fr)) !important;
@@ -40858,78 +40995,87 @@ function mountAscendFocusV10SubjectPicker() {
   gap:
     7px !important;
 
-  width:
-    100% !important;
+  margin-top:
+    8px !important;
 
-  margin:
-    0 !important;
+  padding:
+    9px !important;
+
+  border:
+    1px solid rgba(255,255,255,.075) !important;
+
+  border-radius:
+    13px !important;
+
+  background:
+    rgba(255,255,255,.025) !important;
 
 }
 
 
-.asc-focus-v10-subject-button {
+#asc-focus-v10-subject-picker.open
+#asc-focus-v10-subject-options {
+
+  display:
+    grid !important;
+
+}
+
+
+.asc-focus-v10-subject-option {
 
   min-width:
     0 !important;
 
   min-height:
-    42px !important;
+    40px !important;
 
   padding:
     6px 8px !important;
 
   border:
-    1px solid
-    rgba(255,255,255,.09) !important;
+    1px solid rgba(255,255,255,.06) !important;
 
   border-radius:
     10px !important;
 
   background:
-    rgba(255,255,255,.035) !important;
+    rgba(255,255,255,.02) !important;
 
   color:
     inherit !important;
 
   font-size:
-    .72rem !important;
+    .70rem !important;
 
   font-weight:
-    750 !important;
-
-  line-height:
-    1.2 !important;
-
-  transition:
-    border-color .15s ease,
-    background .15s ease,
-    transform .15s ease !important;
+    800 !important;
 
 }
 
 
-.asc-focus-v10-subject-button.active {
+.asc-focus-v10-subject-option.active {
 
   border-color:
-    rgba(0,243,255,.55) !important;
+    rgba(0,243,255,.42) !important;
 
   background:
-    rgba(0,243,255,.10) !important;
+    rgba(0,243,255,.09) !important;
 
 }
 
 
-.asc-focus-v10-subject-button:disabled {
+#asc-focus-v10-subject-current:disabled {
 
   opacity:
-    .45 !important;
+    .50 !important;
 
 }
 
 
 @media (min-width:540px) {
 
-  #asc-focus-v10-subject-picker {
+  #asc-focus-v10-subject-options {
 
     grid-template-columns:
       repeat(3,minmax(0,1fr)) !important;
@@ -40948,9 +41094,9 @@ function mountAscendFocusV10SubjectPicker() {
   }
 
 
-  /*
-    PICKER
-  */
+  /* ===============================
+     DOM
+  =============================== */
 
   const picker =
     document.createElement(
@@ -40962,10 +41108,46 @@ function mountAscendFocusV10SubjectPicker() {
     "asc-focus-v10-subject-picker";
 
 
-  const label =
-    document.querySelector(
-      "#asc-focus-v10-page .study-link-room-timer-label-v1"
-    );
+  picker.innerHTML = `
+
+    <button
+      type="button"
+      id="asc-focus-v10-subject-current"
+    >
+
+      <span
+        class="asc-focus-v10-subject-current-copy"
+      >
+
+        <span
+          class="asc-focus-v10-subject-current-label"
+        >
+          SUBJECT
+        </span>
+
+        <span
+          id="asc-focus-v10-subject-current-value"
+        >
+          教科を選択
+        </span>
+
+      </span>
+
+
+      <span
+        id="asc-focus-v10-subject-chevron"
+      >
+        ▾
+      </span>
+
+    </button>
+
+
+    <div
+      id="asc-focus-v10-subject-options"
+    ></div>
+
+  `;
 
 
   select.parentNode.insertBefore(
@@ -40974,33 +41156,22 @@ function mountAscendFocusV10SubjectPicker() {
   );
 
 
-  function syncButtons() {
-
-    picker
-      .querySelectorAll(
-        ".asc-focus-v10-subject-button"
-      )
-      .forEach(button => {
-
-        const active =
-          button.dataset.subject ===
-          select.value;
+  const currentButton =
+    picker.querySelector(
+      "#asc-focus-v10-subject-current"
+    );
 
 
-        button.classList.toggle(
-          "active",
-          active
-        );
+  const currentValue =
+    picker.querySelector(
+      "#asc-focus-v10-subject-current-value"
+    );
 
 
-        button.disabled =
-          Boolean(
-            select.disabled
-          );
-
-      });
-
-  }
+  const options =
+    picker.querySelector(
+      "#asc-focus-v10-subject-options"
+    );
 
 
   subjects.forEach(subject => {
@@ -41016,7 +41187,7 @@ function mountAscendFocusV10SubjectPicker() {
 
 
     button.className =
-      "asc-focus-v10-subject-button";
+      "asc-focus-v10-subject-option";
 
 
     button.dataset.subject =
@@ -41062,27 +41233,101 @@ function mountAscendFocusV10SubjectPicker() {
         );
 
 
-        syncButtons();
+        picker.classList.remove(
+          "open"
+        );
+
+
+        sync();
 
       }
     );
 
 
-    picker.appendChild(
+    options.appendChild(
       button
     );
 
   });
 
 
-  /*
-    START / PAUSE / FINISHによる
-    disabled状態変化にも追従。
-  */
+  function sync() {
+
+    const selected =
+      subjects.find(
+        subject =>
+          subject.value ===
+          select.value
+      );
+
+
+    currentValue.textContent =
+      selected
+        ? selected.label
+        : "教科を選択";
+
+
+    currentButton.disabled =
+      Boolean(
+        select.disabled
+      );
+
+
+    picker
+      .querySelectorAll(
+        ".asc-focus-v10-subject-option"
+      )
+      .forEach(button => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.subject ===
+          select.value
+        );
+
+        button.disabled =
+          Boolean(
+            select.disabled
+          );
+
+      });
+
+
+    if (
+      select.disabled
+    ) {
+
+      picker.classList.remove(
+        "open"
+      );
+
+    }
+
+  }
+
+
+  currentButton.addEventListener(
+    "click",
+    () => {
+
+      if (
+        select.disabled
+      ) {
+        return;
+      }
+
+
+      picker.classList.toggle(
+        "open"
+      );
+
+    }
+  );
+
 
   const observer =
     new MutationObserver(
-      syncButtons
+      sync
     );
 
 
@@ -41099,11 +41344,11 @@ function mountAscendFocusV10SubjectPicker() {
 
   select.addEventListener(
     "change",
-    syncButtons
+    sync
   );
 
 
-  syncButtons();
+  sync();
 
 }
 
