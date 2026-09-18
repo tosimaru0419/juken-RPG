@@ -40755,20 +40755,28 @@ function ensureAscendFocusV10Style() {
 /* ============================================================
    ASCEND FOCUS V10 SUBJECT PICKER
 
-   Weakness Map風:
-   通常は現在の教科だけ表示。
-   タップした時だけ候補を展開する。
+   AFTER STUDY / WEAKNESS MAPと同じ階層構造。
+
+   GROUP
+     ↓
+   COURSE / SUBJECT
+     ↓
+   CATEGORY / CHAPTER
+     ↓
+   SKILL / UNIT
+
+   既存ASCEND_UNIT_MASTERをそのまま使用。
 ============================================================ */
 
 function mountAscendFocusV10SubjectPicker() {
 
-  const select =
+  const subjectEl =
     document.getElementById(
       "study-link-room-subject-v1"
     );
 
 
-  if (!select) {
+  if (!subjectEl) {
     return;
   }
 
@@ -40780,38 +40788,52 @@ function mountAscendFocusV10SubjectPicker() {
     ?.remove();
 
 
+  /*
+    V10タイマーに渡されている
+    ユーザー選択済み教科を取得。
+  */
+
   const subjects =
-    [...select.options]
-      .map(option => ({
-        value:String(
-          option.value || ""
-        ),
-        label:String(
-          option.textContent || ""
-        ).trim()
-      }))
-      .filter(
-        item =>
-          item.value
-      );
+    [...subjectEl.options]
+      .map(
+        option =>
+          String(
+            option.value || ""
+          )
+      )
+      .filter(Boolean);
 
 
-  if (!subjects.length) {
+  const groups =
+    getAscendWeaknessGroupsForSubjectsV4(
+      subjects
+    );
+
+
+  if (!groups.length) {
+
+    console.warn(
+      "FOCUS V10: hierarchy groups unavailable"
+    );
+
     return;
+
   }
 
 
-  /* ===============================
+  /* ========================================================
      STYLE
-  =============================== */
+  ======================================================== */
 
-  if (
-    !document.getElementById(
+  let style =
+    document.getElementById(
       "asc-focus-v10-subject-picker-style"
-    )
-  ) {
+    );
 
-    const style =
+
+  if (!style) {
+
+    style =
       document.createElement(
         "style"
       );
@@ -40821,7 +40843,16 @@ function mountAscendFocusV10SubjectPicker() {
       "asc-focus-v10-subject-picker-style";
 
 
-    style.textContent = `
+    document.head.appendChild(
+      style
+    );
+
+  }
+
+
+  style.textContent = `
+
+/* native subjectはロジック用に保持 */
 
 #asc-focus-v10-page
 #study-link-room-subject-v1 {
@@ -40840,12 +40871,17 @@ function mountAscendFocusV10SubjectPicker() {
 }
 
 
-/* ROOT */
+/* =========================================================
+   HIERARCHY
+========================================================= */
 
 #asc-focus-v10-subject-picker {
 
-  position:
-    relative !important;
+  display:
+    grid !important;
+
+  gap:
+    9px !important;
 
   width:
     100% !important;
@@ -40853,9 +40889,7 @@ function mountAscendFocusV10SubjectPicker() {
 }
 
 
-/* CURRENT SUBJECT */
-
-#asc-focus-v10-subject-current {
+.asc-focus-v10-hierarchy-head {
 
   display:
     flex !important;
@@ -40869,68 +40903,36 @@ function mountAscendFocusV10SubjectPicker() {
   gap:
     12px !important;
 
-  width:
-    100% !important;
-
-  min-height:
-    46px !important;
-
-  padding:
-    0 13px !important;
-
-  border:
-    1px solid rgba(255,255,255,.08) !important;
-
-  border-radius:
-    12px !important;
-
-  background:
-    rgba(255,255,255,.025) !important;
-
-  color:
-    inherit !important;
-
-  box-sizing:
-    border-box !important;
-
-  text-align:
-    left !important;
+  margin-bottom:
+    1px !important;
 
 }
 
 
-.asc-focus-v10-subject-current-copy {
-
-  display:
-    grid !important;
-
-  gap:
-    2px !important;
-
-  min-width:
-    0 !important;
-
-}
-
-
-.asc-focus-v10-subject-current-label {
+.asc-focus-v10-hierarchy-title {
 
   color:
-    var(--text-muted,#8c92a3) !important;
+    var(--text-muted,#8c92b3) !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
 
   font-size:
-    .55rem !important;
+    .62rem !important;
 
   font-weight:
     900 !important;
 
   letter-spacing:
-    .12em !important;
+    .14em !important;
 
 }
 
 
-#asc-focus-v10-subject-current-value {
+.asc-focus-v10-hierarchy-path {
+
+  min-width:
+    0 !important;
 
   overflow:
     hidden !important;
@@ -40941,112 +40943,69 @@ function mountAscendFocusV10SubjectPicker() {
   white-space:
     nowrap !important;
 
+  color:
+    var(--text-muted,#8c92b3) !important;
+
   font-size:
-    .80rem !important;
+    .62rem !important;
 
   font-weight:
-    850 !important;
+    750 !important;
+
+  text-align:
+    right !important;
 
 }
 
 
-#asc-focus-v10-subject-chevron {
+/* =========================================================
+   SELECT
+========================================================= */
 
-  flex:
-    0 0 auto !important;
+#asc-focus-v10-subject-picker select {
 
-  font-family:
-    "Rajdhani",sans-serif !important;
-
-  font-size:
-    1rem !important;
-
-  opacity:
-    .55 !important;
-
-  transform:
-    rotate(0deg);
-
-  transition:
-    transform .16s ease !important;
-
-}
-
-
-#asc-focus-v10-subject-picker.open
-#asc-focus-v10-subject-chevron {
-
-  transform:
-    rotate(180deg);
-
-}
-
-
-/* OPTIONS */
-
-#asc-focus-v10-subject-options {
-
-  display:
-    none !important;
-
-  grid-template-columns:
-    repeat(2,minmax(0,1fr)) !important;
-
-  gap:
-    7px !important;
-
-  margin-top:
-    8px !important;
-
-  padding:
-    9px !important;
-
-  border:
-    1px solid rgba(255,255,255,.075) !important;
-
-  border-radius:
-    13px !important;
-
-  background:
-    rgba(255,255,255,.025) !important;
-
-}
-
-
-#asc-focus-v10-subject-picker.open
-#asc-focus-v10-subject-options {
-
-  display:
-    grid !important;
-
-}
-
-
-.asc-focus-v10-subject-option {
-
-  min-width:
-    0 !important;
+  width:
+    100% !important;
 
   min-height:
-    40px !important;
+    44px !important;
 
   padding:
-    6px 8px !important;
+    0 38px 0 12px !important;
 
   border:
-    1px solid rgba(255,255,255,.06) !important;
+    1px solid
+    var(
+      --border-color,
+      rgba(255,255,255,.10)
+    ) !important;
 
   border-radius:
-    10px !important;
+    12px !important;
+
+  outline:
+    none !important;
 
   background:
-    rgba(255,255,255,.02) !important;
+    var(
+      --bg-card-hover,
+      var(
+        --bg-card,
+        #121520
+      )
+    ) !important;
 
   color:
-    inherit !important;
+    var(
+      --text-main,
+      #f0f2f5
+    ) !important;
+
+  box-sizing:
+    border-box !important;
 
   font-size:
-    .70rem !important;
+    .76rem !important;
 
   font-weight:
     800 !important;
@@ -41054,49 +41013,65 @@ function mountAscendFocusV10SubjectPicker() {
 }
 
 
-.asc-focus-v10-subject-option.active {
+#asc-focus-v10-subject-picker select:focus {
 
   border-color:
-    rgba(0,243,255,.42) !important;
+    var(
+      --neon-cyan,
+      #00f3ff
+    ) !important;
 
-  background:
-    rgba(0,243,255,.09) !important;
+  box-shadow:
+    0 0 0 2px
+    rgba(0,243,255,.08) !important;
 
 }
 
 
-#asc-focus-v10-subject-current:disabled {
+#asc-focus-v10-subject-picker select:disabled {
 
   opacity:
-    .50 !important;
+    .42 !important;
+
+  cursor:
+    default !important;
 
 }
 
 
-@media (min-width:540px) {
+/* UNITだけ少し主役 */
 
-  #asc-focus-v10-subject-options {
+#asc-focus-v10-unit {
 
-    grid-template-columns:
-      repeat(3,minmax(0,1fr)) !important;
-
-  }
+  border-color:
+    color-mix(
+      in srgb,
+      var(--neon-cyan,#00f3ff) 24%,
+      var(--border-color,#262f4d)
+    ) !important;
 
 }
 
-    `;
+
+/* 選択済みPATH */
+
+#asc-focus-v10-subject-picker.complete
+.asc-focus-v10-hierarchy-path {
+
+  color:
+    var(
+      --neon-cyan,
+      #00f3ff
+    ) !important;
+
+}
+
+  `;
 
 
-    document.head.appendChild(
-      style
-    );
-
-  }
-
-
-  /* ===============================
+  /* ========================================================
      DOM
-  =============================== */
+  ======================================================== */
 
   const picker =
     document.createElement(
@@ -41110,229 +41085,727 @@ function mountAscendFocusV10SubjectPicker() {
 
   picker.innerHTML = `
 
-    <button
-      type="button"
-      id="asc-focus-v10-subject-current"
+    <div
+      class="asc-focus-v10-hierarchy-head"
     >
 
-      <span
-        class="asc-focus-v10-subject-current-copy"
+      <div
+        class="asc-focus-v10-hierarchy-title"
       >
+        STUDY TARGET
+      </div>
 
-        <span
-          class="asc-focus-v10-subject-current-label"
-        >
-          SUBJECT
-        </span>
-
-        <span
-          id="asc-focus-v10-subject-current-value"
-        >
-          教科を選択
-        </span>
-
-      </span>
-
-
-      <span
-        id="asc-focus-v10-subject-chevron"
+      <div
+        id="asc-focus-v10-hierarchy-path"
+        class="asc-focus-v10-hierarchy-path"
       >
-        ▾
-      </span>
+        NOT SELECTED
+      </div>
 
-    </button>
+    </div>
 
 
-    <div
-      id="asc-focus-v10-subject-options"
-    ></div>
+    <select
+      id="asc-focus-v10-group"
+    >
+
+      <option value="">
+        大カテゴリを選択
+      </option>
+
+      ${
+        groups
+          .map(
+            group => `
+              <option value="${group.id}">
+                ${group.name}
+              </option>
+            `
+          )
+          .join("")
+      }
+
+    </select>
+
+
+    <select
+      id="asc-focus-v10-course"
+      disabled
+    >
+
+      <option value="">
+        科目 / 分野を選択
+      </option>
+
+    </select>
+
+
+    <select
+      id="asc-focus-v10-chapter"
+      disabled
+    >
+
+      <option value="">
+        CATEGORY / CHAPTERを選択
+      </option>
+
+    </select>
+
+
+    <select
+      id="asc-focus-v10-unit"
+      disabled
+    >
+
+      <option value="">
+        SKILL / UNITを選択
+      </option>
+
+    </select>
 
   `;
 
 
-  select.parentNode.insertBefore(
+  subjectEl.parentNode.insertBefore(
     picker,
-    select
+    subjectEl
   );
 
 
-  const currentButton =
+  const groupEl =
     picker.querySelector(
-      "#asc-focus-v10-subject-current"
+      "#asc-focus-v10-group"
     );
 
 
-  const currentValue =
+  const courseEl =
     picker.querySelector(
-      "#asc-focus-v10-subject-current-value"
+      "#asc-focus-v10-course"
     );
 
 
-  const options =
+  const chapterEl =
     picker.querySelector(
-      "#asc-focus-v10-subject-options"
+      "#asc-focus-v10-chapter"
     );
 
 
-  subjects.forEach(subject => {
-
-    const button =
-      document.createElement(
-        "button"
-      );
-
-
-    button.type =
-      "button";
-
-
-    button.className =
-      "asc-focus-v10-subject-option";
-
-
-    button.dataset.subject =
-      subject.value;
-
-
-    button.textContent =
-      subject.label;
-
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        if (
-          select.disabled
-        ) {
-          return;
-        }
-
-
-        select.value =
-          subject.value;
-
-
-        select.dispatchEvent(
-          new Event(
-            "input",
-            {
-              bubbles:true
-            }
-          )
-        );
-
-
-        select.dispatchEvent(
-          new Event(
-            "change",
-            {
-              bubbles:true
-            }
-          )
-        );
-
-
-        picker.classList.remove(
-          "open"
-        );
-
-
-        sync();
-
-      }
+  const unitEl =
+    picker.querySelector(
+      "#asc-focus-v10-unit"
     );
 
 
-    options.appendChild(
-      button
+  const pathEl =
+    picker.querySelector(
+      "#asc-focus-v10-hierarchy-path"
     );
 
-  });
 
+  /* ========================================================
+     HELPERS
+  ======================================================== */
 
-  function sync() {
+  function escapeOption(
+    value
+  ) {
 
-    const selected =
-      subjects.find(
-        subject =>
-          subject.value ===
-          select.value
-      );
-
-
-    currentValue.textContent =
-      selected
-        ? selected.label
-        : "教科を選択";
-
-
-    currentButton.disabled =
-      Boolean(
-        select.disabled
-      );
-
-
-    picker
-      .querySelectorAll(
-        ".asc-focus-v10-subject-option"
+    return String(
+      value || ""
+    )
+      .replaceAll(
+        "&",
+        "&amp;"
       )
-      .forEach(button => {
+      .replaceAll(
+        "<",
+        "&lt;"
+      )
+      .replaceAll(
+        ">",
+        "&gt;"
+      )
+      .replaceAll(
+        '"',
+        "&quot;"
+      );
 
-        button.classList.toggle(
-          "active",
-          button.dataset.subject ===
-          select.value
-        );
+  }
 
-        button.disabled =
-          Boolean(
-            select.disabled
-          );
 
-      });
+  function optionHtml(
+    value,
+    label
+  ) {
+
+    return `
+      <option value="${escapeOption(value)}">
+        ${escapeOption(label)}
+      </option>
+    `;
+
+  }
+
+
+  function dispatchSubjectChange() {
+
+    subjectEl.dispatchEvent(
+      new Event(
+        "input",
+        {
+          bubbles:true
+        }
+      )
+    );
+
+
+    subjectEl.dispatchEvent(
+      new Event(
+        "change",
+        {
+          bubbles:true
+        }
+      )
+    );
+
+  }
+
+
+  function clearWeaknessState() {
+
+    timerState.weaknessCourseId =
+      "";
+
+    timerState.weaknessChapterId =
+      "";
+
+    timerState.weaknessUnitId =
+      "";
+
+  }
+
+
+  function renderCourses() {
+
+    const groupId =
+      groupEl.value ||
+      "";
+
+
+    const courses =
+      getAscendWeaknessCoursesForGroupV4(
+        groupId,
+        subjects
+      );
+
+
+    courseEl.innerHTML =
+      `
+        <option value="">
+          科目 / 分野を選択
+        </option>
+      ` +
+      courses
+        .map(
+          course =>
+            optionHtml(
+              course.id,
+              course.name
+            )
+        )
+        .join("");
+
+
+    courseEl.disabled =
+      (
+        subjectEl.disabled ||
+        courses.length === 0
+      );
+
+
+    chapterEl.innerHTML =
+      `
+        <option value="">
+          CATEGORY / CHAPTERを選択
+        </option>
+      `;
+
+
+    unitEl.innerHTML =
+      `
+        <option value="">
+          SKILL / UNITを選択
+        </option>
+      `;
+
+
+    chapterEl.disabled =
+      true;
+
+    unitEl.disabled =
+      true;
+
+  }
+
+
+  function renderChapters() {
+
+    const courseId =
+      courseEl.value ||
+      "";
+
+
+    const subject =
+      getAscendWeaknessTrackingSubjectV4(
+        courseId
+      );
+
+
+    if (subject) {
+
+      subjectEl.value =
+        subject;
+
+
+      dispatchSubjectChange();
+
+    }
+
+    else {
+
+      subjectEl.value =
+        "";
+
+      dispatchSubjectChange();
+
+    }
+
+
+    clearWeaknessState();
+
+
+    const course =
+      ASCEND_UNIT_MASTER[
+        courseId
+      ];
+
+
+    chapterEl.innerHTML =
+      `
+        <option value="">
+          CATEGORY / CHAPTERを選択
+        </option>
+      `;
+
+
+    unitEl.innerHTML =
+      `
+        <option value="">
+          SKILL / UNITを選択
+        </option>
+      `;
+
+
+    unitEl.disabled =
+      true;
 
 
     if (
-      select.disabled
+      !course ||
+      !subject
     ) {
 
-      picker.classList.remove(
-        "open"
+      chapterEl.disabled =
+        true;
+
+      syncPath();
+
+      return;
+
+    }
+
+
+    const chapters =
+      getAscendWeaknessChaptersForSubjectV2(
+        course,
+        subject
       );
+
+
+    chapterEl.innerHTML +=
+      chapters
+        .map(
+          chapter =>
+            optionHtml(
+              chapter.id,
+              chapter.name
+            )
+        )
+        .join("");
+
+
+    chapterEl.disabled =
+      (
+        subjectEl.disabled ||
+        chapters.length === 0
+      );
+
+
+    syncPath();
+
+  }
+
+
+  function renderUnits() {
+
+    clearWeaknessState();
+
+
+    const courseId =
+      courseEl.value ||
+      "";
+
+    const chapterId =
+      chapterEl.value ||
+      "";
+
+
+    const course =
+      ASCEND_UNIT_MASTER[
+        courseId
+      ];
+
+
+    const chapter =
+      course
+        ?.chapters
+        ?.find(
+          item =>
+            item.id ===
+            chapterId
+        );
+
+
+    unitEl.innerHTML =
+      `
+        <option value="">
+          SKILL / UNITを選択
+        </option>
+      `;
+
+
+    if (!chapter) {
+
+      unitEl.disabled =
+        true;
+
+      syncPath();
+
+      return;
+
+    }
+
+
+    unitEl.innerHTML +=
+      (
+        Array.isArray(
+          chapter.units
+        )
+          ? chapter.units
+          : []
+      )
+        .map(
+          unit =>
+            optionHtml(
+              unit.id,
+              unit.name
+            )
+        )
+        .join("");
+
+
+    unitEl.disabled =
+      (
+        subjectEl.disabled ||
+        !chapter.units?.length
+      );
+
+
+    syncPath();
+
+  }
+
+
+  function commitUnit() {
+
+    const courseId =
+      courseEl.value ||
+      "";
+
+    const chapterId =
+      chapterEl.value ||
+      "";
+
+    const unitId =
+      unitEl.value ||
+      "";
+
+
+    /*
+      事後報告と同じ。
+
+      UNITまで選択された時のみ
+      Weakness Map連携として正式保存。
+    */
+
+    if (unitId) {
+
+      timerState.weaknessCourseId =
+        courseId;
+
+      timerState.weaknessChapterId =
+        chapterId;
+
+      timerState.weaknessUnitId =
+        unitId;
+
+    }
+
+    else {
+
+      clearWeaknessState();
+
+    }
+
+
+    syncPath();
+
+  }
+
+
+  function selectedText(
+    select
+  ) {
+
+    return String(
+      select
+        ?.selectedOptions?.[0]
+        ?.textContent ||
+      ""
+    ).trim();
+
+  }
+
+
+  function syncPath() {
+
+    const pieces =
+      [
+        selectedText(
+          courseEl
+        ),
+        selectedText(
+          chapterEl
+        ),
+        selectedText(
+          unitEl
+        ),
+      ]
+        .filter(
+          text =>
+            text &&
+            !text.includes(
+              "選択"
+            )
+        );
+
+
+    pathEl.textContent =
+      pieces.length
+        ? pieces.join(
+            " / "
+          )
+        : "NOT SELECTED";
+
+
+    picker.classList.toggle(
+      "complete",
+      Boolean(
+        unitEl.value
+      )
+    );
+
+  }
+
+
+  function syncLock() {
+
+    const locked =
+      Boolean(
+        subjectEl.disabled
+      );
+
+
+    groupEl.disabled =
+      locked;
+
+
+    courseEl.disabled =
+      locked ||
+      !groupEl.value;
+
+
+    chapterEl.disabled =
+      locked ||
+      !courseEl.value;
+
+
+    unitEl.disabled =
+      locked ||
+      !chapterEl.value;
+
+  }
+
+
+  /* ========================================================
+     EVENTS
+  ======================================================== */
+
+  groupEl.addEventListener(
+    "change",
+    () => {
+
+      subjectEl.value =
+        "";
+
+      dispatchSubjectChange();
+
+
+      clearWeaknessState();
+
+      renderCourses();
+
+      syncPath();
+
+    }
+  );
+
+
+  courseEl.addEventListener(
+    "change",
+    () => {
+
+      renderChapters();
+
+    }
+  );
+
+
+  chapterEl.addEventListener(
+    "change",
+    () => {
+
+      renderUnits();
+
+    }
+  );
+
+
+  unitEl.addEventListener(
+    "change",
+    () => {
+
+      commitUnit();
+
+    }
+  );
+
+
+  /* ========================================================
+     RESTORE
+  ======================================================== */
+
+  const restoreCourseId =
+    timerState.weaknessCourseId ||
+    "";
+
+
+  const restoreChapterId =
+    timerState.weaknessChapterId ||
+    "";
+
+
+  const restoreUnitId =
+    timerState.weaknessUnitId ||
+    "";
+
+
+  let restoreGroup =
+    restoreCourseId
+      ? getAscendWeaknessGroupForCourseV4(
+          restoreCourseId
+        )
+      : getAscendWeaknessGroupForTrackingSubjectV4(
+          timerState.subject ||
+          subjectEl.value ||
+          ""
+        );
+
+
+  if (restoreGroup) {
+
+    groupEl.value =
+      restoreGroup.id;
+
+
+    renderCourses();
+
+
+    if (restoreCourseId) {
+
+      courseEl.value =
+        restoreCourseId;
+
+
+      renderChapters();
+
+
+      if (restoreChapterId) {
+
+        chapterEl.value =
+          restoreChapterId;
+
+
+        renderUnits();
+
+
+        if (restoreUnitId) {
+
+          unitEl.value =
+            restoreUnitId;
+
+        }
+
+      }
 
     }
 
   }
 
 
-  currentButton.addEventListener(
-    "click",
-    () => {
-
-      if (
-        select.disabled
-      ) {
-        return;
-      }
-
-
-      picker.classList.toggle(
-        "open"
-      );
-
-    }
-  );
-
+  /*
+    タイマー開始後にnative subjectがdisabledになる。
+    階層側も同時にロック。
+  */
 
   const observer =
     new MutationObserver(
-      sync
+      syncLock
     );
 
 
   observer.observe(
-    select,
+    subjectEl,
     {
       attributes:true,
       attributeFilter:[
@@ -41342,13 +41815,9 @@ function mountAscendFocusV10SubjectPicker() {
   );
 
 
-  select.addEventListener(
-    "change",
-    sync
-  );
+  syncLock();
 
-
-  sync();
+  syncPath();
 
 }
 
@@ -77013,6 +77482,664 @@ body.study-link-room-mode-v1
 }
 
 /* ASCEND FOCUS V10 LIVE STATUS */
+
+</style>
+
+
+<style id="asc-focus-v10-live-status-final-skin">
+
+/* ============================================================
+   ASCEND FOCUS V10 LIVE STATUS FINAL SKIN
+
+   LIGHT / DARK両対応。
+   既存の白rgba依存を上書きする。
+============================================================ */
+
+#asc-focus-v10-page
+#asc-focus-v10-live-status {
+
+  position:
+    relative !important;
+
+  display:
+    grid !important;
+
+  gap:
+    13px !important;
+
+  width:
+    100% !important;
+
+  padding:
+    16px !important;
+
+  border:
+    1px solid
+    var(
+      --border-color,
+      #d8dce6
+    ) !important;
+
+  border-radius:
+    18px !important;
+
+  background:
+    var(
+      --bg-card,
+      #121520
+    ) !important;
+
+  color:
+    var(
+      --text-main,
+      #f0f2f5
+    ) !important;
+
+  box-shadow:
+    0 8px 24px
+    rgba(0,0,0,.10) !important;
+
+  box-sizing:
+    border-box !important;
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+#asc-focus-v10-page
+.asc-focus-v10-live-head {
+
+  display:
+    flex !important;
+
+  align-items:
+    center !important;
+
+  justify-content:
+    space-between !important;
+
+  gap:
+    14px !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-live-kicker {
+
+  margin-bottom:
+    5px !important;
+
+  color:
+    var(
+      --text-muted,
+      #8c92b3
+    ) !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .58rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .15em !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-live-main {
+
+  display:
+    flex !important;
+
+  align-items:
+    center !important;
+
+  gap:
+    7px !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    1.05rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .07em !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-live-dot {
+
+  width:
+    9px !important;
+
+  height:
+    9px !important;
+
+  flex:
+    0 0 9px !important;
+
+  border-radius:
+    50% !important;
+
+  background:
+    var(
+      --text-muted,
+      #8c92b3
+    ) !important;
+
+  opacity:
+    .42 !important;
+
+}
+
+
+#asc-focus-v10-page
+#asc-focus-v10-live-status[data-link="active"]
+.asc-focus-v10-live-dot {
+
+  background:
+    var(
+      --neon-green,
+      #00ff66
+    ) !important;
+
+  opacity:
+    1 !important;
+
+  box-shadow:
+    0 0 12px
+    rgba(0,255,102,.34) !important;
+
+}
+
+
+#asc-focus-v10-page
+#asc-focus-v10-link-state.active,
+
+#asc-focus-v10-page
+#asc-focus-v10-personal-state.active {
+
+  color:
+    var(
+      --neon-green,
+      #00c96b
+    ) !important;
+
+}
+
+
+/* =========================================================
+   RIGHT STATUS
+========================================================= */
+
+#asc-focus-v10-page
+.asc-focus-v10-live-right {
+
+  min-width:
+    0 !important;
+
+  text-align:
+    right !important;
+
+}
+
+
+#asc-focus-v10-page
+#asc-focus-v10-link-count {
+
+  color:
+    var(
+      --text-main,
+      #f0f2f5
+    ) !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .69rem !important;
+
+  font-weight:
+    900 !important;
+
+}
+
+
+#asc-focus-v10-page
+#asc-focus-v10-personal-state {
+
+  margin-top:
+    3px !important;
+
+  color:
+    var(
+      --text-muted,
+      #8c92b3
+    ) !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .57rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .07em !important;
+
+}
+
+
+/* =========================================================
+   RATE SET
+========================================================= */
+
+#asc-focus-v10-page
+.asc-focus-v10-boost-line {
+
+  display:
+    flex !important;
+
+  align-items:
+    center !important;
+
+  justify-content:
+    space-between !important;
+
+  gap:
+    10px !important;
+
+  padding:
+    11px 0 0 !important;
+
+  border-top:
+    1px solid
+    var(
+      --border-color,
+      #d8dce6
+    ) !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-boost-line > span {
+
+  color:
+    var(
+      --text-muted,
+      #8c92b3
+    ) !important;
+
+  font-size:
+    .56rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .13em !important;
+
+}
+
+
+#asc-focus-v10-page
+#asc-focus-v10-boost-state {
+
+  padding:
+    5px 8px !important;
+
+  border:
+    1px solid
+    var(
+      --border-color,
+      #d8dce6
+    ) !important;
+
+  border-radius:
+    8px !important;
+
+  background:
+    var(
+      --bg-card-hover,
+      #1a1e2e
+    ) !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .66rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .06em !important;
+
+}
+
+
+/* =========================================================
+   RATE TILES
+========================================================= */
+
+#asc-focus-v10-page
+.asc-focus-v10-rates {
+
+  display:
+    grid !important;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr)) !important;
+
+  gap:
+    8px !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-rates > div {
+
+  display:
+    grid !important;
+
+  gap:
+    3px !important;
+
+  min-width:
+    0 !important;
+
+  padding:
+    9px 7px !important;
+
+  border:
+    1px solid
+    var(
+      --border-color,
+      #d8dce6
+    ) !important;
+
+  border-radius:
+    11px !important;
+
+  background:
+    var(
+      --bg-card-hover,
+      #1a1e2e
+    ) !important;
+
+  text-align:
+    center !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-rates span {
+
+  color:
+    var(
+      --text-muted,
+      #8c92b3
+    ) !important;
+
+  font-size:
+    .52rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .11em !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-rates strong {
+
+  color:
+    var(
+      --text-main,
+      #f0f2f5
+    ) !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .92rem !important;
+
+  font-weight:
+    900 !important;
+
+  font-variant-numeric:
+    tabular-nums !important;
+
+}
+
+
+/* =========================================================
+   FUND
+========================================================= */
+
+#asc-focus-v10-page
+.asc-focus-v10-fund {
+
+  display:
+    grid !important;
+
+  gap:
+    8px !important;
+
+  padding-top:
+    2px !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-fund-head {
+
+  display:
+    flex !important;
+
+  align-items:
+    flex-end !important;
+
+  justify-content:
+    space-between !important;
+
+  gap:
+    10px !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-fund-head > span {
+
+  color:
+    var(
+      --text-muted,
+      #8c92b3
+    ) !important;
+
+  font-size:
+    .57rem !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .13em !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-fund-head strong {
+
+  color:
+    var(
+      --text-main,
+      #f0f2f5
+    ) !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .86rem !important;
+
+  font-weight:
+    900 !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-fund-head small {
+
+  color:
+    var(
+      --text-muted,
+      #8c92b3
+    ) !important;
+
+  font-size:
+    .58rem !important;
+
+  font-weight:
+    800 !important;
+
+}
+
+
+#asc-focus-v10-page
+.asc-focus-v10-fund-track {
+
+  width:
+    100% !important;
+
+  height:
+    7px !important;
+
+  overflow:
+    hidden !important;
+
+  border:
+    1px solid
+    var(
+      --border-color,
+      #d8dce6
+    ) !important;
+
+  border-radius:
+    999px !important;
+
+  background:
+    var(
+      --bg-card-hover,
+      #1a1e2e
+    ) !important;
+
+  box-sizing:
+    border-box !important;
+
+}
+
+
+#asc-focus-v10-page
+#asc-focus-v10-fund-fill {
+
+  width:
+    0%;
+
+  height:
+    100% !important;
+
+  border-radius:
+    inherit !important;
+
+  background:
+    var(
+      --neon-cyan,
+      #00f3ff
+    ) !important;
+
+  opacity:
+    1 !important;
+
+  box-shadow:
+    0 0 8px
+    rgba(0,243,255,.26) !important;
+
+  transition:
+    width .25s ease !important;
+
+}
+
+
+/* =========================================================
+   WAITING
+========================================================= */
+
+#asc-focus-v10-page
+#asc-focus-v10-live-status[data-link="waiting"]
+.asc-focus-v10-rates {
+
+  opacity:
+    .60 !important;
+
+}
+
+
+/* =========================================================
+   PHONE
+========================================================= */
+
+@media (max-width:390px) {
+
+  #asc-focus-v10-page
+  #asc-focus-v10-live-status {
+
+    padding:
+      14px !important;
+
+  }
+
+
+  #asc-focus-v10-page
+  .asc-focus-v10-live-head {
+
+    align-items:
+      flex-start !important;
+
+  }
+
+}
+
+/* ASCEND FOCUS V10 LIVE STATUS FINAL SKIN */
 
 </style>
 
