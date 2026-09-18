@@ -41236,10 +41236,450 @@ function closeAscendFocusV10Shell() {
 
 
 
+
+/* ============================================================
+   ASCEND FOCUS V10 CONFIRM FLOW
+
+   既存タイマーの保存処理はそのまま使用。
+   確認カードだけV10 UIへ移動する。
+============================================================ */
+
+function ensureAscendFocusV10ConfirmStyle() {
+
+  if (
+    document.getElementById(
+      "asc-focus-v10-confirm-style"
+    )
+  ) {
+    return;
+  }
+
+
+  const style =
+    document.createElement(
+      "style"
+    );
+
+
+  style.id =
+    "asc-focus-v10-confirm-style";
+
+
+  style.textContent = `
+
+#asc-focus-v10-confirm-page {
+
+  position:
+    fixed !important;
+
+  inset:
+    0 !important;
+
+  z-index:
+    2147483100 !important;
+
+  width:
+    100vw !important;
+
+  height:
+    100dvh !important;
+
+  overflow:
+    hidden !important;
+
+  background:
+    var(
+      --main-stage-bg,
+      var(--asc-bg,#080b12)
+    ) !important;
+
+  color:
+    var(--text-main,#f5f7fb) !important;
+
+}
+
+
+#asc-focus-v10-confirm-scroll {
+
+  position:
+    absolute !important;
+
+  inset:
+    0 !important;
+
+  width:
+    100% !important;
+
+  height:
+    100% !important;
+
+  overflow-x:
+    hidden !important;
+
+  overflow-y:
+    auto !important;
+
+  -webkit-overflow-scrolling:
+    touch !important;
+
+  touch-action:
+    pan-y !important;
+
+  box-sizing:
+    border-box !important;
+
+  padding:
+    62px
+    14px
+    calc(
+      54px +
+      env(safe-area-inset-bottom)
+    )
+    !important;
+
+}
+
+
+#asc-focus-v10-confirm-inner {
+
+  width:
+    min(680px,100%) !important;
+
+  margin:
+    0 auto !important;
+
+  display:
+    grid !important;
+
+  gap:
+    14px !important;
+
+}
+
+
+.asc-focus-v10-confirm-head {
+
+  display:
+    flex !important;
+
+  align-items:
+    center !important;
+
+  justify-content:
+    space-between !important;
+
+  gap:
+    12px !important;
+
+}
+
+
+.asc-focus-v10-confirm-kicker {
+
+  color:
+    var(--text-muted,#8c92a3) !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    .68rem !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .14em !important;
+
+}
+
+
+.asc-focus-v10-confirm-title {
+
+  margin:
+    3px 0 0 !important;
+
+  font-family:
+    "Rajdhani",sans-serif !important;
+
+  font-size:
+    1.8rem !important;
+
+  line-height:
+    1 !important;
+
+  letter-spacing:
+    .04em !important;
+
+}
+
+
+/*
+  旧card()が生成したカードを
+  V10の中では普通のコンテンツとして扱う
+*/
+
+#asc-focus-v10-confirm-content {
+
+  width:
+    100% !important;
+
+  min-width:
+    0 !important;
+
+}
+
+
+#asc-focus-v10-confirm-content > * {
+
+  width:
+    100% !important;
+
+  max-width:
+    none !important;
+
+  margin:
+    0 !important;
+
+  box-sizing:
+    border-box !important;
+
+}
+
+
+/* 元画面由来の固定高さ・overflowを殺す */
+
+#asc-focus-v10-confirm-page * {
+
+  max-height:
+    none;
+
+}
+
+
+#asc-focus-v10-confirm-page
+#timer-confirm,
+
+#asc-focus-v10-confirm-page
+#timer-cancel {
+
+  width:
+    100% !important;
+
+  min-height:
+    46px !important;
+
+}
+
+
+/* 下に少し余白 */
+
+#asc-focus-v10-confirm-content::after {
+
+  content:
+    "";
+
+  display:
+    block;
+
+  height:
+    30px;
+
+}
+
+  `;
+
+
+  document.head.appendChild(
+    style
+  );
+
+}
+
+
+
+function closeAscendFocusV10ConfirmShell() {
+
+  document
+    .getElementById(
+      "asc-focus-v10-confirm-page"
+    )
+    ?.remove();
+
+}
+
+
+
+function mountAscendFocusV10ConfirmShell() {
+
+  if (
+    document.getElementById(
+      "asc-focus-v10-confirm-page"
+    )
+  ) {
+    return true;
+  }
+
+
+  const confirmButton =
+    document.getElementById(
+      "timer-confirm"
+    );
+
+
+  const cancelButton =
+    document.getElementById(
+      "timer-cancel"
+    );
+
+
+  if (
+    !confirmButton ||
+    !cancelButton
+  ) {
+    return false;
+  }
+
+
+  ensureAscendFocusV10ConfirmStyle();
+
+
+  /*
+    card()で生成されたカードを探す。
+
+    timer-confirm / timer-cancel は
+    同じカード直下にいるため、
+    まずparentElementを使用する。
+  */
+
+  let confirmCard =
+    confirmButton.parentElement;
+
+
+  /*
+    万一buttonだけを囲うwrapperだった場合、
+    timer-cancelも含むところまで上へ登る。
+  */
+
+  while (
+    confirmCard &&
+    !confirmCard.contains(cancelButton)
+  ) {
+
+    confirmCard =
+      confirmCard.parentElement;
+
+  }
+
+
+  if (!confirmCard) {
+    return false;
+  }
+
+
+  const root =
+    document.createElement(
+      "div"
+    );
+
+
+  root.id =
+    "asc-focus-v10-confirm-page";
+
+
+  root.innerHTML = `
+
+    <div
+      id="asc-focus-v10-confirm-scroll"
+    >
+
+      <div
+        id="asc-focus-v10-confirm-inner"
+      >
+
+        <header
+          class="asc-focus-v10-confirm-head"
+        >
+
+          <div>
+
+            <div
+              class="asc-focus-v10-confirm-kicker"
+            >
+              NEXUS / FOCUS
+            </div>
+
+            <h1
+              class="asc-focus-v10-confirm-title"
+            >
+              SAVE SESSION
+            </h1>
+
+          </div>
+
+        </header>
+
+
+        <div
+          id="asc-focus-v10-confirm-content"
+        ></div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  document.body.appendChild(
+    root
+  );
+
+
+  const content =
+    document.getElementById(
+      "asc-focus-v10-confirm-content"
+    );
+
+
+  /*
+    cloneしない。
+
+    DOMそのものを移動することで、
+    timer-confirm / timer-cancel の
+    既存onclickを完全保持する。
+  */
+
+  content.appendChild(
+    confirmCard
+  );
+
+
+  const scroll =
+    document.getElementById(
+      "asc-focus-v10-confirm-scroll"
+    );
+
+
+  if (scroll) {
+    scroll.scrollTop = 0;
+  }
+
+
+  return true;
+
+}
+
+
+/* ASCEND FOCUS V10 CONFIRM FLOW */
+
+
 async function showAscendFocusV10Page(
   user,
   code
 ) {
+
+  closeAscendFocusV10ConfirmShell();
 
   clearAscendFocusV10Runtime();
 
@@ -42005,7 +42445,77 @@ async function returnAfterStudyLinkTimerV1(
   user
 ) {
 
-  const userSnap =
+  
+  /*
+    ASCEND FOCUS V10
+
+    FOCUS中にFINISHした場合、
+    保存 / キャンセル後は
+    旧STUDYではなくV10へ戻す。
+  */
+
+  if (
+    ascendNexusFocusExplicitV91 &&
+    user
+  ) {
+
+    try {
+
+      const focusUserSnapV10 =
+        await getDoc(
+          doc(
+            db,
+            "users",
+            user.uid
+          )
+        );
+
+
+      if (
+        focusUserSnapV10.exists()
+      ) {
+
+        const focusCodeV10 =
+          normalizeStudyLinkV2Code(
+            focusUserSnapV10
+              .data()
+              .studyLinkRoomCode ||
+            ""
+          );
+
+
+        if (focusCodeV10) {
+
+          closeAscendFocusV10ConfirmShell();
+
+
+          await showAscendFocusV10Page(
+            user,
+            focusCodeV10
+          );
+
+
+          return;
+
+        }
+
+      }
+
+    }
+
+    catch (error) {
+
+      console.warn(
+        "FOCUS V10 RETURN:",
+        error
+      );
+
+    }
+
+  }
+
+
+const userSnap =
     await getDoc(
       doc(
         db,
@@ -42751,7 +43261,25 @@ async function mountStudyLinkRoomTimerV1(
         /*
           保存ロジックは新造せず、
           既存タイマーへ状態を渡す。
+
+          V10から来た場合は、
+          旧タイマー終了画面を生成した後で
+          確認カードだけV10へ移す。
         */
+
+        const returnToFocusV10 =
+          Boolean(
+            ascendNexusFocusExplicitV91
+          );
+
+
+        if (returnToFocusV10) {
+
+          closeAscendFocusV10Shell();
+
+        }
+
+
         disableStudyLinkRoomModeV1();
 
 
@@ -42779,6 +43307,29 @@ async function mountStudyLinkRoomTimerV1(
           false;
 
         endButton.click();
+
+
+        if (returnToFocusV10) {
+
+          /*
+            timer-end.onclickは確認DOMを
+            同期的に生成するためまず即mount。
+
+            念のため次frameでも再試行。
+          */
+
+          mountAscendFocusV10ConfirmShell();
+
+
+          requestAnimationFrame(
+            () => {
+
+              mountAscendFocusV10ConfirmShell();
+
+            }
+          );
+
+        }
 
       }
 
