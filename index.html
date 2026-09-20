@@ -42849,8 +42849,424 @@ function closeAscendUtilityDrawerV2() {
 
 // ============================================================
 // ASCEND UTILITY RETURN V2.1
-// OTHERではなく、UTILITYを開いた元のメイン画面へ戻る
+// ASCEND UTILITY EXIT TRANSITION V2
+// REAL DOM SLIDE -> EXIT PANEL -> MAIN
 // ============================================================
+
+let ascendUtilityExitRunningV2 =
+  false;
+
+
+function ensureAscendUtilityExitStyleV2() {
+
+  if (
+    document.getElementById(
+      "asc-utility-exit-style-v2"
+    )
+  ) {
+    return;
+  }
+
+
+  const style =
+    document.createElement(
+      "style"
+    );
+
+
+  style.id =
+    "asc-utility-exit-style-v2";
+
+
+  style.textContent = `
+
+    /*
+      ========================================================
+      ASCEND UTILITY EXIT TRANSITION V2
+      ========================================================
+
+      View Transitionは使わない。
+
+      現在のUTILITY画面そのものを右へ退場させ、
+      その後ろにEXITパネルを置く。
+    */
+
+
+    #asc-main-transition-v1.utility-exit-v2 {
+
+      --utility-exit-rgb:
+        0,190,202;
+
+      position:fixed;
+
+      inset:0;
+
+      z-index:2147482500;
+
+      overflow:hidden;
+
+      pointer-events:none;
+
+      color:#f4fbfc;
+
+
+      background:
+
+        radial-gradient(
+          circle at 72% 32%,
+          rgba(
+            var(--utility-exit-rgb),
+            .18
+          ),
+          transparent 36%
+        ),
+
+        radial-gradient(
+          circle at 30% 75%,
+          rgba(
+            var(--utility-exit-rgb),
+            .07
+          ),
+          transparent 40%
+        ),
+
+        linear-gradient(
+          145deg,
+          #10151d,
+          #06080c 72%
+        );
+
+
+      border-left:
+
+        1px solid
+        rgba(
+          var(--utility-exit-rgb),
+          .30
+        );
+
+
+      box-shadow:
+
+        -25px 0 65px
+        rgba(0,0,0,.30);
+
+
+      will-change:
+        transform;
+
+    }
+
+
+
+    .utility-exit-edge-v2 {
+
+      position:absolute;
+
+      top:0;
+      right:0;
+      bottom:0;
+
+      width:2px;
+
+
+      background:
+
+        linear-gradient(
+          transparent,
+          rgb(
+            var(--utility-exit-rgb)
+          ),
+          transparent
+        );
+
+
+      box-shadow:
+
+        0 0 20px
+        rgba(
+          var(--utility-exit-rgb),
+          .55
+        );
+
+    }
+
+
+
+    .utility-exit-core-v2 {
+
+      position:absolute;
+
+      left:50%;
+      top:50%;
+
+
+      transform:
+
+        translate(-50%,-48%)
+        scale(.94);
+
+
+      display:grid;
+
+      justify-items:center;
+
+      gap:9px;
+
+
+      width:min(
+        320px,
+        80vw
+      );
+
+
+      text-align:center;
+
+
+      opacity:0;
+
+      filter:
+        blur(3px);
+
+
+      animation:
+
+        ascendUtilityExitCoreInV2
+
+        280ms
+
+        80ms
+
+        cubic-bezier(.22,1,.36,1)
+
+        forwards;
+
+    }
+
+
+
+    .utility-exit-symbol-v2 {
+
+      width:74px;
+      height:74px;
+
+
+      display:grid;
+
+      place-items:center;
+
+
+      border-radius:22px;
+
+
+      color:
+
+        rgb(
+          var(--utility-exit-rgb)
+        );
+
+
+      background:
+
+        rgba(
+          var(--utility-exit-rgb),
+          .06
+        );
+
+
+      border:
+
+        1px solid
+        rgba(
+          var(--utility-exit-rgb),
+          .32
+        );
+
+
+      font-family:
+        Orbitron,
+        Rajdhani,
+        sans-serif;
+
+
+      font-size:1.9rem;
+
+      font-weight:950;
+
+
+      box-shadow:
+
+        0 0 32px
+        rgba(
+          var(--utility-exit-rgb),
+          .12
+        );
+
+    }
+
+
+
+    .utility-exit-title-v2 {
+
+      margin-top:3px;
+
+
+      font-family:
+        Orbitron,
+        Rajdhani,
+        sans-serif;
+
+
+      font-size:
+
+        clamp(
+          1.15rem,
+          6vw,
+          1.60rem
+        );
+
+
+      font-weight:950;
+
+
+      letter-spacing:.16em;
+
+      text-indent:.16em;
+
+    }
+
+
+
+    .utility-exit-sub-v2 {
+
+      color:
+
+        rgba(
+          var(--utility-exit-rgb),
+          .90
+        );
+
+
+      font-family:
+        Rajdhani,
+        sans-serif;
+
+
+      font-size:.62rem;
+
+      font-weight:900;
+
+
+      letter-spacing:.20em;
+
+      text-indent:.20em;
+
+    }
+
+
+
+    @keyframes
+    ascendUtilityExitCoreInV2 {
+
+      from {
+
+        opacity:0;
+
+        transform:
+
+          translate(-50%,-46%)
+          scale(.92);
+
+        filter:
+          blur(3px);
+
+      }
+
+
+      to {
+
+        opacity:1;
+
+        transform:
+
+          translate(-50%,-50%)
+          scale(1);
+
+        filter:
+          blur(0);
+
+      }
+
+    }
+
+
+
+    html[data-asc-theme-mode="light"]
+    #asc-main-transition-v1.utility-exit-v2 {
+
+      color:#18313a;
+
+
+      background:
+
+        radial-gradient(
+          circle at 72% 32%,
+          rgba(
+            var(--utility-exit-rgb),
+            .12
+          ),
+          transparent 37%
+        ),
+
+        radial-gradient(
+          circle at 30% 75%,
+          rgba(
+            var(--utility-exit-rgb),
+            .05
+          ),
+          transparent 40%
+        ),
+
+        linear-gradient(
+          145deg,
+          #fbfdfe,
+          #eaf3f5
+        );
+
+    }
+
+
+
+    @media(
+      prefers-reduced-motion:
+      reduce
+    ) {
+
+      .utility-exit-core-v2 {
+
+        animation:none !important;
+
+        opacity:1;
+
+        transform:
+          translate(-50%,-50%);
+
+        filter:none;
+
+      }
+
+    }
+
+  `;
+
+
+  document.head.appendChild(
+    style
+  );
+
+}
+
+
 
 async function returnFromAscendUtilityV21(
   user
@@ -42875,9 +43291,434 @@ async function returnFromAscendUtilityV21(
       : "home";
 
 
-  await navigateClassicMain(
-    targetTab
+  if (
+    ascendUtilityExitRunningV2
+  ) {
+    return;
+  }
+
+
+  ascendUtilityExitRunningV2 =
+    true;
+
+
+  ensureAscendUtilityExitStyleV2();
+
+
+  const activeTarget =
+    document.documentElement
+      .dataset
+      .ascendUtilityTargetV5 ||
+    "";
+
+
+  const meta =
+    ASCEND_UTILITY_META_V5[
+      activeTarget
+    ] || {
+
+      title:"UTILITY",
+
+      sub:"SYSTEM EXIT",
+
+      symbol:"◇",
+
+      rgb:"0,190,202",
+
+    };
+
+
+  const currentMain =
+    document.querySelector(
+      "body > main"
+    );
+
+
+  /*
+    ========================================================
+    EXIT BACKDROP
+
+    page()が保存する既存IDを利用。
+    ========================================================
+  */
+
+  const backdrop =
+    document.createElement(
+      "div"
+    );
+
+
+  backdrop.id =
+    "asc-main-transition-v1";
+
+
+  backdrop.className =
+    "utility-exit-v2";
+
+
+  backdrop.style.setProperty(
+    "--utility-exit-rgb",
+    meta.rgb
   );
+
+
+  backdrop.innerHTML = `
+
+    <div
+      class="utility-exit-core-v2"
+    >
+
+      <div
+        class="utility-exit-symbol-v2"
+      >
+        ${meta.symbol}
+      </div>
+
+
+      <div
+        class="utility-exit-title-v2"
+      >
+        ${meta.title}
+      </div>
+
+
+      <div
+        class="utility-exit-sub-v2"
+      >
+        SYSTEM EXIT
+      </div>
+
+    </div>
+
+
+    <div
+      class="utility-exit-edge-v2"
+    ></div>
+
+  `;
+
+
+  document.body.appendChild(
+    backdrop
+  );
+
+
+  let mainExitAnimation =
+    null;
+
+
+  let oldPosition = "";
+  let oldZIndex = "";
+  let oldWillChange = "";
+
+
+  try {
+
+    /*
+      EXITパネルをUTILITY画面の
+      真後ろに置く。
+
+      現在のmainだけ最前面へ。
+    */
+
+    if (currentMain) {
+
+      oldPosition =
+        currentMain.style.position;
+
+      oldZIndex =
+        currentMain.style.zIndex;
+
+      oldWillChange =
+        currentMain.style.willChange;
+
+
+      currentMain.style.position =
+        "relative";
+
+
+      currentMain.style.zIndex =
+        "2147482600";
+
+
+      currentMain.style.willChange =
+        "transform, opacity";
+
+    }
+
+
+    /*
+      1フレーム待って確実に描画。
+    */
+
+    await new Promise(
+      resolve =>
+        requestAnimationFrame(
+          () =>
+            requestAnimationFrame(
+              resolve
+            )
+        )
+    );
+
+
+    /*
+      ========================================================
+      PHASE 1
+
+      現在表示中のUTILITY画面そのものを
+      右へ退場。
+      ========================================================
+    */
+
+    if (
+      currentMain &&
+      typeof currentMain.animate ===
+        "function"
+    ) {
+
+      mainExitAnimation =
+        currentMain.animate(
+          [
+
+            {
+
+              transform:
+                "translateX(0)",
+
+              opacity:1,
+
+              filter:
+                "brightness(1)",
+
+            },
+
+
+            {
+
+              transform:
+                "translateX(7%)",
+
+              opacity:1,
+
+              offset:.22,
+
+            },
+
+
+            {
+
+              transform:
+                "translateX(104%)",
+
+              opacity:.98,
+
+              filter:
+                "brightness(.94)",
+
+            },
+
+          ],
+
+          {
+
+            duration:360,
+
+
+            easing:
+              "cubic-bezier(.68,0,.22,1)",
+
+
+            fill:"forwards",
+
+          }
+        );
+
+
+      await mainExitAnimation
+        .finished
+        .catch(() => {});
+
+    }
+
+
+    else {
+
+      await new Promise(
+        resolve =>
+          setTimeout(
+            resolve,
+            300
+          )
+      );
+
+    }
+
+
+    /*
+      EXITパネルを少し見せる。
+    */
+
+    await new Promise(
+      resolve =>
+        setTimeout(
+          resolve,
+          120
+        )
+    );
+
+
+    /*
+      ========================================================
+      PHASE 2
+
+      EXITパネルが全面を覆った状態で
+      元いたメイン画面を生成。
+
+      #asc-main-transition-v1なので
+      page()でもbackdropは消えない。
+      ========================================================
+    */
+
+    await navigateClassicMain(
+      targetTab
+    );
+
+
+    /*
+      新画面のDOM完成を1フレーム待つ。
+    */
+
+    await new Promise(
+      resolve =>
+        requestAnimationFrame(
+          () =>
+            requestAnimationFrame(
+              resolve
+            )
+        )
+    );
+
+
+    /*
+      ========================================================
+      PHASE 3
+
+      EXITパネルも右へ抜けて、
+      完成済みの元画面を見せる。
+      ========================================================
+    */
+
+    if (
+      typeof backdrop.animate ===
+        "function"
+    ) {
+
+      const panelExit =
+        backdrop.animate(
+          [
+
+            {
+
+              transform:
+                "translateX(0)",
+
+            },
+
+
+            {
+
+              transform:
+                "translateX(104%)",
+
+            },
+
+          ],
+
+          {
+
+            duration:350,
+
+
+            easing:
+              "cubic-bezier(.70,0,.22,1)",
+
+
+            fill:"forwards",
+
+          }
+        );
+
+
+      await panelExit
+        .finished
+        .catch(() => {});
+
+    }
+
+
+    else {
+
+      await new Promise(
+        resolve =>
+          setTimeout(
+            resolve,
+            300
+          )
+      );
+
+    }
+
+  }
+
+
+  finally {
+
+    /*
+      navigateClassicMain失敗時だけ
+      元mainを復元。
+    */
+
+    if (
+      currentMain &&
+      currentMain.isConnected
+    ) {
+
+      try {
+
+        mainExitAnimation?.cancel();
+
+      }
+
+      catch (_) {}
+
+
+      currentMain.style.position =
+        oldPosition;
+
+
+      currentMain.style.zIndex =
+        oldZIndex;
+
+
+      currentMain.style.willChange =
+        oldWillChange;
+
+    }
+
+
+    backdrop.remove();
+
+
+    delete document.documentElement
+      .dataset
+      .ascendUtilityTargetV5;
+
+
+    ascendUtilityExitRunningV2 =
+      false;
+
+  }
 
 }
 
@@ -43518,6 +44359,19 @@ async function openAscendUtilityTargetV2(
       targetId
     ]
   ) {
+
+    /*
+      ASCEND UTILITY EXIT TRANSITION V1
+
+      戻る演出で現在のUTILITY種類を
+      再利用するため保持。
+    */
+
+    document.documentElement
+      .dataset
+      .ascendUtilityTargetV5 =
+        targetId;
+
 
     await showAscendUtilityTransitionV5(
       user,
