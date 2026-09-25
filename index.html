@@ -34296,6 +34296,357 @@ body.study-link-room-mode-v1
 
 <!-- ASCEND FOCUS SCROLL FIX V1 -->
 
+
+<style id="ascend-quick-ui-v1">
+
+/* ASCEND QUICK UI V1 */
+
+#asc-home-quick-v1,
+.asc-q-panel {
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    border: 1px solid rgba(25,175,216,.35);
+    border-radius: 20px;
+
+    background: linear-gradient(
+        125deg,
+        #103c51,
+        #111929
+    );
+
+    color: #edfaff;
+}
+
+#asc-home-quick-v1 {
+    padding: 22px;
+    margin: 14px 0 20px;
+}
+
+.asc-q-eyebrow {
+    font: 700 12px Rajdhani,sans-serif;
+    letter-spacing: .17em;
+    color: #5bdef4;
+}
+
+.asc-q-title {
+    display: block;
+    font: 800 clamp(30px,8vw,42px) Orbitron,sans-serif;
+    letter-spacing: .07em;
+    margin: 7px 0;
+}
+
+.asc-q-desc {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #c5d9e6;
+    margin: 8px 0 18px;
+}
+
+.asc-q-home-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.asc-q-hint {
+    font-size: 11px;
+    line-height: 1.5;
+    color: #a4bfcd;
+    flex: 1 1 140px;
+}
+
+.asc-q-primary {
+    background: linear-gradient(
+        110deg,
+        #19cfeb,
+        #3178cb
+    );
+
+    color: #061924;
+    border: 0;
+    border-radius: 12px;
+    padding: 13px 19px;
+
+    font-weight: 900;
+    font-family: Rajdhani,sans-serif;
+    letter-spacing: .08em;
+
+    cursor: pointer;
+}
+
+.asc-q-primary:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+.asc-q-screen {
+    width: 100%;
+    padding-bottom: 85px;
+}
+
+.asc-q-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 4px 0 16px;
+}
+
+.asc-q-back {
+    border: 1px solid rgba(93,175,209,.4);
+    background: rgba(60,107,140,.12);
+    color: inherit;
+
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+.asc-q-panel {
+    padding: 20px;
+    min-height: 320px;
+}
+
+.asc-q-tabs,
+.asc-q-grid {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 9px;
+    margin: 17px 0 22px;
+}
+
+.asc-q-tab,
+.asc-q-choice {
+    cursor: pointer;
+    font-weight: 750;
+
+    border: 1px solid rgba(129,169,193,.3);
+    background: rgba(215,244,255,.06);
+    color: inherit;
+
+    border-radius: 12px;
+    padding: 14px 9px;
+}
+
+.asc-q-tab[aria-pressed="true"],
+.asc-q-choice[aria-pressed="true"] {
+    background: rgba(20,194,232,.18);
+    border-color: #39c8ed;
+    box-shadow: inset 0 0 0 1px rgba(57,200,237,.25);
+}
+
+.asc-q-prompt,
+.asc-q-note {
+    color: #bdd2dd;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.asc-q-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+.asc-q-ready {
+    text-align: center;
+    padding: 28px 2px;
+}
+
+.asc-q-ready strong {
+    display: block;
+    font: 800 clamp(23px,6vw,34px) Orbitron,sans-serif;
+    margin: 12px 0 18px;
+}
+
+/* LIGHT MODE */
+
+html[data-asc-theme="light"] #asc-home-quick-v1,
+html[data-asc-theme="light"] .asc-q-panel {
+    background: linear-gradient(125deg,#f3fcff,#e9f0ff);
+    color: #17435b;
+    border-color: #9fcbda;
+}
+
+html[data-asc-theme="light"] .asc-q-eyebrow {
+    color: #087eac;
+}
+
+html[data-asc-theme="light"] .asc-q-desc,
+html[data-asc-theme="light"] .asc-q-prompt,
+html[data-asc-theme="light"] .asc-q-note,
+html[data-asc-theme="light"] .asc-q-hint {
+    color: #50788e;
+}
+
+html[data-asc-theme="light"] .asc-q-choice,
+html[data-asc-theme="light"] .asc-q-tab {
+    background: #fff;
+    border-color: #c7dae6;
+}
+
+html[data-asc-theme="light"] .asc-q-choice[aria-pressed="true"],
+html[data-asc-theme="light"] .asc-q-tab[aria-pressed="true"] {
+    background: #c7f2fa;
+    border-color: #25a9d1;
+}
+
+@media(max-width:400px) {
+    .asc-q-panel {
+        padding: 15px;
+    }
+}
+
+</style>
+
+
+<style id="ascend-quick-game-v2-style">
+/* ASCEND QUICK GAME V2 */
+.asc-q-game-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:20px}
+.asc-q-game-meta{font:700 12px Rajdhani,sans-serif;letter-spacing:.06em;color:var(--text-main,#e8f5fc)}
+.asc-q-game-prompt{font-size:clamp(18px,4.5vw,23px);font-weight:800;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;margin:24px 0}
+.asc-q-game-options{display:grid;gap:10px}
+.asc-q-game-option{font:700 15px system-ui,sans-serif;text-align:left;white-space:normal;overflow-wrap:anywhere;background:rgba(155,191,215,.09);border:1px solid rgba(157,203,231,.32);border-radius:13px;color:inherit;min-height:55px;padding:14px;cursor:pointer;transition:background .12s,border-color .12s}
+.asc-q-game-option[data-result="right"]{background:#125d45;border-color:#32dc91;color:white}
+.asc-q-game-option[data-result="wrong"]{background:#72303b;border-color:#ff6778;color:white}
+.asc-q-game-option:disabled{cursor:default;opacity:1}
+.asc-q-game-finish{margin-top:20px;display:flex;justify-content:flex-end}
+.asc-q-game-score{font:900 clamp(29px,7vw,43px) Orbitron,sans-serif;margin:15px 0}
+html[data-asc-theme="light"] .asc-q-game-option{background:#fff;color:#20475d;border-color:#c6dce7}
+html[data-asc-theme="light"] .asc-q-game-option[data-result="right"]{background:#c3f7dc;border-color:#25865b;color:#12472f}
+html[data-asc-theme="light"] .asc-q-game-option[data-result="wrong"]{background:#ffd9de;border-color:#c34b58;color:#76202b}
+</style>
+
+<style id="ascend-quick-math-v3-style">
+
+/* ASCEND QUICK MATH V3 */
+
+.asc-q-game-prompt {
+    font-size: clamp(17px,4.2vw,21px);
+    font-weight: 650;
+    line-height: 1.75;
+}
+
+.asc-q-game-option {
+    font-weight: 550;
+    line-height: 1.55;
+}
+
+.asc-q-option-main-v3 {
+    display: block;
+    font-size: 1.04em;
+    font-weight: 650;
+    line-height: 1.65;
+}
+
+.asc-q-option-detail-v3 {
+    display: block;
+    margin-top: 7px;
+    font-size: .88em;
+    font-weight: 450;
+    line-height: 1.6;
+    opacity: .77;
+}
+
+.asc-q-sup-v3 {
+    font-size: .72em;
+    line-height: 0;
+    vertical-align: super;
+}
+
+.asc-q-sub-v3 {
+    font-size: .72em;
+    line-height: 0;
+    vertical-align: sub;
+}
+
+.asc-q-root-v3 {
+    display: inline-flex;
+    align-items: flex-start;
+    vertical-align: middle;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.asc-q-root-sign-v3 {
+    font-size: 1.3em;
+    line-height: 1.08;
+}
+
+.asc-q-root-body-v3 {
+    display: inline-block;
+    border-top: 1.3px solid currentColor;
+    padding: 1px 2px 0 1px;
+    line-height: 1.35;
+}
+
+.asc-q-frac-v3 {
+    display: inline-flex;
+    vertical-align: middle;
+    flex-direction: column;
+    text-align: center;
+    font-size: .86em;
+    line-height: 1.1;
+    margin: 0 .13em;
+}
+
+.asc-q-frac-v3 > span:first-child {
+    border-bottom: 1px solid currentColor;
+    padding: 0 .2em .1em;
+}
+
+.asc-q-frac-v3 > span:last-child {
+    padding-top: .1em;
+}
+
+</style>
+
+<style id="ascend-quick-math-v4-style">
+/* ASCEND QUICK MATH V4 */
+.asc-q-game-prompt, .asc-q-game-option { overflow-wrap:break-word; }
+.asc-q-math-v4 {
+  display:inline-block;
+  font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;
+  font-size:1.08em;
+  font-weight:500;
+  vertical-align:middle;
+  max-width:100%;
+}
+.asc-q-option-main-v3 { font-weight:600; line-height:1.9; }
+.asc-q-option-detail-v3 { line-height:1.65; }
+</style>
+
+<style id="asc-q-math-v5-css">
+/* ASCEND QUICK MATH BANK V5 */
+.asc-q-math-settings-v5{padding:12px 0 6px;border-top:1px solid rgba(129,169,193,.25);margin-top:6px}
+.asc-q-dual-v5,.asc-q-levels-v5{display:grid;gap:8px;margin:10px 0 19px}
+.asc-q-dual-v5{grid-template-columns:repeat(2,minmax(0,1fr))}
+.asc-q-levels-v5{grid-template-columns:repeat(3,minmax(0,1fr))}
+.asc-q-levels-v5 .asc-q-choice{padding:12px 3px;font:800 13px Rajdhani,sans-serif;letter-spacing:.05em}
+.asc-q-math-point-v5{border-left:3px solid #31c8ed;background:rgba(33,177,215,.12);padding:12px;margin-top:15px;border-radius:5px;font-size:13px;line-height:1.6}
+.asc-q-math-point-v5[hidden]{display:none}
+</style>
+
+<style id="ascend-quick-rush-v3-style">
+/* ASCEND QUICK RUSH V3 */
+.asc-qr-time-v3 {font:900 clamp(38px,12vw,63px) Orbitron,sans-serif;letter-spacing:.04em;margin:12px 0}
+.asc-qr-word-v3 {font-size:clamp(22px,6vw,30px);font-weight:750;line-height:1.5;margin:22px 0;overflow-wrap:anywhere}
+.asc-qr-counter-v3 {font:800 13px Rajdhani,sans-serif;letter-spacing:.12em;opacity:.75}
+.asc-qr-countdown-v3 {font:900 clamp(76px,24vw,124px) Orbitron,sans-serif;text-align:center;margin:40px 0;color:#27bce1;text-shadow:0 0 25px rgba(27,200,245,.34)}
+.asc-qr-timer-bar-v3 {height:5px;background:rgba(120,160,180,.2);border-radius:5px;overflow:hidden;margin:8px 0 15px}
+.asc-qr-timer-bar-v3 > div {height:100%;width:100%;background:linear-gradient(90deg,#2ed5ec,#287db8);transition:width .1s linear}
+.asc-qr-summary-v3 {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0}
+.asc-qr-stat-v3 {border:1px solid rgba(110,165,190,.3);border-radius:12px;padding:14px;text-align:center}
+.asc-qr-stat-v3 span {display:block;font-size:12px;opacity:.7;margin-bottom:5px}
+.asc-qr-stat-v3 strong {font:900 23px Orbitron,sans-serif}
+</style>
+
 </head>
 
 
@@ -93283,7 +93634,294 @@ function ascendPriorityDaysAgoV1(value) {
 }
 
 
-function getAscendPriorityTargetsV1(data) {
+// ============================================================
+// ASCEND / PRIORITY ENGINE V2
+//
+// Mastery deficiency    55%
+// Confidence deficiency 25%
+// Recent errors         12%
+// Inactivity             5%
+// Self evaluation        3%
+//
+// Missing data is excluded and the remaining weights are
+// automatically re-normalized.
+// ============================================================
+
+const ASCEND_PRIORITY_WEIGHTS_V2 = Object.freeze({
+  mastery: 55,
+  confidence: 25,
+  recentErrors: 12,
+  inactivity: 5,
+  selfEvaluation: 3,
+});
+
+
+function clampAscendPriorityV2(value) {
+  return Math.max(
+    0,
+    Math.min(
+      100,
+      Number(value) || 0
+    )
+  );
+}
+
+
+function getAscendPriorityInactivityV2(daysAgo) {
+
+  if (
+    daysAgo == null ||
+    !Number.isFinite(Number(daysAgo))
+  ) {
+    return null;
+  }
+
+  const days =
+    Math.max(
+      0,
+      Number(daysAgo)
+    );
+
+  if (days <= 6) {
+    return 0;
+  }
+
+  if (days <= 13) {
+    return 10;
+  }
+
+  if (days <= 29) {
+    return 30;
+  }
+
+  if (days <= 59) {
+    return 60;
+  }
+
+  return 100;
+}
+
+
+function getAscendPriorityRecentDecayV2(daysAgo) {
+
+  if (
+    daysAgo == null ||
+    !Number.isFinite(Number(daysAgo))
+  ) {
+    return 1;
+  }
+
+  const days =
+    Math.max(
+      0,
+      Number(daysAgo)
+    );
+
+  /*
+    最近の失点ほど強く残す。
+
+    0-3日   100%
+    4-7日    85%
+    8-14日   65%
+    15-21日  40%
+    22-30日  20%
+    31日+     5%
+  */
+
+  if (days <= 3) {
+    return 1;
+  }
+
+  if (days <= 7) {
+    return 0.85;
+  }
+
+  if (days <= 14) {
+    return 0.65;
+  }
+
+  if (days <= 21) {
+    return 0.40;
+  }
+
+  if (days <= 30) {
+    return 0.20;
+  }
+
+  return 0.05;
+}
+
+
+function getAscendPriorityRecentErrorsV2(
+  masteryRecord
+) {
+
+  if (
+    !masteryRecord ||
+    typeof masteryRecord !== "object"
+  ) {
+    return null;
+  }
+
+  const scores =
+    Array.isArray(
+      masteryRecord.recentScores
+    )
+      ? masteryRecord.recentScores
+          .map(Number)
+          .filter(Number.isFinite)
+          .slice(-5)
+      : [];
+
+
+  if (!scores.length) {
+    return null;
+  }
+
+
+  /*
+    recentScores は古い → 新しい順。
+
+    最大5件に対して
+
+      oldest        x1
+                    x2
+                    x3
+                    x4
+      newest        x5
+
+    として、最近の失点を強くする。
+  */
+
+  let weightedErrors = 0;
+  let weightTotal = 0;
+
+  scores.forEach((score, index) => {
+
+    const weight =
+      index + 1;
+
+    const error =
+      100 -
+      clampAscendPriorityV2(
+        score
+      );
+
+    weightedErrors +=
+      error * weight;
+
+    weightTotal +=
+      weight;
+
+  });
+
+
+  if (weightTotal <= 0) {
+    return null;
+  }
+
+
+  const baseError =
+    weightedErrors /
+    weightTotal;
+
+
+  const testedDaysAgo =
+    ascendPriorityDaysAgoV1(
+      masteryRecord.lastTestedAt
+    );
+
+
+  const decay =
+    getAscendPriorityRecentDecayV2(
+      testedDaysAgo
+    );
+
+
+  return clampAscendPriorityV2(
+    baseError * decay
+  );
+}
+
+
+function getAscendPrioritySelfEvalV2(
+  rawStatus
+) {
+
+  if (
+    rawStatus == null ||
+    rawStatus === ""
+  ) {
+    return null;
+  }
+
+
+  const raw =
+    String(rawStatus)
+      .trim()
+      .toLowerCase();
+
+
+  if (
+    !raw ||
+    raw === "none" ||
+    raw === "unknown" ||
+    raw === "unmeasured"
+  ) {
+    return null;
+  }
+
+
+  const normalized =
+    normalizeAscendWeaknessStatusV1(
+      rawStatus
+    );
+
+
+  /*
+    弱い → 強い
+
+      100 / 67 / 33 / 0
+
+    既存ステータス名が増えても、
+    中間評価は33として安全に扱う。
+  */
+
+  if (
+    normalized === "weak" ||
+    raw === "weak"
+  ) {
+    return 100;
+  }
+
+
+  if (
+    normalized === "unstable" ||
+    raw === "unstable"
+  ) {
+    return 67;
+  }
+
+
+  if (
+    raw === "clear" ||
+    raw === "strong" ||
+    raw === "mastered" ||
+    raw === "perfect" ||
+    normalized === "clear"
+  ) {
+    return 0;
+  }
+
+
+  return 33;
+}
+
+
+function calculateAscendPriorityScoreV2(
+  data,
+  unit
+) {
 
   const weaknessMap =
     data?.weaknessMap &&
@@ -93291,86 +93929,412 @@ function getAscendPriorityTargetsV1(data) {
       ? data.weaknessMap
       : {};
 
-  const result = [];
 
-  getAscendWeaknessUnitsV1().forEach(unit => {
+  const weaknessRecord =
+    weaknessMap?.[unit.id] &&
+    typeof weaknessMap[unit.id] === "object"
+      ? weaknessMap[unit.id]
+      : {};
 
-    const record =
-      weaknessMap[unit.id] || {};
 
-    const status =
-      normalizeAscendWeaknessStatusV1(
-        record.status
-      );
+  const masteryRecord =
+    getAscendMasteryRecordV1(
+      data,
+      unit.id
+    );
 
-    const daysAgo =
-      ascendPriorityDaysAgoV1(
-        record.lastStudiedAt
-      );
 
-    let rank = null;
-    let kind = "";
-    let label = "";
+  const components = [];
 
-    if (status === "weak") {
-      rank = 1;
-      kind = "weak";
-      label = "WEAK";
-    }
 
-    else if (status === "unstable") {
-      rank = 2;
-      kind = "unstable";
-      label = "UNSTABLE";
-    }
+  // ----------------------------------------------------------
+  // MASTERY DEFICIENCY / 55
+  // ----------------------------------------------------------
 
-    else if (
-      status === "clear" &&
-      daysAgo != null &&
-      daysAgo >= 14
-    ) {
-      rank = 3;
-      kind = "review";
-      label = "REVIEW DUE";
-    }
+  if (
+    masteryRecord &&
+    masteryRecord.mastery != null &&
+    Number.isFinite(
+      Number(
+        masteryRecord.mastery
+      )
+    )
+  ) {
 
-    else if (
-      status === "clear" &&
-      daysAgo != null &&
-      daysAgo >= 7
-    ) {
-      rank = 4;
-      kind = "review-soon";
-      label = "REVIEW SOON";
-    }
+    components.push({
+      key: "mastery",
+      weight:
+        ASCEND_PRIORITY_WEIGHTS_V2.mastery,
+      value:
+        100 -
+        clampAscendPriorityV2(
+          masteryRecord.mastery
+        ),
+    });
 
-    if (rank == null) return;
+  }
 
-    result.push({
-      ...unit,
-      rank,
-      kind,
-      label,
+
+  // ----------------------------------------------------------
+  // CONFIDENCE DEFICIENCY / 25
+  // ----------------------------------------------------------
+
+  if (
+    masteryRecord &&
+    masteryRecord.mastery != null &&
+    Number.isFinite(
+      Number(
+        masteryRecord.mastery
+      )
+    ) &&
+    Number.isFinite(
+      Number(
+        masteryRecord.confidence
+      )
+    )
+  ) {
+
+    components.push({
+      key: "confidence",
+      weight:
+        ASCEND_PRIORITY_WEIGHTS_V2.confidence,
+      value:
+        100 -
+        clampAscendPriorityV2(
+          masteryRecord.confidence
+        ),
+    });
+
+  }
+
+
+  // ----------------------------------------------------------
+  // RECENT ERRORS / 12
+  // ----------------------------------------------------------
+
+  const recentErrors =
+    getAscendPriorityRecentErrorsV2(
+      masteryRecord
+    );
+
+
+  if (recentErrors != null) {
+
+    components.push({
+      key: "recentErrors",
+      weight:
+        ASCEND_PRIORITY_WEIGHTS_V2.recentErrors,
+      value:
+        recentErrors,
+    });
+
+  }
+
+
+  // ----------------------------------------------------------
+  // INACTIVITY / 5
+  // ----------------------------------------------------------
+
+  const daysAgo =
+    ascendPriorityDaysAgoV1(
+      weaknessRecord.lastStudiedAt
+    );
+
+
+  const inactivity =
+    getAscendPriorityInactivityV2(
+      daysAgo
+    );
+
+
+  if (inactivity != null) {
+
+    components.push({
+      key: "inactivity",
+      weight:
+        ASCEND_PRIORITY_WEIGHTS_V2.inactivity,
+      value:
+        inactivity,
+    });
+
+  }
+
+
+  // ----------------------------------------------------------
+  // SELF EVALUATION / 3
+  // ----------------------------------------------------------
+
+  const selfEvaluation =
+    getAscendPrioritySelfEvalV2(
+      weaknessRecord.status
+    );
+
+
+  if (selfEvaluation != null) {
+
+    components.push({
+      key: "selfEvaluation",
+      weight:
+        ASCEND_PRIORITY_WEIGHTS_V2.selfEvaluation,
+      value:
+        selfEvaluation,
+    });
+
+  }
+
+
+  /*
+    重要：
+    未測定データを0点扱いしない。
+
+    存在する要素だけで重みを再正規化する。
+  */
+
+  const availableWeight =
+    components.reduce(
+      (sum, item) =>
+        sum + item.weight,
+      0
+    );
+
+
+  if (availableWeight <= 0) {
+
+    return {
+      measured: false,
+      score: null,
+      components: {},
       daysAgo,
       lastMs:
         ascendPriorityTimeMsV1(
-          record.lastStudiedAt
+          weaknessRecord.lastStudiedAt
         ) ?? 0,
+    };
+
+  }
+
+
+  const weightedTotal =
+    components.reduce(
+      (sum, item) =>
+        sum +
+        item.value *
+        item.weight,
+      0
+    );
+
+
+  const score =
+    clampAscendPriorityV2(
+      weightedTotal /
+      availableWeight
+    );
+
+
+  const componentMap =
+    Object.fromEntries(
+      components.map(
+        item => [
+          item.key,
+          {
+            value:
+              Math.round(
+                item.value * 10
+              ) / 10,
+            weight:
+              item.weight,
+          },
+        ]
+      )
+    );
+
+
+  return {
+    measured: true,
+
+    score:
+      Math.round(
+        score * 10
+      ) / 10,
+
+    components:
+      componentMap,
+
+    availableWeight,
+
+    daysAgo,
+
+    lastMs:
+      ascendPriorityTimeMsV1(
+        weaknessRecord.lastStudiedAt
+      ) ?? 0,
+  };
+}
+
+
+function getAscendPriorityVisualV2(
+  scoreData
+) {
+
+  const score =
+    Number(
+      scoreData?.score || 0
+    );
+
+
+  const inactivity =
+    Number(
+      scoreData
+        ?.components
+        ?.inactivity
+        ?.value ?? 0
+    );
+
+
+  /*
+    kind は既存CSSとの互換用。
+    実際の順位は priorityScore で決定する。
+  */
+
+  if (score >= 65) {
+    return {
+      kind: "weak",
+      label: "HIGH PRIORITY",
+    };
+  }
+
+
+  if (score >= 40) {
+    return {
+      kind: "unstable",
+      label: "PRIORITY",
+    };
+  }
+
+
+  if (inactivity >= 60) {
+    return {
+      kind: "review",
+      label: "REVIEW DUE",
+    };
+  }
+
+
+  return {
+    kind: "review-soon",
+    label: "REVIEW",
+  };
+}
+
+
+function getAscendPriorityTargetsV1(data) {
+
+  const result = [];
+
+
+  getAscendWeaknessUnitsV1()
+    .forEach(unit => {
+
+      const priority =
+        calculateAscendPriorityScoreV2(
+          data,
+          unit
+        );
+
+
+      /*
+        完全未測定は候補から除外。
+        「未測定 = 最弱」にはしない。
+      */
+
+      if (
+        !priority.measured ||
+        priority.score == null
+      ) {
+        return;
+      }
+
+
+      const visual =
+        getAscendPriorityVisualV2(
+          priority
+        );
+
+
+      result.push({
+        ...unit,
+
+        priorityScore:
+          priority.score,
+
+        priorityComponents:
+          priority.components,
+
+        priorityAvailableWeight:
+          priority.availableWeight,
+
+        kind:
+          visual.kind,
+
+        label:
+          visual.label,
+
+        daysAgo:
+          priority.daysAgo,
+
+        lastMs:
+          priority.lastMs,
+      });
+
     });
 
-  });
 
+  /*
+    V1:
+      status → fixed rank
+
+    V2:
+      objective Priority Score → descending
+  */
 
   result.sort((a, b) => {
-    if (a.rank !== b.rank) {
-      return a.rank - b.rank;
+
+    const scoreDiff =
+      Number(b.priorityScore || 0) -
+      Number(a.priorityScore || 0);
+
+
+    if (
+      Math.abs(scoreDiff) >
+      0.0001
+    ) {
+      return scoreDiff;
     }
 
-    return a.lastMs - b.lastMs;
+
+    /*
+      同点なら古く勉強した方を先へ。
+    */
+
+    return (
+      Number(a.lastMs || 0) -
+      Number(b.lastMs || 0)
+    );
+
   });
 
 
-  return result;
+  /*
+    既存UIが rank を使っているので
+    V2順位をここで再付与。
+  */
+
+  return result.map(
+    (target, index) => ({
+      ...target,
+      rank: ({weak:1, unstable:2, review:3, "review-soon":4})[target.kind] ?? 4,
+    })
+  );
 }
 
 
@@ -93889,6 +94853,1531 @@ function renderAscendPriorityTargetsV1(data) {
   `;
 }
 
+
+
+
+// ============================================================
+// ASCEND QUICK UI V1
+// ============================================================
+
+const ASC_Q_OPTIONS = {
+
+    endless: [
+        ["auto", "AUTO / 弱点優先"],
+        ["math", "数学"],
+        ["physics", "物理"],
+        ["chemistry", "化学"],
+        ["english", "英語"],
+        ["japanese", "国語"]
+    ],
+
+    rush: [
+        ["words", "英単語"],
+        ["idioms", "英熟語"],
+        ["vocab", "国語語彙"],
+        ["classical", "古文単語"]
+    ]
+
+};
+
+const ascQState = {
+    tab: "endless",
+    endless: "auto",
+    rush: "words"
+};
+
+
+
+// ============================================================
+// ASCEND QUICK SCROLL PRESERVATION V10
+// ============================================================
+function ascQRedrawKeepScrollV10(user, clicked) {
+
+  const screen = clicked.closest('.asc-q-screen');
+
+  // QUICK画面から最上位までスクロール位置を記録
+  const positions = [];
+
+  let node = screen;
+
+  while(node){
+    positions.push(node.scrollTop);
+    node = node.parentElement;
+  }
+
+  const windowY = window.scrollY;
+
+  // 既存のQUICK再描画処理
+  showAscendQuickV1(user);
+
+  const newScreen = document.querySelector('.asc-q-screen');
+
+  if(!newScreen)return;
+
+  function restore(){
+
+    let target = newScreen;
+
+    for(const position of positions){
+
+      if(!target)break;
+
+      target.scrollTop = position;
+      target = target.parentElement;
+
+    }
+
+    window.scrollTo(0,windowY);
+
+  }
+
+  // 即時復元
+  restore();
+
+  // レイアウト確定後にも復元
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(restore);
+  });
+
+}
+
+function showAscendQuickV1(user, ready = false) {
+
+    const tab = ascQState.tab;
+
+    const options = ASC_Q_OPTIONS[tab];
+
+    const selected = ascQState[tab];
+
+    const chosen =
+        options.find(x => x[0] === selected)?.[1]
+        || "AUTO";
+
+
+    page(card(`
+
+        <div class="app-screen asc-q-screen">
+
+            <div class="screen-header">
+                <h2>QUICK</h2>
+                <p>机がなくても、1問から。</p>
+            </div>
+
+
+            <div class="asc-q-topbar">
+
+                <button
+                    class="asc-q-back"
+                    id="asc-q-back"
+                >
+                    ← ${ready ? "SELECT" : "HOME"}
+                </button>
+
+                <span class="asc-q-eyebrow">
+                    ASCEND / MOBILE STUDY
+                </span>
+
+            </div>
+
+
+            <section class="asc-q-panel">
+
+                ${ready ? `
+
+                    <div class="asc-q-ready">
+
+                        <span class="asc-q-eyebrow">
+                            SYSTEM READY
+                        </span>
+
+                        <strong>
+                            ${tab === "endless"
+                                ? "ENDLESS"
+                                : "1 MIN RUSH"}
+                        </strong>
+
+                        <p>${chosen}</p>
+                        ${tab==='endless' && selected==='math' ?
+                          `<p class="asc-q-note">${({ia:'Ⅰ・A',iibc:'Ⅱ・B・C',iiic:'Ⅲ・C'})[ASC_Q_MATH_SETTINGS_V5.course]||'Ⅰ・A'} / ${ASC_Q_MATH_SETTINGS_V5.mode.toUpperCase()} / ${ASC_Q_MATH_SETTINGS_V5.level.toUpperCase()}</p>` : ''}
+
+                        <p class="asc-q-note">
+
+                            ${tab === "endless"
+
+                                ? "好きなときに終了。四択・自動送り。"
+
+                                : "60秒間の正解数に挑戦。3 → 2 → 1 → GO! で開始。"
+
+                            }
+
+                        </p>
+
+
+                        <div class="asc-q-actions">
+
+                            <button
+                                class="asc-q-back"
+                                id="asc-q-cancel"
+                            >
+                                BACK
+                            </button>
+
+                            <button class="asc-q-primary" id="asc-q-launch-v2">${tab === "rush" ? "START RUSH" : "START"}</button>
+
+                        </div>
+
+                    </div>
+
+
+                ` : `
+
+                    <span class="asc-q-eyebrow">
+                        CHOOSE YOUR MODE
+                    </span>
+
+
+                    <div class="asc-q-tabs">
+
+                        <button
+                            class="asc-q-tab"
+                            data-qtab="endless"
+                            aria-pressed="${tab === "endless"}"
+                        >
+                            ENDLESS
+                        </button>
+
+                        <button
+                            class="asc-q-tab"
+                            data-qtab="rush"
+                            aria-pressed="${tab === "rush"}"
+                        >
+                            1 MIN RUSH
+                        </button>
+
+                    </div>
+
+
+                    <p class="asc-q-prompt">
+                        ${tab === "endless"
+                            ? "SUBJECT"
+                            : "CATEGORY"}
+                        を選択
+                    </p>
+
+
+                    <div class="asc-q-grid">
+
+                        ${options.map(([id,label]) => `
+
+                            <button
+                                class="asc-q-choice"
+                                data-qchoice="${id}"
+                                aria-pressed="${id === selected}"
+                            >
+                                ${label}
+                            </button>
+
+                        `).join("")}
+
+                    </div>
+
+
+                    ${tab==='endless' && selected==='math' ? `
+  <div class="asc-q-math-settings-v5">
+    <div class="asc-q-eyebrow">MATHEMATICS COURSE</div>
+    <div class="asc-q-levels-v5 asc-q-course-v9">
+      ${[['ia','Ⅰ・A / 150'],['iibc','Ⅱ・B・C / 60'],['iiic','Ⅲ・C / 60']].map(([id,label])=>
+        `<button type="button" class="asc-q-choice" data-math-course-v9="${id}"
+          aria-pressed="${ASC_Q_MATH_SETTINGS_V5.course===id}">${label}</button>`).join('')}
+    </div>
+    <div class="asc-q-eyebrow">TRAINING TYPE</div>
+    <div class="asc-q-dual-v5">
+      ${[['formula','FORMULA / 公式'],['strategy','STRATEGY / 解法']].map(([id,label])=>
+        `<button type="button" class="asc-q-choice" data-math-mode-v5="${id}"
+          aria-pressed="${ASC_Q_MATH_SETTINGS_V5.mode===id}">${label}</button>`).join('')}
+    </div>
+    <div class="asc-q-eyebrow">DIFFICULTY</div>
+    <div class="asc-q-levels-v5">
+      ${[['easy','EASY'],['normal','NORMAL'],['hard','HARD']].map(([id,label])=>
+        `<button type="button" class="asc-q-choice" data-math-level-v5="${id}"
+          aria-pressed="${ASC_Q_MATH_SETTINGS_V5.level===id}">${label}</button>`).join('')}
+    </div>
+    <p class="asc-q-note">Ⅰ・A 150問／Ⅱ・B・C 60問／Ⅲ・C 60問　すべて紙なしで挑戦</p>
+  </div>` : ''}
+
+  <div class="asc-q-actions">
+
+                        <button
+                            class="asc-q-primary"
+                            id="asc-q-ready"
+                        >
+                            READY →
+                        </button>
+
+                    </div>
+
+                `}
+
+            </section>
+
+            ${mainBottomNav("home")}
+
+        </div>
+
+    `));
+
+
+    document.getElementById("asc-q-back").onclick =
+        () => ready
+            ? showAscendQuickV1(user, false)
+            : showHome(user);
+
+
+    if (ready) {
+
+        document.getElementById("asc-q-cancel").onclick =
+            () => showAscendQuickV1(user, false);
+
+        document.getElementById("asc-q-launch-v2").onclick = () => {
+            if (tab === "endless") startAscendQuickGameV2(user);
+            else startAscendQuickRushV3(user);
+        };
+
+    } else {
+
+        document.querySelectorAll("[data-qtab]")
+            .forEach(button => {
+
+                button.onclick = () => {
+
+                    ascQState.tab =
+                        button.dataset.qtab;
+
+                    showAscendQuickV1(user);
+
+                };
+
+            });
+
+
+        document.querySelectorAll("[data-qchoice]")
+            .forEach(button => {
+
+                button.onclick = () => {
+
+                    ascQState[tab] =
+                        button.dataset.qchoice;
+
+                    showAscendQuickV1(user);
+
+                };
+
+            });
+
+
+        document.getElementById("asc-q-ready").onclick =
+            () => showAscendQuickV1(user, true);
+
+    }
+
+
+    document.querySelectorAll('[data-math-course-v9]').forEach(btn=>{
+    btn.onclick=()=>{ASC_Q_MATH_SETTINGS_V5.course=btn.dataset.mathCourseV9;ascQRedrawKeepScrollV10(user,btn);};
+  });
+  document.querySelectorAll('[data-math-mode-v5]').forEach(btn=>{
+    btn.onclick=()=>{ ASC_Q_MATH_SETTINGS_V5.mode=btn.dataset.mathModeV5; ascQRedrawKeepScrollV10(user,btn); };
+  });
+  document.querySelectorAll('[data-math-level-v5]').forEach(btn=>{
+    btn.onclick=()=>{ ASC_Q_MATH_SETTINGS_V5.level=btn.dataset.mathLevelV5; ascQRedrawKeepScrollV10(user,btn); };
+  });
+  bindMainBottomNav(user);
+
+}
+
+
+
+// ============================================================
+// ASCEND QUICK GAME V2 / ENDLESS
+// ============================================================
+
+// 完全オリジナルの先行バンク。語数は後続パッチで増量。
+const ASC_Q_WORDS_V2 = [
+  ["maintain","維持する","v"],["predict","予測する","v"],
+  ["reject","拒否する","v"],["improve","改善する","v"],
+  ["establish","設立する","v"],["prevent","防ぐ","v"],
+  ["require","必要とする","v"],["reduce","減らす","v"],
+  ["expand","拡大する","v"],["obtain","得る","v"],
+  ["observe","観察する","v"],["contribute","貢献する","v"],
+  ["assume","仮定する","v"],["recognize","認識する","v"],
+  ["respond","応答する","v"],["emerge","現れる","v"],
+  ["consume","消費する","v"],["replace","置き換える","v"],
+  ["persuade","説得する","v"],["indicate","示す","v"],
+  ["evidence","証拠","n"],["consequence","結果","n"],
+  ["resource","資源","n"],["feature","特徴","n"],
+  ["approach","方法","n"],["circumstance","状況","n"],
+  ["impact","影響","n"],["benefit","利益","n"],
+  ["priority","優先事項","n"],["capacity","能力・容量","n"],
+  ["significant","重要な","adj"],["accurate","正確な","adj"],
+  ["essential","不可欠な","adj"],["efficient","効率的な","adj"],
+  ["temporary","一時的な","adj"],["complex","複雑な","adj"],
+  ["reliable","信頼できる","adj"],["available","利用可能な","adj"]
+];
+const ASC_Q_JAPANESE_V2 = [
+  ["あはれ","しみじみとした趣","classical"],["をかし","趣がある","classical"],
+  ["いみじ","非常にすばらしい／ひどい","classical"],
+  ["あやし","不思議だ／身分が低い","classical"],
+  ["おぼゆ","自然に思われる","classical"],
+  ["やむごとなし","高貴だ／格別だ","classical"],
+  ["つれづれなり","することがなく退屈だ","classical"],
+  ["いとほし","気の毒だ／かわいい","classical"],
+  ["因果関係","原因と結果のつながり","modern"],
+  ["対比","相違点を際立たせる表現","modern"],
+  ["要旨","文章全体の中心となる考え","modern"],
+  ["指示語","前後の内容を指し示す語","modern"]
+];
+
+const ascQGameStateV2 = { current: null };
+function ascQShuffleV2(items) {
+  const a = items.slice();
+  for (let i=a.length-1; i>0; i--) {
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function ascQEscapeV2(value) {
+  return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+// ASCEND QUICK MATH V3
+
+// ASCEND QUICK MATH V4 / offline MathML renderer
+// Covers powers with grouped exponents, subscripts, nested roots and fractions.
+// Keep plain text untouched when a fragment is not clearly mathematical.
+// ASCEND QUICK FRACTION V7: math questions always render fraction notation
+function ascQMathTextV3(value, forceFractions = false) {
+  const original = String(value ?? "");
+  function mathSegment(source) {
+    let i = 0;
+    const esc = ascQEscapeV2;
+    const letter = c => /[A-Za-zπθφΦαβγλμσω∞]/.test(c || "");
+    const digit = c => /[0-9]/.test(c || "");
+    const op = c => /[=+\-*×÷<>≤≥≠±·∑Σ∪∩|°]/.test(c || "");
+    const endFor = {"(": ")", "{": "}"};
+
+    function parse(end = "", innerOnly = false) {
+      const items = [];
+      let steps = 0;
+      while (i < source.length && steps++ < 500) {
+        let c = source[i];
+        if (end && c === end) { i++; break; }
+        if (c === ')' || c === '}') { // unmatched delimiter => print it, no deletion
+          items.push(`<mo>${esc(c)}</mo>`); i++; continue;
+        }
+        if (/\s/.test(c)) {
+          while (/\s/.test(source[i] || "") && i < source.length) i++;
+          if (items.length) items.push('<mspace width=".18em"/>');
+          continue;
+        }
+        if (c === '^' || c === '_') {
+          i++;
+          const position = c === '^' ? 'msup' : 'msub';
+          const exp = atom(true);
+          let n = items.length - 1;
+          while (n >= 0 && items[n].startsWith('<mspace')) n--;
+          if (n >= 0 && exp) items[n] = `<${position}>${items[n]}${exp}</${position}>`;
+          else items.push(`<mo>${esc(c)}</mo>${exp || ''}`);
+          continue;
+        }
+        if (c === '!' && items.length) {
+          i++;
+          let n = items.length - 1;
+          while (n >= 0 && items[n].startsWith('<mspace')) n--;
+          if (n >= 0) items[n] = `<mrow>${items[n]}<mo>!</mo></mrow>`;
+          else items.push('<mo>!</mo>');
+          continue;
+        }
+        if (c === '/' && items.length) {
+          i++;
+          let n = items.length - 1;
+          while (n >= 0 && items[n].startsWith('<mspace')) n--;
+          const denominator = atom(true);
+          if (n >= 0 && denominator) {
+            const numerator = items[n];
+            items.splice(n, items.length - n, `<mfrac>${numerator}${denominator}</mfrac>`);
+          } else items.push('<mo>/</mo>');
+          continue;
+        }
+        const item = atom(false);
+        if (item) items.push(item);
+      }
+      const content = items.join('');
+      return innerOnly ? `<mrow>${content}</mrow>` : content;
+    }
+
+    function atom(noParens = false) {
+      if (i >= source.length) return '';
+      const c = source[i++];
+      if (c === '(' || c === '{') {
+        const inner = parse(endFor[c], true);
+        return noParens ? inner : `<mrow><mo>${c}</mo>${inner}<mo>${endFor[c]}</mo></mrow>`;
+      }
+      if (c === '√') {
+        const body = atom(true);
+        return body ? `<msqrt>${body}</msqrt>` : '<mo>√</mo>';
+      }
+      if (c === '∫') return '<mo largeop="true">∫</mo>';
+      if (digit(c)) {
+        let v = c;
+        while (digit(source[i]) || (source[i] === '.' && digit(source[i+1]))) v += source[i++];
+        return `<mn>${esc(v)}</mn>`;
+      }
+      if (letter(c)) {
+        // Function calls used by probability, variance and combinations.
+        if ('PEC'.includes(c) && source[i] === '(') {
+          i++;
+          const inside = parse(')', true);
+          return `<mrow><mi>${esc(c)}</mi><mo>(</mo>${inside}<mo>)</mo></mrow>`;
+        }
+        for (const fn of ['log','sin','cos','tan','lim']) {
+          if (c === fn[0] && source.slice(i-1, i-1+fn.length) === fn) {
+            i = i-1+fn.length;
+            // sin A and cosθ are one denominator, not two operands.
+            if (['sin','cos','tan'].includes(fn)) {
+              let j = i;
+              while (/\s/.test(source[j] || '') && j < source.length) j++;
+              if (letter(source[j]) && !letter(source[j+1])) {
+                const arg = source[j];
+                i = j + 1;
+                return `<mrow><mi mathvariant="normal">${fn}</mi><mi>${esc(arg)}</mi></mrow>`;
+              }
+            }
+            return `<mi mathvariant="normal">${fn}</mi>`;
+          }
+        }
+        // Adjacent letters represent a single product operand (abc etc).
+        let run = c;
+        while (/[A-Za-z]/.test(source[i] || '')) run += source[i++];
+        let operand = run.length === 1
+          ? `<mi>${esc(run)}</mi>`
+          : `<mrow>${[...run].map(x=>`<mi>${esc(x)}</mi>`).join('')}</mrow>`;
+        while (source[i] === '!') { i++; operand = `<mrow>${operand}<mo>!</mo></mrow>`; }
+        return operand;
+      }
+      if (op(c) || /[,.:]/.test(c)) return `<mo>${esc(c)}</mo>`;
+      return `<mtext>${esc(c)}</mtext>`;
+    }
+
+    return `<math class="asc-q-math-v4" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>${parse()}</mrow></math>`;
+  }
+
+  // Avoid treating ordinary English/Japanese as algebra. Japanese remains literal.
+  // A math expression may include spaces, e.g. "∫ x^n dx=...".
+  const pattern = /[A-Za-z0-9πθφΦαβγλμσω∞∫√Σ∑∪∩|°^_=+*×÷<>≤≥≠±·∩|\/().{},\-!\s]+/g;
+  let html = '', pos = 0, match;
+  while ((match = pattern.exec(original))) {
+    const fragment = match[0];
+    const mathLike = /[∫√^_=]/.test(fragment) || /\d\s*\/\s*\d/.test(fragment) ||
+      (forceFractions && /[A-Za-z0-9)}!√]\s*\/\s*[A-Za-z0-9({√]/.test(fragment));
+    html += ascQEscapeV2(original.slice(pos, match.index));
+    html += mathLike ? mathSegment(fragment) : ascQEscapeV2(fragment);
+    pos = match.index + fragment.length;
+  }
+  return html + ascQEscapeV2(original.slice(pos));
+}
+
+function ascQMathOptionV3(value, forceFractions = false) {
+
+    const text = String(value ?? "");
+
+    const divider = text.indexOf("／");
+
+    if (divider < 0) {
+        return '<span class="asc-q-option-main-v3">' +
+            ascQMathTextV3(text, forceFractions) +
+            '</span>';
+    }
+
+    const main = text.slice(0, divider).trim();
+    const detail = text.slice(divider + 1).trim();
+
+    return (
+        '<span class="asc-q-option-main-v3">' +
+        ascQMathTextV3(main, forceFractions) +
+        '</span>' +
+        '<span class="asc-q-option-detail-v3">' +
+        ascQMathTextV3(detail, forceFractions) +
+        '</span>'
+    );
+}
+
+function ascQStopV2() {
+  const g=ascQGameStateV2.current;
+  if (g?.timer) clearInterval(g.timer);
+  if (g?.nextTimer) clearTimeout(g.nextTimer);
+  ascQGameStateV2.current=null;
+}
+function ascQElapsedV2(g) {
+  const now=performance.now();
+  if (!document.hidden && g.lastTick) g.activeMs+=Math.min(now-g.lastTick,1500);
+  g.lastTick=now;
+  return g.activeMs;
+}
+function ascQTimeTextV2(ms) {
+  const s=Math.floor(ms/1000);
+  return `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
+}
+function ascQSubjectMatchV2(unit, subject) {
+  const name=String(unit.subject||"");
+  if(subject==="math")return name.includes("数学");
+  if(subject==="physics")return name.includes("物理");
+  if(subject==="chemistry")return name.includes("化学");
+  return /数学|物理|化学/.test(name);
+}
+
+// ============================================================
+// ASCEND QUICK MATH BANK V5 / Original 1A starter pack
+// FORMULA and STRATEGY. No diagnostic bank reuse for mathematics.
+// Every item should be paperless and have one unambiguous answer.
+// Further 1A, 2BC packs are separate future additions.
+// ============================================================
+const ASC_Q_MATH_BANK_V5 = [
+  // FORMULA / EASY
+  {id:'f01',unitId:'math1_expand',mode:'formula',level:'easy',
+   p:'(a+b)^3 の展開公式はどれ？',
+   o:['a^3+b^3','a^3+3a^2b+3ab^2+b^3','a^3+2a^2b+2ab^2+b^3','a^3-3a^2b+3ab^2-b^3'],a:1,
+   tip:'二項係数は 1, 3, 3, 1'},
+  {id:'f02',unitId:'math1_expand',mode:'formula',level:'easy',
+   p:'(a-b)^2 の展開公式はどれ？',
+   o:['a^2-2ab+b^2','a^2-ab+b^2','a^2+2ab+b^2','a^2-b^2'],a:0,
+   tip:'真ん中の項は -2ab'},
+  {id:'f03',unitId:'math1_quadratic',mode:'formula',level:'easy',
+   p:'ax^2+bx+c=0 の判別式 D はどれ？',
+   o:['b^2+4ac','4ac-b^2','b^2-4ac','b-4ac'],a:2,
+   tip:'D の符号で実数解の個数が分かる'},
+  {id:'f04',unitId:'math1_trig_ratio',mode:'formula',level:'easy',
+   p:'sin^2θ + cos^2θ はいくつ？',
+   o:['0','1','2','tan^2θ'],a:1,
+   tip:'角度によらず常に 1'},
+  {id:'f05',unitId:'matha_permutation_combination',mode:'formula',level:'easy',
+   p:'異なる n 個から r 個を選び、順に並べる数 nPr はどれ？',
+   o:['n!/(n-r)!','n!/(r!(n-r)!)','n^r','n!/r!'],a:0,
+   tip:'順番を区別するので順列を使う'},
+  {id:'f06',unitId:'matha_permutation_combination',mode:'formula',level:'easy',
+   p:'異なる n 個から r 個を選ぶ数 nCr はどれ？',
+   o:['n!/(n-r)!','n!/(r!(n-r)!)','r!/n!','n^r'],a:1,
+   tip:'組合せは順列を r! で割る'},
+  // FORMULA / NORMAL
+  {id:'f07',unitId:'math1_sine_cosine',mode:'formula',level:'normal',
+   p:'辺 b,c の間の角が A のとき、余弦定理で a^2 はどれ？',
+   o:['b^2+c^2+2bc cos A','b^2-c^2-2bc cos A','b^2+c^2-2bc cos A','b^2+c^2-2bc sin A'],a:2,
+   tip:'向かいの辺の2乗 = 他の2辺の2乗の和 − 2辺の積×cos'},
+  {id:'f08',unitId:'math1_area',mode:'formula',level:'normal',
+   p:'辺 b,c とその間の角 A から三角形の面積 S を求める式は？',
+   o:['bc sin A','bc cos A/2','bc/2','bc sin A/2'],a:3,
+   tip:'高さが c sin A になるので 1/2 をかける'},
+  {id:'f09',unitId:'matha_probability',mode:'formula',level:'normal',
+   p:'事象 A が起こらない確率は？',
+   o:['P(A)-1','1-P(A)','1/P(A)','P(A)'],a:1,
+   tip:'少なくとも1回の確率では余事象を検討する'},
+  {id:'f10',unitId:'matha_conditional',mode:'formula',level:'normal',
+   p:'P(B)>0 のとき、条件付き確率 P(A|B) は？',
+   o:['P(A∩B)/P(B)','P(A∩B)/P(A)','P(A)P(B)','P(A)+P(B)'],a:0,
+   tip:'B が起こった世界に標本空間を絞る'},
+  {id:'f11',unitId:'math1_dispersion',mode:'formula',level:'normal',
+   p:'確率変数 X の分散 V(X) はどれ？',
+   o:['E(X^2)+{E(X)}^2','E(X^2)-{E(X)}^2','{E(X)}^2-E(X^2)','E(X^2)/E(X)'],a:1,
+   tip:'2乗の平均から、平均の2乗を引く'},
+  {id:'f12',unitId:'matha_permutation_combination',mode:'formula',level:'normal',
+   p:'組合せ nCr と常に等しい式はどれ？',
+   o:['nC(r+1)','rCn','nC(n-r)','(n-r)Cn'],a:2,
+   tip:'選ぶ r 個と、選ばない n−r 個は1対1に対応する'},
+  // FORMULA / HARD (remember conditions and transformations, not lengthy algebra)
+  {id:'f13',unitId:'math1_dispersion',mode:'formula',level:'hard',
+   p:'X の分散が V(X) のとき、V(3X-2) は？',
+   o:['3V(X)-2','9V(X)-2','9V(X)','V(X)+7'],a:2,
+   tip:'分散は定数の足し引きでは変わらず、倍率の2乗で変わる'},
+  {id:'f14',unitId:'matha_conditional',mode:'formula',level:'hard',
+   p:'P(B)>0 のとき、P(A∩B) を条件付き確率で表すと？',
+   o:['P(A|B)/P(B)','P(B)P(A|B)','P(B)+P(A|B)','P(A|B)-P(B)'],a:1,
+   tip:'条件付き確率の定義を変形する'},
+  {id:'f15',unitId:'math1_sine_cosine',mode:'formula',level:'hard',
+   p:'正弦定理により、a/sin A と等しいのはどれ？',
+   o:['b/cos B','b/sin B','a/sin B','b/sin A'],a:1,
+   tip:'辺とその向かいの角の sin を組にして比を取る'},
+  {id:'f16',unitId:'matha_probability',mode:'formula',level:'hard',
+   p:'A,B が独立のとき、P(A∩B) は？',
+   o:['P(A)+P(B)','P(A)P(B)','P(A)/P(B)','1-P(A)P(B)'],a:1,
+   tip:'「独立」という条件が必要'},
+
+  // STRATEGY / EASY — solve via an actual step, not method-name trivia
+  {id:'s01',unitId:'matha_probability',mode:'strategy',level:'easy',
+   p:'サイコロを3回投げ、少なくとも1回は6が出る確率を求めたい\n適切な計算式は？',
+   o:['(1/6)^3','1-(1/6)^3','1-(5/6)^3','3/6'],a:2,
+   tip:'「少なくとも1回」は「1回も起きない」を引くと早い'},
+  {id:'s02',unitId:'math1_quadratic_inequality',mode:'strategy',level:'easy',
+   p:'(x-2)(x-5)<0 を満たす範囲は？',
+   o:['x<2','2<x<5','x>5','x<2 または x>5'],a:1,
+   tip:'上に開く二次式が負になるのは2つの解の間'},
+  {id:'s03',unitId:'math1_maxmin',mode:'strategy',level:'easy',
+   p:'y=x^2-6x+5 を平方完成した式は？',
+   o:['(x-3)^2-4','(x-3)^2+4','(x+3)^2-4','(x-6)^2+5'],a:0,
+   tip:'頂点を読み取れる形にして、範囲との位置関係を考える'},
+  {id:'s04',unitId:'matha_permutation_combination',mode:'strategy',level:'easy',
+   p:'6人から順番を区別せず2人選ぶ方法は？',
+   o:['6P2','6C2','6^2','6!'],a:1,
+   tip:'並べる順番を区別しないので組合せ'},
+  {id:'s05',unitId:'math1_data',mode:'strategy',level:'easy',
+   p:'あるデータに極端に大きな値が1つ追加された\n一般に影響を受けやすい代表値は？',
+   o:['中央値','最頻値','平均値','データ数'],a:2,
+   tip:'外れ値の影響は平均値と中央値で違う'},
+  {id:'s06',unitId:'math1_graph',mode:'strategy',level:'easy',
+   p:'y=(x-2)^2-3 の頂点の x 座標は？',
+   o:['-3','-2','2','3'],a:2,
+   tip:'平方完成された式では x が2に一致すると2乗部分が0になる'},
+
+  // STRATEGY / NORMAL — reasoning based on short, visible conditions
+  {id:'s07',unitId:'math1_maxmin',mode:'strategy',level:'normal',
+   p:'y=(x-2)^2-3、定義域 0≤x≤a (a>0)\n最大値を与える端点が切り替わる a は？',
+   o:['1','2','3','4'],a:3,
+   tip:'左右の端点の軸 x=2 からの距離を比較する'},
+  {id:'s08',unitId:'math1_sine_cosine',mode:'strategy',level:'normal',
+   p:'三角形で b=5、c=7、はさむ角 A=60°\n辺 a の2乗は？',
+   o:['39','49','74','109'],a:0,
+   tip:'余弦定理で a^2=25+49−2×5×7×1/2'},
+  {id:'s09',unitId:'matha_probability',mode:'strategy',level:'normal',
+   p:'赤3個・青2個の袋から続けて2個取り出し、戻さない\n2個とも赤となる確率の式は？',
+   o:['3/5×3/5','3/5×2/4','3/5×2/5','2/5×1/4'],a:1,
+   tip:'1個目を取り出した後は袋の中身が変化する'},
+  {id:'s10',unitId:'math1_maxmin',mode:'strategy',level:'normal',
+   p:'y=-(x-2)^2+4、定義域 a≤x≤a+1\n最大値が4になる a の範囲は？',
+   o:['0≤a≤1','1≤a≤2','2≤a≤3','a≥2'],a:1,
+   tip:'頂点 x=2 が定義域に含まれれば最大値は4'},
+  {id:'s11',unitId:'matha_conditional',mode:'strategy',level:'normal',
+   p:'赤3個・青2個の袋から戻さず2個取り出す\n1個目が赤と分かっているとき、2個目も赤の確率は？',
+   o:['3/5','2/5','3/4','1/2'],a:3,
+   tip:'1個目の赤を除いた残り4個のうち赤は2個'},
+  {id:'s12',unitId:'math1_quadratic_inequality',mode:'strategy',level:'normal',
+   p:'x^2-6x+5≤0 の解は？',
+   o:['x≤1 または x≥5','1≤x≤5','x≤-1 または x≥-5','-5≤x≤-1'],a:1,
+   tip:'(x−1)(x−5) に因数分解し、放物線が0以下の部分を取る'},
+
+  // STRATEGY / HARD — condition handling, still no paper or implicit diagram
+  {id:'s13',unitId:'math1_maxmin',mode:'strategy',level:'hard',
+   p:'y=(x-a)^2、定義域 0≤x≤2\n最大値を与える端点が入れ替わる a は？',
+   o:['0','1','2','4'],a:1,
+   tip:'2つの端点での値 a^2 と (2−a)^2 を比較する'},
+  {id:'s14',unitId:'matha_probability',mode:'strategy',level:'hard',
+   p:'赤2個・青3個の袋から戻さず2個取り出す\n少なくとも1個は赤となる確率は？',
+   o:['3/10','2/5','7/10','4/5'],a:2,
+   tip:'2個とも青の確率を求めて1から引く'},
+  {id:'s15',unitId:'math1_sine_cosine',mode:'strategy',level:'hard',
+   p:'三角形で b=c=5、はさむ角 A=120°\n余弦定理から a^2 は？',
+   o:['25','50','75','100'],a:2,
+   tip:'cos120°=−1/2 を代入し、負号にも注意する'},
+  {id:'s16',unitId:'matha_counting',mode:'strategy',level:'hard',
+   p:'1、2、3、4 から異なる数字3個で3桁の整数を作る\n偶数をちょうど1個使う作り方は何通り？',
+   o:['6','12','18','24'],a:1,
+   tip:'偶数の選び方が2通り、奇数2個は固定、並べ方は3!通り'},
+  {id:'s17',unitId:'math1_dispersion',mode:'strategy',level:'hard',
+   p:'データ x の分散は16\nすべての値を 2x+5 に変えたときの分散は？',
+   o:['21','32','64','74'],a:2,
+   tip:'全体への +5 は分散を変えず、2倍によって分散は4倍'},
+  {id:'s18',unitId:'math1_maxmin',mode:'strategy',level:'hard',
+   p:'y=-(x-2)^2+4、定義域 3≤x≤5\n最大値を与える x は？',
+   o:['x=2','x=3','x=4','x=5'],a:1,
+   tip:'定義域全体が軸より右なら、軸に近い左端で最大になる'}
+];
+
+// ASCEND QUICK MATH BANK V6 / ORIGINAL PAPERLESS MATHEMATICS I+A
+const ASC_Q_MATH_BANK_V6 = [
+  {"id":"v6_fe01","unitId":"math1_expand","mode":"formula","level":"easy","p":"(a+b)^2 の展開公式は？","o":["a^2+ab+b^2","a^2+2ab+b^2","a^2-2ab+b^2","a^2+b^2"],"a":1,"tip":"2つの文字を掛ける交差項が2abになる"},
+  {"id":"v6_fe02","unitId":"math1_expand","mode":"formula","level":"easy","p":"(a+b)(a-b) の展開結果は？","o":["a^2-b^2","a^2+b^2","a^2-2ab+b^2","a^2+2ab-b^2"],"a":0,"tip":"和と差の積は平方の差"},
+  {"id":"v6_fe03","unitId":"math1_expand","mode":"formula","level":"easy","p":"a^3-b^3 の因数分解は？","o":["(a-b)(a^2-ab+b^2)","(a+b)(a^2-ab+b^2)","(a-b)(a^2+ab+b^2)","(a-b)^3"],"a":2,"tip":"立方差は (a−b) と3項式の積になる"},
+  {"id":"v6_fe04","unitId":"math1_quadratic","mode":"formula","level":"easy","p":"ax^2+bx+c=0 (a≠0) の解の公式は？","o":["x=(-b±√(b^2-4ac))/(2a)","x=(b±√(b^2-4ac))/(2a)","x=(-b±√(b^2+4ac))/(2a)","x=(-b±√(b^2-4ac))/a"],"a":0,"tip":"分母は2aで、根号の中は判別式 D"},
+  {"id":"v6_fe05","unitId":"math1_quadratic","mode":"formula","level":"easy","p":"ax^2+2bx+c=0 の判別式の1/4、D/4 は？","o":["b^2+ac","4b^2-ac","b^2-4ac","b^2-ac"],"a":3,"tip":"x の係数が偶数なら D/4=b²−ac を使える"},
+  {"id":"v6_fe06","unitId":"math1_inequality","mode":"formula","level":"easy","p":"a>0 のとき |x|<a と同じ条件は？","o":["x<a","-a<x<a","x<-a または x>a","-a≤x≤a"],"a":1,"tip":"絶対値は0からの距離を表す"},
+  {"id":"v6_fe07","unitId":"math1_trig_ratio","mode":"formula","level":"easy","p":"cosθ≠0 のとき tanθ は？","o":["cosθ/sinθ","1/sinθ","sinθ/cosθ","sinθ cosθ"],"a":2,"tip":"tan は sin を cos で割る"},
+  {"id":"v6_fe08","unitId":"math1_trig_ratio","mode":"formula","level":"easy","p":"鋭角θで sin(90°-θ) と等しいのは？","o":["cosθ","sinθ","-cosθ","tanθ"],"a":0,"tip":"余角で sin と cos が入れ替わる"},
+  {"id":"v6_fe09","unitId":"math1_trig_ratio","mode":"formula","level":"easy","p":"鋭角θで cos(90°-θ) と等しいのは？","o":["cosθ","-sinθ","tanθ","sinθ"],"a":3,"tip":"余角で cos と sin が入れ替わる"},
+  {"id":"v6_fe10","unitId":"math1_trig_ratio","mode":"formula","level":"easy","p":"sin30° の値は？","o":["√3/2","1/2","√2/2","1"],"a":1,"tip":"30°・45°・60°の基本値を押さえる"},
+  {"id":"v6_fe11","unitId":"math1_trig_ratio","mode":"formula","level":"easy","p":"cos60° の値は？","o":["√3/2","√2/2","1/2","0"],"a":2,"tip":"cos60° は sin30° と等しい"},
+  {"id":"v6_fe12","unitId":"math1_graph","mode":"formula","level":"easy","p":"y=ax^2+bx+c (a≠0) の軸の方程式は？","o":["x=-b/(2a)","x=b/(2a)","x=-c/(2a)","x=-b/a"],"a":0,"tip":"平方完成すると軸の式を確認できる"},
+  {"id":"v6_fe13","unitId":"math1_data","mode":"formula","level":"easy","p":"分散から標準偏差を求める操作は？","o":["分散を2乗する","分散を2で割る","分散を2倍する","分散の平方根を取る"],"a":3,"tip":"標準偏差は分散の非負の平方根"},
+  {"id":"v6_fe14","unitId":"matha_counting","mode":"formula","level":"easy","p":"異なる n 個をすべて1列に並べる方法の数は？","o":["n^2","n!","2^n","n(n+1)/2"],"a":1,"tip":"n 個の順列は n×(n−1)×…×1"},
+  {"id":"v6_fe15","unitId":"matha_counting","mode":"formula","level":"easy","p":"m通りの選び方の後、n通りの選び方を行うときの全組合せ数は？","o":["m+n","m-n","m×n","m/n"],"a":2,"tip":"別々の選択を続けて行うときは積の法則"},
+  {"id":"v6_fe16","unitId":"matha_permutation_combination","mode":"formula","level":"easy","p":"nC0 の値は？","o":["1","0","n","n!"],"a":0,"tip":"0個選ぶ方法は何も選ばない1通り"},
+  {"id":"v6_fe17","unitId":"math1_measurement","mode":"formula","level":"easy","p":"直角三角形で斜辺c、他の2辺a,bの関係は？","o":["c=a+b","c^2=a^2-b^2","c^2=2ab","c^2=a^2+b^2"],"a":3,"tip":"三平方の定理は直角三角形で使う"},
+  {"id":"v6_fe18","unitId":"math1_set_proposition","mode":"formula","level":"easy","p":"集合 A,B の (A∩B)^c と等しいのは？","o":["A∩B","A^c∩B^c","A∪B","A^c∪B^c"],"a":3,"tip":"積集合の補集合は、それぞれの補集合の和集合"},
+  {"id":"v6_fe19","unitId":"math1_dispersion","mode":"formula","level":"easy","p":"データの分散を、各値と平均の差で表すと？","o":["偏差の平均","偏差の絶対値の和","偏差の2乗の平均","偏差の2乗の合計×データ数"],"a":2,"tip":"偏差そのものの平均は常に0"},
+  {"id":"v6_fn01","unitId":"math1_graph","mode":"formula","level":"normal","p":"y=ax^2+bx+c (a≠0) の頂点の y 座標は？","o":["c-b^2/(4a)","c+b^2/(4a)","-b/(2a)","-c/(2a)"],"a":0,"tip":"平方完成後の定数項を使う"},
+  {"id":"v6_fn02","unitId":"math1_quadratic","mode":"formula","level":"normal","p":"二次方程式が相異なる2つの実数解をもつ条件は？","o":["D=0","D<0","D≥0","D>0"],"a":3,"tip":"D=0 のときは重解になる"},
+  {"id":"v6_fn03","unitId":"math1_quadratic","mode":"formula","level":"normal","p":"二次方程式が実数解をもたない条件は？","o":["D≥0","D<0","D=0","D>0"],"a":1,"tip":"Dが負のとき実数の平方根を作れない"},
+  {"id":"v6_fn04","unitId":"math1_inequality","mode":"formula","level":"normal","p":"r>0 のとき |x-a|<r と等しいのは？","o":["x<a+r","x>a-r","a-r<x<a+r","x<a-r または x>a+r"],"a":2,"tip":"aからの距離がr未満の点を区間で表す"},
+  {"id":"v6_fn05","unitId":"matha_geometry","mode":"formula","level":"normal","p":"k>1 とし、2つの相似な図形の相似比が 1:k のとき、面積比は？","o":["1:k^2","1:k","1:2k","1:√k"],"a":0,"tip":"面積比は相似比の2乗"},
+  {"id":"v6_fn06","unitId":"math1_sine_cosine","mode":"formula","level":"normal","p":"三角形の外接円の半径を R とすると a/sin A は？","o":["R","R/2","4R","2R"],"a":3,"tip":"正弦定理の共通値は2R"},
+  {"id":"v6_fn07","unitId":"math1_sine_cosine","mode":"formula","level":"normal","p":"余弦定理を cos A について解いた式は？","o":["(a^2+b^2-c^2)/(2bc)","(b^2+c^2-a^2)/(2bc)","(b^2+c^2+a^2)/(2bc)","(a^2-b^2-c^2)/(2bc)"],"a":1,"tip":"辺 a は角 A の向かい側"},
+  {"id":"v6_fn08","unitId":"math1_trig_ratio","mode":"formula","level":"normal","p":"cosθ≠0 のとき 1+tan^2θ は？","o":["1/sin^2θ","sin^2θ","1/cos^2θ","cos^2θ"],"a":2,"tip":"sin²+cos²=1 を cos² で割る"},
+  {"id":"v6_fn09","unitId":"matha_probability","mode":"formula","level":"normal","p":"2つの事象 A,B で P(A∪B) を求める一般式は？","o":["P(A)+P(B)-P(A∩B)","P(A)+P(B)","P(A)P(B)","P(A∩B)-P(A)-P(B)"],"a":0,"tip":"重なり部分は2回足されるため1回引く"},
+  {"id":"v6_fn10","unitId":"matha_probability","mode":"formula","level":"normal","p":"互いに排反な A,B について P(A∪B) は？","o":["P(A)P(B)","P(A)-P(B)","1-P(A)P(B)","P(A)+P(B)"],"a":3,"tip":"排反なら同時に起きる確率は0"},
+  {"id":"v6_fn11","unitId":"matha_probability","mode":"formula","level":"normal","p":"独立な A,B で P(A∩B^c) は？","o":["P(A)+P(B)","P(A)(1-P(B))","P(A)P(B)","1-P(A)"],"a":1,"tip":"Bの余事象ともAは独立"},
+  {"id":"v6_fn12","unitId":"matha_permutation_combination","mode":"formula","level":"normal","p":"異なる n 個から r 個を選び順に並べる nPr と等しい式は？","o":["nCr/r!","nCr","nCr×r!","nCr+r!"],"a":2,"tip":"選んだr個を並べる順番r!通りを掛ける"},
+  {"id":"v6_fn13","unitId":"matha_counting","mode":"formula","level":"normal","p":"同じ種類のaをp個、bをq個含む文字列の並べ方は？","o":["(p+q)!/(p!q!)","(p+q)!","p!q!","p+q"],"a":0,"tip":"同じ文字の入れ替えによる重複を割る"},
+  {"id":"v6_fn14","unitId":"math1_dispersion","mode":"formula","level":"normal","p":"データ X を Y=3X+2 に変換したときの標準偏差 σ(Y) は？","o":["σ(X)+2","9σ(X)","3σ(X)+2","3σ(X)"],"a":3,"tip":"標準偏差は倍率の絶対値で変わる"},
+  {"id":"v6_fn15","unitId":"math1_correlation","mode":"formula","level":"normal","p":"標準偏差がともに正のとき、相関係数 r は？","o":["共分散×σx×σy","共分散/(σx×σy)","共分散/(σx+σy)","分散X/分散Y"],"a":1,"tip":"共分散を2つの標準偏差の積で割る"},
+  {"id":"v6_fn16","unitId":"matha_circle","mode":"formula","level":"normal","p":"円周角の定理で同じ弧に対する円周角どうしは？","o":["和が180°","一方が他方の2倍","等しい","常に90°"],"a":2,"tip":"同じ弧を見込む円周角は等しい"},
+  {"id":"v6_fn17","unitId":"matha_triangle","mode":"formula","level":"normal","p":"三角形の外角は、隣り合わない2つの内角の何に等しい？","o":["和","差","積","平均"],"a":0,"tip":"外角の定理で角度を整理できる"},
+  {"id":"v6_fn18","unitId":"math1_trig_ratio","mode":"formula","level":"normal","p":"0°≤θ≤180° で sin(180°-θ) と等しいのは？","o":["sinθ","-sinθ","cosθ","-cosθ"],"a":0,"tip":"第1象限と第2象限でsinは同じ値をとる"},
+  {"id":"v6_fn19","unitId":"matha_integer","mode":"formula","level":"normal","p":"整数 a,b に対して gcd(a,b) と常に等しいのは？","o":["gcd(a,a+b)/2","gcd(a,b+ka) (kは整数)","gcd(a,b)+k","a+b"],"a":1,"tip":"一方に他方の整数倍を足しても最大公約数は変わらない"},
+  {"id":"v6_fh01","unitId":"math1_graph","mode":"formula","level":"hard","p":"y=ax^2+bx+c (a≠0)、D=b^2-4ac のとき頂点の y 座標は？","o":["D/(4a)","-D/(2a)","-D/(4a)","D/a"],"a":2,"tip":"頂点の y 座標を判別式で表せる"},
+  {"id":"v6_fh02","unitId":"math1_sine_cosine","mode":"formula","level":"hard","p":"三角形の3辺 a,b,c と外接円半径 R を使う面積 S の式は？","o":["abc/(4R)","abc/(2R)","ab/(2R)","4abcR"],"a":0,"tip":"正弦定理と面積公式を組み合わせる"},
+  {"id":"v6_fh03","unitId":"math1_sine_cosine","mode":"formula","level":"hard","p":"直角三角形の斜辺が a のとき外接円半径 R は？","o":["a","2a","a/4","a/2"],"a":3,"tip":"直角三角形の斜辺は外接円の直径"},
+  {"id":"v6_fh04","unitId":"math1_correlation","mode":"formula","level":"hard","p":"X,Y の相関係数が 0.6 のとき X と -Y の相関係数は？","o":["0.6","-0.6","0.4","0.36"],"a":1,"tip":"片方だけ負の倍率を掛けると相関係数の符号が反転"},
+  {"id":"v6_fh05","unitId":"math1_correlation","mode":"formula","level":"hard","p":"X,Y の相関係数が 0.4 のとき X+10 と 2Y-3 の相関係数は？","o":["0.8","0.2","0.4","-0.4"],"a":2,"tip":"両変数への正の倍率と平行移動ではrは変わらない"},
+  {"id":"v6_fh06","unitId":"matha_conditional","mode":"formula","level":"hard","p":"P(A)>0、P(B)>0 のとき P(B|A) を P(A|B) で表す式は？","o":["P(A|B)P(B)/P(A)","P(A|B)P(A)/P(B)","P(A|B)+P(B)","P(A|B)/P(A)"],"a":0,"tip":"P(A∩B) を2通りに表す"},
+  {"id":"v6_fh07","unitId":"matha_probability","mode":"formula","level":"hard","p":"独立な A,B の和事象 P(A∪B) は？","o":["P(A)+P(B)","P(A)P(B)","1-P(A)P(B)","P(A)+P(B)-P(A)P(B)"],"a":3,"tip":"独立なら重なりはP(A)P(B)"},
+  {"id":"v6_fh08","unitId":"matha_probability","mode":"formula","level":"hard","p":"独立な A,B のうちちょうど一方だけ起こる確率は？","o":["P(A)P(B)","P(A)(1-P(B))+(1-P(A))P(B)","P(A)+P(B)","1-P(A)P(B)"],"a":1,"tip":"AだけとBだけの排反な場合を足す"},
+  {"id":"v6_fh09","unitId":"matha_probability","mode":"formula","level":"hard","p":"独立な試行で成功確率 p、n 回のうち1回以上成功する確率は？","o":["p^n","1-p^n","1-(1-p)^n","n×p"],"a":2,"tip":"全部失敗する確率を1から引く"},
+  {"id":"v6_fh10","unitId":"matha_probability","mode":"formula","level":"hard","p":"独立な試行をn回、成功確率pでちょうどk回成功する確率は？","o":["nCk×p^k×(1-p)^(n-k)","nPk×p^k","p^k×(1-p)^k","nCk×p^n"],"a":0,"tip":"成功する位置の組合せを掛ける"},
+  {"id":"v6_fh11","unitId":"matha_counting","mode":"formula","level":"hard","p":"異なる n 人を円形に座らせ、回転だけ同一とする並べ方は？","o":["n!","n!/2","n^2","(n-1)!"],"a":3,"tip":"1人の位置を固定して残りを並べる"},
+  {"id":"v6_fh12","unitId":"matha_integer","mode":"formula","level":"hard","p":"自然数 N=p^a×q^b（p,qは異なる素数）の正の約数の個数は？","o":["a+b","(a+1)(b+1)","ab","2(a+b)"],"a":1,"tip":"各素因数の指数を0から選ぶ"},
+  {"id":"v6_fh13","unitId":"matha_integer","mode":"formula","level":"hard","p":"a,b を正の整数とし a=qb+r のとき gcd(a,b) は？","o":["gcd(q,r)","gcd(a,r)","gcd(b,r)","gcd(a,q)"],"a":2,"tip":"ユークリッドの互除法の基本式"},
+  {"id":"v6_fh14","unitId":"matha_probability","mode":"formula","level":"hard","p":"C(n,r)=nCr とする\n赤R個、青B個から2≤k≤min(R,B)個を同時に選ぶとき、全部赤の確率は？","o":["C(R,k)/C(R+B,k)","(R/(R+B))^k","C(R,k)/C(B,k)","C(R+B,k)/C(R,k)"],"a":0,"tip":"順序を区別しない組合せの比で計算する"},
+  {"id":"v6_fh15","unitId":"matha_conditional","mode":"formula","level":"hard","p":"P(B)>0 のとき P(A^c|B) と等しいのは？","o":["1-P(B)","P(A|B)","1-P(A)","1-P(A|B)"],"a":3,"tip":"条件Bの中でAとAの余事象は全体を分ける"},
+  {"id":"v6_fh16","unitId":"matha_permutation_combination","mode":"formula","level":"hard","p":"1≤k≤n のとき nCk+nC(k-1) と等しいのは？","o":["(n+1)Ck","nC(k+1)","(n+1)C(k+1)","nCk"],"a":0,"tip":"パスカルの恒等式は1個に注目して場合分けすると分かる"},
+  {"id":"v6_fh17","unitId":"matha_counting","mode":"formula","level":"hard","p":"同じものを含む n=p+q+r 個（3種類）の1列の並べ方は？","o":["n!/(p+q+r)","n!/(p+q+r)!","n!/(p!q!r!)","p!q!r!"],"a":2,"tip":"同じ種類どうしの入れ替えで重複する分を割る"},
+  {"id":"v6_fh18","unitId":"math1_dispersion","mode":"formula","level":"hard","p":"X の分散を V(X) とすると V(-aX+b) は？","o":["a^2V(X)","-aV(X)+b","aV(X)+b","(a+b)^2V(X)"],"a":0,"tip":"定数の足し引きは影響せず、倍率は2乗で効く"},
+  {"id":"v6_fh19","unitId":"matha_permutation_combination","mode":"formula","level":"hard","p":"異なる n 個から選ぶ部分集合の総数は、空集合も含めて？","o":["n!","n^2","n+1","2^n"],"a":3,"tip":"各要素について入れるか入れないかの2通り"},
+  {"id":"v6_fh20","unitId":"math1_sine_cosine","mode":"formula","level":"hard","p":"三角形で a^2=b^2+c^2 と分かるとき角 A は？","o":["30°","90°","60°","120°"],"a":1,"tip":"余弦定理から cosA=0"},
+  {"id":"v6_fh21","unitId":"matha_probability","mode":"formula","level":"hard","p":"P(A),P(B)>0 かつ P(A)≠P(B) のとき、A,B が独立であることを示す式は？","o":["P(A∩B)=0","P(A∪B)=1","P(A|B)=P(A)","P(A|B)=P(B)"],"a":2,"tip":"Bが起きてもAの確率が変わらない"},
+  {"id":"v6_se01","unitId":"math1_inequality","mode":"strategy","level":"easy","p":"|x-3|<2 を満たす x の範囲は？","o":["1<x<5","x<1 または x>5","-2<x<2","2<x<3"],"a":0,"tip":"xと3の距離が2未満の部分を取る"},
+  {"id":"v6_se02","unitId":"math1_maxmin","mode":"strategy","level":"easy","p":"y=(x-4)^2+1 を 0≤x≤3 で考える\n最小値を与える x は？","o":["x=0","x=1","x=2","x=3"],"a":3,"tip":"軸が区間の右側なら、軸に近い右端で最小"},
+  {"id":"v6_se03","unitId":"math1_quadratic","mode":"strategy","level":"easy","p":"x^2-4x+4=0 がもつ異なる実数解の個数は？","o":["0個","2個","1個","3個"],"a":2,"tip":"(x−2)^2=0 なので重解が1つ"},
+  {"id":"v6_se04","unitId":"math1_quadratic_inequality","mode":"strategy","level":"easy","p":"x^2+6x+5<0 を解くために因数分解した式は？","o":["(x+1)(x-5)<0","(x+1)(x+5)<0","(x-1)(x+5)<0","(x-1)(x-5)<0"],"a":1,"tip":"積が5、和が6になる組を探す"},
+  {"id":"v6_se05","unitId":"math1_sine_cosine","mode":"strategy","level":"easy","p":"2辺が4と6で、その間の角が30°の三角形の面積は？","o":["6","12","24","3"],"a":0,"tip":"1/2×4×6×sin30°を使う"},
+  {"id":"v6_se06","unitId":"matha_counting","mode":"strategy","level":"easy","p":"異なる5人から委員長と副委員長を1人ずつ選ぶ\n選び方は？","o":["5C2","5×5","5!","5×4"],"a":3,"tip":"役割が違うので順番を区別し、2人目は残り4人"},
+  {"id":"v6_se07","unitId":"matha_probability","mode":"strategy","level":"easy","p":"サイコロを2回投げ、両方とも偶数となる確率の式は？","o":["1/2+1/2","1/2×1/2","3/6+3/6","2/6"],"a":1,"tip":"独立な2回の試行なので確率を掛ける"},
+  {"id":"v6_se08","unitId":"math1_graph","mode":"strategy","level":"easy","p":"y=(x+1)^2-4 のグラフの軸は？","o":["x=1","y=-4","x=-1","y=1"],"a":2,"tip":"平方完成の括弧の中を0にする"},
+  {"id":"v6_se09","unitId":"math1_quadratic_inequality","mode":"strategy","level":"easy","p":"(x+2)(x-3)≥0 を満たす範囲は？","o":["x≤-2 または x≥3","-2≤x≤3","x≥-2","x≤3"],"a":0,"tip":"上に開く二次式が0以上になるのは両側"},
+  {"id":"v6_se10","unitId":"math1_sine_cosine","mode":"strategy","level":"easy","p":"三角形の2辺が5と7で、その間の角が分かる\n残り1辺の長さを求める基本式は？","o":["正弦定理だけ","三角形の面積公式","円周角の定理","余弦定理"],"a":3,"tip":"2辺とその間の角が分かれば向かいの辺に余弦定理"},
+  {"id":"v6_se11","unitId":"math1_dispersion","mode":"strategy","level":"easy","p":"あるデータの全数値に10を足す\n変わらない値はどれ？","o":["平均値","分散","最大値","中央値"],"a":1,"tip":"平均との差は変わらない"},
+  {"id":"v6_se12","unitId":"math1_trig_ratio","mode":"strategy","level":"easy","p":"直角三角形で斜辺が10、角θの向かいの辺が6\nsinθ は？","o":["3/5","4/5","5/3","3/4"],"a":0,"tip":"sin は向かいの辺÷斜辺"},
+  {"id":"v6_se13","unitId":"matha_integer","mode":"strategy","level":"easy","p":"84と30の最大公約数を互除法で求める\n84=30×2+24 の次に行う割り算は？","o":["84÷24","84÷6","30÷24","24÷30"],"a":2,"tip":"余り24を次の除数にする"},
+  {"id":"v6_se14","unitId":"matha_circle","mode":"strategy","level":"easy","p":"ある弧に対する中心角が100°\n同じ弧に対する円周角は？","o":["100°","200°","25°","50°"],"a":3,"tip":"円周角は同じ弧に対する中心角の半分"},
+  {"id":"v6_se15","unitId":"matha_conditional","mode":"strategy","level":"easy","p":"赤3個・青2個から1個取って戻さず、1個目が赤だった\n次に赤を取る確率は？","o":["3/5","1/2","2/5","3/4"],"a":1,"tip":"赤2個・合計4個が残る"},
+  {"id":"v6_se16","unitId":"math1_maxmin","mode":"strategy","level":"easy","p":"y=-(x-2)^2+5、定義域 0≤x≤4\n最大値を与える x は？","o":["x=0","x=4","x=2","x=1"],"a":2,"tip":"下に開く放物線で頂点が区間内にある"},
+  {"id":"v6_se17","unitId":"matha_permutation_combination","mode":"strategy","level":"easy","p":"7人から3人のチームを作る\n順番を区別しない選び方の式は？","o":["7C3","7P3","7^3","7!"],"a":0,"tip":"チームのメンバーに順番はない"},
+  {"id":"v6_se18","unitId":"math1_data","mode":"strategy","level":"easy","p":"データに外れ値がある場合、中心を表す代表値として比較的頑健なのは？","o":["平均値","範囲","最大値","中央値"],"a":3,"tip":"中央値は極端な値の影響を受けにくい"},
+  {"id":"v6_se19","unitId":"matha_probability","mode":"strategy","level":"easy","p":"赤2個・青3個の袋から戻さず2個取る\n2個とも青の確率の式は？","o":["3/5×3/5","3/5×2/4","2/5×1/4","3/5+2/4"],"a":1,"tip":"取り出した後は袋の中身が1つ減る"},
+  {"id":"v6_sn01","unitId":"math1_maxmin","mode":"strategy","level":"normal","p":"y=(x-1)^2+2 の 0≤x≤3 での最大値\n比較すべき x は？","o":["x=1 だけ","x=0 だけ","x=0 と x=3","x=1 と x=3"],"a":2,"tip":"上に開く放物線の最大値は区間の端点から決まる"},
+  {"id":"v6_sn02","unitId":"math1_graph","mode":"strategy","level":"normal","p":"y=ax^2+bx+c で a>0 かつ D<0\nx軸との位置関係は？","o":["グラフ全体がx軸より上","x軸と2点で交わる","x軸に接する","グラフ全体がx軸より下"],"a":0,"tip":"交点なしで上に開き、正の値しか取らない"},
+  {"id":"v6_sn03","unitId":"math1_quadratic_inequality","mode":"strategy","level":"normal","p":"x^2-4x+3>0 の解を求める\n(x-1)(x-3)>0 の次の判断は？","o":["1<x<3","x≥1","x≤3","x<1 または x>3"],"a":3,"tip":"積が正になるのは2つの根の外側"},
+  {"id":"v6_sn04","unitId":"matha_probability","mode":"strategy","level":"normal","p":"赤2個・青2個の袋から戻さず2個取る\n少なくとも1個赤となる確率は？","o":["1/6","5/6","1/2","2/3"],"a":1,"tip":"2個とも青となる確率は(2/4)×(1/3)"},
+  {"id":"v6_sn05","unitId":"math1_sine_cosine","mode":"strategy","level":"normal","p":"三角形で b=4,c=6、間の角A=60°\n余弦定理から a^2 は？","o":["28","52","36","16"],"a":0,"tip":"16+36−2×4×6×1/2=28"},
+  {"id":"v6_sn06","unitId":"math1_trig_ratio","mode":"strategy","level":"normal","p":"0°≤θ≤180°、sinθ=1/2\n候補となる角の組は？","o":["30° と 60°","60° と 120°","30° と 150°","150° だけ"],"a":2,"tip":"第1象限と第2象限でsinが同じ"},
+  {"id":"v6_sn07","unitId":"math1_dispersion","mode":"strategy","level":"normal","p":"あるデータの分散が9\nすべての値を -2 倍すると標準偏差は？","o":["-6","-3","3","6"],"a":3,"tip":"標準偏差はもとの3に倍率の絶対値2を掛ける"},
+  {"id":"v6_sn08","unitId":"matha_counting","mode":"strategy","level":"normal","p":"0,1,2,3から異なる3個で3桁の整数を作る\n百の位を決める段階で何通り？","o":["4","3","2","1"],"a":1,"tip":"百の位には0を使えない"},
+  {"id":"v6_sn09","unitId":"matha_permutation_combination","mode":"strategy","level":"normal","p":"同じ文字Aが2個、BとCが1個ずつ\nABAC の異なる並べ方は？","o":["12","24","6","8"],"a":0,"tip":"4!を重複するA2個の2!で割る"},
+  {"id":"v6_sn10","unitId":"matha_conditional","mode":"strategy","level":"normal","p":"P(A)=1/2、P(B|A)=1/4\nP(A∩B) は？","o":["1/2","1/4","1/8","3/4"],"a":2,"tip":"同時確率は条件付き確率に条件の確率を掛ける"},
+  {"id":"v6_sn11","unitId":"math1_maxmin","mode":"strategy","level":"normal","p":"y=-(x-3)^2+2、定義域 0≤x≤2\n最大値を与える x は？","o":["0","1","3","2"],"a":3,"tip":"頂点が区間の右側にあり、頂点に近い右端で最大"},
+  {"id":"v6_sn12","unitId":"matha_integer","mode":"strategy","level":"normal","p":"84と30の最大公約数\n84=30×2+24、30=24×1+6 の次に見ることは？","o":["24を6で割り、余りが0か確認","84を6で割る","30を6で割る前に終了","24と30を足す"],"a":0,"tip":"余り0になる直前の除数が最大公約数"},
+  {"id":"v6_sn13","unitId":"math1_set_proposition","mode":"strategy","level":"normal","p":"命題「x>3 なら x>1」の対偶は？","o":["x>1 なら x>3","x≤1 なら x≤3","x≤3 なら x≤1","x>3 なら x≤1"],"a":1,"tip":"P⇒Q の対偶は ¬Q⇒¬P"},
+  {"id":"v6_sn14","unitId":"matha_probability","mode":"strategy","level":"normal","p":"サイコロを2回投げて少なくとも1回は1\n求める確率は？","o":["1/36","5/6","11/36","1/3"],"a":2,"tip":"1回も1が出ない確率 (5/6)^2 を1から引く"},
+  {"id":"v6_sn15","unitId":"math1_area","mode":"strategy","level":"normal","p":"2辺が6,8、間の角が120°\n三角形の面積は？","o":["12√3","24√3","48√3","12"],"a":0,"tip":"1/2×6×8×sin120°=12√3"},
+  {"id":"v6_sn16","unitId":"matha_geometry","mode":"strategy","level":"normal","p":"三角形の辺 AB 上に D、AC 上に E があり DE∥BC\nAD/AB=2/3 のとき AE/AC は？","o":["3/2","1/3","2","2/3"],"a":3,"tip":"相似比が等しい"},
+  {"id":"v6_sn17","unitId":"math1_correlation","mode":"strategy","level":"normal","p":"2つのデータで相関係数 r=-0.9\n散布図の傾向として近いのは？","o":["強い正の直線傾向","強い負の直線傾向","ほぼ無相関","相関係数は存在しない"],"a":1,"tip":"絶対値が1に近いほど強く、負号なら右下がり"},
+  {"id":"v6_sn18","unitId":"matha_permutation_combination","mode":"strategy","level":"normal","p":"5人を1列に並べるが、AとBを隣り合わせにする\n並べ方は？","o":["24","48","120","60"],"a":1,"tip":"ABを1組とみて4!通り、それぞれAB/BAの2通り"},
+  {"id":"v6_sn19","unitId":"math1_quadratic","mode":"strategy","level":"normal","p":"二次方程式 x^2-2x+k=0 が重解をもつ\nk は？","o":["0","-1","1","2"],"a":2,"tip":"判別式4−4k=0"},
+  {"id":"v6_sh01","unitId":"math1_maxmin","mode":"strategy","level":"hard","p":"y=(x-a)^2、0≤x≤4\n最大値を与える端点が切り替わる a は？","o":["1","4","0","2"],"a":3,"tip":"両端点から軸までの距離が等しくなるのは中点a=2"},
+  {"id":"v6_sh02","unitId":"math1_maxmin","mode":"strategy","level":"hard","p":"y=-(x-2)^2+5、a≤x≤a+1\n最大値が5になる a の範囲は？","o":["1≤a≤2","0≤a≤1","2≤a≤3","a≤1"],"a":0,"tip":"頂点x=2が区間に入る条件 a≤2≤a+1"},
+  {"id":"v6_sh03","unitId":"math1_quadratic","mode":"strategy","level":"hard","p":"y=x^2-4x+k のグラフがx軸と接する\nk は？","o":["0","2","-4","4"],"a":3,"tip":"頂点の値はk−4で、接するとき0"},
+  {"id":"v6_sh04","unitId":"math1_quadratic_inequality","mode":"strategy","level":"hard","p":"すべての実数 x で x^2-2x+k>0 としたい\nk の条件は？","o":["k≥1","k>1","k<1","k≤1"],"a":1,"tip":"上に開く放物線の最小値k−1が正ならよい"},
+  {"id":"v6_sh05","unitId":"matha_probability","mode":"strategy","level":"hard","p":"白3個・黒2個から戻さず2個取る\n2個の色が異なる確率は？","o":["3/10","1/2","3/5","4/5"],"a":2,"tip":"白黒と黒白の両方を数えて 3/5×2/4 +2/5×3/4"},
+  {"id":"v6_sh06","unitId":"matha_probability","mode":"strategy","level":"hard","p":"A,B は独立、P(A)=1/2、P(B)=1/3\nA,Bのちょうど一方が起こる確率は？","o":["1/2","1/3","1/6","2/3"],"a":0,"tip":"AだけとBだけを足すと 1/3+1/6=1/2"},
+  {"id":"v6_sh07","unitId":"matha_probability","mode":"strategy","level":"hard","p":"サイコロを3回投げ、1がちょうど2回出る確率の式は？","o":["(1/6)^2","3×(1/6)^3","1-(5/6)^3","3×(1/6)^2×5/6"],"a":3,"tip":"成功位置は3C2=3通り、失敗が1回"},
+  {"id":"v6_sh08","unitId":"matha_counting","mode":"strategy","level":"hard","p":"1,2,3,4,5から異なる3個で3桁の偶数を作る\n方法の数は？","o":["12","24","36","48"],"a":1,"tip":"一の位は2または4の2通り、百の位4、十の位3"},
+  {"id":"v6_sh09","unitId":"matha_permutation_combination","mode":"strategy","level":"hard","p":"6人から3人を選ぶが、AとBが同時に選ばれる組を除く\n何通り？","o":["12","14","16","18"],"a":2,"tip":"全体6C3=20からABともう1人を選ぶ4通りを引く"},
+  {"id":"v6_sh10","unitId":"matha_counting","mode":"strategy","level":"hard","p":"男女各3人から2人の委員を選ぶ\n男女を1人ずつにする選び方は？","o":["9","6","15","18"],"a":0,"tip":"男子3通り×女子3通り"},
+  {"id":"v6_sh11","unitId":"math1_sine_cosine","mode":"strategy","level":"hard","p":"三角形で b=c=4、角 A=120°\n余弦定理による a^2 は？","o":["16","32","64","48"],"a":3,"tip":"16+16−32×cos120°=48"},
+  {"id":"v6_sh12","unitId":"math1_sine_cosine","mode":"strategy","level":"hard","p":"三角形で辺 a=√3、角 A=60°\n外接円の半径 R は？","o":["√3","1","2","1/2"],"a":1,"tip":"2R=a/sinA=√3/(√3/2)=2"},
+  {"id":"v6_sh13","unitId":"math1_data","mode":"strategy","level":"hard","p":"5個のデータの平均が6\n新たに1個追加して平均が7になった\n追加した値は？","o":["7","10","12","13"],"a":2,"tip":"もとの合計30、新しい合計42なので追加値は12"},
+  {"id":"v6_sh14","unitId":"math1_dispersion","mode":"strategy","level":"hard","p":"分散V(X)=4 のデータを Y=-3X+10 に変換\nV(Y) は？","o":["36","-12","22","16"],"a":0,"tip":"倍率−3の2乗を分散に掛ける"},
+  {"id":"v6_sh15","unitId":"matha_integer","mode":"strategy","level":"hard","p":"正の整数 n は2でも3でも割ると余り1\n最小の n>1 は？","o":["5","6","9","7"],"a":3,"tip":"n−1は6の倍数なので最小は7"},
+  {"id":"v6_sh16","unitId":"matha_conditional","mode":"strategy","level":"hard","p":"袋に赤2個・青3個、戻さず2個取る\n2個目が赤だったとき、1個目も赤である確率は？","o":["1/2","1/4","2/5","1/5"],"a":1,"tip":"2個目が赤と分かれば、先に取った4個分の候補中赤は1個"},
+  {"id":"v6_sh17","unitId":"math1_set_proposition","mode":"strategy","level":"hard","p":"「x^2>4 なら x>2」は偽\n反例として使える x は？","o":["x=-3","x=3","x=0","x=2"],"a":0,"tip":"xが負でもx²は4より大きくなりうる"},
+  {"id":"v6_sh18","unitId":"matha_geometry","mode":"strategy","level":"hard","p":"△ABC で DE∥BC、DはAB上、EはAC上\nAD:DB=1:2 のとき △ADE と △ABC の面積比は？","o":["1:3","1:6","1:9","1:2"],"a":2,"tip":"相似比は1:3で面積比はその2乗"},
+  {"id":"v6_sh19","unitId":"math1_maxmin","mode":"strategy","level":"hard","p":"y=(x-1)^2、定義域 a≤x≤a+2\n最小値が0となる a の条件は？","o":["a=1","-1≤a≤1","a≥1","a≤-1"],"a":1,"tip":"頂点x=1が区間に含まれる a≤1≤a+2"}
+];
+ASC_Q_MATH_BANK_V5.push(...ASC_Q_MATH_BANK_V6);
+
+// ASCEND QUICK MATH COURSES V9 / 120 NEW ORIGINAL QUESTIONS
+const ASC_Q_MATH_BANK_V9 = [
+  {"id":"v9_iibc_001","course":"iibc","unitId":"math2_remainder_factor","mode":"formula","level":"easy","p":"因数定理で P(x) が x-a で割り切れる条件は？","o":["P(0)=a","P(a)=1","P(x)=a","P(a)=0"],"a":3,"tip":"x=a を代入した値が0なら因数になる"},
+  {"id":"v9_iibc_002","course":"iibc","unitId":"math2_complex_numbers","mode":"formula","level":"easy","p":"虚数単位 i の2乗は？","o":["1","i","-1","-i"],"a":2,"tip":"i²=-1 が複素数計算の基本"},
+  {"id":"v9_iibc_003","course":"iibc","unitId":"math2_general_angle_radian","mode":"formula","level":"easy","p":"180° を弧度法で表すと？","o":["π/2","π","2π","3π/2"],"a":1,"tip":"半回転はπラジアン"},
+  {"id":"v9_iibc_004","course":"iibc","unitId":"math2_addition_theorem","mode":"formula","level":"easy","p":"sin(A+B) の加法定理は？","o":["sinA cosB+cosA sinB","sinA cosB-cosA sinB","cosA cosB-sinA sinB","sinA sinB+cosA cosB"],"a":0,"tip":"sinの加法は交差する積の和"},
+  {"id":"v9_iibc_005","course":"iibc","unitId":"math2_logarithm","mode":"formula","level":"easy","p":"a>0、a≠1、M,N>0 のとき log_a(MN) は？","o":["log_a M×log_a N","log_a M-log_a N","log_a(M+N)","log_a M+log_a N"],"a":3,"tip":"積の対数は対数の和"},
+  {"id":"v9_iibc_006","course":"iibc","unitId":"math2_differentiation","mode":"formula","level":"easy","p":"正の整数 n に対し x^n の導関数は？","o":["nx^n","x^(n+1)/(n+1)","nx^(n-1)","(n-1)x^n"],"a":2,"tip":"指数を前に出して指数を1下げる"},
+  {"id":"v9_iibc_007","course":"iibc","unitId":"math2_indefinite_integral","mode":"formula","level":"easy","p":"n≠-1 のとき x^n の不定積分は？","o":["nx^(n-1)+C","x^(n+1)/(n+1)+C","x^n/n+C","x^(n+1)+C"],"a":1,"tip":"指数を1上げて新しい指数で割る"},
+  {"id":"v9_iibc_008","course":"iibc","unitId":"mathb_arithmetic_sequence","mode":"formula","level":"easy","p":"初項a、公差dの等差数列の第n項は？","o":["a+(n-1)d","a+nd","ad^(n-1)","na+d"],"a":0,"tip":"初項から公差をn−1回足す"},
+  {"id":"v9_iibc_009","course":"iibc","unitId":"mathb_geometric_sequence","mode":"formula","level":"easy","p":"初項a、公比rの等比数列の第n項は？","o":["ar^n","a+(n-1)r","a^n r","ar^(n-1)"],"a":3,"tip":"初項に公比をn−1回掛ける"},
+  {"id":"v9_iibc_010","course":"iibc","unitId":"mathc_inner","mode":"formula","level":"easy","p":"ベクトル a,b の内積を角度θで表す式は？","o":["|a||b|sinθ","|a|+|b|","|a||b|cosθ","|a||b|tanθ"],"a":2,"tip":"内積は長さの積×なす角のcos"},
+  {"id":"v9_iibc_011","course":"iibc","unitId":"mathb_various_sums","mode":"formula","level":"normal","p":"1+2+…+n の和は？","o":["n(n-1)/2","n(n+1)/2","n²","n(n+1)"],"a":1,"tip":"等差数列の和に対応する"},
+  {"id":"v9_iibc_012","course":"iibc","unitId":"math2_addition_theorem","mode":"formula","level":"normal","p":"cos(A-B) の加法定理は？","o":["cosA cosB+sinA sinB","cosA cosB-sinA sinB","sinA cosB-cosA sinB","cosA+cosB"],"a":0,"tip":"cosの差ではsinの積を足す"},
+  {"id":"v9_iibc_013","course":"iibc","unitId":"math2_logarithm","mode":"formula","level":"normal","p":"a,c>0、a,c≠1、b>0 のとき底の変換公式は？","o":["log_a b=(log_c a)/(log_c b)","log_a b=log_c b×log_c a","log_a b=log_c b+log_c a","log_a b=(log_c b)/(log_c a)"],"a":3,"tip":"分母は元の底aの対数"},
+  {"id":"v9_iibc_014","course":"iibc","unitId":"math2_differentiation","mode":"formula","level":"normal","p":"f(x)=ax^2+bx+c の導関数は？","o":["ax+b","2ax+c","2ax+b","ax^2+b"],"a":2,"tip":"整式は項別に微分できる"},
+  {"id":"v9_iibc_015","course":"iibc","unitId":"math2_definite_integral","mode":"formula","level":"normal","p":"積分区間を入れ替えた ∫_b^a f(x)dx は？","o":["∫_a^b f(x)dx","-∫_a^b f(x)dx","0","2∫_a^b f(x)dx"],"a":1,"tip":"積分区間の向きを逆にすると符号が反転"},
+  {"id":"v9_iibc_016","course":"iibc","unitId":"math2_point_line","mode":"formula","level":"normal","p":"点(x1,y1)を通り傾きmの直線は？","o":["y-y1=m(x-x1)","y+y1=m(x+x1)","y-y1=(x-x1)/m","y=mx1+y1"],"a":0,"tip":"点と傾きが与えられた直線の公式"},
+  {"id":"v9_iibc_017","course":"iibc","unitId":"math2_circle_equation","mode":"formula","level":"normal","p":"中心(a,b)、半径rの円の方程式は？","o":["(x+a)^2+(y+b)^2=r^2","(x-a)^2-(y-b)^2=r^2","(x-a)+(y-b)=r","(x-a)^2+(y-b)^2=r^2"],"a":3,"tip":"中心からの距離が常にr"},
+  {"id":"v9_iibc_018","course":"iibc","unitId":"mathb_binomial_distribution","mode":"formula","level":"normal","p":"二項分布 B(n,p) の分散は？","o":["np","np^2","np(1-p)","n(1-p)"],"a":2,"tip":"独立なベルヌーイ試行の分散を足す"},
+  {"id":"v9_iibc_019","course":"iibc","unitId":"mathb_random_variable_distribution","mode":"formula","level":"normal","p":"確率変数Xの期待値 E(aX+b) は？","o":["a²E(X)+b","aE(X)+b","aE(X)","E(X)+ab"],"a":1,"tip":"期待値は線形性をもつ"},
+  {"id":"v9_iibc_020","course":"iibc","unitId":"mathb_sigma_sum","mode":"formula","level":"normal","p":"初項からn項までの和を S_n とすると n≥2 で a_n は？","o":["S_n-S_(n-1)","S_n+S_(n-1)","S_n/n","S_(n-1)-S_n"],"a":0,"tip":"累積和の差で第n項だけ取り出す"},
+  {"id":"v9_iibc_021","course":"iibc","unitId":"math2_double_half_angle","mode":"formula","level":"hard","p":"sin2θ の倍角公式は？","o":["sin^2θ+cos^2θ","2sinθ","1-2sin^2θ","2sinθ cosθ"],"a":3,"tip":"sin(θ+θ)を加法定理で展開"},
+  {"id":"v9_iibc_022","course":"iibc","unitId":"math2_double_half_angle","mode":"formula","level":"hard","p":"cos2θ を sinθ だけで表すと？","o":["2sinθ cosθ","2sin^2θ-1","1-2sin^2θ","1+2sin^2θ"],"a":2,"tip":"cos²θを1−sin²θに置き換える"},
+  {"id":"v9_iibc_023","course":"iibc","unitId":"math2_definite_integral","mode":"formula","level":"hard","p":"連続関数 f の ∫_0^a f(a-x)dx は？","o":["-∫_0^a f(x)dx","∫_0^a f(x)dx","f(a)-f(0)","a×f(a)"],"a":1,"tip":"u=a−x と置けば積分区間が反転する"},
+  {"id":"v9_iibc_024","course":"iibc","unitId":"math2_definite_integral","mode":"formula","level":"hard","p":"微分可能な F で F′=f のとき ∫_a^b f(x)dx は？","o":["F(b)-F(a)","F(a)-F(b)","F(a)+F(b)","F(b)/F(a)"],"a":0,"tip":"微積分の基本定理"},
+  {"id":"v9_iibc_025","course":"iibc","unitId":"mathb_various_sums","mode":"formula","level":"hard","p":"1²+2²+…+n² の和の公式は？","o":["n(n+1)/2","n²(n+1)/2","n(n+1)(n+2)/6","n(n+1)(2n+1)/6"],"a":3,"tip":"2乗和の公式はn(n+1)(2n+1)/6"},
+  {"id":"v9_iibc_026","course":"iibc","unitId":"mathb_recurrence","mode":"formula","level":"hard","p":"a_(n+1)=pa_n+q、p≠1 の定数解cは？","o":["q/(p-1)","p/q","q/(1-p)","q/(1+p)"],"a":2,"tip":"c=pc+q を解いてからa_n−cを考える"},
+  {"id":"v9_iibc_027","course":"iibc","unitId":"mathb_random_variable_distribution","mode":"formula","level":"hard","p":"確率変数Xの分散 V(aX+b) は？","o":["aV(X)+b","a^2V(X)","a^2V(X)+b","V(X)+b"],"a":1,"tip":"分散は平行移動で変わらず倍率の2乗で変わる"},
+  {"id":"v9_iibc_028","course":"iibc","unitId":"mathc_inner","mode":"formula","level":"hard","p":"b≠0 のときベクトルaのb方向へのスカラー射影は？","o":["(a·b)/|b|","a·b","|a||b|","(a·b)/|a|"],"a":0,"tip":"内積をbの長さで割る"},
+  {"id":"v9_iibc_029","course":"iibc","unitId":"math2_complex_numbers","mode":"formula","level":"hard","p":"複素数 z とその共役 z̄ の積は？","o":["z^2","2z","-|z|^2","|z|^2"],"a":3,"tip":"z=x+iyならzz̄=x²+y²"},
+  {"id":"v9_iibc_030","course":"iibc","unitId":"mathc_geometry","mode":"formula","level":"hard","p":"三角形の重心Gの位置ベクトルを頂点a,b,cで表すと？","o":["(a+b+c)/2","a+b-c","(a+b+c)/3","(a+b)/2"],"a":2,"tip":"重心の位置は3頂点の平均"},
+  {"id":"v9_iibc_031","course":"iibc","unitId":"math2_logarithm","mode":"strategy","level":"easy","p":"log_2 8 の値は？","o":["2","3","4","1/3"],"a":1,"tip":"2の3乗が8"},
+  {"id":"v9_iibc_032","course":"iibc","unitId":"math2_exponential_equation_inequality","mode":"strategy","level":"easy","p":"2^x=16 のとき x は？","o":["4","2","3","8"],"a":0,"tip":"16=2の4乗"},
+  {"id":"v9_iibc_033","course":"iibc","unitId":"mathb_arithmetic_sequence","mode":"strategy","level":"easy","p":"数列 a_n=3n-1 の第5項は？","o":["12","15","16","14"],"a":3,"tip":"n=5を代入"},
+  {"id":"v9_iibc_034","course":"iibc","unitId":"mathb_arithmetic_sequence","mode":"strategy","level":"easy","p":"初項2、公差3の等差数列の第4項は？","o":["8","12","11","14"],"a":2,"tip":"2+3×(4−1)=11"},
+  {"id":"v9_iibc_035","course":"iibc","unitId":"math2_double_half_angle","mode":"strategy","level":"easy","p":"sin(2×45°) の値は？","o":["0","1","1/2","√2/2"],"a":1,"tip":"角度を90°にまとめる"},
+  {"id":"v9_iibc_036","course":"iibc","unitId":"math2_differentiation","mode":"strategy","level":"easy","p":"f(x)=x^2 の x=3 における導関数の値は？","o":["6","3","9","12"],"a":0,"tip":"f′(x)=2x"},
+  {"id":"v9_iibc_037","course":"iibc","unitId":"math2_definite_integral","mode":"strategy","level":"easy","p":"∫_0^2 x dx の値は？","o":["1","4","8","2"],"a":3,"tip":"xの原始関数はx²/2"},
+  {"id":"v9_iibc_038","course":"iibc","unitId":"math2_circle_equation","mode":"strategy","level":"easy","p":"円 (x-2)^2+(y+3)^2=16 の中心は？","o":["(-2,3)","(2,3)","(2,-3)","(-2,-3)"],"a":2,"tip":"標準形のx−a、y−bから中心を読む"},
+  {"id":"v9_iibc_039","course":"iibc","unitId":"mathc_inner","mode":"strategy","level":"easy","p":"a=(1,2)、b=(2,-1) の内積は？","o":["1","0","2","4"],"a":1,"tip":"対応成分の積の和は2−2"},
+  {"id":"v9_iibc_040","course":"iibc","unitId":"math2_trig_graph","mode":"strategy","level":"easy","p":"y=3sin x の振幅は？","o":["3","6","1","π"],"a":0,"tip":"sinの係数の絶対値が振幅"},
+  {"id":"v9_iibc_041","course":"iibc","unitId":"math2_logarithm","mode":"strategy","level":"normal","p":"log_3 81-log_3 3 は？","o":["4","2","9","3"],"a":3,"tip":"底3の対数は4と1"},
+  {"id":"v9_iibc_042","course":"iibc","unitId":"math2_addition_theorem","mode":"strategy","level":"normal","p":"sin75° を加法定理で表すと？","o":["(√6-√2)/4","√3/2","(√6+√2)/4","1/2"],"a":2,"tip":"45°+30°でsinの加法定理"},
+  {"id":"v9_iibc_043","course":"iibc","unitId":"math2_max_min","mode":"strategy","level":"normal","p":"y=-x^2+4x+1 の最大値をとる x は？","o":["1","2","4","-2"],"a":1,"tip":"平方完成で軸x=2"},
+  {"id":"v9_iibc_044","course":"iibc","unitId":"mathb_recurrence","mode":"strategy","level":"normal","p":"a_(n+1)=2a_n+3 を等比型に直すとき b_n は？","o":["a_n+3","a_n-3","a_n+2","a_n-2"],"a":0,"tip":"定数解c=-3を使いb_n=a_n−c"},
+  {"id":"v9_iibc_045","course":"iibc","unitId":"mathb_various_sums","mode":"strategy","level":"normal","p":"最初の10個の正の奇数の和は？","o":["55","90","110","100"],"a":3,"tip":"1+3+…+(2n−1)=n²"},
+  {"id":"v9_iibc_046","course":"iibc","unitId":"mathb_binomial_distribution","mode":"strategy","level":"normal","p":"X~B(3,1/2) の期待値は？","o":["1/2","3","3/2","3/4"],"a":2,"tip":"二項分布の期待値np"},
+  {"id":"v9_iibc_047","course":"iibc","unitId":"mathb_random_variable_distribution","mode":"strategy","level":"normal","p":"X,Y が独立なら共分散 Cov(X,Y) は？","o":["1","0","-1","V(X)V(Y)"],"a":1,"tip":"独立なとき共分散は0"},
+  {"id":"v9_iibc_048","course":"iibc","unitId":"math2_definite_integral","mode":"strategy","level":"normal","p":"∫_0^1 (2x+1)dx の値は？","o":["2","1","3","3/2"],"a":0,"tip":"原始関数はx²+x"},
+  {"id":"v9_iibc_049","course":"iibc","unitId":"math2_point_line","mode":"strategy","level":"normal","p":"点(1,2),(3,6)を通る直線の傾きは？","o":["4","1/2","3","2"],"a":3,"tip":"yの差4÷xの差2"},
+  {"id":"v9_iibc_050","course":"iibc","unitId":"mathc_inner","mode":"strategy","level":"normal","p":"a=(2,4)、b=(1,2) の関係は？","o":["逆向きの平行","垂直","同じ向きの平行","なす角60°"],"a":2,"tip":"a=2b"},
+  {"id":"v9_iibc_051","course":"iibc","unitId":"math2_definite_integral","mode":"strategy","level":"hard","p":"∫_0^1 |2x-1|dx の値は？","o":["1","1/2","1/4","2"],"a":1,"tip":"高さ1、底辺1/2の三角形が2つ"},
+  {"id":"v9_iibc_052","course":"iibc","unitId":"mathb_recurrence","mode":"strategy","level":"hard","p":"a_(n+1)=3a_n+4 を等比型にする b_n は？","o":["a_n+2","a_n-2","a_n+4","a_n-4"],"a":0,"tip":"定数解c=-2なのでb_n=a_n+2"},
+  {"id":"v9_iibc_053","course":"iibc","unitId":"math2_circle_line","mode":"strategy","level":"hard","p":"中心(1,2)、半径3の円と直線x=5の位置関係は？","o":["接する","2点で交わる","円の中心を通る","共有点なし"],"a":3,"tip":"中心から直線までの距離4は半径3より大きい"},
+  {"id":"v9_iibc_054","course":"iibc","unitId":"math2_quadratic_roots","mode":"strategy","level":"hard","p":"y=x^2 と y=2x-k が接するとき k は？","o":["0","2","1","-1"],"a":2,"tip":"x²−2x+kの判別式を0にする"},
+  {"id":"v9_iibc_055","course":"iibc","unitId":"mathb_geometric_sequence","mode":"strategy","level":"hard","p":"初項3、公比2の等比数列の最初の5項の和は？","o":["90","93","96","63"],"a":1,"tip":"3+6+12+24+48=93"},
+  {"id":"v9_iibc_056","course":"iibc","unitId":"math2_trig_composition","mode":"strategy","level":"hard","p":"3sinθ+4cosθ がとりうる最大値は？","o":["5","7","12","1"],"a":0,"tip":"合成して振幅√(3²+4²)=5"},
+  {"id":"v9_iibc_057","course":"iibc","unitId":"mathb_binomial_distribution","mode":"strategy","level":"hard","p":"独立な4回の試行で成功確率1/2、1回以上成功する確率は？","o":["1/16","1/2","3/4","15/16"],"a":3,"tip":"全部失敗する確率1/16を1から引く"},
+  {"id":"v9_iibc_058","course":"iibc","unitId":"mathc_inner","mode":"strategy","level":"hard","p":"a=(1,0)、b=(1,1) のなす角のcosは？","o":["1/2","1","1/√2","0"],"a":2,"tip":"内積1を長さ1と√2の積で割る"},
+  {"id":"v9_iibc_059","course":"iibc","unitId":"mathb_geometric_sequence","mode":"strategy","level":"hard","p":"数列 a_n=2^n (n≥1) の第1項から第4項までの和は？","o":["16","30","15","32"],"a":1,"tip":"2+4+8+16=30"},
+  {"id":"v9_iibc_060","course":"iibc","unitId":"math2_log_equation_inequality","mode":"strategy","level":"hard","p":"底が1/2のとき log_(1/2) x>1 の解は？","o":["0<x<1/2","x>1/2","x>2","0<x<2"],"a":0,"tip":"0<底<1なので対数関数は単調減少"},
+  {"id":"v9_iiic_001","course":"iiic","unitId":"math3_function_limit","mode":"formula","level":"easy","p":"x→0 のとき sinx/x の極限は？","o":["0","∞","存在しない","1"],"a":3,"tip":"ラジアンを用いた基本極限"},
+  {"id":"v9_iiic_002","course":"iiic","unitId":"math3_trig_exp_log","mode":"formula","level":"easy","p":"sin x の導関数は？","o":["-cos x","sin x","cos x","-sin x"],"a":2,"tip":"三角関数の基本的な微分公式"},
+  {"id":"v9_iiic_003","course":"iiic","unitId":"math3_trig_exp_log","mode":"formula","level":"easy","p":"e^x の導関数は？","o":["xe^(x-1)","e^x","1/x","e^(x-1)"],"a":1,"tip":"eを底とする指数関数は微分しても同じ"},
+  {"id":"v9_iiic_004","course":"iiic","unitId":"math3_trig_exp_log","mode":"formula","level":"easy","p":"x≠0 のとき log|x| の導関数は？","o":["1/x","log|x|","x","1/(x^2)"],"a":0,"tip":"自然対数の導関数"},
+  {"id":"v9_iiic_005","course":"iiic","unitId":"math3_indefinite","mode":"formula","level":"easy","p":"cos x の不定積分は？","o":["-sin x+C","cos x+C","tan x+C","sin x+C"],"a":3,"tip":"sin x の微分はcos x"},
+  {"id":"v9_iiic_006","course":"iiic","unitId":"math3_indefinite","mode":"formula","level":"easy","p":"x≠0 のとき 1/x の不定積分は？","o":["1/(2x^2)+C","x^2/2+C","log|x|+C","-1/x^2+C"],"a":2,"tip":"原始関数に絶対値付き自然対数を使う"},
+  {"id":"v9_iiic_007","course":"iiic","unitId":"math3_composite","mode":"formula","level":"easy","p":"y=f(g(x)) の微分公式は？","o":["f'(x)g'(x)","f'(g(x))g'(x)","f(g'(x))","f'(g(x))+g'(x)"],"a":1,"tip":"外側を微分し内側の導関数を掛ける"},
+  {"id":"v9_iiic_008","course":"iiic","unitId":"math3_derivative","mode":"formula","level":"easy","p":"u(x)v(x) の導関数は？","o":["u'v+uv'","u'v'","u'v-uv'","u+v"],"a":0,"tip":"2つの項を足す積の微分法"},
+  {"id":"v9_iiic_009","course":"iiic","unitId":"mathc_space","mode":"formula","level":"easy","p":"3次元ベクトル (a,b,c) と (d,e,f) の内積は？","o":["a+b+c+d+e+f","ab+cd+ef","ae+bf+cd","ad+be+cf"],"a":3,"tip":"同じ座標の成分同士を掛けて足す"},
+  {"id":"v9_iiic_010","course":"iiic","unitId":"mathc_conic","mode":"formula","level":"easy","p":"放物線 y^2=4px (p>0) の焦点は？","o":["(-p,0)","(0,p)","(p,0)","(0,-p)"],"a":2,"tip":"標準形の焦点はx軸上の(p,0)"},
+  {"id":"v9_iiic_011","course":"iiic","unitId":"math3_trig_exp_log","mode":"formula","level":"normal","p":"tan x の導関数は？","o":["1/(sin^2x)","1/(cos^2x)","cos x","-1/(cos^2x)"],"a":1,"tip":"tanの導関数はsec²x"},
+  {"id":"v9_iiic_012","course":"iiic","unitId":"math3_composite","mode":"formula","level":"normal","p":"f(x)≠0 のとき log|f(x)| の導関数は？","o":["f'(x)/f(x)","1/f'(x)","f(x)/f'(x)","log|f'(x)|"],"a":0,"tip":"合成関数の微分を使う"},
+  {"id":"v9_iiic_013","course":"iiic","unitId":"math3_trig_exp_log","mode":"formula","level":"normal","p":"a>0 のとき a^x の導関数は？","o":["a^x","xa^(x-1)","a^(x+1)","a^x log a"],"a":3,"tip":"自然対数log aが係数になる"},
+  {"id":"v9_iiic_014","course":"iiic","unitId":"math3_composite","mode":"formula","level":"normal","p":"e^(2x) の導関数は？","o":["e^(2x)","e^x","2e^(2x)","4e^(2x)"],"a":2,"tip":"内側2xの導関数2を掛ける"},
+  {"id":"v9_iiic_015","course":"iiic","unitId":"math3_indefinite","mode":"formula","level":"normal","p":"a≠0 のとき e^(ax) の不定積分は？","o":["ae^(ax)+C","e^(ax)/a+C","e^x/a+C","e^(ax)+C"],"a":1,"tip":"微分時に掛かるaで割る"},
+  {"id":"v9_iiic_016","course":"iiic","unitId":"math3_parts","mode":"formula","level":"normal","p":"部分積分 ∫uv′dx の公式は？","o":["uv-∫u′v dx","uv+∫u′v dx","u′v−∫uv′dx","∫u′v′dx"],"a":0,"tip":"積の微分法を積分形にした式"},
+  {"id":"v9_iiic_017","course":"iiic","unitId":"math3_indefinite","mode":"formula","level":"normal","p":"a≠0 のとき sin(ax) の不定積分は？","o":["cos(ax)/a+C","sin(ax)/a+C","-a cos(ax)+C","-cos(ax)/a+C"],"a":3,"tip":"微分してsin(ax)に戻るか確認"},
+  {"id":"v9_iiic_018","course":"iiic","unitId":"math3_integral_application","mode":"formula","level":"normal","p":"y=f(x)≥0 をaからbまでx軸の周りに回転させる体積は？","o":["2π∫_a^b f(x)dx","π∫_a^b f(x)dx","π∫_a^b (f(x))^2 dx","∫_a^b f(x)^2 dx"],"a":2,"tip":"各断面の円の面積πr²を積分"},
+  {"id":"v9_iiic_019","course":"iiic","unitId":"mathc_conic","mode":"formula","level":"normal","p":"楕円 x^2/a^2+y^2/b^2=1、a>b>0 の焦点距離cは？","o":["c^2=a^2+b^2","c^2=a^2-b^2","c^2=b^2-a^2","c=a+b"],"a":1,"tip":"長軸がx方向の楕円ではc²=a²−b²"},
+  {"id":"v9_iiic_020","course":"iiic","unitId":"mathc_complex_polar","mode":"formula","level":"normal","p":"複素数の極形式で2つの数を掛けると偏角は？","o":["足し算","引き算","掛け算","変化しない"],"a":0,"tip":"極形式の積では偏角が加法的"},
+  {"id":"v9_iiic_021","course":"iiic","unitId":"math3_trig_exp_log","mode":"formula","level":"hard","p":"sin x>0 の範囲で log(sin x) の導関数は？","o":["sinx/cosx","-cosx/sinx","1/sinx","cosx/sinx"],"a":3,"tip":"logの合成関数を微分する"},
+  {"id":"v9_iiic_022","course":"iiic","unitId":"math3_composite","mode":"formula","level":"hard","p":"x>0 のとき x^x の導関数は？","o":["x^x log x","x^(x-1)","x^x(log x+1)","x^x/x"],"a":2,"tip":"対数微分でlog y=x log xを微分"},
+  {"id":"v9_iiic_023","course":"iiic","unitId":"math3_indefinite","mode":"formula","level":"hard","p":"tan x の不定積分は？","o":["log|cos x|+C","-log|cos x|+C","-cos x+C","tan^2x/2+C"],"a":1,"tip":"tanx=sinx/cosx として置換積分"},
+  {"id":"v9_iiic_024","course":"iiic","unitId":"math3_substitution","mode":"formula","level":"hard","p":"f(x)≠0 の区間で ∫ f′(x)/f(x)dx は？","o":["log|f(x)|+C","f(x)^2/2+C","1/f(x)+C","f′(x)+C"],"a":0,"tip":"u=f(x)で置換積分"},
+  {"id":"v9_iiic_025","course":"iiic","unitId":"math3_function_limit","mode":"formula","level":"hard","p":"x→0 のとき (e^x-1)/x の極限は？","o":["0","e","存在しない","1"],"a":3,"tip":"e^xのx=0における微分係数"},
+  {"id":"v9_iiic_026","course":"iiic","unitId":"math3_function_limit","mode":"formula","level":"hard","p":"x→0 のとき log(1+x)/x の極限は？","o":["0","∞","1","-1"],"a":2,"tip":"log(1+x)のx=0での微分係数"},
+  {"id":"v9_iiic_027","course":"iiic","unitId":"mathc_conic","mode":"formula","level":"hard","p":"双曲線 x^2/a^2-y^2/b^2=1 の焦点距離cは？","o":["c^2=a^2-b^2","c^2=a^2+b^2","c^2=b^2-a^2","c=a+b"],"a":1,"tip":"双曲線は楕円と異なり平方和になる"},
+  {"id":"v9_iiic_028","course":"iiic","unitId":"mathc_space","mode":"formula","level":"hard","p":"点r0を通り法線ベクトルnに垂直な平面は？","o":["n·(r-r0)=0","n·r=1","n×r=0","r=r0+n"],"a":0,"tip":"平面上の任意点への位置差は法線と直交"},
+  {"id":"v9_iiic_029","course":"iiic","unitId":"mathc_complex_polar","mode":"formula","level":"hard","p":"(cosθ+i sinθ)^n を表すド・モアブルの公式は？","o":["cos(θ^n)+i sin(θ^n)","n cosθ+i n sinθ","cosθ^n+i sinθ^n","cos(nθ)+i sin(nθ)"],"a":3,"tip":"極形式のn乗で偏角がn倍になる"},
+  {"id":"v9_iiic_030","course":"iiic","unitId":"mathc_polar","mode":"formula","level":"hard","p":"極方程式 r=2a cosθ (a>0) の直交座標表示は？","o":["x^2+(y-a)^2=a^2","x^2+y^2=4a^2","(x-a)^2+y^2=a^2","x^2-y^2=2ax"],"a":2,"tip":"r²=2ar cosθよりx²+y²=2ax"},
+  {"id":"v9_iiic_031","course":"iiic","unitId":"math3_composite","mode":"strategy","level":"easy","p":"sin(3x) の導関数は？","o":["cos(3x)","3cos(3x)","-3cos(3x)","3sin(3x)"],"a":1,"tip":"中身3xの微分3を掛ける"},
+  {"id":"v9_iiic_032","course":"iiic","unitId":"math3_composite","mode":"strategy","level":"easy","p":"e^(2x) の導関数は？","o":["2e^(2x)","e^(2x)","2e^x","e^x/2"],"a":0,"tip":"合成関数の微分"},
+  {"id":"v9_iiic_033","course":"iiic","unitId":"math3_definite","mode":"strategy","level":"easy","p":"∫_0^π sin x dx は？","o":["0","1","π","2"],"a":3,"tip":"原始関数−cos xを上下端で評価"},
+  {"id":"v9_iiic_034","course":"iiic","unitId":"math3_function_limit","mode":"strategy","level":"easy","p":"x→0 のとき (1-cos x)/x の極限は？","o":["1","1/2","0","存在しない"],"a":2,"tip":"1−cosxはx²と同じオーダーで0に近づく"},
+  {"id":"v9_iiic_035","course":"iiic","unitId":"math3_series","mode":"strategy","level":"easy","p":"Σ(n=1→∞) (1/2)^n の和は？","o":["2","1","1/2","∞"],"a":1,"tip":"初項1/2、公比1/2の無限等比級数"},
+  {"id":"v9_iiic_036","course":"iiic","unitId":"mathc_complex_basics","mode":"strategy","level":"easy","p":"複素数 3+4i の絶対値は？","o":["5","7","25","1"],"a":0,"tip":"絶対値は√(3²+4²)"},
+  {"id":"v9_iiic_037","course":"iiic","unitId":"mathc_complex_polar","mode":"strategy","level":"easy","p":"複素数 1+i の偏角の一つは？","o":["π/2","π","3π/4","π/4"],"a":3,"tip":"第1象限で実部と虚部が等しい"},
+  {"id":"v9_iiic_038","course":"iiic","unitId":"mathc_space","mode":"strategy","level":"easy","p":"(1,2,3) と (2,0,-1) の内積は？","o":["1","5","-1","0"],"a":2,"tip":"2+0−3=-1"},
+  {"id":"v9_iiic_039","course":"iiic","unitId":"mathc_conic","mode":"strategy","level":"easy","p":"楕円 x^2/9+y^2/4=1 の長軸は？","o":["y軸方向","x軸方向","傾き1の方向","長軸はない"],"a":1,"tip":"分母9の方が大きい"},
+  {"id":"v9_iiic_040","course":"iiic","unitId":"math3_trig_exp_log","mode":"strategy","level":"easy","p":"f(x)=log x の x=e における導関数の値は？","o":["1/e","1","e","0"],"a":0,"tip":"f′(x)=1/xを代入"},
+  {"id":"v9_iiic_041","course":"iiic","unitId":"math3_derivative","mode":"strategy","level":"normal","p":"y=xe^x の導関数は？","o":["xe^x","e^x","x^2e^x","e^x(1+x)"],"a":3,"tip":"積の微分でe^x+xe^x"},
+  {"id":"v9_iiic_042","course":"iiic","unitId":"math3_substitution","mode":"strategy","level":"normal","p":"∫_0^1 2xe^(x^2)dx は？","o":["e","e^2-1","e-1","1"],"a":2,"tip":"u=x²と置くと区間0から1"},
+  {"id":"v9_iiic_043","course":"iiic","unitId":"math3_parts","mode":"strategy","level":"normal","p":"∫_0^1 xe^x dx は？","o":["e","1","e-1","0"],"a":1,"tip":"原始関数は(x−1)e^x"},
+  {"id":"v9_iiic_044","course":"iiic","unitId":"math3_function_limit","mode":"strategy","level":"normal","p":"x→0 のとき tan(3x)/x の極限は？","o":["3","1","1/3","0"],"a":0,"tip":"tan u/u→1を使う"},
+  {"id":"v9_iiic_045","course":"iiic","unitId":"math3_function_limit","mode":"strategy","level":"normal","p":"x→∞ のとき (2x^2+1)/(x^2-1) の極限は？","o":["0","1","∞","2"],"a":3,"tip":"分子分母をx²で割る"},
+  {"id":"v9_iiic_046","course":"iiic","unitId":"math3_series","mode":"strategy","level":"normal","p":"Σ(n=1→∞) (1/3)^n の和は？","o":["1/3","3/2","1/2","1"],"a":2,"tip":"初項1/3、公比1/3"},
+  {"id":"v9_iiic_047","course":"iiic","unitId":"mathc_complex_basics","mode":"strategy","level":"normal","p":"(1+i)^2 の値は？","o":["2","2i","-2","1+i"],"a":1,"tip":"1+2i+i²=2i"},
+  {"id":"v9_iiic_048","course":"iiic","unitId":"mathc_complex_geometry","mode":"strategy","level":"normal","p":"|z-2|=3 が表す図形は？","o":["中心(2,0)、半径3の円","中心(-2,0)、半径3の円","原点中心の半径2の円","直線x=2"],"a":0,"tip":"複素平面で2からの距離が3"},
+  {"id":"v9_iiic_049","course":"iiic","unitId":"mathc_conic","mode":"strategy","level":"normal","p":"楕円 x^2/16+y^2/9=1 の焦点は？","o":["(0,±√7)","(±5,0)","(±7,0)","(±√7,0)"],"a":3,"tip":"焦点距離の2乗は16−9=7"},
+  {"id":"v9_iiic_050","course":"iiic","unitId":"mathc_space","mode":"strategy","level":"normal","p":"A=(0,2,4)、B=(2,0,0) の中点は？","o":["(2,2,4)","(1,2,0)","(1,1,2)","(0,1,2)"],"a":2,"tip":"3座標それぞれの平均"},
+  {"id":"v9_iiic_051","course":"iiic","unitId":"math3_function_limit","mode":"strategy","level":"hard","p":"x→0 のとき sin(3x)/sin(2x) の極限は？","o":["2/3","3/2","1","0"],"a":1,"tip":"分子分母をそれぞれ引数で割る"},
+  {"id":"v9_iiic_052","course":"iiic","unitId":"math3_composite","mode":"strategy","level":"hard","p":"f(x)=x^x (x>0) の x=1 における導関数は？","o":["1","0","e","2"],"a":0,"tip":"f′(x)=x^x(logx+1)"},
+  {"id":"v9_iiic_053","course":"iiic","unitId":"math3_substitution","mode":"strategy","level":"hard","p":"∫_0^1 x/(1+x^2)dx は？","o":["log 2","1/2","1","(log 2)/2"],"a":3,"tip":"u=1+x²と置く"},
+  {"id":"v9_iiic_054","course":"iiic","unitId":"math3_definite","mode":"strategy","level":"hard","p":"∫_0^(π/2) cos^2x dx は？","o":["π/2","1","π/4","1/2"],"a":2,"tip":"cos²x=(1+cos2x)/2"},
+  {"id":"v9_iiic_055","course":"iiic","unitId":"mathc_parameter","mode":"strategy","level":"hard","p":"x=t^2,y=t^3 の t=1 における dy/dx は？","o":["2/3","3/2","3","1"],"a":1,"tip":"(dy/dt)/(dx/dt)=3t²/(2t)"},
+  {"id":"v9_iiic_056","course":"iiic","unitId":"math3_definite","mode":"strategy","level":"hard","p":"∫_0^1 e^(2x)dx は？","o":["(e^2-1)/2","e^2-1","(e-1)/2","e^2/2"],"a":0,"tip":"原始関数はe^(2x)/2"},
+  {"id":"v9_iiic_057","course":"iiic","unitId":"mathc_complex_basics","mode":"strategy","level":"hard","p":"複素数 (1+i)/(1-i) の値は？","o":["-i","1","-1","i"],"a":3,"tip":"分母分子に1+iを掛ける"},
+  {"id":"v9_iiic_058","course":"iiic","unitId":"mathc_complex_geometry","mode":"strategy","level":"hard","p":"複素平面で z→iz が表す変換は？","o":["原点を中心に時計回り90°回転","原点対称","原点を中心に反時計回り90°回転","実軸対称"],"a":2,"tip":"iの偏角はπ/2"},
+  {"id":"v9_iiic_059","course":"iiic","unitId":"mathc_space","mode":"strategy","level":"hard","p":"法線ベクトル(1,1,1)で点(1,0,0)を通る平面は？","o":["x+y+z=0","x+y+z=1","x-y-z=1","x+y+z=3"],"a":1,"tip":"法線との内積を使う"},
+  {"id":"v9_iiic_060","course":"iiic","unitId":"math3_extrema","mode":"strategy","level":"hard","p":"f(x)=x^3+x+1 の実数解について言えることは？","o":["ちょうど1個ある","実数解は存在しない","ちょうど2個ある","ちょうど3個ある"],"a":0,"tip":"f′(x)=3x²+1>0、両端で値は−∞から∞"}
+];
+ASC_Q_MATH_BANK_V5.push(...ASC_Q_MATH_BANK_V9);
+// ASCEND QUICK MATH IIBC V10: 90 verified-structure questions
+const ASC_Q_MATH_BANK_IIBC_V10 = [
+  {"id":"v10_iibc_001","course":"iibc","unitId":"math2_expr_cubic","mode":"formula","level":"easy","p":"a^3-b^3 の因数分解は？","o":["(a-b)(a^2+ab+b^2)","(a-b)(a^2-ab+b^2)","(a+b)(a^2-ab+b^2)","(a-b)^3"],"a":0,"tip":"立方差は符号が交互ではなく、中項が正"},
+  {"id":"v10_iibc_002","course":"iibc","unitId":"math2_expr_binomial","mode":"formula","level":"easy","p":"(1+x)^4 の x^2 の係数は？","o":["4","8","12","6"],"a":3,"tip":"二項係数は4C2=6"},
+  {"id":"v10_iibc_003","course":"iibc","unitId":"math2_roots_coefficients","mode":"formula","level":"easy","p":"ax^2+bx+c=0（a≠0）の2解の和は？","o":["b/a","c/a","-b/a","-c/a"],"a":2,"tip":"解と係数の関係を使う"},
+  {"id":"v10_iibc_004","course":"iibc","unitId":"math2_point_line","mode":"formula","level":"easy","p":"直線 Ax+By+C=0（B≠0）の傾きは？","o":["A/B","-B/A","-A/B","B/A"],"a":2,"tip":"yについて解いて傾きを読む"},
+  {"id":"v10_iibc_005","course":"iibc","unitId":"math2_trig_functions","mode":"formula","level":"easy","p":"cosθ≠0 のとき tanθ は？","o":["cosθ/sinθ","sinθ/cosθ","1/sinθ","sinθ cosθ"],"a":1,"tip":"tanはsinをcosで割ったもの"},
+  {"id":"v10_iibc_006","course":"iibc","unitId":"math2_exponent_extension","mode":"formula","level":"easy","p":"a>0 のとき a^0 は？","o":["1","0","a","-1"],"a":0,"tip":"指数法則により0乗は1"},
+  {"id":"v10_iibc_007","course":"iibc","unitId":"math2_differentiation","mode":"formula","level":"easy","p":"定数関数 f(x)=c の導関数は？","o":["0","c","1","cx"],"a":0,"tip":"定数の変化率は0"},
+  {"id":"v10_iibc_008","course":"iibc","unitId":"math2_indefinite_integral","mode":"formula","level":"easy","p":"定数 k の不定積分 ∫k dx は？","o":["k+C","x+C","k/x+C","kx+C"],"a":3,"tip":"積分定数Cを忘れない"},
+  {"id":"v10_iibc_009","course":"iibc","unitId":"mathb_arithmetic_sequence","mode":"formula","level":"easy","p":"等差数列の初項a、末項l、項数nの和は？","o":["n(a+l)","n(a-l)/2","n(a+l)/2","(a+l)/n"],"a":2,"tip":"初項と末項の平均に項数を掛ける"},
+  {"id":"v10_iibc_010","course":"iibc","unitId":"mathb_geometric_sequence","mode":"formula","level":"easy","p":"初項a、公比r（r≠1）の等比数列の初項からn項までの和は？","o":["a(1-r^(n-1))/(1-r)","a(1-r^n)/(1+r)","a(1-r^n)/(1-r)","ar^n/(1-r)"],"a":2,"tip":"等比数列の和の公式を使う"},
+  {"id":"v10_iibc_011","course":"iibc","unitId":"mathb_sample_mean_distribution","mode":"formula","level":"easy","p":"同じ母平均μの独立な標本から作る標本平均の期待値は？","o":["μ/n","μ","nμ","μ^2"],"a":1,"tip":"標本平均の期待値は母平均と一致"},
+  {"id":"v10_iibc_012","course":"iibc","unitId":"mathb_binomial_distribution","mode":"formula","level":"easy","p":"Xが二項分布B(n,p)に従うとき E(X) は？","o":["np","n(1-p)","np(1-p)","p/n"],"a":0,"tip":"成功回数の期待値は試行回数×成功確率"},
+  {"id":"v10_iibc_013","course":"iibc","unitId":"mathc_plane","mode":"formula","level":"easy","p":"位置ベクトルa、bの点AからBへのベクトルABは？","o":["b-a","a-b","a+b","a+b/2"],"a":0,"tip":"終点の位置ベクトルから始点を引く"},
+  {"id":"v10_iibc_014","course":"iibc","unitId":"mathc_inner","mode":"formula","level":"easy","p":"0でないベクトルa、bが垂直となる条件は？","o":["a・b=1","a・b=-1","a・b>0","a・b=0"],"a":3,"tip":"垂直ならなす角のcosが0"},
+  {"id":"v10_iibc_015","course":"iibc","unitId":"mathc_geometry","mode":"formula","level":"easy","p":"位置ベクトルa、bの2点の中点Mの位置ベクトルは？","o":["a+b","(a-b)/2","(a+b)/2","2(a+b)"],"a":2,"tip":"両端の位置ベクトルの平均"},
+  {"id":"v10_iibc_016","course":"iibc","unitId":"math2_expr_polynomial_division","mode":"formula","level":"normal","p":"整式P(x)をx-aで割った余りは？","o":["P(0)","P(-a)","P(a)","P(1)"],"a":2,"tip":"剰余の定理を使う"},
+  {"id":"v10_iibc_017","course":"iibc","unitId":"math2_expr_identity","mode":"formula","level":"normal","p":"2つの整式がすべての実数xで等しいための係数の条件は？","o":["最高次の係数だけ一致","同じ次数の係数がすべて一致","定数項だけ一致","x=0で値が一致"],"a":1,"tip":"恒等式では各次数の係数を比較"},
+  {"id":"v10_iibc_018","course":"iibc","unitId":"math2_quadratic_roots","mode":"formula","level":"normal","p":"実数係数の2次方程式の判別式が0のとき実数解は？","o":["重解を1つもつ","異なる実数解を2つもつ","実数解をもたない","必ず解が0になる"],"a":0,"tip":"判別式0は接する状態に対応"},
+  {"id":"v10_iibc_019","course":"iibc","unitId":"math2_circle_line","mode":"formula","level":"normal","p":"中心(x0,y0)から直線Ax+By+C=0までの距離は？","o":["abs(Ax0+By0+C)/√(A^2+B^2)","abs(Ax0+By0+C)/(A^2+B^2)","(Ax0+By0+C)/√(A^2+B^2)","√(A^2+B^2)/abs(Ax0+By0+C)"],"a":0,"tip":"分子には絶対値を付ける"},
+  {"id":"v10_iibc_020","course":"iibc","unitId":"math2_trig_graph","mode":"formula","level":"normal","p":"y=sin(2x)の最小正周期は？","o":["2π","π/2","4π","π"],"a":3,"tip":"角度が2倍なら周期は半分"},
+  {"id":"v10_iibc_021","course":"iibc","unitId":"math2_log_function","mode":"formula","level":"normal","p":"a>0、a≠1 のとき log_a 1 は？","o":["1","a","0","-1"],"a":2,"tip":"aの0乗が1だから"},
+  {"id":"v10_iibc_022","course":"iibc","unitId":"math2_tangent","mode":"formula","level":"normal","p":"微分可能なfのx=aにおける接線の方程式は？","o":["y=f(a)(x-a)+f'(a)","y=f'(a)x+f(a)","y=f'(a)(x-a)+f(a)","y=f(x)(x-a)"],"a":2,"tip":"傾きf'(a)で点(a,f(a))を通る"},
+  {"id":"v10_iibc_023","course":"iibc","unitId":"math2_definite_integral","mode":"formula","level":"normal","p":"定数kに対し ∫_a^b k dx は？","o":["k(a-b)","k(b-a)","kb","k(b+a)"],"a":1,"tip":"長方形の符号付き面積"},
+  {"id":"v10_iibc_024","course":"iibc","unitId":"mathb_difference_sequence","mode":"formula","level":"normal","p":"階差数列b_nの定義は？","o":["b_n=a_(n+1)-a_n","b_n=a_n-a_(n+1)","b_n=a_n+a_(n+1)","b_n=a_(n+1)/a_n"],"a":0,"tip":"隣接する項の差をとる"},
+  {"id":"v10_iibc_025","course":"iibc","unitId":"mathb_sigma_sum","mode":"formula","level":"normal","p":"定数cについて Σ(k=1→n)c は？","o":["nc","c^n","n+c","c/n"],"a":0,"tip":"同じ定数をn回足す"},
+  {"id":"v10_iibc_026","course":"iibc","unitId":"mathb_random_variable_distribution","mode":"formula","level":"normal","p":"有限の分散をもつ確率変数XでV(X)は？","o":["E(X^2)+E(X)^2","E(X)^2-E(X^2)","E(X^2)/E(X)^2","E(X^2)-E(X)^2"],"a":3,"tip":"2乗の期待値から期待値の2乗を引く"},
+  {"id":"v10_iibc_027","course":"iibc","unitId":"mathb_normal_distribution","mode":"formula","level":"normal","p":"標準偏差σ>0、平均μの変数Xを標準化したZは？","o":["(X+μ)/σ","σ(X-μ)","(X-μ)/σ","(X-σ)/μ"],"a":2,"tip":"平均を引いて標準偏差で割る"},
+  {"id":"v10_iibc_028","course":"iibc","unitId":"mathc_plane","mode":"formula","level":"normal","p":"平面ベクトルa=(a1,a2)、b=(b1,b2)の和は？","o":["(a1+b2,a2+b1)","(a1b1,a2b2)","(a1+b1,a2+b2)","(a1-b1,a2-b2)"],"a":2,"tip":"対応する成分どうしを加える"},
+  {"id":"v10_iibc_029","course":"iibc","unitId":"mathc_inner","mode":"formula","level":"normal","p":"0でないベクトルa、bのなす角θのcosは？","o":["(長さa×長さb)/(a・b)","(a・b)/(長さa×長さb)","(a・b)/(長さa+長さb)","(a・b)/(長さa)"],"a":1,"tip":"内積をそれぞれの長さの積で割る"},
+  {"id":"v10_iibc_030","course":"iibc","unitId":"mathc_geometry","mode":"formula","level":"normal","p":"AP:PB=m:n（m,n>0）でPがABを内分するとき位置ベクトルpは？","o":["(n a+m b)/(m+n)","(m a+n b)/(m+n)","(a+b)/(m+n)","(n a-m b)/(m+n)"],"a":0,"tip":"端点の係数は内分比と逆になる"},
+  {"id":"v10_iibc_031","course":"iibc","unitId":"math2_expr_inequality_proof","mode":"formula","level":"hard","p":"a,b>0 の相加相乗平均から必ず成り立つ関係は？","o":["(a+b)^2≧4ab","(a+b)^2≦4ab","a+b≦2√(ab)","a^2+b^2≦2ab"],"a":0,"tip":"等号はa=bのとき"},
+  {"id":"v10_iibc_032","course":"iibc","unitId":"math2_expr_fraction","mode":"formula","level":"hard","p":"x≠a,b のとき 1/(x-a)-1/(x-b) は？","o":["(b-a)/((x-a)(x-b))","(a+b)/((x-a)(x-b))","1/(a-b)","(a-b)/((x-a)(x-b))"],"a":3,"tip":"通分すると分子は(x-b)-(x-a)=a-b"},
+  {"id":"v10_iibc_033","course":"iibc","unitId":"math2_roots_coefficients","mode":"formula","level":"hard","p":"ax^2+bx+c=0（ac≠0）の2解の逆数を解にもつ方程式は？","o":["ax^2-bx+c=0","ax^2+cx+b=0","cx^2+bx+a=0","cx^2-bx+a=0"],"a":2,"tip":"元の方程式に1/xを代入してx^2倍する"},
+  {"id":"v10_iibc_034","course":"iibc","unitId":"math2_locus","mode":"formula","level":"hard","p":"a≠0、点(a,0)と(-a,0)から等距離にある点の軌跡は？","o":["y=0","x=a","x=0","x^2+y^2=a^2"],"a":2,"tip":"2点を結ぶ線分の垂直二等分線"},
+  {"id":"v10_iibc_035","course":"iibc","unitId":"math2_trig_equation_inequality","mode":"formula","level":"hard","p":"sinθ+cosθ=t とおくと sin2θ は？","o":["t^2+1","t^2-1","1-t^2","2t^2-1"],"a":1,"tip":"両辺を2乗し sin^2θ+cos^2θ=1を使う"},
+  {"id":"v10_iibc_036","course":"iibc","unitId":"math2_exponential_equation_inequality","mode":"formula","level":"hard","p":"0<a<1 のとき a^x>a^y と同値な条件は？","o":["x<y","x>y","x=y","x+y>0"],"a":0,"tip":"底が1未満なら単調減少"},
+  {"id":"v10_iibc_037","course":"iibc","unitId":"math2_derivative_application","mode":"formula","level":"hard","p":"f'(c)=0、f''(c)>0が成り立つときcでの極値は？","o":["極小値をとる","極大値をとる","極値をとらない","必ず変曲点になる"],"a":0,"tip":"導関数が負から正へ変わる"},
+  {"id":"v10_iibc_038","course":"iibc","unitId":"math2_area","mode":"formula","level":"hard","p":"区間[a,b]で常にf(x)≧g(x)のとき2曲線の間の面積は？","o":["∫_a^b (g(x)-f(x))dx","∫_a^b f(x)g(x)dx","f(b)-g(a)","∫_a^b (f(x)-g(x))dx"],"a":3,"tip":"上の関数から下の関数を引いて積分"},
+  {"id":"v10_iibc_039","course":"iibc","unitId":"mathb_recurrence","mode":"formula","level":"hard","p":"a_(n+1)=pa_n+q（p≠0,1）の一般項は？","o":["p^(n-1)a_1+q","p^n(a_1+q)","p^(n-1)(a_1-q/(1-p))+q/(1-p)","a_1+(n-1)q"],"a":2,"tip":"固定点q/(1-p)を引くと等比数列"},
+  {"id":"v10_iibc_040","course":"iibc","unitId":"mathb_induction","mode":"formula","level":"hard","p":"n≧1の命題P(n)を数学的帰納法で示すための組合せは？","o":["P(1)だけ","P(2)とP(3)だけ","P(1)と任意のk≧1でP(k)⇒P(k+1)","任意のkでP(k+1)⇒P(k)だけ"],"a":2,"tip":"初期条件と次の段階への推論が必要"},
+  {"id":"v10_iibc_041","course":"iibc","unitId":"mathb_interval_estimation","mode":"formula","level":"hard","p":"母標準偏差σが既知、正規母集団の母平均μの約95%信頼区間は？","o":["標本平均±1.96σ","標本平均±1.96σ/√n","標本平均±σ/n","標本平均±1.96n/σ"],"a":1,"tip":"標本平均の標準偏差はσ/√n"},
+  {"id":"v10_iibc_042","course":"iibc","unitId":"mathb_hypothesis_test","mode":"formula","level":"hard","p":"第1種の過誤に当たるのは？","o":["正しい帰無仮説を棄却する","誤った帰無仮説を棄却する","誤った帰無仮説を棄却しない","正しい帰無仮説を棄却しない"],"a":0,"tip":"有意水準は第1種の過誤の確率に関係する"},
+  {"id":"v10_iibc_043","course":"iibc","unitId":"mathc_plane","mode":"formula","level":"hard","p":"平面ベクトルa=(a1,a2)、b=(b1,b2)が張る平行四辺形の面積は？","o":["abs(a1b2-a2b1)","a1b1+a2b2","abs(a1b1-a2b2)","a1b2+a2b1"],"a":0,"tip":"行列式の絶対値を使う"},
+  {"id":"v10_iibc_044","course":"iibc","unitId":"mathc_inner","mode":"formula","level":"hard","p":"b≠0 のときaのb方向への正射影ベクトルは？","o":["((a・b)/(a・a))a","(a・b)b","(a・b)/(長さb)","((a・b)/(b・b))b"],"a":3,"tip":"b方向の単位ベクトルへの射影を戻す"},
+  {"id":"v10_iibc_045","course":"iibc","unitId":"mathc_space","mode":"formula","level":"hard","p":"法線ベクトル(A,B,C)≠0で点(x0,y0,z0)を通る平面は？","o":["A(x+x0)+B(y+y0)+C(z+z0)=0","Ax0+By0+Cz0=0","A(x-x0)+B(y-y0)+C(z-z0)=0","A(x-x0)+B(y-y0)+C(z-z0)=1"],"a":2,"tip":"平面上の点との差が法線に垂直"},
+  {"id":"v10_iibc_046","course":"iibc","unitId":"math2_expr_cubic","mode":"strategy","level":"easy","p":"x^3-8 を因数分解すると？","o":["(x-2)(x^2-2x+4)","(x+2)(x^2-2x+4)","(x-2)(x^2+2x+4)","(x-2)^3"],"a":2,"tip":"立方差の公式を使う"},
+  {"id":"v10_iibc_047","course":"iibc","unitId":"math2_expr_binomial","mode":"strategy","level":"easy","p":"(a+b)^3のa^2bの係数は？","o":["1","3","2","6"],"a":1,"tip":"3乗の展開係数は1,3,3,1"},
+  {"id":"v10_iibc_048","course":"iibc","unitId":"math2_complex_numbers","mode":"strategy","level":"easy","p":"(1+i)(1-i) は？","o":["2","0","2i","-2"],"a":0,"tip":"i^2=-1を使う"},
+  {"id":"v10_iibc_049","course":"iibc","unitId":"math2_locus","mode":"strategy","level":"easy","p":"(0,0)と(2,0)から等距離にある点の軌跡は？","o":["x=1","y=1","x=0","x^2+y^2=1"],"a":0,"tip":"2点の中点を通る垂直二等分線"},
+  {"id":"v10_iibc_050","course":"iibc","unitId":"math2_general_angle_radian","mode":"strategy","level":"easy","p":"π/6 ラジアンは何度？","o":["45°","60°","90°","30°"],"a":3,"tip":"πラジアンが180°"},
+  {"id":"v10_iibc_051","course":"iibc","unitId":"math2_log_equation_inequality","mode":"strategy","level":"easy","p":"log_3 x=2 の解は？","o":["6","3","9","1/9"],"a":2,"tip":"対数の定義に戻す"},
+  {"id":"v10_iibc_052","course":"iibc","unitId":"math2_derivative_definition","mode":"strategy","level":"easy","p":"f(x)=x^2 のx=1での微分係数は？","o":["1","0","2","4"],"a":2,"tip":"f'(x)=2x"},
+  {"id":"v10_iibc_053","course":"iibc","unitId":"math2_definite_integral","mode":"strategy","level":"easy","p":"∫_0^1 2x dx の値は？","o":["2","1","1/2","0"],"a":1,"tip":"原始関数x^2の両端での差"},
+  {"id":"v10_iibc_054","course":"iibc","unitId":"mathb_difference_sequence","mode":"strategy","level":"easy","p":"数列2,5,8,11,… の階差は？","o":["3","2","5","8"],"a":0,"tip":"隣り合う項の差をとる"},
+  {"id":"v10_iibc_055","course":"iibc","unitId":"mathb_geometric_sequence","mode":"strategy","level":"easy","p":"数列2,-4,8,… の次の項は？","o":["-16","16","-8","12"],"a":0,"tip":"公比-2を掛ける"},
+  {"id":"v10_iibc_056","course":"iibc","unitId":"mathb_population_sample","mode":"strategy","level":"easy","p":"無作為抽出の説明として正しいのは？","o":["都合のよい人だけを選ぶ","結果に合う標本だけを残す","大きい値の人だけを選ぶ","母集団の各要素に既知の方法でランダムに選ばれる機会を与える"],"a":3,"tip":"選び方による偏りを抑える"},
+  {"id":"v10_iibc_057","course":"iibc","unitId":"mathb_binomial_distribution","mode":"strategy","level":"easy","p":"XがB(3,1/2)に従うときP(X=0)は？","o":["1/4","3/8","1/8","1/2"],"a":2,"tip":"3回とも失敗する確率"},
+  {"id":"v10_iibc_058","course":"iibc","unitId":"mathc_plane","mode":"strategy","level":"easy","p":"A(1,2)、B(3,5)に対するベクトルABは？","o":["(4,7)","(-2,-3)","(2,3)","(3,2)"],"a":2,"tip":"終点から始点を成分ごとに引く"},
+  {"id":"v10_iibc_059","course":"iibc","unitId":"mathc_inner","mode":"strategy","level":"easy","p":"a=(2,-1)、b=(1,2) の内積は？","o":["2","0","3","4"],"a":1,"tip":"2×1+(-1)×2=0"},
+  {"id":"v10_iibc_060","course":"iibc","unitId":"mathc_geometry","mode":"strategy","level":"easy","p":"A(1,1)、B(5,3)の中点は？","o":["(3,2)","(2,3)","(6,4)","(4,1)"],"a":0,"tip":"各座標の平均をとる"},
+  {"id":"v10_iibc_061","course":"iibc","unitId":"math2_expr_polynomial_division","mode":"strategy","level":"normal","p":"P(x)=x^2-3x+1をx-2で割った余りは？","o":["-1","1","3","-3"],"a":0,"tip":"P(2)=4-6+1"},
+  {"id":"v10_iibc_062","course":"iibc","unitId":"math2_roots_coefficients","mode":"strategy","level":"normal","p":"x^2-4x+1=0の2解α,βについてα^2+β^2は？","o":["16","12","18","14"],"a":3,"tip":"(α+β)^2-2αβ=16-2"},
+  {"id":"v10_iibc_063","course":"iibc","unitId":"math2_circle_line","mode":"strategy","level":"normal","p":"円x^2+y^2=9と直線x=3の位置関係は？","o":["2点で交わる","共有点がない","接する","円の中心を通る"],"a":2,"tip":"原点から直線までの距離が半径3と一致"},
+  {"id":"v10_iibc_064","course":"iibc","unitId":"math2_double_half_angle","mode":"strategy","level":"normal","p":"cosθ=3/5、0<θ<π/2のときsin2θは？","o":["12/25","7/25","24/25","3/5"],"a":2,"tip":"sinθ=4/5として倍角公式"},
+  {"id":"v10_iibc_065","course":"iibc","unitId":"math2_exponential_equation_inequality","mode":"strategy","level":"normal","p":"4^x=8 の解は？","o":["2","3/2","1/2","3"],"a":1,"tip":"底を2にそろえ2^(2x)=2^3"},
+  {"id":"v10_iibc_066","course":"iibc","unitId":"math2_log_function","mode":"strategy","level":"normal","p":"a>0、a≠1 のとき log_a(1/√a) は？","o":["-1/2","1/2","-2","2"],"a":0,"tip":"1/√a=a^(-1/2)"},
+  {"id":"v10_iibc_067","course":"iibc","unitId":"math2_increase_extrema","mode":"strategy","level":"normal","p":"f(x)=x^3-3x で f'(x)>0 となる範囲は？","o":["x<-1 または x>1","-1<x<1","x>0 のみ","すべての実数"],"a":0,"tip":"f'(x)=3(x^2-1)>0の範囲"},
+  {"id":"v10_iibc_068","course":"iibc","unitId":"math2_area","mode":"strategy","level":"normal","p":"y=1とy=x（0≦x≦1）の間の面積は？","o":["1","2","1/4","1/2"],"a":3,"tip":"上から下を引いて0から1まで積分"},
+  {"id":"v10_iibc_069","course":"iibc","unitId":"mathb_sigma_sum","mode":"strategy","level":"normal","p":"Σ(k=1→4)(2k-1) は？","o":["10","20","16","25"],"a":2,"tip":"最初の4個の奇数の和"},
+  {"id":"v10_iibc_070","course":"iibc","unitId":"mathb_recurrence","mode":"strategy","level":"normal","p":"a_1=1、a_(n+1)=a_n+2n のとき a_3 は？","o":["5","6","7","9"],"a":2,"tip":"a_2=3、a_3=7"},
+  {"id":"v10_iibc_071","course":"iibc","unitId":"mathb_normal_distribution","mode":"strategy","level":"normal","p":"標準正規分布ZについてP(Z≧0)は？","o":["1/4","1/2","0","1"],"a":1,"tip":"左右対称なので右半分の確率"},
+  {"id":"v10_iibc_072","course":"iibc","unitId":"mathb_sample_mean_distribution","mode":"strategy","level":"normal","p":"独立な同分布の標本4個の分散が各9なら標本平均の分散は？","o":["9/4","9","36","3/4"],"a":0,"tip":"標本平均の分散は母分散/n"},
+  {"id":"v10_iibc_073","course":"iibc","unitId":"mathc_plane","mode":"strategy","level":"normal","p":"a=(3,4) の長さは？","o":["5","7","12","25"],"a":0,"tip":"3^2+4^2=25の平方根"},
+  {"id":"v10_iibc_074","course":"iibc","unitId":"mathc_geometry","mode":"strategy","level":"normal","p":"A(0,0)、B(6,0)をAP:PB=1:2に内分するPは？","o":["(3,0)","(4,0)","(1,0)","(2,0)"],"a":3,"tip":"Aから線分の1/3だけ進む"},
+  {"id":"v10_iibc_075","course":"iibc","unitId":"mathc_space","mode":"strategy","level":"normal","p":"a=(1,2,2)、b=(2,-1,0)の関係は？","o":["同じ向きの平行","逆向きの平行","垂直","なす角60°"],"a":2,"tip":"内積が2-2+0=0"},
+  {"id":"v10_iibc_076","course":"iibc","unitId":"math2_expr_inequality_proof","mode":"strategy","level":"hard","p":"x>0のとき x+9/x の最小値は？","o":["3","9","6","存在しない"],"a":2,"tip":"相加相乗平均で6以上、x=3で等号"},
+  {"id":"v10_iibc_077","course":"iibc","unitId":"math2_expr_identity","mode":"strategy","level":"hard","p":"すべてのxで x^2+ax+b=(x+2)^2 のとき a+b は？","o":["4","8","6","2"],"a":1,"tip":"右辺を展開してa=4、b=4"},
+  {"id":"v10_iibc_078","course":"iibc","unitId":"math2_higher_equations","mode":"strategy","level":"hard","p":"x^3-2x^2-x+2=0 の実数解の組は？","o":["-1,1,2","1,2のみ","-2,-1,1","-1,1のみ"],"a":0,"tip":"まとめると(x-2)(x^2-1)=0"},
+  {"id":"v10_iibc_079","course":"iibc","unitId":"math2_region","mode":"strategy","level":"hard","p":"y≧x^2 かつ y≦1 の点が存在するxの範囲は？","o":["-1≦x≦1","x≦-1 または x≧1","0≦x≦1","すべての実数"],"a":0,"tip":"x^2≦1が必要十分"},
+  {"id":"v10_iibc_080","course":"iibc","unitId":"math2_trig_composition","mode":"strategy","level":"hard","p":"sinθ+cosθ=1 のとき sin2θ は？","o":["1","-1","2","0"],"a":3,"tip":"両辺の2乗は1+sin2θ=1"},
+  {"id":"v10_iibc_081","course":"iibc","unitId":"math2_exponential_equation_inequality","mode":"strategy","level":"hard","p":"(1/2)^(x-1)>4 の解は？","o":["x>3","x<3","x<-1","x>-1"],"a":2,"tip":"4=(1/2)^(-2)、底が1未満なので不等号反転"},
+  {"id":"v10_iibc_082","course":"iibc","unitId":"math2_tangent","mode":"strategy","level":"hard","p":"f(x)=x^3-3x の接線が水平になるxは？","o":["x=0 のみ","x=1 のみ","x=-1 と x=1","そのようなxはない"],"a":2,"tip":"f'(x)=3x^2-3=0"},
+  {"id":"v10_iibc_083","course":"iibc","unitId":"math2_area","mode":"strategy","level":"hard","p":"0≦x≦2で y=2x と y=x^2 の間の面積は？","o":["2/3","4/3","8/3","2"],"a":1,"tip":"2x≧x^2なので∫_0^2(2x-x^2)dx"},
+  {"id":"v10_iibc_084","course":"iibc","unitId":"mathb_recurrence","mode":"strategy","level":"hard","p":"a_1=2、a_(n+1)=2a_n+1 のとき a_3 は？","o":["11","9","7","12"],"a":0,"tip":"a_2=5、a_3=11"},
+  {"id":"v10_iibc_085","course":"iibc","unitId":"mathb_induction","mode":"strategy","level":"hard","p":"1+3+…+(2n-1)=n^2を帰納法で示すときn=kからk+1で足す項は？","o":["2k+1","2k-1","k+1","2k+3"],"a":0,"tip":"次の奇数は2(k+1)-1"},
+  {"id":"v10_iibc_086","course":"iibc","unitId":"mathb_interval_estimation","mode":"strategy","level":"hard","p":"母標準偏差と信頼係数が同じで標本数を4倍にすると平均の信頼区間の幅は？","o":["元の1/4になる","2倍になる","変わらない","元の1/2になる"],"a":3,"tip":"幅は1/√nに比例する（信頼係数一定）"},
+  {"id":"v10_iibc_087","course":"iibc","unitId":"mathb_hypothesis_test","mode":"strategy","level":"hard","p":"有意水準5%、p値0.03の適切な判断は？","o":["帰無仮説を必ず採択する","対立仮説が真と証明された","帰無仮説を棄却する","検定は実行できない"],"a":2,"tip":"p値が0.05未満なので棄却。ただし真偽の証明ではない"},
+  {"id":"v10_iibc_088","course":"iibc","unitId":"mathc_geometry","mode":"strategy","level":"hard","p":"A(1,1)、B(4,4)をAP:PB=2:1に内分するPは？","o":["(2,2)","(5/2,5/2)","(3,3)","(4,1)"],"a":2,"tip":"AからBへ2/3進む"},
+  {"id":"v10_iibc_089","course":"iibc","unitId":"mathc_inner","mode":"strategy","level":"hard","p":"a=(1,2)、b=(k,1)が垂直なときkは？","o":["2","-2","-1","0"],"a":1,"tip":"内積k+2=0"},
+  {"id":"v10_iibc_090","course":"iibc","unitId":"mathc_space","mode":"strategy","level":"hard","p":"a=(1,1,0)、b=(1,-1,1) のなす角は？","o":["90°","0°","45°","60°"],"a":0,"tip":"内積1-1+0=0、どちらも零ベクトルではない"}
+];
+ASC_Q_MATH_BANK_V5.push(...ASC_Q_MATH_BANK_IIBC_V10);
+
+
+const ASC_Q_MATH_SETTINGS_V5 = {mode:'strategy',level:'normal',course:'ia'};
+
+function ascQMathGenerateV5(g) {
+  const settings = ASC_Q_MATH_SETTINGS_V5;
+  const mathMode = g.subject==='math' ? settings.mode : (Math.random()<0.5 ? 'formula' : 'strategy');
+  const mathLevel = g.subject==='math' ? settings.level : 'normal';
+  let pool=ASC_Q_MATH_BANK_V5.filter(q=>q.mode===mathMode && q.level===mathLevel && (g.subject==='auto' || (q.course||'ia')===(g.mathCourse||'ia')));
+  if(g.subject==='auto') pool=pool.filter(q=>g.units.has(q.unitId));
+  if(!pool.length) return null;
+  let choices=pool.filter(q=>!g.used.has('mathV5:'+q.id) && q.unitId!==g.lastUnit);
+  if(!choices.length)choices=pool.filter(q=>!g.used.has('mathV5:'+q.id));
+  if(!choices.length){ for(const q of pool)g.used.delete('mathV5:'+q.id);choices=pool.filter(q=>q.unitId!==g.lastUnit); }
+  if(!choices.length)choices=pool;
+  const weight=q=>1+Math.min(100,Math.max(0,g.priority.get(q.unitId)||0))/14;
+  let sum=choices.reduce((n,q)=>n+weight(q),0),roll=Math.random()*sum;
+  let selected=choices[choices.length-1];
+  for(const q of choices) if((roll-=weight(q))<=0){selected=q;break;}
+  g.used.add('mathV5:'+selected.id);g.lastUnit=selected.unitId;
+  const rows=ascQShuffleV2(selected.o.map((label,i)=>({id:String(i),label})));
+  return {
+    prompt:selected.p,
+    choices:rows,
+    answer:String(selected.a),
+    tip:selected.mode==='strategy'?selected.tip:'',
+    mathMode:selected.mode,
+    difficulty:selected.level,
+  };
+}
+
+function ascQGenerateConceptV2(g) {
+  // Mathematics is original QUICK content; never fall back to bulk descriptions
+  if(g.subject==='math')return ascQMathGenerateV5(g);
+  if(g.subject==='auto' && Math.random()<0.55){
+    const math=ascQMathGenerateV5(g);
+    if(math)return math;
+  }
+  // 元のTESTから「四択かつ紙不要」候補のみ。診断の成績は変更しない。
+  const allowed=ASCEND_TEST_TEMPLATE_BANK_V1.filter(t=>
+    t.type==="choice" && g.units.has(t.unitId) && !String(t.unitId).startsWith("math") &&
+    (String(t.conceptTag||"").startsWith("bulk_") &&
+    !["bulk_integration", "bulk_method"].includes(String(t.conceptTag||"")))
+  );
+  // bulk問題がない単元は、短い四択だけフォールバック。
+  const pool=allowed.length ? allowed : ASCEND_TEST_TEMPLATE_BANK_V1.filter(t=>
+    t.type==="choice" && g.units.has(t.unitId) && !String(t.unitId).startsWith("math")
+  );
+  if(!pool.length)return null;
+  for(let attempt=0;attempt<75;attempt++) {
+    let choices=pool.filter(t=>!g.used.has(t.id)&&t.unitId!==g.lastUnit);
+    if(!choices.length)choices=pool.filter(t=>!g.used.has(t.id));
+    if(!choices.length){g.used.clear();choices=pool.filter(t=>t.unitId!==g.lastUnit);}
+    if(!choices.length)choices=pool;
+    const weights=choices.map(t=>1+(g.priority.get(t.unitId)||0)/12);
+    let roll=Math.random()*weights.reduce((a,b)=>a+b,0);
+    let t=choices[choices.length-1];
+    for(let i=0;i<choices.length;i++)if((roll-=weights[i])<=0){t=choices[i];break;}
+    g.used.add(t.id);
+    let q;
+    try{q=t.generate();}catch(e){continue;}
+    if(!q || !Array.isArray(q.choices) || q.choices.length!==4)continue;
+    const answer=String(q.answer);
+    if(!q.choices.some(c=>String(c.id)===answer))continue;
+    const prompt=String(q.prompt||"");
+    if(prompt.length>180||/計算せよ|求めよ|何通り/.test(prompt))continue;
+    // QUICKでは巨大な公式を丸ごと読む問題を避ける。
+    if(q.choices.some(c=>{
+      const label=String(c.label||"");
+      const formula=label.split("／")[0].trim();
+      return label.length>70 || formula.length>45;
+    }))continue;
+    if(g.prompts.has(prompt))continue;
+    g.prompts.add(prompt);g.lastUnit=t.unitId;
+    return {prompt,choices:q.choices.map(c=>({id:String(c.id),label:String(c.label)})),answer};
+  }
+  return null;
+}
+function ascQGenerateWordV2(g) {
+  const bank=g.subject==="english"?ASC_Q_WORDS_V2:ASC_Q_JAPANESE_V2;
+  let available=bank.map((row,i)=>({row,i})).filter(x=>!g.used.has(x.i));
+  if(!available.length){g.used.clear();available=bank.map((row,i)=>({row,i}));}
+  const picked=available[Math.floor(Math.random()*available.length)];
+  if(!picked)return null;
+  g.used.add(picked.i);
+  const [word,meaning,tag]=picked.row;
+  let wrong=ascQShuffleV2(bank.filter(r=>r[2]===tag&&r!==picked.row).map(r=>r[1]));
+  if(wrong.length<3)wrong=ascQShuffleV2([...new Set([...wrong,...bank.filter(r=>r!==picked.row).map(r=>r[1])])]);
+  const rows=ascQShuffleV2([meaning,...wrong.filter(x=>x!==meaning).slice(0,3)]);
+  return {prompt:`「${word}」の意味として適切なものは？`,choices:rows.map((label,i)=>({id:String(i),label})),answer:String(rows.indexOf(meaning))};
+}
+async function startAscendQuickGameV2(user) {
+  ascQStopV2();
+  const subject=ascQState.endless;
+  let data={};
+  try {const snap=await getDoc(doc(db,"users",user.uid));if(snap.exists())data=snap.data();}
+  catch(e){console.warn("QUICK PRIORITY LOAD:",e);}
+  const g={subject,mathCourse:ASC_Q_MATH_SETTINGS_V5.course,used:new Set(),prompts:new Set(),lastUnit:null,
+    priority:new Map(),units:new Set(),correct:0,total:0,activeMs:0,lastTick:performance.now(),
+    timer:null,nextTimer:null,locked:false};
+  if(["auto","math","physics","chemistry"].includes(subject)) {
+    for(const unit of getAscendWeaknessUnitsV1())if(ascQSubjectMatchV2(unit,subject))g.units.add(unit.id);
+    if(typeof getAscendPriorityTargetsV1==="function"){
+      for(const target of getAscendPriorityTargetsV1(data))g.priority.set(target.id,Number(target.priorityScore)||0);
+    }
+  }
+  ascQGameStateV2.current=g;
+  ascQShowNextV2(user,g);
+  g.timer=setInterval(()=>{
+    if(ascQGameStateV2.current!==g)return;
+    if(!document.getElementById("asc-q-game-v2")){ascQStopV2();return;}
+    ascQElapsedV2(g);
+    const time=document.getElementById("asc-q-game-time-v2");
+    if(time)time.textContent=ascQTimeTextV2(g.activeMs);
+  },300);
+}
+function ascQShowNextV2(user,g) {
+  if(ascQGameStateV2.current!==g)return;
+  g.locked=false;
+  const q=["english","japanese"].includes(g.subject)?ascQGenerateWordV2(g):ascQGenerateConceptV2(g);
+  if(!q){ascQFinishV2(user,g);return;}
+  const subjectName=ASC_Q_OPTIONS.endless.find(row=>row[0]===g.subject)?.[1]||"AUTO";
+  page(card(`<div id="asc-q-game-v2" class="asc-q-screen">
+    <div class="asc-q-game-head"><span class="asc-q-eyebrow">QUICK / ENDLESS</span>
+    <button id="asc-q-game-exit-v2" class="asc-q-back">FINISH</button></div>
+    <section class="asc-q-panel"><div class="asc-q-game-head">
+    <span class="asc-q-game-meta">${ascQEscapeV2(subjectName)} ${g.subject==='math'?({ia:'Ⅰ・A',iibc:'Ⅱ・B・C',iiic:'Ⅲ・C'})[g.mathCourse||'ia']:''} / Q${g.total+1}</span>
+    <span class="asc-q-game-meta" id="asc-q-game-time-v2">${ascQTimeTextV2(g.activeMs)}</span></div>
+    <div class="asc-q-game-prompt">${ascQMathTextV3(q.prompt, !!q.mathMode)}</div>
+    <div class="asc-q-game-options">${q.choices.map((c,i)=>`<button class="asc-q-game-option" data-asc-q-answer="${i}">${ascQMathOptionV3(c.label, !!q.mathMode)}</button>`).join("")}</div>
+    <p id="asc-q-tip-v5" class="asc-q-math-point-v5" hidden></p>
+    <p class="asc-q-note">正誤を表示したあと、自動で次の問題に進みます。</p></section></div>`));
+  document.getElementById("asc-q-game-exit-v2").onclick=()=>ascQFinishV2(user,g);
+  document.querySelectorAll("[data-asc-q-answer]").forEach(button=>{
+    button.onclick=()=>{
+      if(g.locked||ascQGameStateV2.current!==g)return;
+      g.locked=true;ascQElapsedV2(g);g.total++;
+      const chosen=q.choices[Number(button.dataset.ascQAnswer)];
+      if(chosen.id===q.answer)g.correct++;
+      document.querySelectorAll("[data-asc-q-answer]").forEach(b=>{
+        b.disabled=true;
+        const item=q.choices[Number(b.dataset.ascQAnswer)];
+        if(item.id===q.answer)b.dataset.result="right";
+        else if(b===button)b.dataset.result="wrong";
+      });
+      if(q.tip){
+        const tip=document.getElementById('asc-q-tip-v5');
+        if(tip){tip.innerHTML='POINT / '+ascQMathTextV3(q.tip);tip.hidden=false;}
+      }
+      g.nextTimer=setTimeout(()=>ascQShowNextV2(user,g),q.tip?2000:550);
+    };
+  });
+  bindMainBottomNav(user);
+}
+
+// ASCEND QUICK SAVE BRIDGE V8
+async function ascQSaveViaTimerV8(user,subject,minutes){
+  if(!['数学IA','数学IIBC','数学III','物理','化学','英語','現代文','古文'].includes(subject))
+    throw new Error('教科を選択してね');
+  const existing=await loadActiveTimer(user);
+  if(existing)throw new Error('保存中のタイマーがあるよ。先にタイマーを終了してね');
+  await showTimerPage(user);
+  stopTimerInterval();
+  timerState={
+    subject,weaknessCourseId:'',weaknessChapterId:'',weaknessUnitId:'',
+    xpItem:'',startedAt:null,elapsedBeforePause:minutes*60000,paused:true,
+    studyLinkRankEligibleMs:0,studyLinkRankEligibleStartedAt:null,
+    studyLinkEligibleMsByBoost:{0:0,1:0,2:0,3:0},
+    studyLinkEligibleBoostLevel:0,studyLinkCurrentBoostLevel:0,
+    intervalId:null
+  };
+  const btn=document.getElementById('timer-end');
+  if(!btn)throw new Error('勉強記録の確認画面を開けませんでした');
+  btn.disabled=false;
+  btn.click();
+
+  // QUICKでは2回目の保存確認を省略
+  const confirmBtn=document.getElementById('timer-confirm');
+
+  if(!confirmBtn)
+    throw new Error('保存確認処理を呼び出せませんでした');
+
+  confirmBtn.click();
+}
+function ascQMountSaveV8(user,mode,g,ms){
+  const retryId=mode==='endless'?'asc-q-restart-v2':'asc-qr-again-v3';
+  const retry=document.getElementById(retryId);
+  if(!retry)return;
+  const mins=Math.floor(Math.max(0,Number(ms)||0)/60000);
+  const box=document.createElement('div');
+  box.className='asc-q-savebox-v8';
+  box.style.cssText='display:grid;gap:10px;margin:16px 0';
+  const note=document.createElement('p');
+  note.className='asc-q-note';
+  if(mode==='endless'){
+    document.querySelectorAll('.asc-q-note').forEach(el=>{
+      if(el.textContent.includes('未保存'))el.remove();
+    });
+  }else{
+    document.querySelectorAll('.asc-q-note').forEach(el=>{
+      if(el.textContent.includes('勉強報酬は次のパッチ'))
+        el.textContent='ベスト記録は現在この端末内のみ';
+    });
+  }
+  if(mins<1){
+    note.textContent='1分未満のため今回の報酬はなし';
+    box.append(note);retry.before(box);return;
+  }
+  note.textContent=`正式記録 ${mins}分 / XP・コインは既存の報酬ルールに従います`;
+  box.append(note);
+  let subject=mode==='rush'
+    ? (['words','idioms'].includes(g.category)?'英語':
+       g.category==='classical'?'古文':'現代文')
+    : ({math:({ia:'数学IA',iibc:'数学IIBC',iiic:'数学III'})[g.mathCourse||'ia'],physics:'物理',chemistry:'化学',english:'英語'})[g.subject];
+  if(!subject || (g.subject==='math' && g.mathCourse==='iiic')){
+    const label=document.createElement('label');
+    label.className='asc-q-note';label.textContent='記録する教科：';
+    const sel=document.createElement('select');
+    const subjects=g.subject==='math' ? ['数学III','数学IIBC'] : g.subject==='auto'
+      ? ['数学IA','数学IIBC','数学III','物理','化学'] : ['現代文','古文'];
+    for(const name of subjects){
+      const o=document.createElement('option');o.value=name;
+      o.textContent=({数学IA:'数学Ⅰ・A',数学IIBC:'数学Ⅱ・B・C',数学III:'数学Ⅲ'})[name]||name;sel.add(o);
+    }
+    label.append(sel);box.append(label);
+    subject=()=>sel.value;
+  }
+  const save=document.createElement('button');
+  save.className='asc-q-primary';save.textContent='SAVE STUDY →';
+  const status=document.createElement('p');status.className='asc-q-note';
+  box.append(save,status);retry.before(box);
+  save.onclick=async()=>{
+    if(save.disabled)return;
+    save.disabled=true;save.textContent='保存中...';
+    try{
+      await ascQSaveViaTimerV8(user,typeof subject==='function'?subject():subject,mins);
+    }catch(e){
+      status.textContent=e.message||'保存画面を開けませんでした';
+      save.disabled=false;save.textContent='SAVE STUDY →';
+    }
+  };
+}
+
+function ascQFinishV2(user,g) {
+  if(ascQGameStateV2.current!==g)return;
+  ascQElapsedV2(g);
+  const elapsed=g.activeMs;
+  ascQStopV2();
+  page(card(`<div class="asc-q-screen"><span class="asc-q-eyebrow">QUICK / SESSION COMPLETE</span>
+    <h2>ENDLESS</h2><div class="asc-q-panel" style="text-align:center">
+    <p class="asc-q-note">RESULT</p><div class="asc-q-game-score">${g.correct} / ${g.total}</div>
+    <p>正答率 ${g.total?Math.round(g.correct/g.total*100):0}%</p>
+    <p>学習時間 ${ascQTimeTextV2(elapsed)}</p>
+    <p class="asc-q-note">※この段階では勉強時間・XP・コインは未保存です。次の保存パッチで接続します。</p>
+    <button id="asc-q-restart-v2" class="asc-q-primary">BACK TO QUICK</button>
+    <button id="asc-q-home-v2" class="asc-q-back">HOME</button></div></div>`));
+  document.getElementById("asc-q-restart-v2").onclick=()=>showAscendQuickV1(user);
+  document.getElementById("asc-q-home-v2").onclick=()=>showHome(user);
+  ascQMountSaveV8(user,'endless',g,elapsed);
+  bindMainBottomNav(user);
+}
+function showAscendQuickRushNoticeV2(user) {
+  page(card(`<div class="asc-q-screen"><span class="asc-q-eyebrow">QUICK / 1 MIN RUSH</span>
+    <section class="asc-q-panel"><h2>1 MIN RUSH</h2><p>60秒タイマー・ランキングは次のパッチで接続します。</p>
+    <button class="asc-q-primary" id="asc-q-rush-back-v2">BACK</button></section></div>`));
+  document.getElementById("asc-q-rush-back-v2").onclick=()=>showAscendQuickV1(user,true);
+  bindMainBottomNav(user);
+}
+
+
+// ============================================================
+// ASCEND QUICK RUSH V3
+// 60秒 / 4ジャンル / 端末内自己ベスト
+// FRIENDS・GLOBALと正式報酬は後続のサーバー連携で実装。
+// ============================================================
+const ASC_Q_IDIOMS_V3 = [
+  ["look after","世話をする"],["give up","あきらめる"],
+  ["carry out","実行する"],["put off","延期する"],
+  ["take part in","参加する"],["make up for","埋め合わせる"],
+  ["get along with","仲良くやっていく"],["come up with","思いつく"],
+  ["run out of","使い果たす"],["take advantage of","活用する"],
+  ["account for","説明する・占める"],["depend on","依存する"],
+  ["refer to","言及する"],["result in","結果として引き起こす"],
+  ["deal with","対処する"],["turn down","断る"],
+  ["bring about","引き起こす"],["set up","設立する"],
+  ["break down","故障する"],["figure out","理解する"],
+  ["look forward to","楽しみに待つ"],["put up with","我慢する"],
+  ["be aware of","気づいている"],["in spite of","〜にもかかわらず"]
+];
+const ASC_Q_JVOCAB_V3 = [
+  ["示唆","それとなく示すこと"],["普遍","広くすべてに当てはまること"],
+  ["相対","他との関係で成り立つこと"],["逆説","一見矛盾するが真理を含む表現"],
+  ["抽象","共通する性質を取り出すこと"],["具体","はっきりした事例で示すこと"],
+  ["恣意","自分勝手な考えで判断すること"],["乖離","離れて隔たること"],
+  ["敷衍","意味を押し広げて説明すること"],["帰結","最終的に生じる結果"],
+  ["俯瞰","全体を高い位置から見渡すこと"],["形骸化","中身が失われ形だけになること"],
+  ["蓋然性","そうなる可能性の程度"],["自明","説明なしでも明らかなこと"],
+  ["踏襲","従来の方法をそのまま受け継ぐこと"],["看過","見逃してそのままにすること"],
+  ["矛盾","二つの事柄が両立しないこと"],["概念","物事をまとめて捉えた考え"],
+  ["文脈","前後の言葉のつながり"],["推論","根拠から結論を導くこと"],
+  ["暫定","当面の間に限って定めること"],["一義的","意味が一つに定まること"],
+  ["相克","対立するものが争うこと"],["変容","姿や性質が変わること"]
+];
+const ASC_Q_CLASSICAL_EXTRA_V3 = [
+  ["ありがたし","めったにない"],["すさまじ","興ざめだ"],
+  ["なまめかし","優美だ"],["こころにくし","奥ゆかしい"],
+  ["うつくし","かわいらしい"],["めでたし","すばらしい"],
+  ["おどろく","目を覚ます"],["ののしる","大騒ぎする"],
+  ["わびし","つらい・心細い"],["あさまし","驚きあきれる"],
+  ["かなし","いとしい"],["ゆかし","見たい・知りたい"],
+  ["あいなし","気に入らない"],["つきづきし","似つかわしい"],
+  ["ねんごろなり","熱心だ・親密だ"],["おぼつかなし","はっきりしない"]
+];
+const ascQRushV3 = {game:null};
+function ascQRushBankV3(category) {
+  if(category==='words')return ASC_Q_WORDS_V2.map(r=>({front:r[0],back:r[1],tag:r[2]}));
+  if(category==='idioms')return ASC_Q_IDIOMS_V3.map(r=>({front:r[0],back:r[1],tag:'idiom'}));
+  if(category==='vocab')return ASC_Q_JVOCAB_V3.map(r=>({front:r[0],back:r[1],tag:'jvocab'}));
+  const klassic=ASC_Q_JAPANESE_V2.filter(r=>r[2]==='classical').map(r=>[r[0],r[1]]);
+  return [...klassic,...ASC_Q_CLASSICAL_EXTRA_V3].map(r=>({front:r[0],back:r[1],tag:'classical'}));
+}
+function ascQRushStopV3(){
+  const g=ascQRushV3.game;
+  if(!g)return;
+  clearInterval(g.timer);clearInterval(g.countdownTimer);clearTimeout(g.nextTimer);
+  ascQRushV3.game=null;
+}
+function ascQRushBestV3(user,category) {
+  try {
+    const key='ascend-quick-rush-v3:'+user.uid+':'+category;
+    const obj=JSON.parse(localStorage.getItem(key)||'{}');
+    return {key,today:obj.date===getJstDateKey()?Number(obj.today)||0:0,
+      all:Number(obj.all)||0};
+  }catch(e){return {key:null,today:0,all:0};}
+}
+function ascQRushSaveBestV3(user,g) {
+  const best=ascQRushBestV3(user,g.category);
+  const next={date:getJstDateKey(),today:Math.max(best.today,g.correct),all:Math.max(best.all,g.correct)};
+  try{if(best.key)localStorage.setItem(best.key,JSON.stringify(next));}catch(e){}
+  return {...next,record:g.correct>best.all};
+}
+function ascQRushQuestionV3(g) {
+  let available=g.bank.map((r,i)=>({r,i})).filter(x=>!g.used.has(x.i));
+  if(!available.length){g.used.clear();available=g.bank.map((r,i)=>({r,i}));}
+  if(!available.length)return null;
+  const selected=available[Math.floor(Math.random()*available.length)];
+  g.used.add(selected.i);
+  let alternatives=g.bank.filter(r=>r!==selected.r&&r.tag===selected.r.tag)
+    .map(r=>r.back).filter(v=>v!==selected.r.back);
+  alternatives=ascQShuffleV2([...new Set(alternatives)]);
+  if(alternatives.length<3)return null;
+  const opts=ascQShuffleV2([selected.r.back,...alternatives.slice(0,3)]);
+  return {prompt:selected.r.front,options:opts,answer:opts.indexOf(selected.r.back)};
+}
+function startAscendQuickRushV3(user){
+  ascQRushStopV3();
+  const category=ascQState.rush;
+  const g={category,bank:ascQRushBankV3(category),used:new Set(),correct:0,total:0,
+    remaining:60000,last:0,timer:null,countdownTimer:null,nextTimer:null,locked:false};
+  if(g.bank.length<4){alert('このカテゴリの問題は準備中です');return;}
+  ascQRushV3.game=g;
+  page(card(`<div id="asc-qr-ready-v3" class="asc-q-screen">
+    <div class="asc-q-topbar"><button id="asc-qr-cancel-v3" class="asc-q-back">← BACK</button>
+    <span class="asc-q-eyebrow">QUICK / 1 MIN RUSH</span></div>
+    <section class="asc-q-panel" style="text-align:center">
+    <div class="asc-q-eyebrow">GET READY</div><div class="asc-qr-countdown-v3" id="asc-qr-count-v3">3</div>
+    <p class="asc-q-note">GO! のあとに問題とタイマーが始まります</p></section></div>`));
+  document.getElementById('asc-qr-cancel-v3').onclick=()=>{
+    ascQRushStopV3();showAscendQuickV1(user,true);
+  };
+  let number=3;
+  g.countdownTimer=setInterval(()=>{
+    if(ascQRushV3.game!==g)return;
+    if(document.hidden)return;
+    number--;
+    const el=document.getElementById('asc-qr-count-v3');
+    if(!el){ascQRushStopV3();return;}
+    el.textContent=number>=1?String(number):'GO!';
+    if(number===0){clearInterval(g.countdownTimer);
+      g.nextTimer=setTimeout(()=>{
+        if(ascQRushV3.game!==g)return;
+        ascQRushNextV3(user,g);
+        g.last=performance.now();
+        g.timer=setInterval(()=>ascQRushTickV3(user,g),80);
+      },450);
+    }
+  },1000);
+  bindMainBottomNav(user);
+}
+function ascQRushTickV3(user,g){
+  if(ascQRushV3.game!==g)return;
+  if(!document.getElementById('asc-qr-play-v3')){ascQRushStopV3();return;}
+  const now=performance.now();
+  if(!document.hidden)g.remaining-=Math.max(0,now-g.last);
+  g.last=now;
+  if(g.remaining<=0){g.remaining=0;ascQRushFinishV3(user,g,true);return;}
+  const t=document.getElementById('asc-qr-time-v3');
+  const b=document.getElementById('asc-qr-bar-v3');
+  if(t)t.textContent=(g.remaining/1000).toFixed(1);
+  if(b)b.style.width=(g.remaining/600)+'%';
+}
+function ascQRushNextV3(user,g){
+  if(ascQRushV3.game!==g)return;
+  g.locked=false;
+  const q=ascQRushQuestionV3(g);
+  if(!q){ascQRushFinishV3(user,g,false);return;}
+  const label=ASC_Q_OPTIONS.rush.find(x=>x[0]===g.category)?.[1]||'RUSH';
+  page(card(`<div id="asc-qr-play-v3" class="asc-q-screen">
+    <div class="asc-q-topbar"><span class="asc-q-eyebrow">1 MIN RUSH / ${ascQEscapeV2(label)}</span>
+    <button id="asc-qr-quit-v3" class="asc-q-back">EXIT</button></div>
+    <section class="asc-q-panel"><div class="asc-q-game-head"><span class="asc-qr-counter-v3">SCORE ${g.correct} / Q${g.total+1}</span>
+    <strong class="asc-q-game-meta" id="asc-qr-time-v3">${(g.remaining/1000).toFixed(1)}</strong></div>
+    <div class="asc-qr-timer-bar-v3"><div id="asc-qr-bar-v3" style="width:${g.remaining/600}%"></div></div>
+    <div class="asc-qr-word-v3">${ascQEscapeV2(q.prompt)}</div><div class="asc-q-game-options">
+    ${q.options.map((v,i)=>`<button class="asc-q-game-option" data-asc-qr-v3="${i}">${ascQEscapeV2(v)}</button>`).join('')}
+    </div></section></div>`));
+  document.getElementById('asc-qr-quit-v3').onclick=()=>ascQRushFinishV3(user,g,false);
+  document.querySelectorAll('[data-asc-qr-v3]').forEach(btn=>btn.onclick=()=>{
+    if(g.locked||ascQRushV3.game!==g||g.remaining<=0)return;
+    g.locked=true;g.total++;
+    const chosen=Number(btn.dataset.ascQrV3);
+    if(chosen===q.answer)g.correct++;
+    document.querySelectorAll('[data-asc-qr-v3]').forEach(x=>{
+      x.disabled=true;const index=Number(x.dataset.ascQrV3);
+      if(index===q.answer)x.dataset.result='right';
+      else if(x===btn)x.dataset.result='wrong';
+    });
+    g.nextTimer=setTimeout(()=>ascQRushNextV3(user,g),300);
+  });
+  bindMainBottomNav(user);
+}
+function ascQRushFinishV3(user,g,completed){
+  if(ascQRushV3.game!==g)return;
+  ascQRushStopV3();
+  const best=completed?ascQRushSaveBestV3(user,g):ascQRushBestV3(user,g.category);
+  const label=ASC_Q_OPTIONS.rush.find(x=>x[0]===g.category)?.[1]||'RUSH';
+  page(card(`<div class="asc-q-screen"><span class="asc-q-eyebrow">QUICK / 1 MIN RUSH</span>
+    <h2>${completed?'TIME UP!':'SESSION EXIT'}</h2><section class="asc-q-panel" style="text-align:center">
+    ${completed&&best.record?'<p class="asc-q-eyebrow">NEW BEST!</p>':''}
+    <p class="asc-q-note">${ascQEscapeV2(label)}</p><div class="asc-q-game-score">${g.correct} POINTS</div>
+    <div class="asc-qr-summary-v3"><div class="asc-qr-stat-v3"><span>TODAY BEST</span><strong>${best.today}</strong></div>
+    <div class="asc-qr-stat-v3"><span>ALL-TIME BEST</span><strong>${best.all}</strong></div></div>
+    <p class="asc-q-note">※ベスト記録は現在この端末内のみ。FRIENDS / GLOBALランキングと勉強報酬は次のパッチで接続します。</p>
+    <button id="asc-qr-again-v3" class="asc-q-primary">BACK TO QUICK</button>
+    <button id="asc-qr-home-v3" class="asc-q-back">HOME</button></section></div>`));
+  document.getElementById('asc-qr-again-v3').onclick=()=>showAscendQuickV1(user);
+  document.getElementById('asc-qr-home-v3').onclick=()=>showHome(user);
+  ascQMountSaveV8(user,'rush',g,60000-g.remaining);
+  bindMainBottomNav(user);
+}
 
 async function showHome(user) {
 
@@ -94522,41 +97011,51 @@ const xpPercent =
         </section>
 
 
-        <!-- =====================================
-             TODAY STUDY
-        ====================================== -->
 
-        <section
-          id="home-study-status"
-          class="rpg-section"
+<!-- ASCEND QUICK HOME V1 -->
+
+<section id="asc-home-quick-v1">
+
+    <span class="asc-q-eyebrow">
+        ASCEND / STUDY ANYWHERE
+    </span>
+
+    <strong class="asc-q-title">
+        QUICK
+    </strong>
+
+    <p class="asc-q-desc">
+        机がなくても、1問から。<br>
+        ENDLESS と 1 MIN RUSH でスキマ時間を攻略。
+    </p>
+
+
+    <div class="asc-q-home-bottom">
+
+        <span class="asc-q-hint">
+
+            ${getAscendPriorityTargetsV1(data)[0]?.name
+
+                ? `PRIORITY / ${getAscendPriorityTargetsV1(data)[0].name}`
+
+                : "AUTO / あなたの学習状況から出題"
+
+            }
+
+        </span>
+
+
+        <button
+            class="asc-q-primary"
+            id="asc-home-quick-open-v1"
         >
+            OPEN QUICK ↗
+        </button>
 
-          <h3 class="home-section-title">
-            今日の勉強
-          </h3>
+    </div>
 
+</section>
 
-          <div class="home-study-time">
-            ${String(
-              Math.floor(
-                todayStudyMinutes / 60
-              )
-            ).padStart(2,"0")}
-            :
-            ${String(
-              todayStudyMinutes % 60
-            ).padStart(2,"0")}
-          </div>
-
-
-          <button
-            id="home-start-study"
-            class="classic-primary-button"
-          >
-            勉強を始める
-          </button>
-
-        </section>
 
 
         <!-- =====================================
@@ -94627,13 +97126,17 @@ const xpPercent =
     );
 
 
-  $("home-start-study").onclick =
-    async () => {
-      await showStudyMainPage(
-        user,
-        "timer"
-      );
-    };
+
+const quickOpen =
+    document.getElementById("asc-home-quick-open-v1");
+
+if (quickOpen) {
+
+    quickOpen.onclick =
+        () => showAscendQuickV1(user);
+
+}
+
 
 
   const homeOpenQuests =
@@ -111872,7 +114375,7 @@ async function showTimerPage(user) {
   };
 
   $("timer-pause").onclick = async () => {
-    if (!timerState.startedAt) return;
+    if (!timerState.startedAt && !timerState.paused) return;
 
     if (!timerState.paused) {
       timerState.elapsedBeforePause = currentElapsedMs();
